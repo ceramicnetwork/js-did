@@ -28,23 +28,21 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-typescript": "^7.9.0",
-    "@types/lodash.transform": "^4.6.6",
-    "@types/node": "^13.13.2",
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.4",
+    "@types/node": "^13.13.14",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
     "babel-jest": "^25.4.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jest": "^23.18.0",
     "jest": "^25.4.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.7"
   },
   "dependencies": {
-    "did-jwt": "^4.4.0",
-    "fast-json-stable-stringify": "^2.1.0",
-    "is-circular": "^1.0.2",
-    "lodash.transform": "^4.6.0"
+    "cids": "^0.8.3",
+    "is-circular": "^1.0.2"
   }
 }
