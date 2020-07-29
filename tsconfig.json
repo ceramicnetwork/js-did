@@ -13,6 +13,5 @@
     "outDir": "lib",
     "rootDir": "src"
   },
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"],
   "include": ["./src/**/*"]
 }

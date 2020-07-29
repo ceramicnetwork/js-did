@@ -16,6 +16,7 @@ export function encodeDagJson(obj: DagJson): DagJson {
     } else if (typeof value === 'object' && value !== null) {
       acc[key] = encodeDagJson(value)
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       acc[key] = value
     }
     return acc

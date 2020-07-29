@@ -1,5 +1,6 @@
+import { RPCClient, RPCConnection } from 'rpc-utils'
+
 import { DagJson, encodeDagJson } from './dag-json'
-import { RPCProvider } from './rpc'
 
 interface AuthenticateResult {
   did: string
@@ -19,12 +20,11 @@ interface CreateJWSResult {
 }
 
 export class DID {
+  protected _client: RPCClient
   protected _did: string | undefined
-  protected _provider: RPCProvider
-  protected _reqId = 0
 
-  constructor(provider: RPCProvider) {
-    this._provider = provider
+  constructor(connection: RPCConnection) {
+    this._client = new RPCClient(connection)
   }
 
   public get authenticated(): boolean {
@@ -38,22 +38,9 @@ export class DID {
     return this._did
   }
 
-  protected async _send<P, R>(method: string, params?: P): Promise<R> {
-    const res = await this._provider.send<P, R>({
-      jsonrpc: '2.0',
-      id: `did${this._reqId++}`,
-      method,
-      params,
-    })
-    if (res.error != null) {
-      throw new Error(res.error.message ?? 'RPC error')
-    }
-    return res.result as R
-  }
-
   public async authenticate(): Promise<string> {
-    const { did } = await this._send<void, AuthenticateResult>(
-      'did_authenticate',
+    const { did } = await this._client.request<void, AuthenticateResult>(
+      'did_authenticate'
     )
     this._did = did
     return did
@@ -61,15 +48,15 @@ export class DID {
 
   public async createJWS(
     payload: DagJson,
-    options: CreateJWSOptions = {},
+    options: CreateJWSOptions = {}
   ): Promise<string> {
     if (this._did == null) {
       throw new Error('DID is not authenticated')
     }
-    const { jws } = await this._send<CreateJWSParams, CreateJWSResult>(
-      'did_createJWS',
-      { ...options, payload: encodeDagJson(payload) },
-    )
+    const { jws } = await this._client.request<
+      CreateJWSParams,
+      CreateJWSResult
+    >('did_createJWS', { ...options, payload: encodeDagJson(payload) })
     return jws
   }
 }
