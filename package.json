@@ -4,11 +4,11 @@
   "description": "Typescript library for interacting with DIDs",
   "main": "lib/index.js",
   "scripts": {
-    "test": "jest --coverage",
-    "build": "./node_modules/.bin/tsc -p tsconfig.json",
+    "test": "jest",
+    "build": "tsc -p tsconfig.json",
     "prepublishOnly": "npm run build",
     "prebuild": "npm run clean",
-    "lint": "./node_modules/.bin/eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint ./src --ext .js,.ts",
     "clean": "rm -rf ./lib"
   },
   "repository": {
@@ -28,23 +28,24 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
-    "@babel/preset-typescript": "^7.9.0",
-    "@types/lodash.transform": "^4.6.6",
-    "@types/node": "^13.13.2",
-    "@typescript-eslint/eslint-plugin": "^2.30.0",
-    "@typescript-eslint/parser": "^2.30.0",
-    "babel-jest": "^25.4.0",
-    "eslint": "^6.8.0",
-    "eslint-plugin-jest": "^23.8.2",
-    "jest": "^25.4.0",
-    "typescript": "^3.8.3"
+    "@babel/core": "^7.10.5",
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@types/jest": "^26.0.7",
+    "@types/node": "^14.0.27",
+    "@typescript-eslint/eslint-plugin": "^3.7.1",
+    "@typescript-eslint/parser": "^3.7.1",
+    "babel-jest": "^26.1.0",
+    "eslint": "^7.5.0",
+    "eslint-config-3box": "^0.1.2",
+    "jest": "^26.1.0",
+    "multihashes": "^1.0.1",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
-    "did-jwt": "^4.4.0",
-    "fast-json-stable-stringify": "^2.1.0",
+    "cids": "^0.8.3",
     "is-circular": "^1.0.2",
-    "lodash.transform": "^4.6.0"
+    "rpc-utils": "^0.1.2"
   }
 }
