@@ -5,7 +5,7 @@ import { encodeDagJson } from '../src/dag-json'
 
 describe('dag-json', () => {
   test('encodeDagJson throws on circular objects', () => {
-    const foo = {}
+    const foo: any = {}
     const bar = { foo }
     foo.bar = bar
 

@@ -39,24 +39,19 @@ export class DID {
   }
 
   public async authenticate(): Promise<string> {
-    const { did } = await this._client.request<void, AuthenticateResult>(
-      'did_authenticate'
-    )
+    const { did } = await this._client.request<void, AuthenticateResult>('did_authenticate')
     this._did = did
     return did
   }
 
-  public async createJWS(
-    payload: DagJson,
-    options: CreateJWSOptions = {}
-  ): Promise<string> {
+  public async createJWS(payload: DagJson, options: CreateJWSOptions = {}): Promise<string> {
     if (this._did == null) {
       throw new Error('DID is not authenticated')
     }
-    const { jws } = await this._client.request<
-      CreateJWSParams,
-      CreateJWSResult
-    >('did_createJWS', { ...options, payload: encodeDagJson(payload) })
+    const { jws } = await this._client.request<CreateJWSParams, CreateJWSResult>('did_createJWS', {
+      ...options,
+      payload: encodeDagJson(payload),
+    })
     return jws
   }
 }

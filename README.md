@@ -25,7 +25,8 @@ await alice.authenticate()
 const aliceDID = alice.DID
 
 // Create a JWS - this will throw an error if the DID instance is not authenticated
-const jws = await alice.createJWS({ hello: 'world' })
+// CIDs and Buffers will be encoded to string
+const jws = await alice.createJWS({ hello: 'world', link: new CID(...), data: Buffer.from('12ed', 'hex') })
 ```
 
 ## Interfaces and types
