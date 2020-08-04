@@ -9,13 +9,12 @@ describe('dag-json', () => {
     const bar = { foo }
     foo.bar = bar
 
-    expect(() => encodeDagJson(foo)).toThrow(
-      'Object contains circular references.'
-    )
+    expect(() => encodeDagJson(foo)).toThrow('Object contains circular references.')
   })
 
   test('encodeDagJson encodes CIDs as links', () => {
-    const hash = multihash.encode(Buffer.from('test'), 'sha1')
+    const bytes = new Uint8Array(Buffer.from('test').buffer)
+    const hash = multihash.encode(bytes, 'sha1')
     const cid = new CID(1, 'raw', hash)
     expect(encodeDagJson({ foo: 'bar', baz: cid })).toEqual({
       foo: 'bar',
