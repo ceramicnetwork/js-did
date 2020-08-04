@@ -1,4 +1,6 @@
 # DID
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fceramicnetwork%2Fjs-did.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fceramicnetwork%2Fjs-did?ref=badge_shield)
+
 
 This library a simple interface to interact with DIDs that conform to the DID-provider interface.
 
@@ -68,3 +70,7 @@ interface CreateJWSOptions {
 1. `options?: CreateJWSOptions` to specify the `protected` header and/or `pubKeyId` to use for signing
 
 **Returns** `Promise<string>`
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fceramicnetwork%2Fjs-did.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fceramicnetwork%2Fjs-did?ref=badge_large)
