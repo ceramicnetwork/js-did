@@ -34,29 +34,17 @@ const jws = await alice.createJWS({ hello: 'world', link: new CID(...), data: Bu
 ### Resolving DIDs
 
 ```js
-import { Resolver } from 'did-resolver'
 import { DID } from 'dids'
-import IdentityWallet from 'identity-wallet'
 
-// See https://github.com/3box/identity-wallet-js
-const wallet = new IdentityWallet(...)
 // See https://github.com/decentralized-identity/did-resolver
-const resolver = new Resolver(...)
-const did = new DID({ provider: wallet.getDidProvider(), resolver })
+const registry = { test: myTestResolver }
+const did = new DID({ resolver: { registry } })
 
 // Resolve a DID document
-await did.resolve('did:any:...')
+await did.resolve('did:test:...')
 ```
 
 ## Interfaces and types
-
-### CreateJWSOptions
-
-```ts
-interface CreateJWSOptions {
-  protected?: Record<string, any>
-}
-```
 
 ### DIDDocument
 
@@ -65,6 +53,22 @@ The DID document interface, as defined in the [DID resolver library](https://git
 ### DIDProvider
 
 The DID provider interface, an alias for [`RPCConnection`](https://github.com/ceramicnetwork/js-rpc-utils#rpcconnection).
+
+### AuthenticateOptions
+
+```ts
+interface AuthenticateOptions {
+  provider?: DIDProvider
+}
+```
+
+### CreateJWSOptions
+
+```ts
+interface CreateJWSOptions {
+  protected?: Record<string, any>
+}
+```
 
 ### ResolverRegistry
 
@@ -89,7 +93,7 @@ export interface ResolverOptions {
 
 ```ts
 export interface DIDOptions {
-  provider: DIDProvider
+  provider?: DIDProvider
   resolver?: Resolver | ResolverOptions
 }
 ```
@@ -102,7 +106,7 @@ export interface DIDOptions {
 
 **Arguments**
 
-1. `options: DIDOptions`
+1. `options?: DIDOptions`
 
 #### did.authenticated
 
@@ -114,7 +118,19 @@ export interface DIDOptions {
 
 **Returns** `string`
 
+#### did.setProvider()
+
+**Arguments**
+
+1. `provider: DIDProvider`
+
+**Returns** `void`
+
 #### did.authenticate()
+
+**Arguments**
+
+1. `options?: AuthenticateOptions`
 
 **Returns** `Promise<string>`
 

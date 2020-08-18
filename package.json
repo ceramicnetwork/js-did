@@ -34,7 +34,7 @@
     "cids": "^1.0.0",
     "did-resolver": "^2.1.0",
     "is-circular": "^1.0.2",
-    "rpc-utils": "^0.1.2"
+    "rpc-utils": "^0.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
