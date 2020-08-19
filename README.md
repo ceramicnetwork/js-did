@@ -126,6 +126,14 @@ export interface DIDOptions {
 
 **Returns** `void`
 
+#### did.setResolver()
+
+**Arguments**
+
+1. `resolver: Resolver | ResolverOptions`
+
+**Returns** `void`
+
 #### did.authenticate()
 
 **Arguments**

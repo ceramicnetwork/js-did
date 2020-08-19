@@ -41,37 +41,41 @@ export interface DIDOptions {
 }
 
 export class DID {
-  protected _client?: RPCClient
-  protected _did?: string
-  protected _resolver: Resolver
+  _client?: RPCClient
+  _did?: string
+  _resolver!: Resolver
 
   constructor({ provider, resolver = {} }: DIDOptions = {}) {
     if (provider != null) {
       this._client = new RPCClient(provider)
     }
-    this._resolver =
-      resolver instanceof Resolver ? resolver : new Resolver(resolver.registry, resolver.cache)
+    this.setResolver(resolver)
   }
 
-  public get authenticated(): boolean {
+  get authenticated(): boolean {
     return this._did != null
   }
 
-  public get DID(): string {
+  get DID(): string {
     if (this._did == null) {
       throw new Error('DID is not authenticated')
     }
     return this._did
   }
 
-  public setProvider(provider: DIDProvider): void {
+  setProvider(provider: DIDProvider): void {
     if (this._client?.connection !== provider) {
       this._client = new RPCClient(provider)
       this._did = undefined
     }
   }
 
-  public async authenticate({ provider }: AuthenticateOptions = {}): Promise<string> {
+  setResolver(resolver: Resolver | ResolverOptions): void {
+    this._resolver =
+      resolver instanceof Resolver ? resolver : new Resolver(resolver.registry, resolver.cache)
+  }
+
+  async authenticate({ provider }: AuthenticateOptions = {}): Promise<string> {
     if (provider != null) {
       this.setProvider(provider)
     }
@@ -83,7 +87,7 @@ export class DID {
     return did
   }
 
-  public async createJWS(payload: DagJson, options: CreateJWSOptions = {}): Promise<string> {
+  async createJWS(payload: DagJson, options: CreateJWSOptions = {}): Promise<string> {
     if (this._client == null) {
       throw new Error('No provider available')
     }
@@ -98,7 +102,7 @@ export class DID {
     return jws
   }
 
-  public async resolve(didUrl: string): Promise<DIDDocument> {
+  async resolve(didUrl: string): Promise<DIDDocument> {
     return await this._resolver.resolve(didUrl)
   }
 }

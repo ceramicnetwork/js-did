@@ -48,24 +48,16 @@ describe('DID class', () => {
       const provider1 = {} as DIDProvider
       const provider2 = {} as DIDProvider
       const did = new DID()
-      // @ts-expect-error
       expect(did._client).not.toBeDefined()
       did.setProvider(provider1)
-      // @ts-expect-error
       expect(did._client.connection).toBe(provider1)
-      // @ts-expect-error
       did._did = 'test'
-      // @ts-expect-error
       const client = did._client
       did.setProvider(provider1)
-      // @ts-expect-error
       expect(did._client).toBe(client)
-      // @ts-expect-error
       expect(did._did).toBe('test')
       did.setProvider(provider2)
-      // @ts-expect-error
       expect(did._client).not.toBe(client)
-      // @ts-expect-error
       expect(did._did).toBeUndefined()
     })
 
@@ -179,7 +171,6 @@ describe('DID class', () => {
     test('uses the given Resolver instance', () => {
       const resolver = new Resolver()
       const did = new DID({ resolver })
-      // @ts-expect-error
       expect(did._resolver).toBe(resolver)
     })
 
@@ -189,15 +180,21 @@ describe('DID class', () => {
         test: jest.fn(() => Promise.resolve(doc)),
       }
       const did = new DID({ resolver: { registry } })
-      // @ts-expect-error
       expect(did._resolver).toBeInstanceOf(Resolver)
       await expect(did.resolve('did:test:test')).resolves.toBe(doc)
     })
 
     test('creates a Resolver instance when none is provided', () => {
       const did = new DID()
-      // @ts-expect-error
       expect(did._resolver).toBeInstanceOf(Resolver)
+    })
+
+    test('setProvider method', () => {
+      const did = new DID()
+      const resolver = did._resolver
+      did.setResolver({})
+      expect(did._resolver).toBeInstanceOf(Resolver)
+      expect(did._resolver).not.toBe(resolver)
     })
   })
 })
