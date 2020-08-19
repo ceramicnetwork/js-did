@@ -1,6 +1,6 @@
 # DID
 
-This library a simple interface to interact with DIDs that conform to the DID-provider interface.
+A simple library to interact with DIDs that conform to the DID-provider interface.
 
 ## Installation
 
@@ -8,15 +8,17 @@ This library a simple interface to interact with DIDs that conform to the DID-pr
 npm install dids
 ```
 
-## Example usage
+## Examples
+
+### Authentication with the provider
 
 ```js
 import { DID } from 'dids'
 import IdentityWallet from 'identity-wallet'
 
 // See https://github.com/3box/identity-wallet-js
-const wallet = new IdentityWallet(async () => true, {})
-const alice = new DID(wallet.getDidProvider())
+const wallet = new IdentityWallet(...)
+const alice = new DID({ provider: wallet.getDidProvider() })
 
 // Authenticate with the provider
 await alice.authenticate()
@@ -29,20 +31,82 @@ const aliceDID = alice.DID
 const jws = await alice.createJWS({ hello: 'world', link: new CID(...), data: Buffer.from('12ed', 'hex') })
 ```
 
+### Resolving DIDs
+
+```js
+import { DID } from 'dids'
+
+// See https://github.com/decentralized-identity/did-resolver
+const registry = { test: myTestResolver }
+const did = new DID({ resolver: { registry } })
+
+// Resolve a DID document
+await did.resolve('did:test:...')
+```
+
 ## Interfaces and types
+
+### DIDDocument
+
+The DID document interface, as defined in the [DID resolver library](https://github.com/decentralized-identity/did-resolver).
+
+### DIDProvider
+
+The DID provider interface, an alias for [`RPCConnection`](https://github.com/ceramicnetwork/js-rpc-utils#rpcconnection).
+
+### AuthenticateOptions
+
+```ts
+interface AuthenticateOptions {
+  provider?: DIDProvider
+}
+```
 
 ### CreateJWSOptions
 
 ```ts
 interface CreateJWSOptions {
   protected?: Record<string, any>
-  pubKeyId?: string
+}
+```
+
+### ResolverRegistry
+
+A record of DID methods to resolvers, as defined in the [DID resolver library](https://github.com/decentralized-identity/did-resolver).
+
+```ts
+export type ResolverRegistry = Record<string, DIDResolver>
+```
+
+### ResolverOptions
+
+Options used to create a `Resolver` instance, as defined in the [DID resolver library](https://github.com/decentralized-identity/did-resolver).
+
+```ts
+export interface ResolverOptions {
+  registry?: ResolverRegistry
+  cache?: DIDCache | boolean
+}
+```
+
+### DIDOptions
+
+```ts
+export interface DIDOptions {
+  provider?: DIDProvider
+  resolver?: Resolver | ResolverOptions
 }
 ```
 
 ## API
 
 ### DID class
+
+#### constructor
+
+**Arguments**
+
+1. `options?: DIDOptions`
 
 #### did.authenticated
 
@@ -54,7 +118,27 @@ interface CreateJWSOptions {
 
 **Returns** `string`
 
+#### did.setProvider()
+
+**Arguments**
+
+1. `provider: DIDProvider`
+
+**Returns** `void`
+
+#### did.setResolver()
+
+**Arguments**
+
+1. `resolver: Resolver | ResolverOptions`
+
+**Returns** `void`
+
 #### did.authenticate()
+
+**Arguments**
+
+1. `options?: AuthenticateOptions`
 
 **Returns** `Promise<string>`
 
@@ -65,6 +149,18 @@ interface CreateJWSOptions {
 **Arguments**
 
 1. `payload: Record<string, any>`
-1. `options?: CreateJWSOptions` to specify the `protected` header and/or `pubKeyId` to use for signing
+1. `options?: CreateJWSOptions` to specify the `protected` header
 
 **Returns** `Promise<string>`
+
+#### did.resolve()
+
+**Arguments**
+
+1. `didUrl: string`
+
+**Returns** `Promise<DIDDocument>`
+
+## License
+
+MIT
