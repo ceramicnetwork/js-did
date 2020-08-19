@@ -47,18 +47,18 @@ describe('DID class', () => {
     test('`setProvider` method', () => {
       const provider1 = {} as DIDProvider
       const provider2 = {} as DIDProvider
+
       const did = new DID()
       expect(did._client).not.toBeDefined()
+
       did.setProvider(provider1)
       expect(did._client.connection).toBe(provider1)
-      did._did = 'test'
+
       const client = did._client
       did.setProvider(provider1)
       expect(did._client).toBe(client)
-      expect(did._did).toBe('test')
-      did.setProvider(provider2)
-      expect(did._client).not.toBe(client)
-      expect(did._did).toBeUndefined()
+
+      expect(() => did.setProvider(provider2)).toThrow('A different provider is already set')
     })
 
     describe('`authenticate` method', () => {
@@ -73,6 +73,7 @@ describe('DID class', () => {
           }),
         } as DIDProvider
         const did = new DID({ provider })
+
         await did.authenticate()
         expect(provider.send).toHaveBeenCalledTimes(1)
         expect(provider.send).toHaveBeenCalledWith({
@@ -87,8 +88,7 @@ describe('DID class', () => {
       })
 
       test('uses the provider given in options', async () => {
-        const provider1 = { send: jest.fn() } as DIDProvider
-        const provider2 = {
+        const provider = {
           send: jest.fn((req) => {
             return Promise.resolve({
               jsonrpc: '2.0',
@@ -97,11 +97,11 @@ describe('DID class', () => {
             })
           }),
         } as DIDProvider
-        const did = new DID({ provider: provider1 })
-        await did.authenticate({ provider: provider2 })
-        expect(provider1.send).toHaveBeenCalledTimes(0)
-        expect(provider2.send).toHaveBeenCalledTimes(1)
-        expect(provider2.send).toHaveBeenCalledWith({
+        const did = new DID()
+
+        await did.authenticate({ provider })
+        expect(provider.send).toHaveBeenCalledTimes(1)
+        expect(provider.send).toHaveBeenCalledWith({
           jsonrpc: '2.0',
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
           id: expect.any(String),
@@ -118,51 +118,58 @@ describe('DID class', () => {
       })
     })
 
-    test('`createJWS` method', async () => {
-      let authCalled = false
-      const provider = {
-        send: jest.fn((req: { id: string }) => {
-          let result
-          if (authCalled) {
-            result = { jws: '5678' }
-          } else {
-            authCalled = true
-            result = { did: '1234' }
-          }
-          return Promise.resolve({
-            jsonrpc: '2.0',
-            id: req.id,
-            result,
-          })
-        }),
-      } as DIDProvider
-      const did = new DID({ provider })
+    describe('`createJWS` method', () => {
+      test('uses the provider attached to the instance', async () => {
+        let authCalled = false
+        const provider = {
+          send: jest.fn((req: { id: string }) => {
+            let result
+            if (authCalled) {
+              result = { jws: '5678' }
+            } else {
+              authCalled = true
+              result = { did: '1234' }
+            }
+            return Promise.resolve({
+              jsonrpc: '2.0',
+              id: req.id,
+              result,
+            })
+          }),
+        } as DIDProvider
+        const did = new DID({ provider })
 
-      await expect(did.createJWS({})).rejects.toThrow('DID is not authenticated')
-      await did.authenticate()
+        await expect(did.createJWS({})).rejects.toThrow('DID is not authenticated')
+        await did.authenticate()
 
-      const data = {
-        foo: Buffer.from('foo'),
-      }
-      const jws = await did.createJWS(data)
-      expect(jws).toBe('5678')
-      expect(provider.send).toHaveBeenCalledTimes(2)
-      // @ts-expect-error
-      expect(provider.send.mock.calls[1][0]).toEqual({
-        jsonrpc: '2.0',
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        id: expect.any(String),
-        method: 'did_createJWS',
-        params: {
-          did: '1234',
-          payload: {
-            foo: {
-              '/': {
-                base64: data.foo.toString('base64'),
+        const data = {
+          foo: Buffer.from('foo'),
+        }
+        const jws = await did.createJWS(data)
+        expect(jws).toBe('5678')
+        expect(provider.send).toHaveBeenCalledTimes(2)
+        // @ts-expect-error
+        expect(provider.send.mock.calls[1][0]).toEqual({
+          jsonrpc: '2.0',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          id: expect.any(String),
+          method: 'did_createJWS',
+          params: {
+            did: '1234',
+            payload: {
+              foo: {
+                '/': {
+                  base64: data.foo.toString('base64'),
+                },
               },
             },
           },
-        },
+        })
+      })
+
+      test('throws an error if there is no provider', async () => {
+        const did = new DID()
+        await expect(did.createJWS({})).rejects.toThrow('No provider available')
       })
     })
   })

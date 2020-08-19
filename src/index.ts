@@ -64,9 +64,10 @@ export class DID {
   }
 
   setProvider(provider: DIDProvider): void {
-    if (this._client?.connection !== provider) {
+    if (this._client == null) {
       this._client = new RPCClient(provider)
-      this._did = undefined
+    } else if (this._client.connection !== provider) {
+      throw new Error('A different provider is already set')
     }
   }
 
