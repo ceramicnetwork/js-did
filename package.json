@@ -32,7 +32,7 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
     "cids": "^1.0.0",
-    "did-resolver": "^2.1.0",
+    "did-resolver": "^2.1.1",
     "is-circular": "^1.0.2",
     "rpc-utils": "^0.1.3"
   },

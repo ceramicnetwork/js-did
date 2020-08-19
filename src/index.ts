@@ -67,7 +67,9 @@ export class DID {
     if (this._client == null) {
       this._client = new RPCClient(provider)
     } else if (this._client.connection !== provider) {
-      throw new Error('A different provider is already set')
+      throw new Error(
+        'A different provider is already set, create a new DID instance to use another provider'
+      )
     }
   }
 
