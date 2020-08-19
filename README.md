@@ -120,6 +120,8 @@ export interface DIDOptions {
 
 #### did.setProvider()
 
+> Calling this method will throw an error if a different provider is already set
+
 **Arguments**
 
 1. `provider: DIDProvider`
@@ -135,6 +137,8 @@ export interface DIDOptions {
 **Returns** `void`
 
 #### did.authenticate()
+
+> Calling this method with a provider will throw an error if a different provider is already set
 
 **Arguments**
 
