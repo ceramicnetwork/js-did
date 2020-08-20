@@ -3,6 +3,7 @@
 import { DIDDocument, Resolver } from 'did-resolver'
 
 import { DID, DIDProvider } from '../src'
+import { encodePayload } from '../src/utils'
 
 describe('DID class', () => {
   describe('provider behavior', () => {
@@ -68,7 +69,7 @@ describe('DID class', () => {
             return Promise.resolve({
               jsonrpc: '2.0',
               id: req.id,
-              result: { did: '1234' },
+              result: { did: 'did:3:1234' },
             })
           }),
         } as DIDProvider
@@ -84,7 +85,7 @@ describe('DID class', () => {
           params: undefined,
         })
         expect(did.authenticated).toBe(true)
-        expect(did.DID).toBe('1234')
+        expect(did.DID).toBe('did:3:1234')
       })
 
       test('uses the provider given in options', async () => {
@@ -93,7 +94,7 @@ describe('DID class', () => {
             return Promise.resolve({
               jsonrpc: '2.0',
               id: req.id,
-              result: { did: '1234' },
+              result: { did: 'did:3:1234' },
             })
           }),
         } as DIDProvider
@@ -109,7 +110,7 @@ describe('DID class', () => {
           params: undefined,
         })
         expect(did.authenticated).toBe(true)
-        expect(did.DID).toBe('1234')
+        expect(did.DID).toBe('did:3:1234')
       })
 
       test('throws an error if there is no provider', async () => {
@@ -128,7 +129,7 @@ describe('DID class', () => {
               result = { jws: '5678' }
             } else {
               authCalled = true
-              result = { did: '1234' }
+              result = { did: 'did:3:1234' }
             }
             return Promise.resolve({
               jsonrpc: '2.0',
@@ -143,7 +144,7 @@ describe('DID class', () => {
         await did.authenticate()
 
         const data = {
-          foo: Buffer.from('foo'),
+          foo: 'bar'
         }
         const jws = await did.createJWS(data)
         expect(jws).toBe('5678')
@@ -155,13 +156,9 @@ describe('DID class', () => {
           id: expect.any(String),
           method: 'did_createJWS',
           params: {
-            did: '1234',
+            did: 'did:3:1234',
             payload: {
-              foo: {
-                '/': {
-                  base64: data.foo.toString('base64'),
-                },
-              },
+              foo: 'bar',
             },
           },
         })
@@ -170,6 +167,59 @@ describe('DID class', () => {
       test('throws an error if there is no provider', async () => {
         const did = new DID()
         await expect(did.createJWS({})).rejects.toThrow('No provider available')
+      })
+    })
+
+    describe('`createDagJWS method`', () => {
+      test('throws an error if there is no provider', async () => {
+        const did = new DID()
+        await expect(did.createJWS({})).rejects.toThrow('No provider available')
+      })
+
+      it('creates a DagJWS correctly', async () => {
+        let authCalled = false
+        const provider = {
+          send: jest.fn((req: { id: string }) => {
+            let result
+            if (authCalled) {
+              result = { jws: '5678' }
+            } else {
+              authCalled = true
+              result = { did: 'did:3:1234' }
+            }
+            return Promise.resolve({
+              jsonrpc: '2.0',
+              id: req.id,
+              result,
+            })
+          }),
+        } as DIDProvider
+        const did = new DID({ provider })
+
+        await expect(did.createDagJWS({})).rejects.toThrow('DID is not authenticated')
+        await did.authenticate()
+
+        const data = {
+          foo: Buffer.from('foo'),
+        }
+        const res = await did.createDagJWS(data)
+        const encPayload = await encodePayload(data)
+        expect(res).toEqual({
+          jws: '5678',
+          linkedBlock: encPayload.linkedBlock,
+        })
+
+        expect(provider.send.mock.calls[1][0]).toEqual({
+          jsonrpc: '2.0',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          id: expect.any(String),
+          method: 'did_createJWS',
+          params: {
+            did: 'did:3:1234',
+            payload: encPayload.cid,
+            linkedBlock: encPayload.linkedBlock
+          },
+        })
       })
     })
   })
