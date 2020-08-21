@@ -1,7 +1,7 @@
 import { DIDCache, DIDDocument, DIDResolver, Resolver } from 'did-resolver'
 import { RPCClient, RPCConnection } from 'rpc-utils'
 
-import { DagJson, encodeDagJson } from './dag-json'
+import { encodePayload } from './utils'
 
 export type { DIDDocument } from 'did-resolver'
 
@@ -18,16 +18,22 @@ interface AuthenticateResult {
 }
 
 export interface CreateJWSOptions {
+  did?: string
   protected?: Record<string, any>
+  linkedBlock?: string
 }
 
 interface CreateJWSParams extends CreateJWSOptions {
-  did: string
-  payload: DagJson
+  payload: any
 }
 
 interface CreateJWSResult {
   jws: string // base64-encoded
+}
+
+interface DagJWSResult {
+  jws: string // base64-encoded
+  linkedBlock: string // base64-encoded
 }
 
 export interface ResolverOptions {
@@ -90,19 +96,28 @@ export class DID {
     return did
   }
 
-  async createJWS(payload: DagJson, options: CreateJWSOptions = {}): Promise<string> {
+  async createJWS(payload: any, options: CreateJWSOptions = {}): Promise<string> {
     if (this._client == null) {
       throw new Error('No provider available')
     }
     if (this._did == null) {
       throw new Error('DID is not authenticated')
     }
+    if (!options.did) options.did = this._did
     const { jws } = await this._client.request<CreateJWSParams, CreateJWSResult>('did_createJWS', {
       ...options,
-      did: this._did,
-      payload: encodeDagJson(payload),
+      payload, // eslint-disable-line @typescript-eslint/no-unsafe-assignment
     })
     return jws
+  }
+
+  async createDagJWS(
+    payload: Record<string, any>,
+    options: CreateJWSOptions = {}
+  ): Promise<DagJWSResult> {
+    const { cid, linkedBlock } = await encodePayload(payload)
+    const jws = await this.createJWS(cid, Object.assign(options, { linkedBlock }))
+    return { jws, linkedBlock }
   }
 
   async resolve(didUrl: string): Promise<DIDDocument> {

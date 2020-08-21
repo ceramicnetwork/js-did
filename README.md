@@ -27,8 +27,10 @@ await alice.authenticate()
 const aliceDID = alice.DID
 
 // Create a JWS - this will throw an error if the DID instance is not authenticated
-// CIDs and Buffers will be encoded to string
-const jws = await alice.createJWS({ hello: 'world', link: new CID(...), data: Buffer.from('12ed', 'hex') })
+const jws = await alice.createJWS({ hello: 'world' })
+
+// Create a DagJWS - the payload will be encoded as ipld dag-cbor, the resulting JWS is dag-jose compatible
+const { jws, linkedBlock } = await alice.createJWS({ hello: 'world' coolLink: new CID(...) })
 ```
 
 ### Resolving DIDs
@@ -66,9 +68,20 @@ interface AuthenticateOptions {
 
 ```ts
 interface CreateJWSOptions {
+  did?: string
   protected?: Record<string, any>
 }
 ```
+
+### DagJWSResult
+
+```ts
+interface DagJWSResult {
+  jws: string // base64-encoded
+  linkedBlock: string // base64-encoded
+}
+```
+
 
 ### ResolverRegistry
 
@@ -156,6 +169,18 @@ export interface DIDOptions {
 1. `options?: CreateJWSOptions` to specify the `protected` header
 
 **Returns** `Promise<string>`
+
+#### did.createDagJWS()
+Creates a JWS that is compatible with [dag-jose](https://github.com/ceramicnetwork/js-dag-jose).
+
+> The instance needs to be authenticated before calling this method
+
+**Arguments**
+
+1. `payload: Record<string, any>`
+1. `options?: CreateJWSOptions` to specify the `protected` header, and did with keyFragment
+
+**Returns** `Promise<DagJWSResult>`
 
 #### did.resolve()
 
