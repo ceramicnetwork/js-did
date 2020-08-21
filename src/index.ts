@@ -31,7 +31,7 @@ interface CreateJWSResult {
   jws: string // base64-encoded
 }
 
-interface DagJwsResult {
+interface DagJWSResult {
   jws: string // base64-encoded
   linkedBlock: string // base64-encoded
 }
@@ -114,7 +114,7 @@ export class DID {
   async createDagJWS(
     payload: Record<string, any>,
     options: CreateJWSOptions = {}
-  ): Promise<DagJwsResult> {
+  ): Promise<DagJWSResult> {
     const { cid, linkedBlock } = await encodePayload(payload)
     const jws = await this.createJWS(cid, Object.assign(options, { linkedBlock }))
     return { jws, linkedBlock }
