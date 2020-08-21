@@ -14,9 +14,9 @@ describe('DID class', () => {
       expect(did.authenticated).toBe(false)
     })
 
-    test('`DID` property', () => {
+    test('`id` property', () => {
       const did = new DID(defaultOptions)
-      expect(() => did.DID).toThrow('DID is not authenticated')
+      expect(() => did.id).toThrow('DID is not authenticated')
     })
 
     test('RPC calls throw an error if the response payload is an error', async () => {
@@ -85,7 +85,7 @@ describe('DID class', () => {
           params: undefined,
         })
         expect(did.authenticated).toBe(true)
-        expect(did.DID).toBe('did:3:1234')
+        expect(did.id).toBe('did:3:1234')
       })
 
       test('uses the provider given in options', async () => {
@@ -110,7 +110,7 @@ describe('DID class', () => {
           params: undefined,
         })
         expect(did.authenticated).toBe(true)
-        expect(did.DID).toBe('did:3:1234')
+        expect(did.id).toBe('did:3:1234')
       })
 
       test('throws an error if there is no provider', async () => {
@@ -144,7 +144,7 @@ describe('DID class', () => {
         await did.authenticate()
 
         const data = {
-          foo: 'bar'
+          foo: 'bar',
         }
         const jws = await did.createJWS(data)
         expect(jws).toBe('5678')
@@ -209,6 +209,7 @@ describe('DID class', () => {
           linkedBlock: encPayload.linkedBlock,
         })
 
+        // @ts-ignore
         expect(provider.send.mock.calls[1][0]).toEqual({
           jsonrpc: '2.0',
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -217,7 +218,7 @@ describe('DID class', () => {
           params: {
             did: 'did:3:1234',
             payload: encPayload.cid,
-            linkedBlock: encPayload.linkedBlock
+            linkedBlock: encPayload.linkedBlock,
           },
         })
       })

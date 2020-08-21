@@ -48,7 +48,7 @@ export interface DIDOptions {
 
 export class DID {
   _client?: RPCClient
-  _did?: string
+  _id?: string
   _resolver!: Resolver
 
   constructor({ provider, resolver = {} }: DIDOptions = {}) {
@@ -59,14 +59,14 @@ export class DID {
   }
 
   get authenticated(): boolean {
-    return this._did != null
+    return this._id != null
   }
 
-  get DID(): string {
-    if (this._did == null) {
+  get id(): string {
+    if (this._id == null) {
       throw new Error('DID is not authenticated')
     }
-    return this._did
+    return this._id
   }
 
   setProvider(provider: DIDProvider): void {
@@ -92,21 +92,21 @@ export class DID {
       throw new Error('No provider available')
     }
     const { did } = await this._client.request<void, AuthenticateResult>('did_authenticate')
-    this._did = did
+    this._id = did
     return did
   }
 
-  async createJWS(payload: any, options: CreateJWSOptions = {}): Promise<string> {
+  async createJWS<T = any>(payload: T, options: CreateJWSOptions = {}): Promise<string> {
     if (this._client == null) {
       throw new Error('No provider available')
     }
-    if (this._did == null) {
+    if (this._id == null) {
       throw new Error('DID is not authenticated')
     }
-    if (!options.did) options.did = this._did
+    if (!options.did) options.did = this._id
     const { jws } = await this._client.request<CreateJWSParams, CreateJWSResult>('did_createJWS', {
       ...options,
-      payload, // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+      payload,
     })
     return jws
   }

@@ -125,7 +125,7 @@ export interface DIDOptions {
 
 **Returns** `boolean`
 
-#### did.DID
+#### did.id
 
 > Accessing this property will throw an error if the instance is not authenticated
 
