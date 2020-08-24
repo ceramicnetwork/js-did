@@ -33,6 +33,48 @@ const jws = await alice.createJWS({ hello: 'world' })
 const { jws, linkedBlock } = await alice.createJWS({ hello: 'world' coolLink: new CID(...) })
 ```
 
+### Use DagJWS with IPFS
+The DagJWS functionality of the DID library can be used in conjunction with IPFS.
+
+```js
+const payload = { some: 'data' }
+
+// sign the payload as dag-jose
+const { jws, linkedBlock } = await did.createDagJWS(payload)
+
+// put the JWS into the ipfs dag
+const jwsCid = await ipfs.dag.put(jws, { format: 'dag-jose', hashAlg: 'sha2-256' })
+
+// put the payload into the ipfs dag
+const block = await ipfs.block.put(linkedBlock, { cid: jws.link })
+
+// get the value of the payload using the payload cid
+console.log((await ipfs.dag.get(jws.link)).value)
+// output:
+// > { some: 'data' }
+
+// alternatively get it using the ipld path from the JWS cid
+console.log((await ipfs.dag.get(jwsCid, { path: '/link' })).value)
+// output:
+// > { some: 'data' }
+
+// get the jws from the dag
+console.log((await ipfs.dag.get(jwsCid)).value)
+// output:
+// > {
+// >   payload: 'AXESINDmZIeFXbbpBQWH1bXt7F2Ysg03pRcvzsvSc7vMNurc',
+// >   signatures: [
+// >     {
+// >       protected: 'eyJraWQiOiJkaWQ6Mzp1bmRlZmluZWQ_dmVyc2lvbj0wI3NpZ25pbmciLCJhbGciOiJFUzI1NksifQ',
+// >       signature: 'pNz3i10YMlv-BiVfqBbHvHQp5NH3x4TAHQ5oqSmNBUx1DH_MONa_VBZSP2o9r9epDdbRRBLQjrIeigdDWoXrBQ'
+// >     }
+// >   ],
+// >   link: CID(bafyreigq4zsipbk5w3uqkbmh2w2633c5tcza2n5fc4x45s6soo54ynxk3q)
+// > }
+```
+
+As can be observed above the `createDagJWS` method takes the payload, encodes it using `dag-cbor` and computes it's CID. It then uses this CID as the payload of the JWS that is then signed. The JWS that was just created can be put into ipfs using the `dag-jose` codec. Returned is also the encoded block of the payload. This can be put into ipfs using `ipfs.block.put`. Alternatively `ipfs.dag.put(payload)` would have the same effect.
+
 ### Resolving DIDs
 
 ```js

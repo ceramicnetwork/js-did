@@ -1,7 +1,7 @@
 import { DIDCache, DIDDocument, DIDResolver, Resolver } from 'did-resolver'
 import { RPCClient, RPCConnection } from 'rpc-utils'
 
-import { encodePayload } from './utils'
+import { DagJWS, encodePayload, toDagJWS, u8aToBase64 } from './utils'
 
 export type { DIDDocument } from 'did-resolver'
 
@@ -32,8 +32,8 @@ interface CreateJWSResult {
 }
 
 interface DagJWSResult {
-  jws: string // base64-encoded
-  linkedBlock: string // base64-encoded
+  jws: DagJWS
+  linkedBlock: Uint8Array
 }
 
 export interface ResolverOptions {
@@ -116,7 +116,10 @@ export class DID {
     options: CreateJWSOptions = {}
   ): Promise<DagJWSResult> {
     const { cid, linkedBlock } = await encodePayload(payload)
-    const jws = await this.createJWS(cid, Object.assign(options, { linkedBlock }))
+    const payloadCid = u8aToBase64(cid.bytes)
+    Object.assign(options, { linkedBlock: u8aToBase64(linkedBlock) })
+    const compactJws = await this.createJWS(payloadCid, options)
+    const jws = toDagJWS(compactJws, cid)
     return { jws, linkedBlock }
   }
 

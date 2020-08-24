@@ -3,7 +3,7 @@
 import { DIDDocument, Resolver } from 'did-resolver'
 
 import { DID, DIDProvider } from '../src'
-import { encodePayload } from '../src/utils'
+import { encodePayload, u8aToBase64 } from '../src/utils'
 
 describe('DID class', () => {
   describe('provider behavior', () => {
@@ -182,7 +182,7 @@ describe('DID class', () => {
           send: jest.fn((req: { id: string }) => {
             let result
             if (authCalled) {
-              result = { jws: '5678' }
+              result = { jws: '5678.234.4324' }
             } else {
               authCalled = true
               result = { did: 'did:3:1234' }
@@ -205,7 +205,11 @@ describe('DID class', () => {
         const res = await did.createDagJWS(data)
         const encPayload = await encodePayload(data)
         expect(res).toEqual({
-          jws: '5678',
+          jws: {
+            link: encPayload.cid,
+            payload: '234',
+            signatures: [{ protected: '5678', signature: '4324' }],
+          },
           linkedBlock: encPayload.linkedBlock,
         })
 
@@ -217,8 +221,8 @@ describe('DID class', () => {
           method: 'did_createJWS',
           params: {
             did: 'did:3:1234',
-            payload: encPayload.cid,
-            linkedBlock: encPayload.linkedBlock,
+            payload: u8aToBase64(encPayload.cid.bytes),
+            linkedBlock: u8aToBase64(encPayload.linkedBlock),
           },
         })
       })
