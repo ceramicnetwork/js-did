@@ -28,9 +28,6 @@ const aliceDID = did.id
 
 // Create a JWS - this will throw an error if the DID instance is not authenticated
 const jws = await did.createJWS({ hello: 'world' })
-
-// Create a DagJWS - the payload will be encoded as ipld dag-cbor, the resulting JWS is dag-jose compatible
-const { jws, linkedBlock } = await did.createJWS({ hello: 'world' coolLink: new CID(...) })
 ```
 
 ### Use DagJWS with IPFS
