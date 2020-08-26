@@ -18,19 +18,19 @@ import IdentityWallet from 'identity-wallet'
 
 // See https://github.com/3box/identity-wallet-js
 const wallet = new IdentityWallet(...)
-const alice = new DID({ provider: wallet.getDidProvider() })
+const did = new DID({ provider: wallet.getDidProvider() })
 
 // Authenticate with the provider
-await alice.authenticate()
+await did.authenticate()
 
 // Read the DID string - this will throw an error if the DID instance is not authenticated
-const aliceDID = alice.DID
+const aliceDID = did.id
 
 // Create a JWS - this will throw an error if the DID instance is not authenticated
-const jws = await alice.createJWS({ hello: 'world' })
+const jws = await did.createJWS({ hello: 'world' })
 
 // Create a DagJWS - the payload will be encoded as ipld dag-cbor, the resulting JWS is dag-jose compatible
-const { jws, linkedBlock } = await alice.createJWS({ hello: 'world' coolLink: new CID(...) })
+const { jws, linkedBlock } = await did.createJWS({ hello: 'world' coolLink: new CID(...) })
 ```
 
 ### Use DagJWS with IPFS
