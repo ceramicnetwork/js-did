@@ -19,7 +19,7 @@ export function u8aToBase64(bytes: Uint8Array): string {
   return base64url.encode(Buffer.from(bytes))
 }
 
-interface JWSSignature {
+export interface JWSSignature {
   protected: string
   signature: string
 }

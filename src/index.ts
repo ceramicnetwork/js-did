@@ -5,6 +5,8 @@ import { DagJWS, encodePayload, toDagJWS, u8aToBase64 } from './utils'
 
 export type { DIDDocument } from 'did-resolver'
 
+export type { DagJWS, JWSSignature } from './utils'
+
 export type DIDProvider = RPCConnection
 
 export type ResolverRegistry = Record<string, DIDResolver>
@@ -13,7 +15,7 @@ export interface AuthenticateOptions {
   provider?: DIDProvider
 }
 
-interface AuthenticateResult {
+export interface AuthenticateResult {
   did: string
 }
 
@@ -23,15 +25,15 @@ export interface CreateJWSOptions {
   linkedBlock?: string
 }
 
-interface CreateJWSParams extends CreateJWSOptions {
+export interface CreateJWSParams extends CreateJWSOptions {
   payload: any
 }
 
-interface CreateJWSResult {
+export interface CreateJWSResult {
   jws: string // base64-encoded
 }
 
-interface DagJWSResult {
+export interface DagJWSResult {
   jws: DagJWS
   linkedBlock: Uint8Array
 }
