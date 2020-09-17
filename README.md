@@ -31,6 +31,7 @@ const jws = await did.createJWS({ hello: 'world' })
 ```
 
 ### Use DagJWS with IPFS
+
 The DagJWS functionality of the DID library can be used in conjunction with IPFS.
 
 ```js
@@ -87,6 +88,10 @@ await did.resolve('did:test:...')
 
 ## Interfaces and types
 
+### CID
+
+A `CID` instance, as exported by the [CID library](https://github.com/multiformats/js-cid).
+
 ### DIDDocument
 
 The DID document interface, as defined in the [DID resolver library](https://github.com/decentralized-identity/did-resolver).
@@ -94,6 +99,25 @@ The DID document interface, as defined in the [DID resolver library](https://git
 ### DIDProvider
 
 The DID provider interface, an alias for [`RPCConnection`](https://github.com/ceramicnetwork/js-rpc-utils#rpcconnection).
+
+### JWSSignature
+
+```ts
+interface JWSSignature {
+  protected: string
+  signature: string
+}
+```
+
+### DagJWS
+
+```ts
+interface DagJWS {
+  payload: string
+  signatures: Array<JWSSignature>
+  link: CID
+}
+```
 
 ### AuthenticateOptions
 
@@ -120,7 +144,6 @@ interface DagJWSResult {
   linkedBlock: string // base64-encoded
 }
 ```
-
 
 ### ResolverRegistry
 
@@ -210,6 +233,7 @@ export interface DIDOptions {
 **Returns** `Promise<string>`
 
 #### did.createDagJWS()
+
 Creates a JWS that is compatible with [dag-jose](https://github.com/ceramicnetwork/js-dag-jose).
 
 > The instance needs to be authenticated before calling this method
