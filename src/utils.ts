@@ -48,7 +48,7 @@ export function decodeBase58(s: string): Uint8Array {
   return u8a.fromString(s, B58)
 }
 
-interface JWSSignature {
+export interface JWSSignature {
   protected: string
   signature: string
 }

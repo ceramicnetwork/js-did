@@ -15,7 +15,7 @@ import {
 
 export type { DIDDocument } from 'did-resolver'
 
-export type { DagJWS } from './utils'
+export type { DagJWS, JWSSignature } from './utils'
 
 export type DIDProvider = RPCConnection
 
