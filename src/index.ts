@@ -1,11 +1,21 @@
 import { DIDCache, DIDDocument, DIDResolver, Resolver } from 'did-resolver'
 import { RPCClient, RPCConnection } from 'rpc-utils'
+import { x25519Encrypter, createJWE, JWE } from 'did-jwt'
 
-import { DagJWS, encodePayload, toDagJWS, u8aToBase64 } from './utils'
+import {
+  DagJWS,
+  toDagJWS,
+  encodePayload,
+  encodeCleartext,
+  decodeCleartext,
+  encodeBase64,
+  decodeBase64,
+  decodeBase58,
+} from './utils'
 
 export type { DIDDocument } from 'did-resolver'
 
-export type { DagJWS, JWSSignature } from './utils'
+export type { DagJWS } from './utils'
 
 export type DIDProvider = RPCConnection
 
@@ -31,6 +41,23 @@ export interface CreateJWSParams extends CreateJWSOptions {
 
 export interface CreateJWSResult {
   jws: string // base64-encoded
+}
+
+export interface CreateJWEOptions {
+  protectedHeader?: Record<string, any>
+  aad?: Uint8Array
+}
+
+export interface DecryptJWEOptions {
+  did?: string
+}
+
+export interface DecryptJWEParams extends DecryptJWEOptions {
+  jwe: JWE
+}
+
+export interface DecryptJWEResult {
+  cleartext: string // base64-encoded
 }
 
 export interface DagJWSResult {
@@ -99,12 +126,8 @@ export class DID {
   }
 
   async createJWS<T = any>(payload: T, options: CreateJWSOptions = {}): Promise<string> {
-    if (this._client == null) {
-      throw new Error('No provider available')
-    }
-    if (this._id == null) {
-      throw new Error('DID is not authenticated')
-    }
+    if (this._client == null) throw new Error('No provider available')
+    if (this._id == null) throw new Error('DID is not authenticated')
     if (!options.did) options.did = this._id
     const { jws } = await this._client.request<CreateJWSParams, CreateJWSResult>('did_createJWS', {
       ...options,
@@ -118,11 +141,60 @@ export class DID {
     options: CreateJWSOptions = {}
   ): Promise<DagJWSResult> {
     const { cid, linkedBlock } = await encodePayload(payload)
-    const payloadCid = u8aToBase64(cid.bytes)
-    Object.assign(options, { linkedBlock: u8aToBase64(linkedBlock) })
+    const payloadCid = encodeBase64(cid.bytes)
+    Object.assign(options, { linkedBlock: encodeBase64(linkedBlock) })
     const compactJws = await this.createJWS(payloadCid, options)
     const jws = toDagJWS(compactJws, cid)
     return { jws, linkedBlock }
+  }
+
+  async createJWE(
+    cleartext: Uint8Array,
+    recipients: Array<string>,
+    options: CreateJWEOptions = {}
+  ): Promise<JWE> {
+    const encrypters = await Promise.all(
+      recipients.map(async (did) => {
+        const didDoc = await this.resolve(did)
+        try {
+          const b58Key = didDoc.keyAgreement?.find((key) => {
+            if (typeof key === 'string') {
+              throw new Error(`String key ids not supported for now: ${did}`)
+            }
+            return key.type === 'X25519KeyAgreementKey2019'
+          }) as { publicKeyBase58: string } // a little hacky, revisit once DID-core spec is finalized
+          return x25519Encrypter(decodeBase58(b58Key.publicKeyBase58))
+        } catch (e) {
+          throw new Error(`Could not find x25519 key for ${did}: ${e as string}`)
+        }
+      })
+    )
+    return createJWE(cleartext, encrypters, options.protectedHeader, options.aad)
+  }
+
+  async createDagJWE(
+    cleartext: Record<string, any>,
+    recipients: Array<string>,
+    options: CreateJWEOptions = {}
+  ): Promise<JWE> {
+    const { bytes } = encodeCleartext(cleartext)
+    return this.createJWE(bytes, recipients, options)
+  }
+
+  async decryptJWE(jwe: JWE, options: DecryptJWEOptions = {}): Promise<Uint8Array> {
+    if (this._client == null) throw new Error('No provider available')
+    if (this._id == null) throw new Error('DID is not authenticated')
+    if (!options.did) options.did = this._id
+    const { cleartext } = await this._client.request<DecryptJWEParams, DecryptJWEResult>(
+      'did_decryptJWE',
+      { ...options, jwe }
+    )
+    return decodeBase64(cleartext)
+  }
+
+  async decryptDagJWE(jwe: JWE): Promise<Record<string, any>> {
+    const bytes = await this.decryptJWE(jwe)
+    return decodeCleartext(bytes)
   }
 
   async resolve(didUrl: string): Promise<DIDDocument> {

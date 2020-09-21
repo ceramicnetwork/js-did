@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Typescript library for interacting with DIDs",
   "main": "lib/index.js",
   "files": [
@@ -34,11 +34,12 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
-    "base64url": "^3.0.1",
     "cids": "^1.0.0",
+    "did-jwt": "git+https://github.com/oed/did-jwt.git#feat/jwe",
     "did-resolver": "^2.1.1",
     "ipld-dag-cbor": "^0.17.0",
-    "rpc-utils": "^0.1.3"
+    "rpc-utils": "^0.1.3",
+    "uint8arrays": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
