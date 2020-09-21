@@ -75,10 +75,13 @@ export interface DIDOptions {
   resolver?: Resolver | ResolverOptions
 }
 
+/**
+ * Interact with DIDs.
+ */
 export class DID {
-  _client?: RPCClient
-  _id?: string
-  _resolver!: Resolver
+  private _client?: RPCClient
+  private _id?: string
+  private _resolver!: Resolver
 
   constructor({ provider, resolver = {} }: DIDOptions = {}) {
     if (provider != null) {
@@ -87,10 +90,16 @@ export class DID {
     this.setResolver(resolver)
   }
 
+  /**
+   * Check if user is authenticated.
+   */
   get authenticated(): boolean {
     return this._id != null
   }
 
+  /**
+   * Get the DID identifier of the user.
+   */
   get id(): string {
     if (this._id == null) {
       throw new Error('DID is not authenticated')
@@ -98,6 +107,10 @@ export class DID {
     return this._id
   }
 
+  /**
+   * Set the DID provider of this instance.
+   * Only callable if provider not already set.
+   */
   setProvider(provider: DIDProvider): void {
     if (this._client == null) {
       this._client = new RPCClient(provider)
@@ -108,11 +121,17 @@ export class DID {
     }
   }
 
+  /**
+   * Set the DID-resolver user by this instance
+   */
   setResolver(resolver: Resolver | ResolverOptions): void {
     this._resolver =
       resolver instanceof Resolver ? resolver : new Resolver(resolver.registry, resolver.cache)
   }
 
+  /**
+   * Authenticate the user.
+   */
   async authenticate({ provider }: AuthenticateOptions = {}): Promise<string> {
     if (provider != null) {
       this.setProvider(provider)
@@ -125,6 +144,13 @@ export class DID {
     return did
   }
 
+  /**
+   * Create a JWS encoded signature over the given payload.
+   * Will be signed by the currently authenticated DID.
+   *
+   * @param payload             The payload to sign
+   * @param options             Optional parameters
+   */
   async createJWS<T = any>(payload: T, options: CreateJWSOptions = {}): Promise<string> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
@@ -136,6 +162,13 @@ export class DID {
     return jws
   }
 
+  /**
+   * Create an IPFS compatibe DagJWS encoded signature over the given payload.
+   * Will be signed by the currently authenticated DID.
+   *
+   * @param payload             The payload to sign, may include ipld links
+   * @param options             Optional parameters
+   */
   async createDagJWS(
     payload: Record<string, any>,
     options: CreateJWSOptions = {}
@@ -148,6 +181,13 @@ export class DID {
     return { jws, linkedBlock }
   }
 
+  /**
+   * Create a JWE encrypted to the given recipients.
+   *
+   * @param cleartext           The cleartext to be encrypted
+   * @param recipients          An array of DIDs
+   * @param options             Optional parameters
+   */
   async createJWE(
     cleartext: Uint8Array,
     recipients: Array<string>,
@@ -172,6 +212,13 @@ export class DID {
     return createJWE(cleartext, encrypters, options.protectedHeader, options.aad)
   }
 
+  /**
+   * Create an IPFS compatibe DagJWE encrypted to the given recipients.
+   *
+   * @param cleartext           The cleartext to be encrypted, may include ipld links
+   * @param recipients          An array of DIDs
+   * @param options             Optional parameters
+   */
   async createDagJWE(
     cleartext: Record<string, any>,
     recipients: Array<string>,
@@ -181,6 +228,12 @@ export class DID {
     return this.createJWE(bytes, recipients, options)
   }
 
+  /**
+   * Try to decrypt the given JWE with the currently authenticated user.
+   *
+   * @param jwe                 The JWE to decrypt
+   * @param options             Optional parameters
+   */
   async decryptJWE(jwe: JWE, options: DecryptJWEOptions = {}): Promise<Uint8Array> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
@@ -192,11 +245,23 @@ export class DID {
     return decodeBase64(cleartext)
   }
 
+  /**
+   * Try to decrypt the given DagJWE with the currently authenticated user.
+   *
+   * @param jwe                 The JWE to decrypt
+   * @param options             Optional parameters
+   * @returns                   An ipld object
+   */
   async decryptDagJWE(jwe: JWE): Promise<Record<string, any>> {
     const bytes = await this.decryptJWE(jwe)
     return decodeCleartext(bytes)
   }
 
+  /**
+   * Resolve the DID Document of the given DID.
+   *
+   * @param didUrl              The DID to resolve
+   */
   async resolve(didUrl: string): Promise<DIDDocument> {
     return await this._resolver.resolve(didUrl)
   }

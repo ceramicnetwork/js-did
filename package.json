@@ -12,6 +12,7 @@
     "prepublishOnly": "npm run build",
     "prebuild": "npm run clean",
     "lint": "eslint ./src --ext .js,.ts",
+    "generate-docs": "mv docs/_config.yml . ; typedoc --name DID --entryPoint src/ --toc ; mv _config.yml docs/.",
     "clean": "rm -rf ./lib"
   },
   "repository": {
@@ -56,6 +57,7 @@
     "jest-environment-uint8array": "^1.0.0",
     "multihashes": "^3.0.1",
     "prettier": "^2.0.5",
+    "typedoc": "^0.19.2",
     "typescript": "^4.0.2"
   }
 }

@@ -8,6 +8,9 @@ A simple library to interact with DIDs that conform to the DID-provider interfac
 npm install dids
 ```
 
+## API
+[API documentation](https://ceramicnetwork.github.io/js-did/classes/_src_index_.did.html)
+
 ## Examples
 
 ### Authentication with the provider
@@ -73,6 +76,27 @@ console.log((await ipfs.dag.get(jwsCid)).value)
 
 As can be observed above the `createDagJWS` method takes the payload, encodes it using `dag-cbor` and computes it's CID. It then uses this CID as the payload of the JWS that is then signed. The JWS that was just created can be put into ipfs using the `dag-jose` codec. Returned is also the encoded block of the payload. This can be put into ipfs using `ipfs.block.put`. Alternatively `ipfs.dag.put(payload)` would have the same effect.
 
+### Use DagJWE with IPFS
+
+The DagJWE functionality allows us to encrypt IPLD data to one or multiple DIDs. The resulting JWE object can then be put into ipfs using the [dag-jose](https://github.com/ceramicnetwork/js-dag-jose) codec. A user that is authenticated can at a later point decrypt this object.
+
+```js
+const cleartext = { some: 'data', coolLink: new CID('bafyqacnbmrqxgzdgdeaui') }
+
+// encrypt the cleartext object
+const jwe = await did.createDagJWE(cleartext, ['did:3:bafy89h4f9...', 'did:key:za234...'])
+
+// put the JWE into the ipfs dag
+const jweCid = await ipfs.dag.put(jwe, { format: 'dag-jose', hashAlg: 'sha2-256' })
+
+
+// get the jwe from the dag and decrypt it
+const dagJWE = await ipfs.dag.get(jweCid)
+console.log(await did.decryptDagJWE(dagJWE))
+// output:
+// > { some: 'data' }
+```
+
 ### Resolving DIDs
 
 ```js
@@ -85,173 +109,6 @@ const did = new DID({ resolver: { registry } })
 // Resolve a DID document
 await did.resolve('did:test:...')
 ```
-
-## Interfaces and types
-
-### CID
-
-A `CID` instance, as exported by the [CID library](https://github.com/multiformats/js-cid).
-
-### DIDDocument
-
-The DID document interface, as defined in the [DID resolver library](https://github.com/decentralized-identity/did-resolver).
-
-### DIDProvider
-
-The DID provider interface, an alias for [`RPCConnection`](https://github.com/ceramicnetwork/js-rpc-utils#rpcconnection).
-
-### JWSSignature
-
-```ts
-interface JWSSignature {
-  protected: string
-  signature: string
-}
-```
-
-### DagJWS
-
-```ts
-interface DagJWS {
-  payload: string
-  signatures: Array<JWSSignature>
-  link: CID
-}
-```
-
-### AuthenticateOptions
-
-```ts
-interface AuthenticateOptions {
-  provider?: DIDProvider
-}
-```
-
-### CreateJWSOptions
-
-```ts
-interface CreateJWSOptions {
-  did?: string
-  protected?: Record<string, any>
-}
-```
-
-### DagJWSResult
-
-```ts
-interface DagJWSResult {
-  jws: string // base64-encoded
-  linkedBlock: string // base64-encoded
-}
-```
-
-### ResolverRegistry
-
-A record of DID methods to resolvers, as defined in the [DID resolver library](https://github.com/decentralized-identity/did-resolver).
-
-```ts
-export type ResolverRegistry = Record<string, DIDResolver>
-```
-
-### ResolverOptions
-
-Options used to create a `Resolver` instance, as defined in the [DID resolver library](https://github.com/decentralized-identity/did-resolver).
-
-```ts
-export interface ResolverOptions {
-  registry?: ResolverRegistry
-  cache?: DIDCache | boolean
-}
-```
-
-### DIDOptions
-
-```ts
-export interface DIDOptions {
-  provider?: DIDProvider
-  resolver?: Resolver | ResolverOptions
-}
-```
-
-## API
-
-### DID class
-
-#### constructor
-
-**Arguments**
-
-1. `options?: DIDOptions`
-
-#### did.authenticated
-
-**Returns** `boolean`
-
-#### did.id
-
-> Accessing this property will throw an error if the instance is not authenticated
-
-**Returns** `string`
-
-#### did.setProvider()
-
-> Calling this method will throw an error if a different provider is already set
-
-**Arguments**
-
-1. `provider: DIDProvider`
-
-**Returns** `void`
-
-#### did.setResolver()
-
-**Arguments**
-
-1. `resolver: Resolver | ResolverOptions`
-
-**Returns** `void`
-
-#### did.authenticate()
-
-> Calling this method with a provider will throw an error if a different provider is already set
-
-**Arguments**
-
-1. `options?: AuthenticateOptions`
-
-**Returns** `Promise<string>`
-
-#### did.createJWS()
-
-> The instance needs to be authenticated before calling this method
-
-**Arguments**
-
-1. `payload: Record<string, any>`
-1. `options?: CreateJWSOptions` to specify the `protected` header
-
-**Returns** `Promise<string>`
-
-#### did.createDagJWS()
-
-Creates a JWS that is compatible with [dag-jose](https://github.com/ceramicnetwork/js-dag-jose).
-
-> The instance needs to be authenticated before calling this method
-
-**Arguments**
-
-1. `payload: Record<string, any>`
-1. `options?: CreateJWSOptions` to specify the `protected` header, and did with keyFragment
-
-**Returns** `Promise<DagJWSResult>`
-
-#### did.resolve()
-
-**Arguments**
-
-1. `didUrl: string`
-
-**Returns** `Promise<DIDDocument>`
 
 ## License
 
