@@ -1,3 +1,7 @@
+## v0.6.1 (2020-09-22)
+
+fix: add padding to encrypted cleartext
+
 ## v0.6.0 (2020-09-22)
 
 feat: add support for encryption
