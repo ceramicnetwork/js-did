@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run build",
     "prebuild": "npm run clean",
     "lint": "eslint ./src --ext .js,.ts",
-    "generate-docs": "mv docs/_config.yml . ; typedoc --name DID --entryPoint src/ --toc ; mv _config.yml docs/.",
+    "generate-docs": "mv docs/_config.yml . ; typedoc --entryPoint '\"src/index\"' --excludePrivate --name DID --includeVersion ; mv _config.yml docs/.",
     "clean": "rm -rf ./lib"
   },
   "repository": {
