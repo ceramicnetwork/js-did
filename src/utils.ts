@@ -5,6 +5,8 @@ import * as u8a from 'uint8arrays'
 
 const DAG_CBOR_CODE = 113
 const ID_MULTIHASH = 0
+const ENC_BLOCK_SIZE = 24
+const PAD_FIRST_BYTE = 128
 const B64 = 'base64pad'
 const B58 = 'base58btc'
 
@@ -21,13 +23,28 @@ export async function encodePayload(payload: Record<string, any>): Promise<Encod
   }
 }
 
-export function encodeCleartext(cleartext: Record<string, any>): CID {
+export function pad(b: Uint8Array, blockSize = ENC_BLOCK_SIZE): Uint8Array {
+  // pads with 1 followed by 0s
+  const padLen = blockSize - (b.length % blockSize)
+  return u8a.concat([b, new Uint8Array([PAD_FIRST_BYTE]), new Uint8Array(padLen - 1)])
+}
+
+export function unpad(b: Uint8Array): Uint8Array {
+  const i = b.lastIndexOf(PAD_FIRST_BYTE)
+  if (i === -1 || i + 1 === b.length) {
+    // This cleartext is not padded, just return it
+    return b
+  }
+  return b.slice(0, i)
+}
+
+export function encodeIdentityCID(cleartext: Record<string, any>): CID {
   const block = dagCBOR.util.serialize(cleartext)
   const idMultiHash = multihashes.encode(block, ID_MULTIHASH)
   return new CID(1, DAG_CBOR_CODE, idMultiHash)
 }
 
-export function decodeCleartext(bytes: Uint8Array): Record<string, any> {
+export function decodeIdentityCID(bytes: Uint8Array): Record<string, any> {
   const cid = new CID(bytes)
   CID.validateCID(cid)
   if (cid.code !== DAG_CBOR_CODE) throw new Error('Cleartext codec must be dag-cbor')

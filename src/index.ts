@@ -6,8 +6,10 @@ import {
   DagJWS,
   toDagJWS,
   encodePayload,
-  encodeCleartext,
-  decodeCleartext,
+  encodeIdentityCID,
+  decodeIdentityCID,
+  pad,
+  unpad,
   encodeBase64,
   decodeBase64,
   decodeBase58,
@@ -209,7 +211,7 @@ export class DID {
         }
       })
     )
-    return createJWE(cleartext, encrypters, options.protectedHeader, options.aad)
+    return createJWE(pad(cleartext), encrypters, options.protectedHeader, options.aad)
   }
 
   /**
@@ -224,7 +226,7 @@ export class DID {
     recipients: Array<string>,
     options: CreateJWEOptions = {}
   ): Promise<JWE> {
-    const { bytes } = encodeCleartext(cleartext)
+    const { bytes } = encodeIdentityCID(cleartext)
     return this.createJWE(bytes, recipients, options)
   }
 
@@ -242,7 +244,7 @@ export class DID {
       'did_decryptJWE',
       { ...options, jwe }
     )
-    return decodeBase64(cleartext)
+    return unpad(decodeBase64(cleartext))
   }
 
   /**
@@ -254,7 +256,7 @@ export class DID {
    */
   async decryptDagJWE(jwe: JWE): Promise<Record<string, any>> {
     const bytes = await this.decryptJWE(jwe)
-    return decodeCleartext(bytes)
+    return decodeIdentityCID(bytes)
   }
 
   /**
