@@ -1,3 +1,11 @@
+## v0.6.0 (2020-09-22)
+
+feat: add support for encryption
+
+## v0.5.0 (2020-08-24)
+
+feat: add createDagJWE api
+
 ## v0.4.0 (2020-08-21)
 
 Changed `DID` property to `id`
