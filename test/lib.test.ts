@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import { DIDDocument, Resolver } from 'did-resolver'
+import * as u8a from 'uint8arrays'
+import { randomBytes } from '@stablelib/random'
+import { generateKeyPairFromSeed } from '@stablelib/x25519'
+import { x25519Decrypter, decryptJWE } from 'did-jwt'
+import CID from 'cids'
 
 import { DID, DIDProvider } from '../src'
-import { encodePayload, u8aToBase64 } from '../src/utils'
+import { encodePayload, encodeCleartext, decodeCleartext, encodeBase64 } from '../src/utils'
 
 describe('DID class', () => {
   describe('provider behavior', () => {
@@ -176,7 +181,7 @@ describe('DID class', () => {
         await expect(did.createJWS({})).rejects.toThrow('No provider available')
       })
 
-      it('creates a DagJWS correctly', async () => {
+      test('creates a DagJWS correctly', async () => {
         let authCalled = false
         const provider = {
           send: jest.fn((req: { id: string }) => {
@@ -221,8 +226,140 @@ describe('DID class', () => {
           method: 'did_createJWS',
           params: {
             did: 'did:3:1234',
-            payload: u8aToBase64(encPayload.cid.bytes),
-            linkedBlock: u8aToBase64(encPayload.linkedBlock),
+            payload: encodeBase64(encPayload.cid.bytes),
+            linkedBlock: encodeBase64(encPayload.linkedBlock),
+          },
+        })
+      })
+    })
+
+    const createRegistry = (didMap) => ({
+      test: async (did) => {
+        const pk = generateKeyPairFromSeed(didMap[did]).publicKey
+        return {
+          keyAgreement: [{
+            type: 'X25519KeyAgreementKey2019',
+            publicKeyBase58: u8a.toString(pk, 'base58btc')
+          }]
+        } as DIDDocument
+      }
+    })
+    describe('`createJWE method`', () => {
+      test('correctly encrypts, one recipient', async () => {
+        const recipient = 'did:test:asdf'
+        const secretKey = randomBytes(32)
+        const registry = createRegistry({ [recipient]: secretKey })
+        const did = new DID({ resolver: { registry } })
+        const cleartext = u8a.fromString('such secret')
+        const jwe = await did.createJWE(cleartext, [recipient])
+
+        const decrypter = x25519Decrypter(secretKey)
+        expect(await decryptJWE(jwe, decrypter)).toEqual(cleartext)
+      })
+
+      test('correctly encrypts, two recipients', async () => {
+        const recipient1 = 'did:test:asdf'
+        const secretKey1 = randomBytes(32)
+        const recipient2 = 'did:test:lalal'
+        const secretKey2 = randomBytes(32)
+        const registry = createRegistry({ [recipient1]: secretKey1, [recipient2]: secretKey2 })
+        const did = new DID({ resolver: { registry } })
+        const cleartext = u8a.fromString('such secret')
+        const jwe = await did.createJWE(cleartext, [recipient1, recipient2])
+
+        const decrypter1 = x25519Decrypter(secretKey1)
+        const decrypter2 = x25519Decrypter(secretKey2)
+        expect(await decryptJWE(jwe, decrypter1)).toEqual(cleartext)
+        expect(await decryptJWE(jwe, decrypter2)).toEqual(cleartext)
+      })
+    })
+
+    describe('`createDagJWE method`', () => {
+      test('correctly formats dagJWE cleartext', async () => {
+        const recipient = 'did:test:asdf'
+        const secretKey = randomBytes(32)
+        const registry = createRegistry({ [recipient]: secretKey })
+        const did = new DID({ resolver: { registry } })
+        const cleartext = { very: 'cool', dag: 'object' }
+        const jwe = await did.createDagJWE(cleartext, [recipient])
+
+        const decrypter = x25519Decrypter(secretKey)
+        const data = await decryptJWE(jwe, decrypter)
+        expect(decodeCleartext(data)).toEqual(cleartext)
+      })
+    })
+
+    describe('`decryptJWE method`', () => {
+      test('throws an error if there is no provider', async () => {
+        const did = new DID()
+        await expect(did.createJWS({})).rejects.toThrow('No provider available')
+      })
+
+      test('uses the provider attached to the instance', async () => {
+        const provider = {
+          send: jest.fn((req: { id: string }) => {
+            return Promise.resolve({
+              jsonrpc: '2.0',
+              id: req.id,
+              result: { cleartext: u8a.toString(u8a.fromString('abcde'), 'base64pad') },
+            })
+          }),
+        } as DIDProvider
+        const did = new DID({ provider })
+        did._id = 'did:3:1234'
+
+        const jwe = { foo: 'bar' }
+        const cleartext = await did.decryptJWE(jwe)
+        expect(cleartext).toEqual(u8a.fromString('abcde'))
+        expect(provider.send).toHaveBeenCalledTimes(1)
+        // @ts-expect-error
+        expect(provider.send.mock.calls[0][0]).toEqual({
+          jsonrpc: '2.0',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          id: expect.any(String),
+          method: 'did_decryptJWE',
+          params: {
+            did: 'did:3:1234',
+            jwe,
+          },
+        })
+      })
+    })
+
+    describe('`decryptDagJWE method`', () => {
+      test('throws an error if there is no provider', async () => {
+        const did = new DID()
+        await expect(did.createJWS({})).rejects.toThrow('No provider available')
+      })
+
+      test('uses the provider attached to the instance', async () => {
+        const clearObj = { asdf: 432 }
+        const cleartext = encodeBase64(encodeCleartext(clearObj).bytes)
+        const provider = {
+          send: jest.fn((req: { id: string }) => {
+            return Promise.resolve({
+              jsonrpc: '2.0',
+              id: req.id,
+              result: { cleartext },
+            })
+          }),
+        } as DIDProvider
+        const did = new DID({ provider })
+        did._id = 'did:3:1234'
+
+        const jwe = { foo: 'bar' }
+        const decrypted = await did.decryptDagJWE(jwe)
+        expect(decrypted).toEqual(clearObj)
+        expect(provider.send).toHaveBeenCalledTimes(1)
+        // @ts-expect-error
+        expect(provider.send.mock.calls[0][0]).toEqual({
+          jsonrpc: '2.0',
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          id: expect.any(String),
+          method: 'did_decryptJWE',
+          params: {
+            did: 'did:3:1234',
+            jwe,
           },
         })
       })
