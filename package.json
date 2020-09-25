@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "Typescript library for interacting with DIDs",
   "main": "lib/index.js",
   "files": [
