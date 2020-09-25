@@ -9,7 +9,7 @@ const ENC_BLOCK_SIZE = 24
 const PAD_FIRST_BYTE = 128
 const B64 = 'base64pad'
 const B58 = 'base58btc'
-const B64_URL = 'base64urlpad'
+const B64_URL = 'base64url'
 
 export interface EncodedPayload {
   cid: CID
