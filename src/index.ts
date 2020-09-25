@@ -13,6 +13,7 @@ import {
   encodeBase64,
   decodeBase64,
   decodeBase58,
+  encodeBase64Url,
 } from './utils'
 
 export type { DIDDocument } from 'did-resolver'
@@ -176,7 +177,7 @@ export class DID {
     options: CreateJWSOptions = {}
   ): Promise<DagJWSResult> {
     const { cid, linkedBlock } = await encodePayload(payload)
-    const payloadCid = encodeBase64(cid.bytes)
+    const payloadCid = encodeBase64Url(cid.bytes)
     Object.assign(options, { linkedBlock: encodeBase64(linkedBlock) })
     const compactJws = await this.createJWS(payloadCid, options)
     const jws = toDagJWS(compactJws, cid)

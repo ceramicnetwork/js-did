@@ -5,10 +5,9 @@ import * as u8a from 'uint8arrays'
 import { randomBytes } from '@stablelib/random'
 import { generateKeyPairFromSeed } from '@stablelib/x25519'
 import { x25519Decrypter, decryptJWE } from 'did-jwt'
-import CID from 'cids'
 
 import { DID, DIDProvider } from '../src'
-import { encodePayload, encodeIdentityCID, decodeIdentityCID, encodeBase64, pad, unpad } from '../src/utils'
+import { encodePayload, encodeIdentityCID, decodeIdentityCID, encodeBase64, encodeBase64Url, pad, unpad } from '../src/utils'
 
 describe('DID class', () => {
   describe('provider behavior', () => {
@@ -226,7 +225,7 @@ describe('DID class', () => {
           method: 'did_createJWS',
           params: {
             did: 'did:3:1234',
-            payload: encodeBase64(encPayload.cid.bytes),
+            payload: encodeBase64Url(encPayload.cid.bytes),
             linkedBlock: encodeBase64(encPayload.linkedBlock),
           },
         })

@@ -9,6 +9,7 @@ const ENC_BLOCK_SIZE = 24
 const PAD_FIRST_BYTE = 128
 const B64 = 'base64pad'
 const B58 = 'base58btc'
+const B64_URL = 'base64url'
 
 export interface EncodedPayload {
   cid: CID
@@ -55,6 +56,10 @@ export function decodeIdentityCID(bytes: Uint8Array): Record<string, any> {
 
 export function encodeBase64(bytes: Uint8Array): string {
   return u8a.toString(bytes, B64)
+}
+
+export function encodeBase64Url(bytes: Uint8Array): string {
+  return u8a.toString(bytes, B64_URL)
 }
 
 export function decodeBase64(s: string): Uint8Array {
