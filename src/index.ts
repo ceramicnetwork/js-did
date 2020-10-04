@@ -1,20 +1,9 @@
 import { DIDCache, DIDDocument, DIDResolver, Resolver } from 'did-resolver'
 import { RPCClient, RPCConnection } from 'rpc-utils'
-import { x25519Encrypter, createJWE, JWE } from 'did-jwt'
+import { createJWE, JWE, resolveX25519Encrypters } from 'did-jwt'
+import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 
-import {
-  DagJWS,
-  toDagJWS,
-  encodePayload,
-  encodeIdentityCID,
-  decodeIdentityCID,
-  pad,
-  unpad,
-  encodeBase64,
-  decodeBase64,
-  decodeBase58,
-  encodeBase64Url,
-} from './utils'
+import { DagJWS, toDagJWS, encodeBase64, decodeBase64, encodeBase64Url } from './utils'
 
 export type { DIDDocument } from 'did-resolver'
 
@@ -196,23 +185,8 @@ export class DID {
     recipients: Array<string>,
     options: CreateJWEOptions = {}
   ): Promise<JWE> {
-    const encrypters = await Promise.all(
-      recipients.map(async (did) => {
-        const didDoc = await this.resolve(did)
-        try {
-          const b58Key = didDoc.keyAgreement?.find((key) => {
-            if (typeof key === 'string') {
-              throw new Error(`String key ids not supported for now: ${did}`)
-            }
-            return key.type === 'X25519KeyAgreementKey2019'
-          }) as { publicKeyBase58: string } // a little hacky, revisit once DID-core spec is finalized
-          return x25519Encrypter(decodeBase58(b58Key.publicKeyBase58))
-        } catch (e) {
-          throw new Error(`Could not find x25519 key for ${did}: ${e as string}`)
-        }
-      })
-    )
-    return createJWE(pad(cleartext), encrypters, options.protectedHeader, options.aad)
+    const encrypters = await resolveX25519Encrypters(recipients, this._resolver)
+    return createJWE(cleartext, encrypters, options.protectedHeader, options.aad)
   }
 
   /**
@@ -227,8 +201,7 @@ export class DID {
     recipients: Array<string>,
     options: CreateJWEOptions = {}
   ): Promise<JWE> {
-    const { bytes } = encodeIdentityCID(cleartext)
-    return this.createJWE(bytes, recipients, options)
+    return this.createJWE(prepareCleartext(cleartext), recipients, options)
   }
 
   /**
@@ -245,7 +218,7 @@ export class DID {
       'did_decryptJWE',
       { ...options, jwe }
     )
-    return unpad(decodeBase64(cleartext))
+    return decodeBase64(cleartext)
   }
 
   /**
@@ -257,7 +230,7 @@ export class DID {
    */
   async decryptDagJWE(jwe: JWE): Promise<Record<string, any>> {
     const bytes = await this.decryptJWE(jwe)
-    return decodeIdentityCID(bytes)
+    return decodeCleartext(bytes)
   }
 
   /**

@@ -5,9 +5,10 @@ import * as u8a from 'uint8arrays'
 import { randomBytes } from '@stablelib/random'
 import { generateKeyPairFromSeed } from '@stablelib/x25519'
 import { x25519Decrypter, decryptJWE } from 'did-jwt'
+import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 
 import { DID, DIDProvider } from '../src'
-import { encodePayload, encodeIdentityCID, decodeIdentityCID, encodeBase64, encodeBase64Url, pad, unpad } from '../src/utils'
+import { encodeBase64, encodeBase64Url } from '../src/utils'
 
 describe('DID class', () => {
   describe('provider behavior', () => {
@@ -253,7 +254,7 @@ describe('DID class', () => {
         const jwe = await did.createJWE(cleartext, [recipient])
 
         const decrypter = x25519Decrypter(secretKey)
-        expect(unpad(await decryptJWE(jwe, decrypter))).toEqual(cleartext)
+        expect(await decryptJWE(jwe, decrypter)).toEqual(cleartext)
       })
 
       test('correctly encrypts, two recipients', async () => {
@@ -268,8 +269,8 @@ describe('DID class', () => {
 
         const decrypter1 = x25519Decrypter(secretKey1)
         const decrypter2 = x25519Decrypter(secretKey2)
-        expect(unpad(await decryptJWE(jwe, decrypter1))).toEqual(cleartext)
-        expect(unpad(await decryptJWE(jwe, decrypter2))).toEqual(cleartext)
+        expect(await decryptJWE(jwe, decrypter1)).toEqual(cleartext)
+        expect(await decryptJWE(jwe, decrypter2)).toEqual(cleartext)
       })
     })
 
@@ -284,7 +285,7 @@ describe('DID class', () => {
 
         const decrypter = x25519Decrypter(secretKey)
         const data = await decryptJWE(jwe, decrypter)
-        expect(decodeIdentityCID(unpad(data))).toEqual(cleartext)
+        expect(decodeCleartext(data)).toEqual(cleartext)
       })
     })
 
@@ -300,7 +301,7 @@ describe('DID class', () => {
             return Promise.resolve({
               jsonrpc: '2.0',
               id: req.id,
-              result: { cleartext: u8a.toString(pad(u8a.fromString('abcde')), 'base64pad') },
+              result: { cleartext: u8a.toString(u8a.fromString('abcde'), 'base64pad') },
             })
           }),
         } as DIDProvider
@@ -333,7 +334,7 @@ describe('DID class', () => {
 
       test('uses the provider attached to the instance', async () => {
         const clearObj = { asdf: 432 }
-        const cleartext = encodeBase64(pad(encodeIdentityCID(clearObj).bytes))
+        const cleartext = encodeBase64(prepareCleartext(clearObj))
         const provider = {
           send: jest.fn((req: { id: string }) => {
             return Promise.resolve({

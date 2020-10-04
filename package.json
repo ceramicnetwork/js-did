@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Typescript library for interacting with DIDs",
   "main": "lib/index.js",
   "files": [
@@ -36,9 +36,9 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
     "cids": "^1.0.0",
-    "did-jwt": "git+https://github.com/oed/did-jwt.git#feat/jwe-build",
+    "dag-jose-utils": "^0.1.0",
+    "did-jwt": "^4.6.2",
     "did-resolver": "^2.1.1",
-    "ipld-dag-cbor": "^0.17.0",
     "rpc-utils": "^0.1.3",
     "uint8arrays": "^1.1.0"
   },
@@ -55,7 +55,6 @@
     "eslint-config-3box": "^0.1.2",
     "jest": "^26.4.1",
     "jest-environment-uint8array": "^1.0.0",
-    "multihashes": "^3.0.1",
     "prettier": "^2.0.5",
     "typedoc": "^0.19.2",
     "typescript": "^4.0.2"
