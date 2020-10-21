@@ -16,6 +16,10 @@ export function decodeBase64(s: string): Uint8Array {
   return u8a.fromString(s, B64)
 }
 
+export function base64urlToJSON(s: string): Record<string, any> {
+  return JSON.parse(u8a.toString(u8a.fromString(s, B64_URL))) as Record<string, any>
+}
+
 export interface JWSSignature {
   protected: string
   signature: string
@@ -34,4 +38,9 @@ export function toDagJWS(jws: string, cid: CID): DagJWS {
     signatures: [{ protected: protectedHeader, signature }],
     link: cid,
   }
+}
+
+export function fromDagJWS(jws: DagJWS): string {
+  if (jws.signatures.length > 1) throw new Error('Cant convert to compact jws')
+  return `${jws.signatures[0].protected}.${jws.payload}.${jws.signatures[0].signature}`
 }
