@@ -233,18 +233,58 @@ describe('DID class', () => {
       })
     })
 
-    const createRegistry = (didMap) => ({
-      test: async (did) => {
-        const pk = generateKeyPairFromSeed(didMap[did]).publicKey
-        return {
-          keyAgreement: [{
-            type: 'X25519KeyAgreementKey2019',
-            publicKeyBase58: u8a.toString(pk, 'base58btc')
-          }]
-        } as DIDDocument
+    describe('`verifyJWS method`', () => {
+      const resolverRegistry = {
+        '3': async () => ({
+          '@context': "https://w3id.org/did/v1",
+          id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
+          publicKey: [{
+            controller: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
+            id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF",
+            publicKeyHex: "0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e",
+            type: "Secp256k1VerificationKey2018",
+          }],
+          authentication: [{
+            controller: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
+            id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF",
+            publicKeyHex: "0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e",
+            type: "Secp256k1VerificationKey2018",
+          }],
+        })
       }
+      test('correctly verifies jws string', async () => {
+        const did = new DID({ resolver: { registry: resolverRegistry } })
+        const jws = 'eyJraWQiOiJkaWQ6MzpiYWdjcWNlcmFza3hxeng0N2l2b2tqcW9md295dXliMjN0aWFlcGRyYXpxNXJsem4yaHg3a215YWN6d29hP3ZlcnNpb24taWQ9MCNrV01YTU1xazVXc290UW0iLCJhbGciOiJFUzI1NksifQ.AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB.h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ'
+        expect(await did.verifyJWS(jws)).toEqual('did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm')
+      })
+
+      test('correctly verifies DagJWS', async () => {
+        const did = new DID({ resolver: { registry: resolverRegistry } })
+        const jws = {
+          payload: 'AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB',
+          signatures: [{
+            protected: 'eyJraWQiOiJkaWQ6MzpiYWdjcWNlcmFza3hxeng0N2l2b2tqcW9md295dXliMjN0aWFlcGRyYXpxNXJsem4yaHg3a215YWN6d29hP3ZlcnNpb24taWQ9MCNrV01YTU1xazVXc290UW0iLCJhbGciOiJFUzI1NksifQ',
+            signature: 'h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ',
+          }]
+        }
+        expect(await did.verifyJWS(jws)).toEqual('did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm')
+      })
     })
+
     describe('`createJWE method`', () => {
+      const createRegistry = (didMap) => ({
+        test: async (did) => {
+          const pk = generateKeyPairFromSeed(didMap[did]).publicKey
+          return {
+            keyAgreement: [{
+              id: u8a.toString(pk, 'base58btc').split(-15),
+              type: 'X25519KeyAgreementKey2019',
+              publicKeyBase58: u8a.toString(pk, 'base58btc'),
+            }]
+          } as DIDDocument
+        }
+      })
+
       test('correctly encrypts, one recipient', async () => {
         const recipient = 'did:test:asdf'
         const secretKey = randomBytes(32)

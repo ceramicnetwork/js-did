@@ -1,16 +1,20 @@
 import { DIDCache, DIDDocument, DIDResolver, Resolver } from 'did-resolver'
 import { RPCClient, RPCConnection } from 'rpc-utils'
-import { createJWE, JWE, resolveX25519Encrypters } from 'did-jwt'
+import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
-
-import { DagJWS, toDagJWS, encodeBase64, decodeBase64, encodeBase64Url } from './utils'
+import {
+  DagJWS,
+  toDagJWS,
+  fromDagJWS,
+  encodeBase64,
+  base64urlToJSON,
+  decodeBase64,
+  encodeBase64Url,
+} from './utils'
 
 export type { DIDDocument } from 'did-resolver'
-
 export type { DagJWS, JWSSignature } from './utils'
-
 export type DIDProvider = RPCConnection
-
 export type ResolverRegistry = Record<string, DIDResolver>
 
 export interface AuthenticateOptions {
@@ -171,6 +175,24 @@ export class DID {
     const compactJws = await this.createJWS(payloadCid, options)
     const jws = toDagJWS(compactJws, cid)
     return { jws, linkedBlock }
+  }
+
+  /**
+   * Verify a JWS. Uses the 'kid' in the header as the way to resolve
+   * the author public key.
+   *
+   * @param jws                 The JWS to verify
+   * @returns                   The 'kid' that signed the JWS
+   */
+  async verifyJWS(jws: string | DagJWS): Promise<string> {
+    if (typeof jws !== 'string') jws = fromDagJWS(jws)
+    const kid = base64urlToJSON(jws.split('.')[0]).kid as string
+    if (!kid) throw new Error('No "kid" found in jws')
+    const { publicKey } = await this.resolve(kid)
+    console.log(jws)
+    // verifyJWS will throw an error if the signature is invalid
+    verifyJWS(jws, publicKey)
+    return kid
   }
 
   /**
