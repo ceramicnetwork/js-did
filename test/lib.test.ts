@@ -271,20 +271,20 @@ describe('DID class', () => {
       })
     })
 
-    describe('`createJWE method`', () => {
-      const createRegistry = (didMap) => ({
-        test: async (did) => {
-          const pk = generateKeyPairFromSeed(didMap[did]).publicKey
-          return {
-            keyAgreement: [{
-              id: u8a.toString(pk, 'base58btc').split(-15),
-              type: 'X25519KeyAgreementKey2019',
-              publicKeyBase58: u8a.toString(pk, 'base58btc'),
-            }]
-          } as DIDDocument
-        }
-      })
+    const createRegistry = (didMap) => ({
+      test: async (did) => {
+        const pk = generateKeyPairFromSeed(didMap[did]).publicKey
+        return {
+          keyAgreement: [{
+            id: u8a.toString(pk, 'base58btc').split(-15),
+            type: 'X25519KeyAgreementKey2019',
+            publicKeyBase58: u8a.toString(pk, 'base58btc'),
+          }]
+        } as DIDDocument
+      }
+    })
 
+    describe('`createJWE method`', () => {
       test('correctly encrypts, one recipient', async () => {
         const recipient = 'did:test:asdf'
         const secretKey = randomBytes(32)

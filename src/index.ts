@@ -189,7 +189,6 @@ export class DID {
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
     const { publicKey } = await this.resolve(kid)
-    console.log(jws)
     // verifyJWS will throw an error if the signature is invalid
     verifyJWS(jws, publicKey)
     return kid
