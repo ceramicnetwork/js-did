@@ -9,7 +9,7 @@ npm install dids
 ```
 
 ## API
-[API documentation](https://ceramicnetwork.github.io/js-did/classes/_src_index_.did.html)
+[API documentation](https://ceramicnetwork.github.io/js-did/classes/did.html)
 
 ## Examples
 
