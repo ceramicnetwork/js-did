@@ -255,7 +255,7 @@ describe('DID class', () => {
       test('correctly verifies jws string', async () => {
         const did = new DID({ resolver: { registry: resolverRegistry } })
         const jws = 'eyJraWQiOiJkaWQ6MzpiYWdjcWNlcmFza3hxeng0N2l2b2tqcW9md295dXliMjN0aWFlcGRyYXpxNXJsem4yaHg3a215YWN6d29hP3ZlcnNpb24taWQ9MCNrV01YTU1xazVXc290UW0iLCJhbGciOiJFUzI1NksifQ.AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB.h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ'
-        expect(await did.verifyJWS(jws)).toEqual('did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm')
+        expect(await did.verifyJWS(jws)).toEqual({ kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm' })
       })
 
       test('correctly verifies DagJWS', async () => {
@@ -267,7 +267,7 @@ describe('DID class', () => {
             signature: 'h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ',
           }]
         }
-        expect(await did.verifyJWS(jws)).toEqual('did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm')
+        expect(await did.verifyJWS(jws)).toEqual({ kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm' })
       })
     })
 
