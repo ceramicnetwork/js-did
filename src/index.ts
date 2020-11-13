@@ -39,6 +39,10 @@ export interface CreateJWSResult {
   jws: string // base64-encoded
 }
 
+export interface VerifyJWSResult {
+  kid: string
+}
+
 export interface CreateJWEOptions {
   protectedHeader?: Record<string, any>
   aad?: Uint8Array
@@ -182,16 +186,18 @@ export class DID {
    * the author public key.
    *
    * @param jws                 The JWS to verify
-   * @returns                   The 'kid' that signed the JWS
+   * @returns                   Information about the signed JWS
    */
-  async verifyJWS(jws: string | DagJWS): Promise<string> {
+  async verifyJWS(jws: string | DagJWS): Promise<VerifyJWSResult> {
     if (typeof jws !== 'string') jws = fromDagJWS(jws)
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
     const { publicKey } = await this.resolve(kid)
     // verifyJWS will throw an error if the signature is invalid
     verifyJWS(jws, publicKey)
-    return kid
+    // In the future, returned obj will need to contain
+    // more metadata about the key that signed the jws.
+    return { kid }
   }
 
   /**
