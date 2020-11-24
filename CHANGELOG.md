@@ -1,3 +1,6 @@
+## v1.0.0 (2020-11-25)
+This release aligns this implementation with EIP2844.
+
 ## v0.6.1 (2020-09-22)
 
 fix: add padding to encrypted cleartext

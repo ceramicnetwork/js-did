@@ -4,12 +4,12 @@ import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import {
   DagJWS,
-  toDagJWS,
   fromDagJWS,
   encodeBase64,
   base64urlToJSON,
   decodeBase64,
   encodeBase64Url,
+  randomString,
 } from './utils'
 
 export type { DIDDocument } from 'did-resolver'
@@ -19,10 +19,19 @@ export type ResolverRegistry = Record<string, DIDResolver>
 
 export interface AuthenticateOptions {
   provider?: DIDProvider
+  aud?: string
+  paths?: Array<string>
 }
 
-export interface AuthenticateResult {
+export interface AuthenticateParams {
+  nonce: string
+  aud?: string
+  paths?: Array<string>
+}
+
+export interface AuthenticateResponse extends AuthenticateParams {
   did: string
+  exp: number
 }
 
 export interface CreateJWSOptions {
@@ -36,7 +45,7 @@ export interface CreateJWSParams extends CreateJWSOptions {
 }
 
 export interface CreateJWSResult {
-  jws: string // base64-encoded
+  jws: DagJWS
 }
 
 export interface VerifyJWSResult {
@@ -132,16 +141,27 @@ export class DID {
   /**
    * Authenticate the user.
    */
-  async authenticate({ provider }: AuthenticateOptions = {}): Promise<string> {
+  async authenticate({ provider, paths, aud }: AuthenticateOptions = {}): Promise<string> {
     if (provider != null) {
       this.setProvider(provider)
     }
     if (this._client == null) {
       throw new Error('No provider available')
     }
-    const { did } = await this._client.request<void, AuthenticateResult>('did_authenticate')
-    this._id = did
-    return did
+    const nonce = randomString()
+    const jws = await this._client.request<AuthenticateParams, DagJWS>('did_authenticate', {
+      nonce,
+      aud,
+      paths,
+    })
+    const { kid } = await this.verifyJWS(jws)
+    const payload = base64urlToJSON(jws.payload) as AuthenticateResponse
+    if (!kid.includes(payload.did)) throw new Error('Invalid authencation response, kid mismatch')
+    if (payload.nonce !== nonce) throw new Error('Invalid authencation response, wrong nonce')
+    if (payload.aud !== aud) throw new Error('Invalid authencation response, wrong aud')
+    if (payload.exp < Date.now() / 1000) throw new Error('Invalid authencation response, expired')
+    this._id = payload.did
+    return this._id
   }
 
   /**
@@ -151,7 +171,7 @@ export class DID {
    * @param payload             The payload to sign
    * @param options             Optional parameters
    */
-  async createJWS<T = any>(payload: T, options: CreateJWSOptions = {}): Promise<string> {
+  async createJWS<T = any>(payload: T, options: CreateJWSOptions = {}): Promise<DagJWS> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
     if (!options.did) options.did = this._id
@@ -176,8 +196,8 @@ export class DID {
     const { cid, linkedBlock } = await encodePayload(payload)
     const payloadCid = encodeBase64Url(cid.bytes)
     Object.assign(options, { linkedBlock: encodeBase64(linkedBlock) })
-    const compactJws = await this.createJWS(payloadCid, options)
-    const jws = toDagJWS(compactJws, cid)
+    const jws = await this.createJWS(payloadCid, options)
+    jws.link = cid
     return { jws, linkedBlock }
   }
 
