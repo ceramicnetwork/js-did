@@ -117,7 +117,7 @@ describe('DID class', () => {
             })
           }),
         } as DIDProvider
-        const did = new DID({ provider, resolver: { registry: MOCK_RESOLVER_REGISTRY } })
+        const did = new DID({ provider, resolver: MOCK_RESOLVER_REGISTRY })
 
         await did.authenticate()
         expect(provider.send).toHaveBeenCalledTimes(1)
@@ -144,7 +144,7 @@ describe('DID class', () => {
             })
           }),
         } as DIDProvider
-        const did = new DID({ resolver: { registry: MOCK_RESOLVER_REGISTRY } })
+        const did = new DID({ resolver: MOCK_RESOLVER_REGISTRY })
 
         await did.authenticate({ provider })
         expect(provider.send).toHaveBeenCalledTimes(1)
@@ -186,7 +186,7 @@ describe('DID class', () => {
             })
           }),
         } as DIDProvider
-        const did = new DID({ provider, resolver: { registry: MOCK_RESOLVER_REGISTRY } })
+        const did = new DID({ provider, resolver: MOCK_RESOLVER_REGISTRY })
 
         await expect(did.createJWS({})).rejects.toThrow('DID is not authenticated')
         await did.authenticate()
@@ -242,7 +242,7 @@ describe('DID class', () => {
             })
           }),
         } as DIDProvider
-        const did = new DID({ provider, resolver: { registry: MOCK_RESOLVER_REGISTRY } })
+        const did = new DID({ provider, resolver: MOCK_RESOLVER_REGISTRY })
 
         await expect(did.createDagJWS({})).rejects.toThrow('DID is not authenticated')
         await did.authenticate()
@@ -296,13 +296,13 @@ describe('DID class', () => {
         })
       }
       test('correctly verifies jws string', async () => {
-        const did = new DID({ resolver: { registry: resolverRegistry } })
+        const did = new DID({ resolver: resolverRegistry })
         const jws = 'eyJraWQiOiJkaWQ6MzpiYWdjcWNlcmFza3hxeng0N2l2b2tqcW9md295dXliMjN0aWFlcGRyYXpxNXJsem4yaHg3a215YWN6d29hP3ZlcnNpb24taWQ9MCNrV01YTU1xazVXc290UW0iLCJhbGciOiJFUzI1NksifQ.AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB.h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ'
         expect(await did.verifyJWS(jws)).toEqual({ kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm' })
       })
 
       test('correctly verifies DagJWS', async () => {
-        const did = new DID({ resolver: { registry: resolverRegistry } })
+        const did = new DID({ resolver: resolverRegistry })
         const jws = {
           payload: 'AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB',
           signatures: [{
@@ -335,7 +335,7 @@ describe('DID class', () => {
         const recipient = 'did:test:asdf'
         const secretKey = randomBytes(32)
         const registry = createRegistry({ [recipient]: secretKey })
-        const did = new DID({ resolver: { registry } })
+        const did = new DID({ resolver: registry })
         const cleartext = u8a.fromString('such secret')
         const jwe = await did.createJWE(cleartext, [recipient])
 
@@ -349,7 +349,7 @@ describe('DID class', () => {
         const recipient2 = 'did:test:lalal'
         const secretKey2 = randomBytes(32)
         const registry = createRegistry({ [recipient1]: secretKey1, [recipient2]: secretKey2 })
-        const did = new DID({ resolver: { registry } })
+        const did = new DID({ resolver: registry })
         const cleartext = u8a.fromString('such secret')
         const jwe = await did.createJWE(cleartext, [recipient1, recipient2])
 
@@ -365,7 +365,7 @@ describe('DID class', () => {
         const recipient = 'did:test:asdf'
         const secretKey = randomBytes(32)
         const registry = createRegistry({ [recipient]: secretKey })
-        const did = new DID({ resolver: { registry } })
+        const did = new DID({ resolver: registry })
         const cleartext = { very: 'cool', dag: 'object' }
         const jwe = await did.createDagJWE(cleartext, [recipient])
 
@@ -464,7 +464,7 @@ describe('DID class', () => {
       const registry = {
         test: jest.fn(() => Promise.resolve(doc)),
       }
-      const did = new DID({ resolver: { registry } })
+      const did = new DID({ resolver: registry })
       expect(did._resolver).toBeInstanceOf(Resolver)
       await expect(did.resolve('did:test:test')).resolves.toBe(doc)
     })

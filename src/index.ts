@@ -74,14 +74,10 @@ export interface DagJWSResult {
   linkedBlock: Uint8Array
 }
 
-export interface ResolverOptions {
-  registry?: ResolverRegistry
-  cache?: DIDCache | boolean
-}
-
 export interface DIDOptions {
   provider?: DIDProvider
-  resolver?: Resolver | ResolverOptions
+  resolver?: Resolver | ResolverRegistry
+  cache?: DIDCache
 }
 
 /**
@@ -92,11 +88,11 @@ export class DID {
   private _id?: string
   private _resolver!: Resolver
 
-  constructor({ provider, resolver = {} }: DIDOptions = {}) {
+  constructor({ provider, resolver = {}, cache }: DIDOptions = {}) {
     if (provider != null) {
       this._client = new RPCClient(provider)
     }
-    this.setResolver(resolver)
+    this.setResolver(resolver, cache)
   }
 
   /**
@@ -133,9 +129,8 @@ export class DID {
   /**
    * Set the DID-resolver user by this instance
    */
-  setResolver(resolver: Resolver | ResolverOptions): void {
-    this._resolver =
-      resolver instanceof Resolver ? resolver : new Resolver(resolver.registry, resolver.cache)
+  setResolver(resolver: Resolver | ResolverRegistry, cache?: DIDCache): void {
+    this._resolver = resolver instanceof Resolver ? resolver : new Resolver(resolver, cache)
   }
 
   /**
