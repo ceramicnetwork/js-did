@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run build",
     "prebuild": "npm run clean",
     "lint": "eslint ./src --ext .js,.ts",
-    "docs": "typedoc --mode file --entryPoint '\"src/index\"' --excludePrivate --name DID --includeVersion ; touch docs/.nojekyll",
+    "docs": "typedoc --mode file --excludePrivate --name DID --includeVersion ; touch docs/.nojekyll",
     "clean": "rm -rf ./lib"
   },
   "repository": {

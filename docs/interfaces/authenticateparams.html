@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>AuthenticateResult | DID - v0.8.0</title>
-	<meta name="description" content="Documentation for DID - v0.8.0">
+	<title>AuthenticateParams | DID - v1.0.0</title>
+	<meta name="description" content="Documentation for DID - v1.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">DID - v0.8.0</a>
+					<a href="../index.html" class="title">DID - v1.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="authenticateresult.html">AuthenticateResult</a>
+					<a href="authenticateparams.html">AuthenticateParams</a>
 				</li>
 			</ul>
-			<h1>Interface AuthenticateResult</h1>
+			<h1>Interface AuthenticateParams</h1>
 		</div>
 	</div>
 </header>
@@ -70,7 +70,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">AuthenticateResult</span>
+						<span class="target">AuthenticateParams</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="authenticateresponse.html" class="tsd-signature-type">AuthenticateResponse</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -81,7 +86,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="authenticateresult.html#did" class="tsd-kind-icon">did</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="authenticateparams.html#aud" class="tsd-kind-icon">aud</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="authenticateparams.html#nonce" class="tsd-kind-icon">nonce</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="authenticateparams.html#paths" class="tsd-kind-icon">paths</a></li>
 							</ul>
 						</section>
 					</div>
@@ -90,12 +97,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="did" class="tsd-anchor"></a>
-					<h3>did</h3>
-					<div class="tsd-signature tsd-kind-icon">did<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="aud" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> aud</h3>
+					<div class="tsd-signature tsd-kind-icon">aud<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/e16e28d/src/index.ts#L25">src/index.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/192c1ae/src/index.ts#L28">src/index.ts:28</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="nonce" class="tsd-anchor"></a>
+					<h3>nonce</h3>
+					<div class="tsd-signature tsd-kind-icon">nonce<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/192c1ae/src/index.ts#L27">src/index.ts:27</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="paths" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> paths</h3>
+					<div class="tsd-signature tsd-kind-icon">paths<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/192c1ae/src/index.ts#L29">src/index.ts:29</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -120,15 +147,24 @@
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface">
-						<a href="authenticateresult.html" class="tsd-kind-icon">Authenticate<wbr>Result</a>
+						<a href="authenticateparams.html" class="tsd-kind-icon">Authenticate<wbr>Params</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="authenticateresult.html#did" class="tsd-kind-icon">did</a>
+								<a href="authenticateparams.html#aud" class="tsd-kind-icon">aud</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="authenticateparams.html#nonce" class="tsd-kind-icon">nonce</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="authenticateparams.html#paths" class="tsd-kind-icon">paths</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface">
+						<a href="authenticateresponse.html" class="tsd-kind-icon">Authenticate<wbr>Response</a>
+					</li>
 					<li class=" tsd-kind-interface">
 						<a href="createjweoptions.html" class="tsd-kind-icon">CreateJWEOptions</a>
 					</li>
@@ -163,9 +199,6 @@
 						<a href="jwssignature.html" class="tsd-kind-icon">JWSSignature</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="resolveroptions.html" class="tsd-kind-icon">Resolver<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="verifyjwsresult.html" class="tsd-kind-icon">VerifyJWSResult</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
@@ -196,7 +229,7 @@
 						<a href="../globals.html#fromdagjws" class="tsd-kind-icon">from<wbr>DagJWS</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../globals.html#todagjws" class="tsd-kind-icon">to<wbr>DagJWS</a>
+						<a href="../globals.html#randomstring" class="tsd-kind-icon">random<wbr>String</a>
 					</li>
 				</ul>
 			</nav>
