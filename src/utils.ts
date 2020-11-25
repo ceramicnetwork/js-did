@@ -1,5 +1,6 @@
 import CID from 'cids'
 import * as u8a from 'uint8arrays'
+import { randomBytes } from '@stablelib/random'
 
 const B64 = 'base64pad'
 const B64_URL = 'base64url'
@@ -20,6 +21,10 @@ export function base64urlToJSON(s: string): Record<string, any> {
   return JSON.parse(u8a.toString(u8a.fromString(s, B64_URL))) as Record<string, any>
 }
 
+export function randomString(): string {
+  return u8a.toString(randomBytes(16), 'base64')
+}
+
 export interface JWSSignature {
   protected: string
   signature: string
@@ -28,16 +33,7 @@ export interface JWSSignature {
 export interface DagJWS {
   payload: string
   signatures: Array<JWSSignature>
-  link: CID
-}
-
-export function toDagJWS(jws: string, cid: CID): DagJWS {
-  const [protectedHeader, payload, signature] = jws.split('.')
-  return {
-    payload,
-    signatures: [{ protected: protectedHeader, signature }],
-    link: cid,
-  }
+  link?: CID
 }
 
 export function fromDagJWS(jws: DagJWS): string {
