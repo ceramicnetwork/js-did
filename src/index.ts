@@ -115,6 +115,8 @@ export class DID {
   /**
    * Set the DID provider of this instance.
    * Only callable if provider not already set.
+   *
+   * @param provider    The DIDProvider to use
    */
   setProvider(provider: DIDProvider): void {
     if (this._client == null) {
@@ -128,6 +130,9 @@ export class DID {
 
   /**
    * Set the DID-resolver user by this instance
+   *
+   * @param resolver    Either a Resolver instance or an object with specific resolvers
+   * @param cache       A custom cache to use for the created resolver. Will be ignored if a Resolver instance is passed
    */
   setResolver(resolver: Resolver | ResolverRegistry, cache?: DIDCache): void {
     this._resolver = resolver instanceof Resolver ? resolver : new Resolver(resolver, cache)

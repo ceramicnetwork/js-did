@@ -104,7 +104,6 @@ import { DID } from 'dids'
 import KeyResolver from '@ceramicnetwork/key-did-resolver'
 
 // See https://github.com/decentralized-identity/did-resolver
-const registry = { test: myTestResolver }
 const did = new DID({ resolver: KeyResolver.getResolver() })
 
 // Resolve a DID document
