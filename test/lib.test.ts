@@ -278,6 +278,7 @@ describe('DID class', () => {
 
     describe('`verifyJWS method`', () => {
       const resolverRegistry = {
+        ...MOCK_RESOLVER_REGISTRY,
         '3': async () => ({
           '@context': "https://w3id.org/did/v1",
           id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
@@ -311,6 +312,18 @@ describe('DID class', () => {
           }]
         }
         expect(await did.verifyJWS(jws)).toEqual({ kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm' })
+      })
+
+      test('correctly verifies jws auth JWS', async () => {
+        const did = new DID({ resolver: resolverRegistry })
+        expect(await did.verifyJWS(MOCK_AUTH_JWS)).toEqual({
+          kid: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
+          payload: {
+            did: "did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU",
+            exp: 1606236374,
+            nonce: "rWCXyH1otp5/F78tycckgg",
+          }
+        })
       })
     })
 
