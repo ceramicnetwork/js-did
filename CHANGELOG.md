@@ -1,3 +1,6 @@
+## v1.1.0 (2020-11-26)
+feat: return payload in verifyJWS method
+
 ## v1.0.0 (2020-11-25)
 This release aligns this implementation with EIP2844.
 

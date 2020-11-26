@@ -50,6 +50,7 @@ export interface CreateJWSResult {
 
 export interface VerifyJWSResult {
   kid: string
+  payload?: Record<string, any>
 }
 
 export interface CreateJWEOptions {
@@ -215,9 +216,15 @@ export class DID {
     const { publicKey } = await this.resolve(kid)
     // verifyJWS will throw an error if the signature is invalid
     verifyJWS(jws, publicKey)
+    let payload
+    try {
+      payload = base64urlToJSON(jws.split('.')[1])
+    } catch (e) {
+      // If an error is thrown it means that the payload is a CID.
+    }
     // In the future, returned obj will need to contain
     // more metadata about the key that signed the jws.
-    return { kid }
+    return { kid, payload }
   }
 
   /**
