@@ -81,6 +81,10 @@ export interface DIDOptions {
   cache?: DIDCache
 }
 
+function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver {
+  return 'registry' in resolver && 'cache' in resolver
+}
+
 /**
  * Interact with DIDs.
  */
@@ -136,7 +140,7 @@ export class DID {
    * @param cache       A custom cache to use for the created resolver. Will be ignored if a Resolver instance is passed
    */
   setResolver(resolver: Resolver | ResolverRegistry, cache?: DIDCache): void {
-    this._resolver = resolver instanceof Resolver ? resolver : new Resolver(resolver, cache)
+    this._resolver = isResolver(resolver) ? resolver : new Resolver(resolver, cache)
   }
 
   /**
