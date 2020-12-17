@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Typescript library for interacting with DIDs",
   "main": "lib/index.js",
   "files": [
@@ -38,8 +38,8 @@
     "@stablelib/random": "^1.0.0",
     "cids": "^1.0.0",
     "dag-jose-utils": "^0.1.0",
-    "did-jwt": "^4.6.3",
-    "did-resolver": "^2.1.1",
+    "did-jwt": "^4.8.0",
+    "did-resolver": "^2.1.2",
     "rpc-utils": "^0.1.3",
     "uint8arrays": "^1.1.0"
   },
