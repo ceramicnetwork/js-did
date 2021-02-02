@@ -17,11 +17,12 @@ npm install dids
 
 ```js
 import { DID } from 'dids'
-import IdentityWallet from 'identity-wallet'
+import Ed25519Provider from 'key-did-provider-ed25519'
+import KeyResolver from 'key-did-resolver'
 
-// See https://github.com/3box/identity-wallet-js
-const wallet = new IdentityWallet(...)
-const did = new DID({ provider: wallet.getDidProvider() })
+const seed = // 32 bytes of entropy, Uint8Array
+const provider = new Ed25519Provider(seed)
+const did = new DID({ provider, resolver: KeyResolver.getResolver() })
 
 // Authenticate with the provider
 await did.authenticate()
