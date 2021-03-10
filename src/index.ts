@@ -218,7 +218,7 @@ export class DID {
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
     const didResolutionResult = await this.resolve(kid)
-    const publicKeys = didResolutionResult.didDocument!.verificationMethod || []
+    const publicKeys = didResolutionResult.didDocument?.verificationMethod || []
     // verifyJWS will throw an error if the signature is invalid
     verifyJWS(jws, publicKeys)
     let payload
