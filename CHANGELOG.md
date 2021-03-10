@@ -1,3 +1,9 @@
+## v2.0.0 (2021-03-10)
+feat: Upgrade to did-resolver v3
+
+## v1.1.1 (2020-12-17)
+fix: proper detection of did-resolver class (#21)
+
 ## v1.1.0 (2020-11-26)
 feat: return payload in verifyJWS method
 
