@@ -1,4 +1,4 @@
-import { DIDCache, DIDResolutionResult, ResolverRegistry, Resolver } from 'did-resolver'
+import { ResolverOptions, DIDResolutionResult, ResolverRegistry, Resolver } from 'did-resolver'
 import { RPCClient, RPCConnection } from 'rpc-utils'
 import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
@@ -78,7 +78,7 @@ export interface DagJWSResult {
 export interface DIDOptions {
   provider?: DIDProvider
   resolver?: Resolver | ResolverRegistry
-  cache?: DIDCache
+  resolverOptions?: ResolverOptions
 }
 
 function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver {
@@ -93,11 +93,11 @@ export class DID {
   private _id?: string
   private _resolver!: Resolver
 
-  constructor({ provider, resolver = {}, cache }: DIDOptions = {}) {
+  constructor({ provider, resolver = {}, resolverOptions }: DIDOptions = {}) {
     if (provider != null) {
       this._client = new RPCClient(provider)
     }
-    this.setResolver(resolver, cache)
+    this.setResolver(resolver, resolverOptions)
   }
 
   /**
@@ -136,11 +136,11 @@ export class DID {
   /**
    * Set the DID-resolver user by this instance
    *
-   * @param resolver    Either a Resolver instance or an object with specific resolvers
-   * @param cache       A custom cache to use for the created resolver. Will be ignored if a Resolver instance is passed
+   * @param resolver            Either a Resolver instance or an object with specific resolvers
+   * @param resolverOptions     Options to use for the created resolver. Will be ignored if a Resolver instance is passed
    */
-  setResolver(resolver: Resolver | ResolverRegistry, cache?: DIDCache): void {
-    this._resolver = isResolver(resolver) ? resolver : new Resolver(resolver, { cache })
+  setResolver(resolver: Resolver | ResolverRegistry, resolverOptions?: ResolverOptions): void {
+    this._resolver = isResolver(resolver) ? resolver : new Resolver(resolver, resolverOptions)
   }
 
   /**
