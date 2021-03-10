@@ -1,4 +1,4 @@
-import { DIDCache, DIDDocument, DIDResolver, Resolver } from 'did-resolver'
+import { DIDCache, DIDResolutionResult, ResolverRegistry, Resolver } from 'did-resolver'
 import { RPCClient, RPCConnection } from 'rpc-utils'
 import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
@@ -12,10 +12,9 @@ import {
   randomString,
 } from './utils'
 
-export type { DIDDocument } from 'did-resolver'
+export type { DIDResolutionResult } from 'did-resolver'
 export type { DagJWS, JWSSignature } from './utils'
 export type DIDProvider = RPCConnection
-export type ResolverRegistry = Record<string, DIDResolver>
 
 export interface AuthenticateOptions {
   provider?: DIDProvider
@@ -51,6 +50,7 @@ export interface CreateJWSResult {
 export interface VerifyJWSResult {
   kid: string
   payload?: Record<string, any>
+  didResolutionResult: DIDResolutionResult
 }
 
 export interface CreateJWEOptions {
@@ -140,7 +140,7 @@ export class DID {
    * @param cache       A custom cache to use for the created resolver. Will be ignored if a Resolver instance is passed
    */
   setResolver(resolver: Resolver | ResolverRegistry, cache?: DIDCache): void {
-    this._resolver = isResolver(resolver) ? resolver : new Resolver(resolver, cache)
+    this._resolver = isResolver(resolver) ? resolver : new Resolver(resolver, { cache })
   }
 
   /**
@@ -217,18 +217,17 @@ export class DID {
     if (typeof jws !== 'string') jws = fromDagJWS(jws)
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
-    const { publicKey } = await this.resolve(kid)
+    const didResolutionResult = await this.resolve(kid)
+    const publicKeys = didResolutionResult.didDocument!.verificationMethod || []
     // verifyJWS will throw an error if the signature is invalid
-    verifyJWS(jws, publicKey)
+    verifyJWS(jws, publicKeys)
     let payload
     try {
       payload = base64urlToJSON(jws.split('.')[1])
     } catch (e) {
       // If an error is thrown it means that the payload is a CID.
     }
-    // In the future, returned obj will need to contain
-    // more metadata about the key that signed the jws.
-    return { kid, payload }
+    return { kid, payload, didResolutionResult }
   }
 
   /**
@@ -296,7 +295,13 @@ export class DID {
    *
    * @param didUrl              The DID to resolve
    */
-  async resolve(didUrl: string): Promise<DIDDocument> {
-    return await this._resolver.resolve(didUrl)
+  async resolve(didUrl: string): Promise<DIDResolutionResult> {
+    const result = await this._resolver.resolve(didUrl)
+    if (result.didResolutionMetadata.error) {
+      const { error, message } = result.didResolutionMetadata
+      const maybeMessage = message ? `, ${message as string}` : ''
+      throw new Error(`Failed to resolve ${didUrl}: ${error}${maybeMessage}`)
+    }
+    return result
   }
 }

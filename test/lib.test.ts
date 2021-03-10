@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { DIDDocument, Resolver } from 'did-resolver'
+import { DIDResolutionResult, DIDDocument, Resolver } from 'did-resolver'
 import * as u8a from 'uint8arrays'
 import { randomBytes } from '@stablelib/random'
 import { generateKeyPairFromSeed } from '@stablelib/x25519'
@@ -26,11 +26,12 @@ const MOCK_AUTH_JWS = {
 }
 const MOCK_NONCE = 'rWCXyH1otp5/F78tycckgg'
 const MOCK_DID = 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU'
-const MOCK_RESOLVER_REGISTRY = {
-  'key': async () => ({
+const MOCK_RESOLVER_RESULT = {
+  didResolutionMetadata: {},
+  didDocument: {
     '@context': 'https://w3id.org/did/v1',
     id: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
-    publicKey: [{
+    verificationMethod: [{
       id: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
       type: 'Ed25519VerificationKey2018',
       controller: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
@@ -46,7 +47,10 @@ const MOCK_RESOLVER_REGISTRY = {
       controller: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
       publicKeyBase58: 'DX4KedQtt8aDJxekZx9kQxwdjTa6nqLtWBNb4NdDCGGq'
     }]
-  })
+  }
+}
+const MOCK_RESOLVER_REGISTRY = {
+  'key': async () => MOCK_RESOLVER_RESULT
 }
 
 describe('DID class', () => {
@@ -277,29 +281,36 @@ describe('DID class', () => {
     })
 
     describe('`verifyJWS method`', () => {
+      const THREE_ID_RESOLVER_RESULT = {
+          didResolutionMetadata: {},
+          didDocument: {
+            '@context': "https://w3id.org/did/v1",
+            id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
+            verificationMethod: [{
+              controller: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
+              id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF",
+              publicKeyHex: "0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e",
+              type: "Secp256k1VerificationKey2018",
+            }],
+            authentication: [{
+              controller: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
+              id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF",
+              publicKeyHex: "0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e",
+              type: "Secp256k1VerificationKey2018",
+            }],
+          }
+        }
       const resolverRegistry = {
         ...MOCK_RESOLVER_REGISTRY,
-        '3': async () => ({
-          '@context': "https://w3id.org/did/v1",
-          id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
-          publicKey: [{
-            controller: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
-            id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF",
-            publicKeyHex: "0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e",
-            type: "Secp256k1VerificationKey2018",
-          }],
-          authentication: [{
-            controller: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa",
-            id: "did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF",
-            publicKeyHex: "0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e",
-            type: "Secp256k1VerificationKey2018",
-          }],
-        })
+        '3': async () => THREE_ID_RESOLVER_RESULT
       }
       test('correctly verifies jws string', async () => {
         const did = new DID({ resolver: resolverRegistry })
         const jws = 'eyJraWQiOiJkaWQ6MzpiYWdjcWNlcmFza3hxeng0N2l2b2tqcW9md295dXliMjN0aWFlcGRyYXpxNXJsem4yaHg3a215YWN6d29hP3ZlcnNpb24taWQ9MCNrV01YTU1xazVXc290UW0iLCJhbGciOiJFUzI1NksifQ.AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB.h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ'
-        expect(await did.verifyJWS(jws)).toEqual({ kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm' })
+        expect(await did.verifyJWS(jws)).toEqual({
+          didResolutionResult: THREE_ID_RESOLVER_RESULT,
+          kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm'
+        })
       })
 
       test('correctly verifies DagJWS', async () => {
@@ -311,12 +322,16 @@ describe('DID class', () => {
             signature: 'h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ',
           }]
         }
-        expect(await did.verifyJWS(jws)).toEqual({ kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm' })
+        expect(await did.verifyJWS(jws)).toEqual({
+          didResolutionResult: THREE_ID_RESOLVER_RESULT,
+          kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm'
+        })
       })
 
       test('correctly verifies jws auth JWS', async () => {
         const did = new DID({ resolver: resolverRegistry })
         expect(await did.verifyJWS(MOCK_AUTH_JWS)).toEqual({
+          didResolutionResult: MOCK_RESOLVER_RESULT,
           kid: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
           payload: {
             did: "did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU",
@@ -331,12 +346,15 @@ describe('DID class', () => {
       test: async (did) => {
         const pk = generateKeyPairFromSeed(didMap[did]).publicKey
         return {
-          keyAgreement: [{
-            id: u8a.toString(pk, 'base58btc').split(-15),
-            type: 'X25519KeyAgreementKey2019',
-            publicKeyBase58: u8a.toString(pk, 'base58btc'),
-          }]
-        } as DIDDocument
+          didResolutionMetadata: {},
+          didDocument: {
+            keyAgreement: [{
+              id: u8a.toString(pk, 'base58btc').split(-15),
+              type: 'X25519KeyAgreementKey2019',
+              publicKeyBase58: u8a.toString(pk, 'base58btc'),
+            }]
+          } as DIDDocument
+        }
       }
     })
 
@@ -473,13 +491,16 @@ describe('DID class', () => {
     })
 
     test('uses the given Resolver config', async () => {
-      const doc = {} as DIDDocument
+      const res = {
+        didDocument: {},
+        didResolutionMetadata: {},
+      } as DIDResolutionResult
       const registry = {
-        test: jest.fn(() => Promise.resolve(doc)),
+        test: jest.fn(() => Promise.resolve(res)),
       }
       const did = new DID({ resolver: registry })
       expect(did._resolver).toBeInstanceOf(Resolver)
-      await expect(did.resolve('did:test:test')).resolves.toBe(doc)
+      await expect(did.resolve('did:test:test')).resolves.toBe(res)
     })
 
     test('creates a Resolver instance when none is provided', () => {
