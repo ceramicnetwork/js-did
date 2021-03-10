@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DID - v1.0.0</title>
-	<meta name="description" content="Documentation for DID - v1.0.0">
+	<title>DID - v2.0.0</title>
+	<meta name="description" content="Documentation for DID - v2.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">DID - v1.0.0</a>
+					<a href="index.html" class="title">DID - v2.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1>DID - v1.0.0</h1>
+			<h1>DID - v2.0.0</h1>
 		</div>
 	</div>
 </header>
@@ -83,11 +83,12 @@
 					<h3>Authentication with the provider</h3>
 				</a>
 				<pre><code class="language-js"><span class="hljs-keyword">import</span> { DID } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;dids&#x27;</span>
-<span class="hljs-keyword">import</span> IdentityWallet <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;identity-wallet&#x27;</span>
+<span class="hljs-keyword">import</span> Ed25519Provider <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;key-did-provider-ed25519&#x27;</span>
+<span class="hljs-keyword">import</span> KeyResolver <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;key-did-resolver&#x27;</span>
 
-<span class="hljs-comment">// See https://github.com/3box/identity-wallet-js</span>
-<span class="hljs-keyword">const</span> wallet = <span class="hljs-keyword">new</span> IdentityWallet(...)
-<span class="hljs-keyword">const</span> did = <span class="hljs-keyword">new</span> DID({ <span class="hljs-attr">provider</span>: wallet.getDidProvider() })
+<span class="hljs-keyword">const</span> seed = <span class="hljs-comment">// 32 bytes of entropy, Uint8Array</span>
+<span class="hljs-keyword">const</span> provider = <span class="hljs-keyword">new</span> Ed25519Provider(seed)
+<span class="hljs-keyword">const</span> did = <span class="hljs-keyword">new</span> DID({ provider, <span class="hljs-attr">resolver</span>: KeyResolver.getResolver() })
 
 <span class="hljs-comment">// Authenticate with the provider</span>
 <span class="hljs-keyword">await</span> did.authenticate()
@@ -232,9 +233,6 @@
 					<li class=" tsd-kind-type-alias">
 						<a href="globals.html#didprovider" class="tsd-kind-icon">DIDProvider</a>
 					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#resolverregistry" class="tsd-kind-icon">Resolver<wbr>Registry</a>
-					</li>
 					<li class=" tsd-kind-variable">
 						<a href="globals.html#b64" class="tsd-kind-icon">B64</a>
 					</li>
@@ -255,6 +253,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#fromdagjws" class="tsd-kind-icon">from<wbr>DagJWS</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#isresolver" class="tsd-kind-icon">is<wbr>Resolver</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="globals.html#randomstring" class="tsd-kind-icon">random<wbr>String</a>

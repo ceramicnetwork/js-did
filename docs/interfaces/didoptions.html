@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DIDOptions | DID - v1.0.0</title>
-	<meta name="description" content="Documentation for DID - v1.0.0">
+	<title>DIDOptions | DID - v2.0.0</title>
+	<meta name="description" content="Documentation for DID - v2.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">DID - v1.0.0</a>
+					<a href="../index.html" class="title">DID - v2.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -81,9 +81,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="didoptions.html#cache" class="tsd-kind-icon">cache</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="didoptions.html#provider" class="tsd-kind-icon">provider</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="didoptions.html#resolver" class="tsd-kind-icon">resolver</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="didoptions.html#resolveroptions" class="tsd-kind-icon">resolver<wbr>Options</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,32 +92,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="cache" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> cache</h3>
-					<div class="tsd-signature tsd-kind-icon">cache<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DIDCache</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/c403e8b/src/index.ts#L80">src/index.ts:80</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="provider" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> provider</h3>
 					<div class="tsd-signature tsd-kind-icon">provider<span class="tsd-signature-symbol">:</span> <a href="../globals.html#didprovider" class="tsd-signature-type">DIDProvider</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/c403e8b/src/index.ts#L78">src/index.ts:78</a></li>
+							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L79">src/index.ts:79</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="resolver" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> resolver</h3>
-					<div class="tsd-signature tsd-kind-icon">resolver<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Resolver</span><span class="tsd-signature-symbol"> | </span><a href="../globals.html#resolverregistry" class="tsd-signature-type">ResolverRegistry</a></div>
+					<div class="tsd-signature tsd-kind-icon">resolver<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Resolver</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ResolverRegistry</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/c403e8b/src/index.ts#L79">src/index.ts:79</a></li>
+							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L80">src/index.ts:80</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="resolveroptions" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> resolver<wbr>Options</h3>
+					<div class="tsd-signature tsd-kind-icon">resolver<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">ResolverOptions</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L81">src/index.ts:81</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -163,13 +163,13 @@
 						<a href="didoptions.html" class="tsd-kind-icon">DIDOptions</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="didoptions.html#cache" class="tsd-kind-icon">cache</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="didoptions.html#provider" class="tsd-kind-icon">provider</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
 								<a href="didoptions.html#resolver" class="tsd-kind-icon">resolver</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="didoptions.html#resolveroptions" class="tsd-kind-icon">resolver<wbr>Options</a>
 							</li>
 						</ul>
 					</li>
@@ -199,9 +199,6 @@
 					<li class=" tsd-kind-type-alias">
 						<a href="../globals.html#didprovider" class="tsd-kind-icon">DIDProvider</a>
 					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#resolverregistry" class="tsd-kind-icon">Resolver<wbr>Registry</a>
-					</li>
 					<li class=" tsd-kind-variable">
 						<a href="../globals.html#b64" class="tsd-kind-icon">B64</a>
 					</li>
@@ -222,6 +219,9 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#fromdagjws" class="tsd-kind-icon">from<wbr>DagJWS</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../globals.html#isresolver" class="tsd-kind-icon">is<wbr>Resolver</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="../globals.html#randomstring" class="tsd-kind-icon">random<wbr>String</a>
