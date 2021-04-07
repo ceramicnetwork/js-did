@@ -1,31 +1,28 @@
-import type { DIDResolutionResult, Resolver } from 'did-resolver'
+import { prepareCleartext } from 'dag-jose-utils'
 import { createJWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import type { JWE } from 'did-jwt'
-import { prepareCleartext } from 'dag-jose-utils'
+import type { DIDResolutionOptions, DIDResolutionResult, Resolvable } from 'did-resolver'
 
+import type { DagJWS } from './types'
 import { fromDagJWS, base64urlToJSON } from './utils'
-import type { DagJWS } from './utils'
 
-export interface Resolvable {
-  resolver: Resolver
-}
-
-export interface VerifyJWSResult {
+export type VerifyJWSResult = {
   kid: string
   payload?: Record<string, any>
   didResolutionResult: DIDResolutionResult
 }
 
-export interface CreateJWEOptions {
+export type CreateJWEOptions = {
   protectedHeader?: Record<string, any>
   aad?: Uint8Array
 }
 
 export async function resolveDID(
-  { resolver }: Resolvable,
-  didUrl: string
+  resolvable: Resolvable,
+  didUrl: string,
+  options?: DIDResolutionOptions
 ): Promise<DIDResolutionResult> {
-  const result = await resolver.resolve(didUrl)
+  const result = await resolvable.resolve(didUrl, options)
   if (result.didResolutionMetadata.error) {
     const { error, message } = result.didResolutionMetadata
     const maybeMessage = message ? `, ${message as string}` : ''
@@ -55,12 +52,12 @@ export async function verifyDIDJWS(
 }
 
 export async function createDIDJWE(
-  { resolver }: Resolvable,
+  resolvable: Resolvable,
   cleartext: Uint8Array,
   recipients: Array<string>,
   options: CreateJWEOptions = {}
 ): Promise<JWE> {
-  const encrypters = await resolveX25519Encrypters(recipients, resolver)
+  const encrypters = await resolveX25519Encrypters(recipients, resolvable)
   return createJWE(cleartext, encrypters, options.protectedHeader, options.aad)
 }
 

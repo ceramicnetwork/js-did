@@ -1,6 +1,7 @@
-import CID from 'cids'
 import * as u8a from 'uint8arrays'
 import { randomBytes } from '@stablelib/random'
+
+import type { DagJWS } from './types'
 
 const B64 = 'base64pad'
 const B64_URL = 'base64url'
@@ -23,17 +24,6 @@ export function base64urlToJSON(s: string): Record<string, any> {
 
 export function randomString(): string {
   return u8a.toString(randomBytes(16), 'base64')
-}
-
-export interface JWSSignature {
-  protected: string
-  signature: string
-}
-
-export interface DagJWS {
-  payload: string
-  signatures: Array<JWSSignature>
-  link?: CID
 }
 
 export function fromDagJWS(jws: DagJWS): string {

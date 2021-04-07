@@ -1,44 +1,47 @@
 import { encodePayload, decodeCleartext } from 'dag-jose-utils'
 import type { JWE } from 'did-jwt'
-import type { RPCClient } from 'rpc-utils'
 
+import type { DagJWS, DIDProviderClient, DIDProviderOrClient } from './types'
 import { encodeBase64, decodeBase64, encodeBase64Url } from './utils'
-import type { DagJWS } from './utils'
 
-export interface Authenticated {
-  id: string
-  providerClient: RPCClient
+export type AuthenticateParamsOptions = {
+  aud?: string
+  paths?: Array<string>
 }
 
-export interface CreateJWSOptions {
+export type AuthenticateOptions = AuthenticateParamsOptions & { provider?: DIDProviderOrClient }
+
+export type Providable = {
+  authenticated: boolean
+  id?: string
+  providerClient: DIDProviderClient
+  toAuthenticated: (options?: AuthenticateOptions) => Promise<Authenticated>
+}
+
+export type Authenticated = Providable & { authenticated: true; id: string }
+
+export type CreateJWSOptions = {
   did?: string
   protected?: Record<string, any>
   linkedBlock?: string
 }
 
-export interface CreateJWSParams extends CreateJWSOptions {
-  payload: any
-}
-
-export interface CreateJWSResult {
-  jws: DagJWS
-}
-
-export interface DagJWSResult {
+export type DagJWSResult = {
   jws: DagJWS
   linkedBlock: Uint8Array
 }
 
-export interface DecryptJWEOptions {
+export type DecryptJWEOptions = {
   did?: string
 }
 
-export interface DecryptJWEParams extends DecryptJWEOptions {
-  jwe: JWE
-}
-
-export interface DecryptJWEResult {
-  cleartext: string // base64-encoded
+export async function ensureAuthenticated(
+  providable: Providable,
+  options?: AuthenticateOptions
+): Promise<Authenticated> {
+  return providable.authenticated
+    ? (providable as Authenticated)
+    : await providable.toAuthenticated(options)
 }
 
 export async function createDIDJWS<T = any>(
@@ -46,11 +49,11 @@ export async function createDIDJWS<T = any>(
   payload: T,
   options: CreateJWSOptions = {}
 ): Promise<DagJWS> {
-  if (!options.did) options.did = auth.id
-  const { jws } = await auth.providerClient.request<CreateJWSParams, CreateJWSResult>(
-    'did_createJWS',
-    { ...options, payload }
-  )
+  const { jws } = await auth.providerClient.request('did_createJWS', {
+    did: auth.id,
+    ...options,
+    payload,
+  })
   return jws
 }
 
@@ -73,10 +76,7 @@ export async function decryptDIDJWE(
   options: DecryptJWEOptions = {}
 ): Promise<Uint8Array> {
   if (!options.did) options.did = auth.id
-  const { cleartext } = await auth.providerClient.request<DecryptJWEParams, DecryptJWEResult>(
-    'did_decryptJWE',
-    { ...options, jwe }
-  )
+  const { cleartext } = await auth.providerClient.request('did_decryptJWE', { ...options, jwe })
   return decodeBase64(cleartext)
 }
 

@@ -1,65 +1,63 @@
 import type { JWE } from 'did-jwt'
 import { Resolver } from 'did-resolver'
-import type { ResolverOptions, DIDResolutionResult, ResolverRegistry } from 'did-resolver'
+import type {
+  DIDResolutionOptions,
+  DIDResolutionResult,
+  Resolvable,
+  ResolverOptions,
+  ResolverRegistry,
+} from 'did-resolver'
 import { RPCClient } from 'rpc-utils'
-import type { RPCConnection } from 'rpc-utils'
 
-import { createDagJWS, createDIDJWS, decryptDagJWE, decryptDIDJWE } from './authenticated'
+import { createDagJWS, createDIDJWS, decryptDagJWE, decryptDIDJWE } from './providable'
 import type {
   Authenticated,
+  AuthenticateOptions,
+  AuthenticateParamsOptions,
   CreateJWSOptions,
   DagJWSResult,
   DecryptJWEOptions,
-} from './authenticated'
+  Providable,
+} from './providable'
 import { createDagJWE, createDIDJWE, resolveDID, verifyDIDJWS } from './resolvable'
-import type { CreateJWEOptions, Resolvable, VerifyJWSResult } from './resolvable'
+import type { CreateJWEOptions, VerifyJWSResult } from './resolvable'
+import type { DagJWS, DIDProviderClient, DIDProviderOrClient } from './types'
 import { base64urlToJSON, randomString } from './utils'
-import type { DagJWS } from './utils'
 
-export type DIDProvider = RPCConnection
-
-export interface AuthenticateOptions {
-  provider?: DIDProvider
-  aud?: string
-  paths?: Array<string>
-}
-
-export interface AuthenticateParams {
-  nonce: string
-  aud?: string
-  paths?: Array<string>
-}
-
-export interface AuthenticateResponse extends AuthenticateParams {
+type AuthenticateResponse = AuthenticateParamsOptions & {
   did: string
   exp: number
-}
-
-export interface DIDOptions {
-  provider?: DIDProvider
-  resolver?: Resolver | ResolverRegistry
-  resolverOptions?: ResolverOptions
+  nonce: string
 }
 
 function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver {
   return 'registry' in resolver && 'cache' in resolver
 }
 
+export type DIDCommonOptions = {
+  resolver?: Resolver | ResolverRegistry
+  resolverOptions?: ResolverOptions
+}
+
+export type DIDOptions = DIDCommonOptions & { provider?: DIDProviderOrClient }
+
+export type AuthDIDParams = DIDCommonOptions &
+  AuthenticateParamsOptions & { provider: DIDProviderOrClient }
+
 /**
  * Interact with DIDs.
  */
-export class DID {
-  _client?: RPCClient
+export class DID implements Providable, Resolvable {
+  _client?: DIDProviderClient
   _id?: string
-  _resolver?: Resolver
 
-  constructor({ provider, resolver, resolverOptions }: DIDOptions = {}) {
+  resolver!: Resolver
+
+  constructor({ provider, resolver = {}, resolverOptions }: DIDOptions = {}) {
     if (provider != null) {
-      this._client = new RPCClient(provider)
+      this.setProvider(provider)
     }
-    if (resolver != null) {
-      this.setResolver(resolver, resolverOptions)
-    }
+    this.setResolver(resolver, resolverOptions)
   }
 
   /**
@@ -72,25 +70,15 @@ export class DID {
   /**
    * Get the DID identifier of the user.
    */
-  get id(): string {
-    if (this._id == null) {
-      throw new Error('DID is not authenticated')
-    }
+  get id(): string | undefined {
     return this._id
   }
 
-  get providerClient(): RPCClient {
+  get providerClient(): DIDProviderClient {
     if (this._client == null) {
       throw new Error('Provider client is not defined')
     }
     return this._client
-  }
-
-  get resolver(): Resolver {
-    if (this._resolver == null) {
-      throw new Error('Resolver is not defined')
-    }
-    return this._resolver
   }
 
   /**
@@ -99,10 +87,11 @@ export class DID {
    *
    * @param provider    The DIDProvider to use
    */
-  setProvider(provider: DIDProvider): void {
+  setProvider(provider: DIDProviderOrClient): void {
+    const client = provider instanceof RPCClient ? provider : new RPCClient(provider)
     if (this._client == null) {
-      this._client = new RPCClient(provider)
-    } else if (this._client.connection !== provider) {
+      this._client = client
+    } else if (this._client.connection !== client.connection) {
       throw new Error(
         'A different provider is already set, create a new DID instance to use another provider'
       )
@@ -116,32 +105,18 @@ export class DID {
    * @param resolverOptions     Options to use for the created resolver. Will be ignored if a Resolver instance is passed
    */
   setResolver(resolver: Resolver | ResolverRegistry, resolverOptions?: ResolverOptions): void {
-    this._resolver = isResolver(resolver) ? resolver : new Resolver(resolver, resolverOptions)
-  }
-
-  asResolvable(): Resolvable {
-    if (this._resolver == null) {
-      throw new Error('Resolver is not defined')
-    }
-    return this as Resolvable
+    this.resolver = isResolver(resolver) ? resolver : new Resolver(resolver, resolverOptions)
   }
 
   /**
    * Authenticate the user.
    */
-  async authenticate({ provider, paths, aud }: AuthenticateOptions = {}): Promise<string> {
+  async authenticate({ provider, paths = [], aud }: AuthenticateOptions = {}): Promise<string> {
     if (provider != null) {
       this.setProvider(provider)
     }
-    if (this._client == null) {
-      throw new Error('No provider available')
-    }
     const nonce = randomString()
-    const jws = await this._client.request<AuthenticateParams, DagJWS>('did_authenticate', {
-      nonce,
-      aud,
-      paths,
-    })
+    const jws = await this.providerClient.request('did_authenticate', { nonce, aud, paths })
     const { kid } = await this.verifyJWS(jws)
     const payload = base64urlToJSON(jws.payload) as AuthenticateResponse
     if (!kid.includes(payload.did)) throw new Error('Invalid authentication response, kid mismatch')
@@ -152,11 +127,16 @@ export class DID {
     return this._id
   }
 
-  async toAuthenticated(options: AuthenticateOptions = {}): Promise<Authenticated> {
-    if (!this.authenticated) {
-      await this.authenticate(options)
+  async toAuthenticated(options: AuthenticateOptions = {}): Promise<AuthDID> {
+    if (this instanceof AuthDID) {
+      return this
     }
-    return this as Authenticated
+
+    const params = { ...options, resolver: this.resolver }
+    if (params.provider == null) {
+      params.provider = this.providerClient
+    }
+    return await AuthDID.create(params as AuthDIDParams)
   }
 
   /**
@@ -194,7 +174,7 @@ export class DID {
    * @returns                   Information about the signed JWS
    */
   async verifyJWS(jws: string | DagJWS): Promise<VerifyJWSResult> {
-    return await verifyDIDJWS(this.asResolvable(), jws)
+    return await verifyDIDJWS(this.resolver, jws)
   }
 
   /**
@@ -209,7 +189,7 @@ export class DID {
     recipients: Array<string>,
     options: CreateJWEOptions = {}
   ): Promise<JWE> {
-    return await createDIDJWE(this.asResolvable(), cleartext, recipients, options)
+    return await createDIDJWE(this.resolver, cleartext, recipients, options)
   }
 
   /**
@@ -224,7 +204,7 @@ export class DID {
     recipients: Array<string>,
     options: CreateJWEOptions = {}
   ): Promise<JWE> {
-    return await createDagJWE(this.asResolvable(), cleartext, recipients, options)
+    return await createDagJWE(this.resolver, cleartext, recipients, options)
   }
 
   /**
@@ -255,7 +235,29 @@ export class DID {
    *
    * @param didUrl              The DID to resolve
    */
-  async resolve(didUrl: string): Promise<DIDResolutionResult> {
-    return await resolveDID(this.asResolvable(), didUrl)
+  async resolve(didUrl: string, options?: DIDResolutionOptions): Promise<DIDResolutionResult> {
+    return await resolveDID(this.resolver, didUrl, options)
+  }
+}
+
+export class AuthDID extends DID implements Authenticated {
+  static async create(params: AuthDIDParams): Promise<AuthDID> {
+    const did = new AuthDID(params)
+    await did.authenticate(params)
+    return did
+  }
+
+  get authenticated(): true {
+    if (this._id == null) {
+      throw new Error('AuthDID is not authenticated, was it created using AuthDID.create()?')
+    }
+    return true
+  }
+
+  get id(): string {
+    if (this._id == null) {
+      throw new Error('AuthDID is not authenticated, was it created using AuthDID.create()?')
+    }
+    return this._id
   }
 }
