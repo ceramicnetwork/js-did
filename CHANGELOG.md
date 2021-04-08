@@ -1,3 +1,6 @@
+## v2.0.1 (2021-05-08)
+chore: Update dependencies
+
 ## v2.0.0 (2021-03-10)
 feat: Upgrade to did-resolver v3
 
