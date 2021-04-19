@@ -3,10 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DID - v2.0.0</title>
-	<meta name="description" content="Documentation for DID - v2.0.0">
+	<title>DID - v2.1.0</title>
+	<meta name="description" content="Documentation for DID - v2.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
+	<script async src="assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -22,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">DID - v2.0.0</a>
+					<a href="index.html" class="title">DID - v2.1.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -51,12 +50,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<ul class="tsd-breadcrumb">
-				<li>
-					<a href="globals.html">Globals</a>
-				</li>
-			</ul>
-			<h1>DID - v2.0.0</h1>
+			<h1>DID - v2.1.0</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +65,8 @@
 				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
 					<h2>Installation</h2>
 				</a>
-				<pre><code class="language-sh">npm install dids</code></pre>
+				<pre><code class="language-sh"><span style="color: #000000">npm install dids</span>
+</code></pre>
 				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
 					<h2>API</h2>
 				</a>
@@ -82,90 +77,94 @@
 				<a href="#authentication-with-the-provider" id="authentication-with-the-provider" style="color: inherit; text-decoration: none;">
 					<h3>Authentication with the provider</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { DID } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;dids&#x27;</span>
-<span class="hljs-keyword">import</span> Ed25519Provider <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;key-did-provider-ed25519&#x27;</span>
-<span class="hljs-keyword">import</span> KeyResolver <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;key-did-resolver&#x27;</span>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DID</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dids&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Ed25519Provider</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;key-did-provider-ed25519&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;key-did-resolver&#039;</span>
 
-<span class="hljs-keyword">const</span> seed = <span class="hljs-comment">// 32 bytes of entropy, Uint8Array</span>
-<span class="hljs-keyword">const</span> provider = <span class="hljs-keyword">new</span> Ed25519Provider(seed)
-<span class="hljs-keyword">const</span> did = <span class="hljs-keyword">new</span> DID({ provider, <span class="hljs-attr">resolver</span>: KeyResolver.getResolver() })
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">seed</span><span style="color: #000000"> = </span><span style="color: #008000">// 32 bytes of entropy, Uint8Array</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">provider</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Ed25519Provider</span><span style="color: #000000">(</span><span style="color: #001080">seed</span><span style="color: #000000">)</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">did</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DID</span><span style="color: #000000">({ </span><span style="color: #001080">provider</span><span style="color: #000000">, </span><span style="color: #001080">resolver:</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000">.</span><span style="color: #795E26">getResolver</span><span style="color: #000000">() })</span>
 
-<span class="hljs-comment">// Authenticate with the provider</span>
-<span class="hljs-keyword">await</span> did.authenticate()
+<span style="color: #008000">// Authenticate with the provider</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">authenticate</span><span style="color: #000000">()</span>
 
-<span class="hljs-comment">// Read the DID string - this will throw an error if the DID instance is not authenticated</span>
-<span class="hljs-keyword">const</span> aliceDID = did.id
+<span style="color: #008000">// Read the DID string - this will throw an error if the DID instance is not authenticated</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">aliceDID</span><span style="color: #000000"> = </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #001080">id</span>
 
-<span class="hljs-comment">// Create a JWS - this will throw an error if the DID instance is not authenticated</span>
-<span class="hljs-keyword">const</span> jws = <span class="hljs-keyword">await</span> did.createJWS({ <span class="hljs-attr">hello</span>: <span class="hljs-string">&#x27;world&#x27;</span> })</code></pre>
+<span style="color: #008000">// Create a JWS - this will throw an error if the DID instance is not authenticated</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jws</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">createJWS</span><span style="color: #000000">({ </span><span style="color: #001080">hello:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;world&#039;</span><span style="color: #000000"> })</span>
+</code></pre>
 				<a href="#use-dagjws-with-ipfs" id="use-dagjws-with-ipfs" style="color: inherit; text-decoration: none;">
 					<h3>Use DagJWS with IPFS</h3>
 				</a>
 				<p>The DagJWS functionality of the DID library can be used in conjunction with IPFS.</p>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> payload = { <span class="hljs-attr">some</span>: <span class="hljs-string">&#x27;data&#x27;</span> }
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">payload</span><span style="color: #000000"> = { </span><span style="color: #001080">some:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data&#039;</span><span style="color: #000000"> }</span>
 
-<span class="hljs-comment">// sign the payload as dag-jose</span>
-<span class="hljs-keyword">const</span> { jws, linkedBlock } = <span class="hljs-keyword">await</span> did.createDagJWS(payload)
+<span style="color: #008000">// sign the payload as dag-jose</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">jws</span><span style="color: #000000">, </span><span style="color: #0070C1">linkedBlock</span><span style="color: #000000"> } = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">createDagJWS</span><span style="color: #000000">(</span><span style="color: #001080">payload</span><span style="color: #000000">)</span>
 
-<span class="hljs-comment">// put the JWS into the ipfs dag</span>
-<span class="hljs-keyword">const</span> jwsCid = <span class="hljs-keyword">await</span> ipfs.dag.put(jws, { <span class="hljs-attr">format</span>: <span class="hljs-string">&#x27;dag-jose&#x27;</span>, <span class="hljs-attr">hashAlg</span>: <span class="hljs-string">&#x27;sha2-256&#x27;</span> })
+<span style="color: #008000">// put the JWS into the ipfs dag</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jwsCid</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">put</span><span style="color: #000000">(</span><span style="color: #001080">jws</span><span style="color: #000000">, { </span><span style="color: #001080">format:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dag-jose&#039;</span><span style="color: #000000">, </span><span style="color: #001080">hashAlg:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;sha2-256&#039;</span><span style="color: #000000"> })</span>
 
-<span class="hljs-comment">// put the payload into the ipfs dag</span>
-<span class="hljs-keyword">const</span> block = <span class="hljs-keyword">await</span> ipfs.block.put(linkedBlock, { <span class="hljs-attr">cid</span>: jws.link })
+<span style="color: #008000">// put the payload into the ipfs dag</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">block</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">block</span><span style="color: #000000">.</span><span style="color: #795E26">put</span><span style="color: #000000">(</span><span style="color: #001080">linkedBlock</span><span style="color: #000000">, { </span><span style="color: #001080">cid:</span><span style="color: #000000"> </span><span style="color: #001080">jws</span><span style="color: #000000">.</span><span style="color: #001080">link</span><span style="color: #000000"> })</span>
 
-<span class="hljs-comment">// get the value of the payload using the payload cid</span>
-<span class="hljs-built_in">console</span>.log((<span class="hljs-keyword">await</span> ipfs.dag.get(jws.link)).value)
-<span class="hljs-comment">// output:</span>
-<span class="hljs-comment">// &gt; { some: &#x27;data&#x27; }</span>
+<span style="color: #008000">// get the value of the payload using the payload cid</span>
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">((</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jws</span><span style="color: #000000">.</span><span style="color: #001080">link</span><span style="color: #000000">)).</span><span style="color: #001080">value</span><span style="color: #000000">)</span>
+<span style="color: #008000">// output:</span>
+<span style="color: #008000">// &gt; { some: &#039;data&#039; }</span>
 
-<span class="hljs-comment">// alternatively get it using the ipld path from the JWS cid</span>
-<span class="hljs-built_in">console</span>.log((<span class="hljs-keyword">await</span> ipfs.dag.get(jwsCid, { <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;/link&#x27;</span> })).value)
-<span class="hljs-comment">// output:</span>
-<span class="hljs-comment">// &gt; { some: &#x27;data&#x27; }</span>
+<span style="color: #008000">// alternatively get it using the ipld path from the JWS cid</span>
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">((</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jwsCid</span><span style="color: #000000">, { </span><span style="color: #001080">path:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;/link&#039;</span><span style="color: #000000"> })).</span><span style="color: #001080">value</span><span style="color: #000000">)</span>
+<span style="color: #008000">// output:</span>
+<span style="color: #008000">// &gt; { some: &#039;data&#039; }</span>
 
-<span class="hljs-comment">// get the jws from the dag</span>
-<span class="hljs-built_in">console</span>.log((<span class="hljs-keyword">await</span> ipfs.dag.get(jwsCid)).value)
-<span class="hljs-comment">// output:</span>
-<span class="hljs-comment">// &gt; {</span>
-<span class="hljs-comment">// &gt;   payload: &#x27;AXESINDmZIeFXbbpBQWH1bXt7F2Ysg03pRcvzsvSc7vMNurc&#x27;,</span>
-<span class="hljs-comment">// &gt;   signatures: [</span>
-<span class="hljs-comment">// &gt;     {</span>
-<span class="hljs-comment">// &gt;       protected: &#x27;eyJraWQiOiJkaWQ6Mzp1bmRlZmluZWQ_dmVyc2lvbj0wI3NpZ25pbmciLCJhbGciOiJFUzI1NksifQ&#x27;,</span>
-<span class="hljs-comment">// &gt;       signature: &#x27;pNz3i10YMlv-BiVfqBbHvHQp5NH3x4TAHQ5oqSmNBUx1DH_MONa_VBZSP2o9r9epDdbRRBLQjrIeigdDWoXrBQ&#x27;</span>
-<span class="hljs-comment">// &gt;     }</span>
-<span class="hljs-comment">// &gt;   ],</span>
-<span class="hljs-comment">// &gt;   link: CID(bafyreigq4zsipbk5w3uqkbmh2w2633c5tcza2n5fc4x45s6soo54ynxk3q)</span>
-<span class="hljs-comment">// &gt; }</span></code></pre>
+<span style="color: #008000">// get the jws from the dag</span>
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">((</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jwsCid</span><span style="color: #000000">)).</span><span style="color: #001080">value</span><span style="color: #000000">)</span>
+<span style="color: #008000">// output:</span>
+<span style="color: #008000">// &gt; {</span>
+<span style="color: #008000">// &gt;   payload: &#039;AXESINDmZIeFXbbpBQWH1bXt7F2Ysg03pRcvzsvSc7vMNurc&#039;,</span>
+<span style="color: #008000">// &gt;   signatures: [</span>
+<span style="color: #008000">// &gt;     {</span>
+<span style="color: #008000">// &gt;       protected: &#039;eyJraWQiOiJkaWQ6Mzp1bmRlZmluZWQ_dmVyc2lvbj0wI3NpZ25pbmciLCJhbGciOiJFUzI1NksifQ&#039;,</span>
+<span style="color: #008000">// &gt;       signature: &#039;pNz3i10YMlv-BiVfqBbHvHQp5NH3x4TAHQ5oqSmNBUx1DH_MONa_VBZSP2o9r9epDdbRRBLQjrIeigdDWoXrBQ&#039;</span>
+<span style="color: #008000">// &gt;     }</span>
+<span style="color: #008000">// &gt;   ],</span>
+<span style="color: #008000">// &gt;   link: CID(bafyreigq4zsipbk5w3uqkbmh2w2633c5tcza2n5fc4x45s6soo54ynxk3q)</span>
+<span style="color: #008000">// &gt; }</span>
+</code></pre>
 				<p>As can be observed above the <code>createDagJWS</code> method takes the payload, encodes it using <code>dag-cbor</code> and computes it&#39;s CID. It then uses this CID as the payload of the JWS that is then signed. The JWS that was just created can be put into ipfs using the <code>dag-jose</code> codec. Returned is also the encoded block of the payload. This can be put into ipfs using <code>ipfs.block.put</code>. Alternatively <code>ipfs.dag.put(payload)</code> would have the same effect.</p>
 				<a href="#use-dagjwe-with-ipfs" id="use-dagjwe-with-ipfs" style="color: inherit; text-decoration: none;">
 					<h3>Use DagJWE with IPFS</h3>
 				</a>
 				<p>The DagJWE functionality allows us to encrypt IPLD data to one or multiple DIDs. The resulting JWE object can then be put into ipfs using the <a href="https://github.com/ceramicnetwork/js-dag-jose">dag-jose</a> codec. A user that is authenticated can at a later point decrypt this object.</p>
-				<pre><code class="language-js"><span class="hljs-keyword">const</span> cleartext = { <span class="hljs-attr">some</span>: <span class="hljs-string">&#x27;data&#x27;</span>, <span class="hljs-attr">coolLink</span>: <span class="hljs-keyword">new</span> CID(<span class="hljs-string">&#x27;bafyqacnbmrqxgzdgdeaui&#x27;</span>) }
+				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">cleartext</span><span style="color: #000000"> = { </span><span style="color: #001080">some:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data&#039;</span><span style="color: #000000">, </span><span style="color: #001080">coolLink:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">CID</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;bafyqacnbmrqxgzdgdeaui&#039;</span><span style="color: #000000">) }</span>
 
-<span class="hljs-comment">// encrypt the cleartext object</span>
-<span class="hljs-keyword">const</span> jwe = <span class="hljs-keyword">await</span> did.createDagJWE(cleartext, [<span class="hljs-string">&#x27;did:3:bafy89h4f9...&#x27;</span>, <span class="hljs-string">&#x27;did:key:za234...&#x27;</span>])
+<span style="color: #008000">// encrypt the cleartext object</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jwe</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">createDagJWE</span><span style="color: #000000">(</span><span style="color: #001080">cleartext</span><span style="color: #000000">, [</span><span style="color: #A31515">&#039;did:3:bafy89h4f9...&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;did:key:za234...&#039;</span><span style="color: #000000">])</span>
 
-<span class="hljs-comment">// put the JWE into the ipfs dag</span>
-<span class="hljs-keyword">const</span> jweCid = <span class="hljs-keyword">await</span> ipfs.dag.put(jwe, { <span class="hljs-attr">format</span>: <span class="hljs-string">&#x27;dag-jose&#x27;</span>, <span class="hljs-attr">hashAlg</span>: <span class="hljs-string">&#x27;sha2-256&#x27;</span> })
+<span style="color: #008000">// put the JWE into the ipfs dag</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jweCid</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">put</span><span style="color: #000000">(</span><span style="color: #001080">jwe</span><span style="color: #000000">, { </span><span style="color: #001080">format:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dag-jose&#039;</span><span style="color: #000000">, </span><span style="color: #001080">hashAlg:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;sha2-256&#039;</span><span style="color: #000000"> })</span>
 
 
-<span class="hljs-comment">// get the jwe from the dag and decrypt it</span>
-<span class="hljs-keyword">const</span> dagJWE = <span class="hljs-keyword">await</span> ipfs.dag.get(jweCid)
-<span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">await</span> did.decryptDagJWE(dagJWE))
-<span class="hljs-comment">// output:</span>
-<span class="hljs-comment">// &gt; { some: &#x27;data&#x27; }</span></code></pre>
+<span style="color: #008000">// get the jwe from the dag and decrypt it</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dagJWE</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jweCid</span><span style="color: #000000">)</span>
+<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">decryptDagJWE</span><span style="color: #000000">(</span><span style="color: #001080">dagJWE</span><span style="color: #000000">))</span>
+<span style="color: #008000">// output:</span>
+<span style="color: #008000">// &gt; { some: &#039;data&#039; }</span>
+</code></pre>
 				<a href="#resolving-dids" id="resolving-dids" style="color: inherit; text-decoration: none;">
 					<h3>Resolving DIDs</h3>
 				</a>
-				<pre><code class="language-js"><span class="hljs-keyword">import</span> { DID } <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;dids&#x27;</span>
-<span class="hljs-keyword">import</span> KeyResolver <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@ceramicnetwork/key-did-resolver&#x27;</span>
+				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DID</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dids&#039;</span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@ceramicnetwork/key-did-resolver&#039;</span>
 
-<span class="hljs-comment">// See https://github.com/decentralized-identity/did-resolver</span>
-<span class="hljs-keyword">const</span> did = <span class="hljs-keyword">new</span> DID({ <span class="hljs-attr">resolver</span>: KeyResolver.getResolver() })
+<span style="color: #008000">// See https://github.com/decentralized-identity/did-resolver</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">did</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DID</span><span style="color: #000000">({ </span><span style="color: #001080">resolver:</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000">.</span><span style="color: #795E26">getResolver</span><span style="color: #000000">() })</span>
 
-<span class="hljs-comment">// Resolve a DID document</span>
-<span class="hljs-keyword">await</span> did.resolve(<span class="hljs-string">&#x27;did:test:...&#x27;</span>)</code></pre>
+<span style="color: #008000">// Resolve a DID document</span>
+<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;did:test:...&#039;</span><span style="color: #000000">)</span>
+</code></pre>
 				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
 					<h2>License</h2>
 				</a>
@@ -175,8 +174,8 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
@@ -209,8 +208,8 @@
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/didoptions.html" class="tsd-kind-icon">DIDOptions</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/dagjws.html" class="tsd-kind-icon">DagJWS</a>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/didresolutionresult.html" class="tsd-kind-icon">DIDResolution<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="interfaces/dagjwsresult.html" class="tsd-kind-icon">DagJWSResult</a>
@@ -225,40 +224,40 @@
 						<a href="interfaces/decryptjweresult.html" class="tsd-kind-icon">DecryptJWEResult</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/jwssignature.html" class="tsd-kind-icon">JWSSignature</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="interfaces/verifyjwsresult.html" class="tsd-kind-icon">VerifyJWSResult</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="globals.html#didprovider" class="tsd-kind-icon">DIDProvider</a>
+						<a href="modules.html#authparams" class="tsd-kind-icon">Auth<wbr>Params</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#b64" class="tsd-kind-icon">B64</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#didmethodname" class="tsd-kind-icon">DIDMethod<wbr>Name</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="globals.html#b64_url" class="tsd-kind-icon">B64_<wbr>URL</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#didprovider" class="tsd-kind-icon">DIDProvider</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#base64urltojson" class="tsd-kind-icon">base64url<wbr>ToJSON</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#didproviderclient" class="tsd-kind-icon">DIDProvider<wbr>Client</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#decodebase64" class="tsd-kind-icon">decode<wbr>Base64</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#didprovidermethods" class="tsd-kind-icon">DIDProvider<wbr>Methods</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#encodebase64" class="tsd-kind-icon">encode<wbr>Base64</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#didproviderorclient" class="tsd-kind-icon">DIDProvider<wbr>OrClient</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#encodebase64url" class="tsd-kind-icon">encode<wbr>Base64<wbr>Url</a>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="modules.html#didrequest" class="tsd-kind-icon">DIDRequest</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#fromdagjws" class="tsd-kind-icon">from<wbr>DagJWS</a>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="modules.html#didresponse" class="tsd-kind-icon">DIDResponse</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#isresolver" class="tsd-kind-icon">is<wbr>Resolver</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#dagjws" class="tsd-kind-icon">DagJWS</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="globals.html#randomstring" class="tsd-kind-icon">random<wbr>String</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#generaljws" class="tsd-kind-icon">GeneralJWS</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="modules.html#jwssignature" class="tsd-kind-icon">JWSSignature</a>
 					</li>
 				</ul>
 			</nav>
