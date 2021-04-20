@@ -1,9 +1,10 @@
 import { ResolverOptions, DIDResolutionResult, ResolverRegistry, Resolver } from 'did-resolver'
-import { RPCClient, RPCConnection } from 'rpc-utils'
 import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
+import { RPCClient } from 'rpc-utils'
+
+import type { DagJWS, DIDProvider, DIDProviderClient } from './types'
 import {
-  DagJWS,
   fromDagJWS,
   encodeBase64,
   base64urlToJSON,
@@ -13,8 +14,7 @@ import {
 } from './utils'
 
 export type { DIDResolutionResult } from 'did-resolver'
-export type { DagJWS, JWSSignature } from './utils'
-export type DIDProvider = RPCConnection
+export * from './types'
 
 export interface AuthenticateOptions {
   provider?: DIDProvider
@@ -89,7 +89,7 @@ function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver
  * Interact with DIDs.
  */
 export class DID {
-  private _client?: RPCClient
+  private _client?: DIDProviderClient
   private _id?: string
   private _resolver!: Resolver
 
@@ -146,7 +146,7 @@ export class DID {
   /**
    * Authenticate the user.
    */
-  async authenticate({ provider, paths, aud }: AuthenticateOptions = {}): Promise<string> {
+  async authenticate({ provider, paths = [], aud }: AuthenticateOptions = {}): Promise<string> {
     if (provider != null) {
       this.setProvider(provider)
     }
@@ -154,7 +154,7 @@ export class DID {
       throw new Error('No provider available')
     }
     const nonce = randomString()
-    const jws = await this._client.request<AuthenticateParams, DagJWS>('did_authenticate', {
+    const jws = await this._client.request('did_authenticate', {
       nonce,
       aud,
       paths,
@@ -179,8 +179,8 @@ export class DID {
   async createJWS<T = any>(payload: T, options: CreateJWSOptions = {}): Promise<DagJWS> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
-    if (!options.did) options.did = this._id
-    const { jws } = await this._client.request<CreateJWSParams, CreateJWSResult>('did_createJWS', {
+    const { jws } = await this._client.request('did_createJWS', {
+      did: this._id,
       ...options,
       payload,
     })
@@ -270,11 +270,11 @@ export class DID {
   async decryptJWE(jwe: JWE, options: DecryptJWEOptions = {}): Promise<Uint8Array> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
-    if (!options.did) options.did = this._id
-    const { cleartext } = await this._client.request<DecryptJWEParams, DecryptJWEResult>(
-      'did_decryptJWE',
-      { ...options, jwe }
-    )
+    const { cleartext } = await this._client.request('did_decryptJWE', {
+      did: this._id,
+      ...options,
+      jwe,
+    })
     return decodeBase64(cleartext)
   }
 

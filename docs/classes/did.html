@@ -3,10 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DID | DID - v2.0.0</title>
-	<meta name="description" content="Documentation for DID - v2.0.0">
+	<title>DID | DID - v2.1.0</title>
+	<meta name="description" content="Documentation for DID - v2.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
 <header>
@@ -22,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">DID - v2.0.0</a>
+					<a href="../index.html" class="title">DID - v2.1.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -40,8 +41,6 @@
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 							<input type="checkbox" id="tsd-filter-externals" checked />
 							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-							<input type="checkbox" id="tsd-filter-only-exported" />
-							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -53,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../globals.html">Globals</a>
+					<a href="../modules.html">DID - v2.1.0</a>
 				</li>
 				<li>
 					<a href="did.html">DID</a>
@@ -123,33 +122,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new DID<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RPCConnection</span><span class="tsd-signature-symbol">; </span>resolver<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Resolver</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ResolverRegistry</span><span class="tsd-signature-symbol">; </span>resolverOptions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ResolverOptions</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="did.html" class="tsd-signature-type">DID</a></li>
+						<li class="tsd-signature tsd-kind-icon">new DID<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">?: </span><a href="../interfaces/didoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">DIDOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="did.html" class="tsd-signature-type" data-tsd-kind="Class">DID</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L94">src/index.ts:94</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L94">src/index.ts:94</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> __namedParameters: <span class="tsd-signature-symbol">{ </span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RPCConnection</span><span class="tsd-signature-symbol">; </span>resolver<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Resolver</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ResolverRegistry</span><span class="tsd-signature-symbol">; </span>resolverOptions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ResolverOptions</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {}</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RPCConnection</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>resolver<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Resolver</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ResolverRegistry</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>resolver<wbr>Options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">ResolverOptions</span></h5>
-										</li>
-									</ul>
+									<h5>__namedParameters: <a href="../interfaces/didoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">DIDOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="did.html" class="tsd-signature-type">DID</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="did.html" class="tsd-signature-type" data-tsd-kind="Class">DID</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -166,7 +154,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L106">src/index.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L106">src/index.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -188,7 +176,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L113">src/index.ts:113</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L113">src/index.ts:113</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -207,13 +195,13 @@
 					<a name="authenticate" class="tsd-anchor"></a>
 					<h3>authenticate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">authenticate<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span>aud<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>paths<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RPCConnection</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">authenticate<span class="tsd-signature-symbol">(</span>__namedParameters<span class="tsd-signature-symbol">?: </span><a href="../interfaces/authenticateoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthenticateOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L149">src/index.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L149">src/index.ts:149</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -224,18 +212,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> __namedParameters: <span class="tsd-signature-symbol">{ </span>aud<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>paths<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RPCConnection</span><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol"> = {}</span></h5>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter">
-											<h5>aud<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>paths<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
-										</li>
-										<li class="tsd-parameter">
-											<h5>provider<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RPCConnection</span></h5>
-										</li>
-									</ul>
+									<h5>__namedParameters: <a href="../interfaces/authenticateoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">AuthenticateOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -246,13 +223,13 @@
 					<a name="createdagjwe" class="tsd-anchor"></a>
 					<h3>create<wbr>DagJWE</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>DagJWE<span class="tsd-signature-symbol">(</span>cleartext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, recipients<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjweoptions.html" class="tsd-signature-type">CreateJWEOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">JWE</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>DagJWE<span class="tsd-signature-symbol">(</span>cleartext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, recipients<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjweoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWEOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">JWE</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L256">src/index.ts:256</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L256">src/index.ts:256</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,13 +246,13 @@
 									</div>
 								</li>
 								<li>
-									<h5>recipients: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>recipients: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>An array of DIDs</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/createjweoptions.html" class="tsd-signature-type">CreateJWEOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>options: <a href="../interfaces/createjweoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWEOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Optional parameters</p>
 									</div>
@@ -289,13 +266,13 @@
 					<a name="createdagjws" class="tsd-anchor"></a>
 					<h3>create<wbr>DagJWS</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">create<wbr>DagJWS<span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjwsoptions.html" class="tsd-signature-type">CreateJWSOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/dagjwsresult.html" class="tsd-signature-type">DagJWSResult</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">create<wbr>DagJWS<span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjwsoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWSOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/dagjwsresult.html" class="tsd-signature-type" data-tsd-kind="Interface">DagJWSResult</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L197">src/index.ts:197</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L197">src/index.ts:197</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -313,13 +290,13 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/createjwsoptions.html" class="tsd-signature-type">CreateJWSOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>options: <a href="../interfaces/createjwsoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWSOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Optional parameters</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/dagjwsresult.html" class="tsd-signature-type">DagJWSResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/dagjwsresult.html" class="tsd-signature-type" data-tsd-kind="Interface">DagJWSResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -327,13 +304,13 @@
 					<a name="createjwe" class="tsd-anchor"></a>
 					<h3>createJWE</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">createJWE<span class="tsd-signature-symbol">(</span>cleartext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span>, recipients<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjweoptions.html" class="tsd-signature-type">CreateJWEOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">JWE</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">createJWE<span class="tsd-signature-symbol">(</span>cleartext<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Uint8Array</span>, recipients<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjweoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWEOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">JWE</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L240">src/index.ts:240</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L240">src/index.ts:240</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -350,13 +327,13 @@
 									</div>
 								</li>
 								<li>
-									<h5>recipients: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>recipients: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>An array of DIDs</p>
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/createjweoptions.html" class="tsd-signature-type">CreateJWEOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>options: <a href="../interfaces/createjweoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWEOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Optional parameters</p>
 									</div>
@@ -370,13 +347,13 @@
 					<a name="createjws" class="tsd-anchor"></a>
 					<h3>createJWS</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">createJWS&lt;T&gt;<span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjwsoptions.html" class="tsd-signature-type">CreateJWSOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/dagjws.html" class="tsd-signature-type">DagJWS</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">createJWS&lt;T&gt;<span class="tsd-signature-symbol">(</span>payload<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">T</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/createjwsoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWSOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules.html#dagjws" class="tsd-signature-type" data-tsd-kind="Type alias">DagJWS</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L179">src/index.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L179">src/index.ts:179</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -400,13 +377,13 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/createjwsoptions.html" class="tsd-signature-type">CreateJWSOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>options: <a href="../interfaces/createjwsoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">CreateJWSOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Optional parameters</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/dagjws.html" class="tsd-signature-type">DagJWS</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules.html#dagjws" class="tsd-signature-type" data-tsd-kind="Type alias">DagJWS</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -420,7 +397,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L288">src/index.ts:288</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L288">src/index.ts:288</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -446,13 +423,13 @@
 					<a name="decryptjwe" class="tsd-anchor"></a>
 					<h3>decryptJWE</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">decryptJWE<span class="tsd-signature-symbol">(</span>jwe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JWE</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/decryptjweoptions.html" class="tsd-signature-type">DecryptJWEOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">decryptJWE<span class="tsd-signature-symbol">(</span>jwe<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">JWE</span>, options<span class="tsd-signature-symbol">?: </span><a href="../interfaces/decryptjweoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">DecryptJWEOptions</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Uint8Array</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L270">src/index.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L270">src/index.ts:270</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -469,7 +446,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> options: <a href="../interfaces/decryptjweoptions.html" class="tsd-signature-type">DecryptJWEOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
+									<h5>options: <a href="../interfaces/decryptjweoptions.html" class="tsd-signature-type" data-tsd-kind="Interface">DecryptJWEOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>Optional parameters</p>
 									</div>
@@ -483,13 +460,13 @@
 					<a name="resolve" class="tsd-anchor"></a>
 					<h3>resolve</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">resolve<span class="tsd-signature-symbol">(</span>didUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DIDResolutionResult</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">resolve<span class="tsd-signature-symbol">(</span>didUrl<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/didresolutionresult.html" class="tsd-signature-type" data-tsd-kind="Interface">DIDResolutionResult</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L298">src/index.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L298">src/index.ts:298</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -506,7 +483,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">DIDResolutionResult</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/didresolutionresult.html" class="tsd-signature-type" data-tsd-kind="Interface">DIDResolutionResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -514,13 +491,13 @@
 					<a name="setprovider" class="tsd-anchor"></a>
 					<h3>set<wbr>Provider</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Provider<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><a href="../globals.html#didprovider" class="tsd-signature-type">DIDProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Provider<span class="tsd-signature-symbol">(</span>provider<span class="tsd-signature-symbol">: </span><a href="../modules.html#didprovider" class="tsd-signature-type" data-tsd-kind="Type alias">DIDProvider</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L126">src/index.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L126">src/index.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -532,7 +509,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>provider: <a href="../globals.html#didprovider" class="tsd-signature-type">DIDProvider</a></h5>
+									<h5>provider: <a href="../modules.html#didprovider" class="tsd-signature-type" data-tsd-kind="Type alias">DIDProvider</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The DIDProvider to use</p>
 									</div>
@@ -552,7 +529,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L142">src/index.ts:142</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L142">src/index.ts:142</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -583,13 +560,13 @@
 					<a name="verifyjws" class="tsd-anchor"></a>
 					<h3>verifyJWS</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">verifyJWS<span class="tsd-signature-symbol">(</span>jws<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/dagjws.html" class="tsd-signature-type">DagJWS</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/verifyjwsresult.html" class="tsd-signature-type">VerifyJWSResult</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">verifyJWS<span class="tsd-signature-symbol">(</span>jws<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../modules.html#dagjws" class="tsd-signature-type" data-tsd-kind="Type alias">DagJWS</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/verifyjwsresult.html" class="tsd-signature-type" data-tsd-kind="Interface">VerifyJWSResult</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/5031b5f/src/index.ts#L216">src/index.ts:216</a></li>
+									<li>Defined in <a href="https://github.com/ceramicnetwork/js-did/blob/f86c993/src/index.ts#L216">src/index.ts:216</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -601,13 +578,13 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>jws: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/dagjws.html" class="tsd-signature-type">DagJWS</a></h5>
+									<h5>jws: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../modules.html#dagjws" class="tsd-signature-type" data-tsd-kind="Type alias">DagJWS</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The JWS to verify</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/verifyjwsresult.html" class="tsd-signature-type">VerifyJWSResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/verifyjwsresult.html" class="tsd-signature-type" data-tsd-kind="Interface">VerifyJWSResult</a><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>Information about the signed JWS</p>
 						</li>
 					</ul>
@@ -617,8 +594,8 @@
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
-					<li class="globals  ">
-						<a href="../globals.html"><em>Globals</em></a>
+					<li class=" ">
+						<a href="../modules.html">Exports</a>
 					</li>
 				</ul>
 			</nav>
@@ -699,8 +676,8 @@
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/didoptions.html" class="tsd-kind-icon">DIDOptions</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="../interfaces/dagjws.html" class="tsd-kind-icon">DagJWS</a>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/didresolutionresult.html" class="tsd-kind-icon">DIDResolution<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-interface">
 						<a href="../interfaces/dagjwsresult.html" class="tsd-kind-icon">DagJWSResult</a>
@@ -715,40 +692,40 @@
 						<a href="../interfaces/decryptjweresult.html" class="tsd-kind-icon">DecryptJWEResult</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="../interfaces/jwssignature.html" class="tsd-kind-icon">JWSSignature</a>
-					</li>
-					<li class=" tsd-kind-interface">
 						<a href="../interfaces/verifyjwsresult.html" class="tsd-kind-icon">VerifyJWSResult</a>
 					</li>
 					<li class=" tsd-kind-type-alias">
-						<a href="../globals.html#didprovider" class="tsd-kind-icon">DIDProvider</a>
+						<a href="../modules.html#authparams" class="tsd-kind-icon">Auth<wbr>Params</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#b64" class="tsd-kind-icon">B64</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#didmethodname" class="tsd-kind-icon">DIDMethod<wbr>Name</a>
 					</li>
-					<li class=" tsd-kind-variable">
-						<a href="../globals.html#b64_url" class="tsd-kind-icon">B64_<wbr>URL</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#didprovider" class="tsd-kind-icon">DIDProvider</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#base64urltojson" class="tsd-kind-icon">base64url<wbr>ToJSON</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#didproviderclient" class="tsd-kind-icon">DIDProvider<wbr>Client</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#decodebase64" class="tsd-kind-icon">decode<wbr>Base64</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#didprovidermethods" class="tsd-kind-icon">DIDProvider<wbr>Methods</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#encodebase64" class="tsd-kind-icon">encode<wbr>Base64</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#didproviderorclient" class="tsd-kind-icon">DIDProvider<wbr>OrClient</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#encodebase64url" class="tsd-kind-icon">encode<wbr>Base64<wbr>Url</a>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../modules.html#didrequest" class="tsd-kind-icon">DIDRequest</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#fromdagjws" class="tsd-kind-icon">from<wbr>DagJWS</a>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
+						<a href="../modules.html#didresponse" class="tsd-kind-icon">DIDResponse</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#isresolver" class="tsd-kind-icon">is<wbr>Resolver</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#dagjws" class="tsd-kind-icon">DagJWS</a>
 					</li>
-					<li class=" tsd-kind-function">
-						<a href="../globals.html#randomstring" class="tsd-kind-icon">random<wbr>String</a>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#generaljws" class="tsd-kind-icon">GeneralJWS</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="../modules.html#jwssignature" class="tsd-kind-icon">JWSSignature</a>
 					</li>
 				</ul>
 			</nav>
