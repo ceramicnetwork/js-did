@@ -7,13 +7,13 @@ import { generateKeyPairFromSeed } from '@stablelib/x25519'
 import { x25519Decrypter, decryptJWE } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 
-import * as utils from '../src/utils'
+import * as utils from '../utils'
 utils.randomString = () => 'rWCXyH1otp5/F78tycckgg'
 const { encodeBase64, encodeBase64Url } = utils
 
 global.Date.now = jest.fn(() => 1606236374000)
 
-import { DID, DIDProvider } from '../src'
+import { DID, DIDProvider } from '../index'
 
 const MOCK_AUTH_JWS = {
   payload:
