@@ -36,8 +36,7 @@ const MOCK_RESOLVER_RESULT = {
     id: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
     verificationMethod: [
       {
-        id:
-          'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
+        id: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
         type: 'Ed25519VerificationKey2018',
         controller: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
         publicKeyBase58: '9k2Vw62jAjtvNrLjxapZmo6TxDGBcPNpiLdtAmecfPS6',
@@ -57,8 +56,7 @@ const MOCK_RESOLVER_RESULT = {
     ],
     keyAgreement: [
       {
-        id:
-          'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6LSpCEVAwDkybHxQM2X6bfhjZA7ac7DVSX3PA6GYqGjue3b',
+        id: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6LSpCEVAwDkybHxQM2X6bfhjZA7ac7DVSX3PA6GYqGjue3b',
         type: 'X25519KeyAgreementKey2019',
         controller: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
         publicKeyBase58: 'DX4KedQtt8aDJxekZx9kQxwdjTa6nqLtWBNb4NdDCGGq',
@@ -312,8 +310,7 @@ describe('DID class', () => {
           verificationMethod: [
             {
               controller: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa',
-              id:
-                'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF',
+              id: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF',
               publicKeyHex: '0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e',
               type: 'Secp256k1VerificationKey2018',
             },
@@ -321,8 +318,7 @@ describe('DID class', () => {
           authentication: [
             {
               controller: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa',
-              id:
-                'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF',
+              id: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa#7Xd9rh1vWBaxQsF',
               publicKeyHex: '0368e92e4d7284f4f0414f023019fe19532b7da0115edeed2fe183199d79a78b7e',
               type: 'Secp256k1VerificationKey2018',
             },
@@ -339,8 +335,7 @@ describe('DID class', () => {
           'eyJraWQiOiJkaWQ6MzpiYWdjcWNlcmFza3hxeng0N2l2b2tqcW9md295dXliMjN0aWFlcGRyYXpxNXJsem4yaHg3a215YWN6d29hP3ZlcnNpb24taWQ9MCNrV01YTU1xazVXc290UW0iLCJhbGciOiJFUzI1NksifQ.AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB.h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ'
         expect(await did.verifyJWS(jws)).toEqual({
           didResolutionResult: THREE_ID_RESOLVER_RESULT,
-          kid:
-            'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm',
+          kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm',
         })
       })
 
@@ -359,8 +354,7 @@ describe('DID class', () => {
         }
         expect(await did.verifyJWS(jws)).toEqual({
           didResolutionResult: THREE_ID_RESOLVER_RESULT,
-          kid:
-            'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm',
+          kid: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa?version-id=0#kWMXMMqk5WsotQm',
         })
       })
 
@@ -368,8 +362,7 @@ describe('DID class', () => {
         const did = new DID({ resolver: resolverRegistry })
         expect(await did.verifyJWS(MOCK_AUTH_JWS)).toEqual({
           didResolutionResult: MOCK_RESOLVER_RESULT,
-          kid:
-            'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
+          kid: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU#z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
           payload: {
             did: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
             exp: 1606236374,
