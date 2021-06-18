@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { DIDResolutionResult, DIDDocument, Resolver } from 'did-resolver'
+import { DIDResolutionResult, DIDDocument, Resolver, ResolverRegistry } from 'did-resolver'
 import * as u8a from 'uint8arrays'
 import { randomBytes } from '@stablelib/random'
 import { generateKeyPairFromSeed } from '@stablelib/x25519'
-import { x25519Decrypter, decryptJWE } from 'did-jwt'
+import { x25519Decrypter, decryptJWE, JWE } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 
 import * as utils from '../utils'
+// @ts-ignore
 utils.randomString = () => 'rWCXyH1otp5/F78tycckgg'
 const { encodeBase64, encodeBase64Url } = utils
 
@@ -31,6 +32,7 @@ const MOCK_NONCE = 'rWCXyH1otp5/F78tycckgg'
 const MOCK_DID = 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU'
 const MOCK_RESOLVER_RESULT = {
   didResolutionMetadata: {},
+  didDocumentMetadata: {},
   didDocument: {
     '@context': 'https://w3id.org/did/v1',
     id: 'did:key:z6MkoCHYXLHAWHPPVMBSe9nQcteTmnY32GdBQMYp13cdacDU',
@@ -64,8 +66,8 @@ const MOCK_RESOLVER_RESULT = {
     ],
   },
 }
-const MOCK_RESOLVER_REGISTRY = {
-  key: async () => MOCK_RESOLVER_RESULT,
+const MOCK_RESOLVER_REGISTRY: ResolverRegistry = {
+  key: () => Promise.resolve(MOCK_RESOLVER_RESULT),
 }
 
 describe('DID class', () => {
@@ -84,7 +86,7 @@ describe('DID class', () => {
 
     test('RPC calls throw an error if the response payload is an error', async () => {
       const provider1 = {
-        send: jest.fn((req) => {
+        send: jest.fn((req: { id: number }) => {
           return Promise.resolve({
             jsonrpc: '2.0',
             id: req.id,
@@ -96,7 +98,7 @@ describe('DID class', () => {
       await expect(() => did1.authenticate()).rejects.toThrow('Unauthorized')
 
       const provider2 = {
-        send: jest.fn((req) => {
+        send: jest.fn((req: { id: number }) => {
           return Promise.resolve({
             jsonrpc: '2.0',
             id: req.id,
@@ -113,14 +115,15 @@ describe('DID class', () => {
       const provider2 = {} as DIDProvider
 
       const did = new DID()
-      expect(did._client).not.toBeDefined()
+      expect((did as any)._client).not.toBeDefined()
 
       did.setProvider(provider1)
-      expect(did._client.connection).toBe(provider1)
+      expect((did as any)._client.connection).toBe(provider1)
 
-      const client = did._client
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const client = (did as any)._client
       did.setProvider(provider1)
-      expect(did._client).toBe(client)
+      expect((did as any)._client).toBe(client)
 
       expect(() => did.setProvider(provider2)).toThrow('A different provider is already set')
     })
@@ -128,7 +131,7 @@ describe('DID class', () => {
     describe('`authenticate` method', () => {
       test('uses the provider attached to the instance', async () => {
         const provider = {
-          send: jest.fn((req) => {
+          send: jest.fn((req: { id: number }) => {
             return Promise.resolve({
               jsonrpc: '2.0',
               id: req.id,
@@ -157,7 +160,7 @@ describe('DID class', () => {
 
       test('uses the provider given in options', async () => {
         const provider = {
-          send: jest.fn((req) => {
+          send: jest.fn((req: { id: number }) => {
             return Promise.resolve({
               jsonrpc: '2.0',
               id: req.id,
@@ -304,6 +307,7 @@ describe('DID class', () => {
     describe('`verifyJWS method`', () => {
       const THREE_ID_RESOLVER_RESULT = {
         didResolutionMetadata: {},
+        didDocumentMetadata: {},
         didDocument: {
           '@context': 'https://w3id.org/did/v1',
           id: 'did:3:bagcqceraskxqzx47ivokjqofwoyuyb23tiaepdrazq5rlzn2hx7kmyaczwoa',
@@ -325,9 +329,9 @@ describe('DID class', () => {
           ],
         },
       }
-      const resolverRegistry = {
+      const resolverRegistry: ResolverRegistry = {
         ...MOCK_RESOLVER_REGISTRY,
-        '3': async () => THREE_ID_RESOLVER_RESULT,
+        '3': () => Promise.resolve(THREE_ID_RESOLVER_RESULT),
       }
       test('correctly verifies jws string', async () => {
         const did = new DID({ resolver: resolverRegistry })
@@ -372,15 +376,17 @@ describe('DID class', () => {
       })
     })
 
-    const createRegistry = (didMap) => ({
-      test: async (did) => {
+    const createRegistry = (didMap: Record<string, Uint8Array>): ResolverRegistry => ({
+      // eslint-disable-next-line @typescript-eslint/require-await
+      test: async (did: string) => {
         const pk = generateKeyPairFromSeed(didMap[did]).publicKey
         return {
           didResolutionMetadata: {},
+          didDocumentMetadata: {},
           didDocument: {
             keyAgreement: [
               {
-                id: u8a.toString(pk, 'base58btc').split(-15),
+                id: u8a.toString(pk, 'base58btc'),
                 type: 'X25519KeyAgreementKey2019',
                 publicKeyBase58: u8a.toString(pk, 'base58btc'),
               },
@@ -455,9 +461,9 @@ describe('DID class', () => {
           }),
         } as DIDProvider
         const did = new DID({ provider })
-        did._id = 'did:3:1234'
+        ;(did as any)._id = 'did:3:1234'
 
-        const jwe = { foo: 'bar' }
+        const jwe = { foo: 'bar' } as unknown as JWE
         const cleartext = await did.decryptJWE(jwe)
         expect(cleartext).toEqual(u8a.fromString('abcde'))
         expect(provider.send).toHaveBeenCalledTimes(1)
@@ -494,9 +500,9 @@ describe('DID class', () => {
           }),
         } as DIDProvider
         const did = new DID({ provider })
-        did._id = 'did:3:1234'
+        ;(did as any)._id = 'did:3:1234'
 
-        const jwe = { foo: 'bar' }
+        const jwe = { foo: 'bar' } as unknown as JWE
         const decrypted = await did.decryptDagJWE(jwe)
         expect(decrypted).toEqual(clearObj)
         expect(provider.send).toHaveBeenCalledTimes(1)
@@ -519,7 +525,7 @@ describe('DID class', () => {
     test('uses the given Resolver instance', () => {
       const resolver = new Resolver()
       const did = new DID({ resolver })
-      expect(did._resolver).toBe(resolver)
+      expect((did as any)._resolver).toBe(resolver)
     })
 
     test('uses the given Resolver config', async () => {
@@ -531,21 +537,21 @@ describe('DID class', () => {
         test: jest.fn(() => Promise.resolve(res)),
       }
       const did = new DID({ resolver: registry })
-      expect(did._resolver).toBeInstanceOf(Resolver)
+      expect((did as any)._resolver).toBeInstanceOf(Resolver)
       await expect(did.resolve('did:test:test')).resolves.toBe(res)
     })
 
     test('creates a Resolver instance when none is provided', () => {
       const did = new DID()
-      expect(did._resolver).toBeInstanceOf(Resolver)
+      expect((did as any)._resolver).toBeInstanceOf(Resolver)
     })
 
     test('setProvider method', () => {
       const did = new DID()
-      const resolver = did._resolver
+      const resolver = (did as any)._resolver as Resolver
       did.setResolver({})
-      expect(did._resolver).toBeInstanceOf(Resolver)
-      expect(did._resolver).not.toBe(resolver)
+      expect((did as any)._resolver).toBeInstanceOf(Resolver)
+      expect((did as any)._resolver).not.toBe(resolver)
     })
   })
 })
