@@ -38,7 +38,8 @@
     "did-jwt": "^5.6.1",
     "did-resolver": "^3.1.0",
     "rpc-utils": "^0.3.4",
-    "uint8arrays": "^2.1.5"
+    "uint8arrays": "^2.1.5",
+    "query-string": "^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`from 0 to CID 1`] = `"did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=bafyreihoahs3ge57ud5kmvs76k2dhuu46fhpilo4r7lol6fuaxh7sxk5nm#dkbnB3Dd1z5wByn"`;
+
+exports[`from CID to 0 1`] = `"did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?other=foo&version-id=0#dkbnB3Dd1z5wByn"`;
