@@ -3,7 +3,7 @@ import type { JWE } from 'did-jwt'
 import type { RPCClient, RPCConnection, RPCRequest, RPCResponse } from 'rpc-utils'
 
 export type CreateJWSParams = {
-  payload: Record<string, any>
+  payload: string | Record<string, any>
   protected?: Record<string, any>
   revocable?: boolean
   did: string
