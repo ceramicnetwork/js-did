@@ -43,6 +43,10 @@ export interface CreateJWSOptions {
   linkedBlock?: string
 }
 
+export interface VerifyJWSOptions {
+  atTime?: number
+}
+
 export interface VerifyJWSResult {
   kid: string
   payload?: Record<string, any>
@@ -206,11 +210,9 @@ export class DID {
    * @param atTime              JS timestamp when to verify the key
    * @returns                   Information about the signed JWS
    */
-  async verifyJWS(
-    jws: string | DagJWS,
-    atTime: number = new Date().valueOf()
-  ): Promise<VerifyJWSResult> {
+  async verifyJWS(jws: string | DagJWS, options: VerifyJWSOptions = {}): Promise<VerifyJWSResult> {
     if (typeof jws !== 'string') jws = fromDagJWS(jws)
+    const effectiveOptions = Object.assign({}, options, { atTime: new Date().valueOf() })
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
     const didResolutionResult = await this.resolve(kid)
@@ -226,7 +228,7 @@ export class DID {
         const revokedAt = new Date(
           nextDidResolutionResult.didDocumentMetadata.created || '0'
         ).valueOf()
-        if (atTime >= revokedAt) {
+        if (effectiveOptions.atTime >= revokedAt) {
           // Do not allow using a key _after_ it is being revoked
           throw new Error(`Key is revoked`)
         }
