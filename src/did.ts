@@ -1,10 +1,4 @@
-import {
-  ResolverOptions,
-  DIDResolutionResult,
-  ResolverRegistry,
-  Resolver,
-  parse,
-} from 'did-resolver'
+import { ResolverOptions, DIDResolutionResult, ResolverRegistry, Resolver } from 'did-resolver'
 import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import { RPCClient } from 'rpc-utils'
@@ -18,7 +12,6 @@ import {
   encodeBase64Url,
   randomString,
 } from './utils'
-import { changeVersion } from './change-version.util'
 
 export interface AuthenticateOptions {
   provider?: DIDProvider
@@ -44,6 +37,9 @@ export interface CreateJWSOptions {
 }
 
 export interface VerifyJWSOptions {
+  /**
+   * JS timestamp when the signature was allegedly made.
+   */
   atTime?: number
 }
 
@@ -207,31 +203,22 @@ export class DID {
    * the author public key.
    *
    * @param jws                 The JWS to verify
-   * @param atTime              JS timestamp when to verify the key
+   * @param options             Optional arguments for verification
    * @returns                   Information about the signed JWS
    */
   async verifyJWS(jws: string | DagJWS, options: VerifyJWSOptions = {}): Promise<VerifyJWSResult> {
     if (typeof jws !== 'string') jws = fromDagJWS(jws)
-    const effectiveOptions = Object.assign({}, options, { atTime: new Date().valueOf() })
+    const effectiveOptions = Object.assign({ atTime: new Date().valueOf() }, options)
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
     const didResolutionResult = await this.resolve(kid)
-    const didDocumentMetadata = didResolutionResult.didDocumentMetadata
-    if (didDocumentMetadata.nextVersionId) {
-      // Maybe key is revoked
-      const nextVersion = changeVersion(kid, didDocumentMetadata.nextVersionId)
-      const nextDidResolutionResult = await this.resolve(nextVersion)
-      const verificationMethod = nextDidResolutionResult.didDocument?.verificationMethod || []
-      const keyId = parse(kid)?.fragment
-      if (keyId && !verificationMethod.find((entry) => entry.id.includes(keyId))) {
-        // Key is definitely revoked
-        const revokedAt = new Date(
-          nextDidResolutionResult.didDocumentMetadata.created || '0'
-        ).valueOf()
-        if (effectiveOptions.atTime >= revokedAt) {
-          // Do not allow using a key _after_ it is being revoked
-          throw new Error(`Key is revoked`)
-        }
+    const nextUpdate = didResolutionResult.didDocumentMetadata?.nextUpdate
+    if (nextUpdate) {
+      // This version of the DID document has been revoked. Check if the JWS
+      // was signed before it the revocation happened.
+      if (effectiveOptions.atTime >= new Date(nextUpdate).valueOf()) {
+        // Do not allow using a key _after_ it is being revoked
+        throw new Error(`JWS was signed with a revoked DID version: ${kid}`)
       }
     }
     const publicKeys = didResolutionResult.didDocument?.verificationMethod || []

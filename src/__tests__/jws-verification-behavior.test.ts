@@ -156,7 +156,7 @@ test('rotated key', async () => {
   // using: kid = did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn
   const jws =
     'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0YWNzeHRvMHd2eHdsNjJ1c3EzMnk0bmNmb256ZG1nNWk1am9yamNzMmhhbml1YWJ2emw_dmVyc2lvbi1pZD0wI2RrYm5CM0RkMXo1d0J5biIsImFsZyI6IkVTMjU2SyJ9.eyJoZWxsbyI6IndvcmxkIn0._FMNUc83qOfNEyOUvpQs09CX12MbLEa90BIqa6qLw96VT2pec26gdlin5ozJ4veVgLbRrUBFCUUP2iLn6JtPhQ'
-  await expect(did.verifyJWS(jws)).rejects.toThrow(/Key is revoked/)
+  await expect(did.verifyJWS(jws)).rejects.toThrow(/JWS was signed with a revoked DID version/)
 })
 
 describe('atTime', () => {
@@ -174,12 +174,14 @@ describe('atTime', () => {
     'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0YWNzeHRvMHd2eHdsNjJ1c3EzMnk0bmNmb256ZG1nNWk1am9yamNzMmhhbml1YWJ2emw_dmVyc2lvbi1pZD0wI2RrYm5CM0RkMXo1d0J5biIsImFsZyI6IkVTMjU2SyJ9.eyJoZWxsbyI6IndvcmxkIn0._FMNUc83qOfNEyOUvpQs09CX12MbLEa90BIqa6qLw96VT2pec26gdlin5ozJ4veVgLbRrUBFCUUP2iLn6JtPhQ'
 
   test('ok before rotation', async () => {
-    const beforeRotation = new Date('2021-06-21T10:20:46Z').valueOf()
-    const { kid } = await did.verifyJWS(jws, beforeRotation)
+    const beforeRotation = new Date('2021-06-21T08:20:46Z').valueOf()
+    const { kid } = await did.verifyJWS(jws, { atTime: beforeRotation })
     expect(kid).toMatchSnapshot()
   })
   test('fail after rotation', async () => {
     const afterRotation = new Date('2021-06-22T10:20:46Z').valueOf()
-    await expect(did.verifyJWS(jws, afterRotation)).rejects.toThrow(/Key is revoked/)
+    await expect(did.verifyJWS(jws, { atTime: afterRotation })).rejects.toThrow(
+      /JWS was signed with a revoked DID version/
+    )
   })
 })
