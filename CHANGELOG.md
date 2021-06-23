@@ -1,3 +1,7 @@
+## v2.2.0 (2021-06-23)
+
+feat: Handle key revocation when checking a signature 
+
 ## v2.1.0 (2021-04-20)
 
 feat: Update DIDProvider and related types
