@@ -179,4 +179,7 @@ describe('atTime', () => {
       /JWS was signed with a revoked DID version/
     )
   })
+  test('not throw after rotation, if atTime is null', async () => {
+    await expect(did.verifyJWS(jws, { atTime: null })).resolves.toMatchSnapshot()
+  })
 })

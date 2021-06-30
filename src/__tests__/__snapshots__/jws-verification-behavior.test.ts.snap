@@ -1,3 +1,56 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`atTime not throw after rotation, if atTime is null 1`] = `
+Object {
+  "didResolutionResult": Object {
+    "didDocument": Object {
+      "authentication": Array [
+        Object {
+          "controller": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl",
+          "id": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#dkbnB3Dd1z5wByn",
+          "publicKeyBase58": "fuNBAnTyH62WECeXuDbgnEck7SQZy5i4rFHRKgJxii84",
+          "type": "EcdsaSecp256k1Signature2019",
+        },
+      ],
+      "id": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl",
+      "keyAgreement": Array [
+        Object {
+          "controller": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl",
+          "id": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#9t28iZFbczNR2xZ",
+          "publicKeyBase58": "thXhSaHPhtJNZaG2pJBYrQ8VChNzYhsFjqa7ALqhfBo",
+          "type": "X25519KeyAgreementKey2019",
+        },
+      ],
+      "verificationMethod": Array [
+        Object {
+          "controller": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl",
+          "id": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#9t28iZFbczNR2xZ",
+          "publicKeyBase58": "thXhSaHPhtJNZaG2pJBYrQ8VChNzYhsFjqa7ALqhfBo",
+          "type": "X25519KeyAgreementKey2019",
+        },
+        Object {
+          "controller": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl",
+          "id": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#dkbnB3Dd1z5wByn",
+          "publicKeyBase58": "fuNBAnTyH62WECeXuDbgnEck7SQZy5i4rFHRKgJxii84",
+          "type": "EcdsaSecp256k1Signature2019",
+        },
+      ],
+    },
+    "didDocumentMetadata": Object {
+      "created": "2021-06-21T08:51:40Z",
+      "nextUpdate": "2021-06-21T08:51:40Z",
+      "nextVersionId": "bafyreihoahs3ge57ud5kmvs76k2dhuu46fhpilo4r7lol6fuaxh7sxk5nm",
+      "versionId": "0",
+    },
+    "didResolutionMetadata": Object {
+      "contentType": "application/did+json",
+    },
+  },
+  "kid": "did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn",
+  "payload": Object {
+    "hello": "world",
+  },
+}
+`;
+
 exports[`atTime ok before rotation 1`] = `"did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn"`;

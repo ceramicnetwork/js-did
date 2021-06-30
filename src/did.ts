@@ -40,7 +40,7 @@ export interface VerifyJWSOptions {
   /**
    * JS timestamp when the signature was allegedly made.
    */
-  atTime?: number
+  atTime?: number | null
 }
 
 export interface VerifyJWSResult {
@@ -216,7 +216,7 @@ export class DID {
     if (nextUpdate) {
       // This version of the DID document has been revoked. Check if the JWS
       // was signed before it the revocation happened.
-      if (effectiveOptions.atTime >= new Date(nextUpdate).valueOf()) {
+      if (effectiveOptions.atTime && effectiveOptions.atTime >= new Date(nextUpdate).valueOf()) {
         // Do not allow using a key _after_ it is being revoked
         throw new Error(`JWS was signed with a revoked DID version: ${kid}`)
       }
