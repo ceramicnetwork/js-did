@@ -38,7 +38,7 @@ export interface CreateJWSOptions {
 
 export interface VerifyJWSOptions {
   /**
-   * JS timestamp when the signature was allegedly made.
+   * JS timestamp when the signature was allegedly made. `undefined` means _now_.
    */
   atTime?: number
 }
@@ -208,7 +208,6 @@ export class DID {
    */
   async verifyJWS(jws: string | DagJWS, options: VerifyJWSOptions = {}): Promise<VerifyJWSResult> {
     if (typeof jws !== 'string') jws = fromDagJWS(jws)
-    const effectiveOptions = Object.assign({ atTime: new Date().valueOf() }, options)
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
     const didResolutionResult = await this.resolve(kid)
@@ -216,7 +215,8 @@ export class DID {
     if (nextUpdate) {
       // This version of the DID document has been revoked. Check if the JWS
       // was signed before it the revocation happened.
-      if (effectiveOptions.atTime >= new Date(nextUpdate).valueOf()) {
+      const isEarlier = options.atTime && options.atTime < new Date(nextUpdate).valueOf()
+      if (!isEarlier) {
         // Do not allow using a key _after_ it is being revoked
         throw new Error(`JWS was signed with a revoked DID version: ${kid}`)
       }
