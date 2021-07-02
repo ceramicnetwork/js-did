@@ -1,3 +1,7 @@
+## v2.2.1 (2021-07-02)
+
+feat: Use implicit notion of _now_, instead of explicit `new Date`
+
 ## v2.2.0 (2021-06-23)
 
 feat: Handle key revocation when checking a signature 
