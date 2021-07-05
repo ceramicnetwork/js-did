@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`atTime before DID created for v0 1`] = `"did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn"`;
+
 exports[`atTime ok before rotation 1`] = `"did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn"`;

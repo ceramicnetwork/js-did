@@ -216,10 +216,18 @@ export class DID {
       // This version of the DID document has been revoked. Check if the JWS
       // was signed before it the revocation happened.
       const isEarlier = options.atTime && options.atTime < new Date(nextUpdate).valueOf()
-      if (!isEarlier) {
+      const isLater = !isEarlier
+      if (isLater) {
         // Do not allow using a key _after_ it is being revoked
         throw new Error(`JWS was signed with a revoked DID version: ${kid}`)
       }
+    }
+    // Key used before `created` date
+    const created = didResolutionResult.didDocumentMetadata?.created
+    const versionId = didResolutionResult.didDocumentMetadata?.versionId
+    const notV0 = versionId !== '0'
+    if (notV0 && created && options.atTime && options.atTime < new Date(created).valueOf()) {
+      throw new Error(`JWS was signed with a not-yet created DID version: ${kid}`)
     }
     const publicKeys = didResolutionResult.didDocument?.verificationMethod || []
     // verifyJWS will throw an error if the signature is invalid

@@ -87,6 +87,50 @@ const VERSION_0_ROTATED = {
   },
 }
 
+const MIDDLE_DID = {
+  didResolutionMetadata: {
+    contentType: 'application/did+json',
+  },
+  didDocument: {
+    id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
+    verificationMethod: [
+      {
+        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#LWdQe5JCDFpay1B',
+        type: 'EcdsaSecp256k1Signature2019',
+        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
+        publicKeyBase58: 'zozMio2pBH2q3yQtsGeXsrAmShHqAnU6UiKVtsahNV9T',
+      },
+      {
+        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#cEQ4HAqRoZDyY9d',
+        type: 'X25519KeyAgreementKey2019',
+        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
+        publicKeyBase58: '4uW4Zmu4zsQXmV2iKzJf8e4yWMLrY14FBJT9wLuhGANs',
+      },
+    ],
+    authentication: [
+      {
+        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#LWdQe5JCDFpay1B',
+        type: 'EcdsaSecp256k1Signature2019',
+        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
+        publicKeyBase58: 'zozMio2pBH2q3yQtsGeXsrAmShHqAnU6UiKVtsahNV9T',
+      },
+    ],
+    keyAgreement: [
+      {
+        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#cEQ4HAqRoZDyY9d',
+        type: 'X25519KeyAgreementKey2019',
+        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
+        publicKeyBase58: '4uW4Zmu4zsQXmV2iKzJf8e4yWMLrY14FBJT9wLuhGANs',
+      },
+    ],
+  },
+  didDocumentMetadata: {
+    created: '2021-07-05T10:26:44Z',
+    updated: '2021-07-05T10:26:44Z',
+    versionId: 'bafyreiftn42zhr7kfmuocbkaetecbkpm7ju2xrearefcl2ualjfecgb22q',
+  },
+}
+
 const VERSION_NEXT = {
   didResolutionMetadata: {
     contentType: 'application/did+json',
@@ -159,7 +203,7 @@ test('rotated key', async () => {
 
 describe('atTime', () => {
   const did = new DID()
-  did.resolve = (didUrl) => {
+  const fauxResolve = (didUrl: string) => {
     const isVersion0 = /version-id=0/.exec(didUrl)
     if (isVersion0) {
       return Promise.resolve(VERSION_0_ROTATED)
@@ -167,6 +211,9 @@ describe('atTime', () => {
       return Promise.resolve(VERSION_NEXT)
     }
   }
+  beforeEach(() => {
+    did.resolve = fauxResolve
+  })
 
   test('ok before rotation', async () => {
     const beforeRotation = new Date('2021-06-21T08:20:46Z').valueOf()
@@ -178,5 +225,18 @@ describe('atTime', () => {
     await expect(did.verifyJWS(jws, { atTime: afterRotation })).rejects.toThrow(
       /JWS was signed with a revoked DID version/
     )
+  })
+
+  test('before DID created', async () => {
+    did.resolve = () => Promise.resolve(MIDDLE_DID)
+    const beforeCreated = new Date('2021-07-01T00:00:00Z').valueOf()
+    const jws =
+      'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0OXJ1cnFuaTRyMDY0YWh0MmFwbmJpZnJjMjlnaGZxam05bndkcGl6Nml4cmNuNnI0YXA_dmVyc2lvbi1pZD1iYWZ5cmVpZnRuNDJ6aHI3a2ZtdW9jYmthZXRlY2JrcG03anUyeHJlYXJlZmNsMnVhbGpmZWNnYjIycSNMV2RRZTVKQ0RGcGF5MUIiLCJhbGciOiJFUzI1NksifQ.eyJoZWxsbyI6IndvcmxkIn0.zXK7AKLADudA5UPBi4rgo1X3ZhMRT3wuWjZDfIwQ2VmB-Q7ZczXk8xJI-Wgv0K_YdDYmi5KslO9ObKCbe0fBmw'
+    await expect(did.verifyJWS(jws, { atTime: beforeCreated })).rejects.toThrow(/not-yet created/)
+  })
+  test('before DID created for v0', async () => {
+    const beforeCreation = new Date('2021-06-01T08:51:40Z').valueOf()
+    const { kid } = await did.verifyJWS(jws, { atTime: beforeCreation })
+    expect(kid).toMatchSnapshot()
   })
 })
