@@ -222,11 +222,11 @@ export class DID {
         throw new Error(`JWS was signed with a revoked DID version: ${kid}`)
       }
     }
-    // Key used before `created` date
-    const created = didResolutionResult.didDocumentMetadata?.created
+    // Key used before `updated` date
+    const updated = didResolutionResult.didDocumentMetadata?.updated
     const versionId = didResolutionResult.didDocumentMetadata?.versionId
     const notV0 = versionId !== '0'
-    if (notV0 && created && options.atTime && options.atTime < new Date(created).valueOf()) {
+    if (notV0 && updated && options.atTime && options.atTime < new Date(updated).valueOf()) {
       throw new Error(`JWS was signed with a not-yet created DID version: ${kid}`)
     }
     const publicKeys = didResolutionResult.didDocument?.verificationMethod || []

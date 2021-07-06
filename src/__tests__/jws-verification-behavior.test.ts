@@ -80,7 +80,6 @@ const VERSION_0_ROTATED = {
     ],
   },
   didDocumentMetadata: {
-    created: '2021-06-21T08:51:40Z',
     nextUpdate: '2021-06-21T08:51:40Z',
     versionId: '0',
     nextVersionId: 'bafyreihoahs3ge57ud5kmvs76k2dhuu46fhpilo4r7lol6fuaxh7sxk5nm',
@@ -125,7 +124,6 @@ const MIDDLE_DID = {
     ],
   },
   didDocumentMetadata: {
-    created: '2021-07-05T10:26:44Z',
     updated: '2021-07-05T10:26:44Z',
     versionId: 'bafyreiftn42zhr7kfmuocbkaetecbkpm7ju2xrearefcl2ualjfecgb22q',
   },
@@ -169,7 +167,6 @@ const VERSION_NEXT = {
     ],
   },
   didDocumentMetadata: {
-    created: '2021-06-21T10:24:46Z',
     updated: '2021-06-21T10:24:46Z',
     versionId: 'bafyreifmt2dvaluxiqqqj2v256cgyenhqns75ffec74tswo6y2q4xfvhji',
   },
@@ -227,14 +224,14 @@ describe('atTime', () => {
     )
   })
 
-  test('before DID created', async () => {
+  test('before DID version available', async () => {
     did.resolve = () => Promise.resolve(MIDDLE_DID)
     const beforeCreated = new Date('2021-07-01T00:00:00Z').valueOf()
     const jws =
       'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0OXJ1cnFuaTRyMDY0YWh0MmFwbmJpZnJjMjlnaGZxam05bndkcGl6Nml4cmNuNnI0YXA_dmVyc2lvbi1pZD1iYWZ5cmVpZnRuNDJ6aHI3a2ZtdW9jYmthZXRlY2JrcG03anUyeHJlYXJlZmNsMnVhbGpmZWNnYjIycSNMV2RRZTVKQ0RGcGF5MUIiLCJhbGciOiJFUzI1NksifQ.eyJoZWxsbyI6IndvcmxkIn0.zXK7AKLADudA5UPBi4rgo1X3ZhMRT3wuWjZDfIwQ2VmB-Q7ZczXk8xJI-Wgv0K_YdDYmi5KslO9ObKCbe0fBmw'
     await expect(did.verifyJWS(jws, { atTime: beforeCreated })).rejects.toThrow(/not-yet created/)
   })
-  test('before DID created for v0', async () => {
+  test('before DID available for v0', async () => {
     const beforeCreation = new Date('2021-06-01T08:51:40Z').valueOf()
     const { kid } = await did.verifyJWS(jws, { atTime: beforeCreation })
     expect(kid).toMatchSnapshot()
