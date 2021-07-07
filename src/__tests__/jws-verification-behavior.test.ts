@@ -1,39 +1,41 @@
 import { DID } from '../did'
 
+// Using authSecret: `sha256.hash(uint8arrays.fromString(`HELLOWORLD`));
+
 const VERSION_0_VANILLA = {
   didResolutionMetadata: {
     contentType: 'application/did+json',
   },
   didDocument: {
-    id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
+    id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
     verificationMethod: [
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#9t28iZFbczNR2xZ',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'thXhSaHPhtJNZaG2pJBYrQ8VChNzYhsFjqa7ALqhfBo',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
       },
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#dkbnB3Dd1z5wByn',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'fuNBAnTyH62WECeXuDbgnEck7SQZy5i4rFHRKgJxii84',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
       },
     ],
     authentication: [
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#dkbnB3Dd1z5wByn',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'fuNBAnTyH62WECeXuDbgnEck7SQZy5i4rFHRKgJxii84',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
       },
     ],
     keyAgreement: [
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#9t28iZFbczNR2xZ',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'thXhSaHPhtJNZaG2pJBYrQ8VChNzYhsFjqa7ALqhfBo',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
       },
     ],
   },
@@ -47,85 +49,42 @@ const VERSION_0_ROTATED = {
     contentType: 'application/did+json',
   },
   didDocument: {
-    id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
+    id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
     verificationMethod: [
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#9t28iZFbczNR2xZ',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'thXhSaHPhtJNZaG2pJBYrQ8VChNzYhsFjqa7ALqhfBo',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
       },
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#dkbnB3Dd1z5wByn',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'fuNBAnTyH62WECeXuDbgnEck7SQZy5i4rFHRKgJxii84',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
       },
     ],
     authentication: [
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#dkbnB3Dd1z5wByn',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'fuNBAnTyH62WECeXuDbgnEck7SQZy5i4rFHRKgJxii84',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
       },
     ],
     keyAgreement: [
       {
-        id: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl#9t28iZFbczNR2xZ',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl',
-        publicKeyBase58: 'thXhSaHPhtJNZaG2pJBYrQ8VChNzYhsFjqa7ALqhfBo',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
       },
     ],
   },
   didDocumentMetadata: {
-    nextUpdate: '2021-06-21T08:51:40Z',
+    nextUpdate: '2021-07-07T07:32:28Z',
     versionId: '0',
-    nextVersionId: 'bafyreihoahs3ge57ud5kmvs76k2dhuu46fhpilo4r7lol6fuaxh7sxk5nm',
-  },
-}
-
-const MIDDLE_DID = {
-  didResolutionMetadata: {
-    contentType: 'application/did+json',
-  },
-  didDocument: {
-    id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
-    verificationMethod: [
-      {
-        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#LWdQe5JCDFpay1B',
-        type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
-        publicKeyBase58: 'zozMio2pBH2q3yQtsGeXsrAmShHqAnU6UiKVtsahNV9T',
-      },
-      {
-        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#cEQ4HAqRoZDyY9d',
-        type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
-        publicKeyBase58: '4uW4Zmu4zsQXmV2iKzJf8e4yWMLrY14FBJT9wLuhGANs',
-      },
-    ],
-    authentication: [
-      {
-        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#LWdQe5JCDFpay1B',
-        type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
-        publicKeyBase58: 'zozMio2pBH2q3yQtsGeXsrAmShHqAnU6UiKVtsahNV9T',
-      },
-    ],
-    keyAgreement: [
-      {
-        id: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap#cEQ4HAqRoZDyY9d',
-        type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw149rurqni4r064aht2apnbifrc29ghfqjm9nwdpiz6ixrcn6r4ap',
-        publicKeyBase58: '4uW4Zmu4zsQXmV2iKzJf8e4yWMLrY14FBJT9wLuhGANs',
-      },
-    ],
-  },
-  didDocumentMetadata: {
-    updated: '2021-07-05T10:26:44Z',
-    versionId: 'bafyreiftn42zhr7kfmuocbkaetecbkpm7ju2xrearefcl2ualjfecgb22q',
+    nextVersionId: 'bafyreicveiixaitvrpocrgljdjw7ed3syp7b6evxcz4yzwwqaxnbn7tq2a',
   },
 }
 
@@ -134,54 +93,54 @@ const VERSION_NEXT = {
     contentType: 'application/did+json',
   },
   didDocument: {
-    id: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h',
+    id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
     verificationMethod: [
       {
-        id: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h#og5wzYzKbo4nGuv',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#Yu1U6tjUoVTM9tX',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h',
-        publicKeyBase58: '238Pd991McdsFdsMgS9LVHwXk5wvgVFdZ24oC2G7wZo4C',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: 'oJn8JX1LJKBmo4xy8bwRJjtAfbqm6zrUYB8wBTpL8g2o',
       },
       {
-        id: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h#jUDpVbfg1xiBEQG',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#MuzBPi9UD4cdq5q',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h',
-        publicKeyBase58: 'FybNucu9qrK9fzm5TYMuPPGcdPs4T8J4wWszBZKBTrdW',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '45ii3puWe41GYUVbAw2KQjxAwcrRokjqJQzTykR5vTK5',
       },
     ],
     authentication: [
       {
-        id: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h#og5wzYzKbo4nGuv',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#Yu1U6tjUoVTM9tX',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h',
-        publicKeyBase58: '238Pd991McdsFdsMgS9LVHwXk5wvgVFdZ24oC2G7wZo4C',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: 'oJn8JX1LJKBmo4xy8bwRJjtAfbqm6zrUYB8wBTpL8g2o',
       },
     ],
     keyAgreement: [
       {
-        id: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h#jUDpVbfg1xiBEQG',
+        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#MuzBPi9UD4cdq5q',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw1477tvctsul381s0u678qzcgb9cerv7zhkj0bu86fffouzy0ty2h',
-        publicKeyBase58: 'FybNucu9qrK9fzm5TYMuPPGcdPs4T8J4wWszBZKBTrdW',
+        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+        publicKeyBase58: '45ii3puWe41GYUVbAw2KQjxAwcrRokjqJQzTykR5vTK5',
       },
     ],
   },
   didDocumentMetadata: {
-    updated: '2021-06-21T10:24:46Z',
-    versionId: 'bafyreifmt2dvaluxiqqqj2v256cgyenhqns75ffec74tswo6y2q4xfvhji',
+    updated: '2021-07-07T07:32:28Z',
+    versionId: 'bafyreicveiixaitvrpocrgljdjw7ed3syp7b6evxcz4yzwwqaxnbn7tq2a',
   },
 }
 
-// using: kid = did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn
+// using: kid = did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr?version-id=0#vwgkzudRSEdS2dW
 const jws =
-  'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0YWNzeHRvMHd2eHdsNjJ1c3EzMnk0bmNmb256ZG1nNWk1am9yamNzMmhhbml1YWJ2emw_dmVyc2lvbi1pZD0wI2RrYm5CM0RkMXo1d0J5biIsImFsZyI6IkVTMjU2SyJ9.eyJoZWxsbyI6IndvcmxkIn0._FMNUc83qOfNEyOUvpQs09CX12MbLEa90BIqa6qLw96VT2pec26gdlin5ozJ4veVgLbRrUBFCUUP2iLn6JtPhQ'
+  'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0Nnl1YXBhOGNpemlqcmM0OWphbmF0ZjFnNmRuczVyenhlZjA5enFlZTd6enpxOTBmdHI_dmVyc2lvbi1pZD0wI3Z3Z2t6dWRSU0VkUzJkVyIsImFsZyI6IkVTMjU2SyJ9.eyJoZWxsbyI6IndvcmxkIn0.wLQ9QTfXRJe4stVzgOb6rXh6l913vycklrWoppcUkI888-B4o7jqlSxsQDBpEfDLqSr52A8wjV9TQmKqZ_qOHw'
 
 test('vanilla version 0', async () => {
   const did = new DID()
   did.resolve = () => Promise.resolve(VERSION_0_VANILLA)
   const { kid } = await did.verifyJWS(jws)
   expect(kid).toEqual(
-    'did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn'
+    'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr?version-id=0#vwgkzudRSEdS2dW'
   )
 })
 
@@ -218,15 +177,16 @@ describe('atTime', () => {
     expect(kid).toMatchSnapshot()
   })
   test('fail after rotation', async () => {
-    const afterRotation = new Date('2021-06-22T10:20:46Z').valueOf()
+    const afterRotation = new Date('2021-07-07T07:40:28Z').valueOf()
     await expect(did.verifyJWS(jws, { atTime: afterRotation })).rejects.toThrow(
       /JWS was signed with a revoked DID version/
     )
   })
 
   test('before DID version available', async () => {
-    did.resolve = () => Promise.resolve(MIDDLE_DID)
+    did.resolve = () => Promise.resolve(VERSION_NEXT)
     const beforeCreated = new Date('2021-07-01T00:00:00Z').valueOf()
+    // Have lost keys for the old DID, so here is a new one.
     const jws =
       'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0OXJ1cnFuaTRyMDY0YWh0MmFwbmJpZnJjMjlnaGZxam05bndkcGl6Nml4cmNuNnI0YXA_dmVyc2lvbi1pZD1iYWZ5cmVpZnRuNDJ6aHI3a2ZtdW9jYmthZXRlY2JrcG03anUyeHJlYXJlZmNsMnVhbGpmZWNnYjIycSNMV2RRZTVKQ0RGcGF5MUIiLCJhbGciOiJFUzI1NksifQ.eyJoZWxsbyI6IndvcmxkIn0.zXK7AKLADudA5UPBi4rgo1X3ZhMRT3wuWjZDfIwQ2VmB-Q7ZczXk8xJI-Wgv0K_YdDYmi5KslO9ObKCbe0fBmw'
     await expect(did.verifyJWS(jws, { atTime: beforeCreated })).rejects.toThrow(/not-yet created/)
