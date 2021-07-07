@@ -231,9 +231,7 @@ export class DID {
       }
       // Key used before `updated` date
       const updated = didResolutionResult.didDocumentMetadata?.updated
-      const versionId = didResolutionResult.didDocumentMetadata?.versionId
-      const notV0 = versionId !== '0'
-      if (notV0 && updated && options.atTime && options.atTime < new Date(updated).valueOf()) {
+      if (updated && options.atTime && options.atTime < new Date(updated).valueOf()) {
         throw new Error(`JWS was signed with a not-yet created DID version: ${kid}`)
       }
     }
