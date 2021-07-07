@@ -157,7 +157,9 @@ describe('rotatedKey', () => {
   }
 
   test('throw', async () => {
-    await expect(did.verifyJWS(jwsV0)).rejects.toThrow(/JWS was signed with a revoked DID version/)
+    await expect(did.verifyJWS(jwsV0)).rejects.toThrow(
+      /invalid_jws: signature authored with a revoked DID version/
+    )
   })
 
   test('pass if timecheck disabled', async () => {
@@ -188,7 +190,7 @@ describe('atTime', () => {
   })
   test('fail after rotation', async () => {
     await expect(did.verifyJWS(jwsV0, { atTime: afterRotation })).rejects.toThrow(
-      /JWS was signed with a revoked DID version/
+      /invalid_jws: signature authored with a revoked DID version/
     )
   })
   test('ok after rotation if timecheck disabled', async () => {
@@ -200,7 +202,7 @@ describe('atTime', () => {
   test('before DID version available', async () => {
     did.resolve = () => Promise.resolve(VERSION_NEXT)
     await expect(did.verifyJWS(jwsVNext, { atTime: beforeRotation })).rejects.toThrow(
-      /not-yet created/
+      /invalid_jws: signature authored before creation/
     )
   })
   test('before DID version available if timecheck disabled', async () => {
