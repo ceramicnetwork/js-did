@@ -232,7 +232,7 @@ export class DID {
       // Key used before `updated` date
       const updated = didResolutionResult.didDocumentMetadata?.updated
       if (updated && options.atTime && options.atTime < new Date(updated).valueOf()) {
-        throw new Error(`JWS was signed with a not-yet created DID version: ${kid}`)
+        throw new Error(`invalid_jws: signature authored before creation of DID version: ${kid}`)
       }
     }
 
