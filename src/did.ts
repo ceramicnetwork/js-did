@@ -226,7 +226,7 @@ export class DID {
         const isLater = !isEarlier
         if (isLater) {
           // Do not allow using a key _after_ it is being revoked
-          throw new Error(`JWS was signed with a revoked DID version: ${kid}`)
+          throw new Error(`invalid_jws: signature authored with a revoked DID version: ${kid}`)
         }
       }
       // Key used before `updated` date
