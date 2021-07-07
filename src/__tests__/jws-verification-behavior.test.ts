@@ -1,41 +1,39 @@
 import { DID } from '../did'
 
-// Using authSecret: `sha256.hash(uint8arrays.fromString(`HELLOWORLD`));
-
 const VERSION_0_VANILLA = {
   didResolutionMetadata: {
     contentType: 'application/did+json',
   },
   didDocument: {
-    id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+    id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
     verificationMethod: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
-        type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#7wYNHm3nGoNA3Kv',
+        type: 'EcdsaSecp256k1Signature2019',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: '2BS946XE3ZGDEsFSq5G3ndodLnAz2TZu1SN1FUw8EwZUC',
       },
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
-        type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#ATBW8KGCmgnXaKR',
+        type: 'X25519KeyAgreementKey2019',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'HZCZPM7PzCGow5WxopEKeQaKNGQgsZH2d9baiK3FpCYf',
       },
     ],
     authentication: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#7wYNHm3nGoNA3Kv',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: '2BS946XE3ZGDEsFSq5G3ndodLnAz2TZu1SN1FUw8EwZUC',
       },
     ],
     keyAgreement: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#ATBW8KGCmgnXaKR',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'HZCZPM7PzCGow5WxopEKeQaKNGQgsZH2d9baiK3FpCYf',
       },
     ],
   },
@@ -49,42 +47,42 @@ const VERSION_0_ROTATED = {
     contentType: 'application/did+json',
   },
   didDocument: {
-    id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+    id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
     verificationMethod: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
-        type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#7wYNHm3nGoNA3Kv',
+        type: 'EcdsaSecp256k1Signature2019',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: '2BS946XE3ZGDEsFSq5G3ndodLnAz2TZu1SN1FUw8EwZUC',
       },
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
-        type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#ATBW8KGCmgnXaKR',
+        type: 'X25519KeyAgreementKey2019',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'HZCZPM7PzCGow5WxopEKeQaKNGQgsZH2d9baiK3FpCYf',
       },
     ],
     authentication: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#vwgkzudRSEdS2dW',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#7wYNHm3nGoNA3Kv',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '2BQp6zUiYQCEFP7Aaph6vm9vYNXAndNu9q59q86ZWDYmn',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: '2BS946XE3ZGDEsFSq5G3ndodLnAz2TZu1SN1FUw8EwZUC',
       },
     ],
     keyAgreement: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#AdUB2e27TjdFwth',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#ATBW8KGCmgnXaKR',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '6wbGfRTmgTcnjTEHq6Wdg3AX2W8NKZTKJ3vLd166Ya7w',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'HZCZPM7PzCGow5WxopEKeQaKNGQgsZH2d9baiK3FpCYf',
       },
     ],
   },
   didDocumentMetadata: {
-    nextUpdate: '2021-07-07T07:32:28Z',
+    nextUpdate: '2021-07-07T08:12:19Z',
     versionId: '0',
-    nextVersionId: 'bafyreicveiixaitvrpocrgljdjw7ed3syp7b6evxcz4yzwwqaxnbn7tq2a',
+    nextVersionId: 'bafyreiebh2rwia4qq5v43dqlnofkczsvoghdxymahv4p5lkp5ivr5kgatm',
   },
 }
 
@@ -93,58 +91,61 @@ const VERSION_NEXT = {
     contentType: 'application/did+json',
   },
   didDocument: {
-    id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
+    id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
     verificationMethod: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#Yu1U6tjUoVTM9tX',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#C26y2DZeJ9EMYsF',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: 'oJn8JX1LJKBmo4xy8bwRJjtAfbqm6zrUYB8wBTpL8g2o',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'vTcTTxzsSsAiqTb9EH7tC13gG1Dfkdya36TmLxU7951X',
       },
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#MuzBPi9UD4cdq5q',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#sfecbasdBzBfhcb',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '45ii3puWe41GYUVbAw2KQjxAwcrRokjqJQzTykR5vTK5',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'H1s1bgxnxZPdhF2ZXqACwi3QxPCsZGVVjcsC8jLexKqq',
       },
     ],
     authentication: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#Yu1U6tjUoVTM9tX',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#C26y2DZeJ9EMYsF',
         type: 'EcdsaSecp256k1Signature2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: 'oJn8JX1LJKBmo4xy8bwRJjtAfbqm6zrUYB8wBTpL8g2o',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'vTcTTxzsSsAiqTb9EH7tC13gG1Dfkdya36TmLxU7951X',
       },
     ],
     keyAgreement: [
       {
-        id: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr#MuzBPi9UD4cdq5q',
+        id: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k#sfecbasdBzBfhcb',
         type: 'X25519KeyAgreementKey2019',
-        controller: 'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr',
-        publicKeyBase58: '45ii3puWe41GYUVbAw2KQjxAwcrRokjqJQzTykR5vTK5',
+        controller: 'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k',
+        publicKeyBase58: 'H1s1bgxnxZPdhF2ZXqACwi3QxPCsZGVVjcsC8jLexKqq',
       },
     ],
   },
   didDocumentMetadata: {
-    updated: '2021-07-07T07:32:28Z',
-    versionId: 'bafyreicveiixaitvrpocrgljdjw7ed3syp7b6evxcz4yzwwqaxnbn7tq2a',
+    updated: '2021-07-07T08:12:19Z',
+    versionId: 'bafyreiebh2rwia4qq5v43dqlnofkczsvoghdxymahv4p5lkp5ivr5kgatm',
   },
 }
 
-// using: kid = did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr?version-id=0#vwgkzudRSEdS2dW
-const jws =
-  'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0Nnl1YXBhOGNpemlqcmM0OWphbmF0ZjFnNmRuczVyenhlZjA5enFlZTd6enpxOTBmdHI_dmVyc2lvbi1pZD0wI3Z3Z2t6dWRSU0VkUzJkVyIsImFsZyI6IkVTMjU2SyJ9.eyJoZWxsbyI6IndvcmxkIn0.wLQ9QTfXRJe4stVzgOb6rXh6l913vycklrWoppcUkI888-B4o7jqlSxsQDBpEfDLqSr52A8wjV9TQmKqZ_qOHw'
+// v0: did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv
+const jwsV0 =
+  'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0YWg4d2p5OGdyZ3psNTJzbDE4c2J5aXJnaTlicXk5eXp1MjhrYnh2am1oaXA5OXIxNGs_dmVyc2lvbi1pZD0wIzd3WU5IbTNuR29OQTNLdiIsImFsZyI6IkVTMjU2SyJ9.eyJoZWxsbyI6IndvcmxkIn0.cHVXU7QW2pvBJpVIBCLhnkCQ0k4Up3cNRqiyeryRbPOSrZdAoQmWy1OfzNFzgY90nol26KJxHWnknSyu5sY__Q'
+// vNext: did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=bafyreiebh2rwia4qq5v43dqlnofkczsvoghdxymahv4p5lkp5ivr5kgatm#C26y2DZeJ9EMYsF
+const jwsVNext =
+  'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0YWg4d2p5OGdyZ3psNTJzbDE4c2J5aXJnaTlicXk5eXp1MjhrYnh2am1oaXA5OXIxNGs_dmVyc2lvbi1pZD1iYWZ5cmVpZWJoMnJ3aWE0cXE1djQzZHFsbm9ma2N6c3ZvZ2hkeHltYWh2NHA1bGtwNWl2cjVrZ2F0bSNDMjZ5MkRaZUo5RU1Zc0YiLCJhbGciOiJFUzI1NksifQ.eyJoZWxsbyI6IndvcmxkIn0.GRKdQMwbGw5t8Q_8asCV88jofZhJaPZlLs82-E_DvNLwfRBR8_Sbt_GwHPqdghA9oSN3XrTsI9KlKjwf8G6sew'
 
 test('vanilla version 0', async () => {
   const did = new DID()
   did.resolve = () => Promise.resolve(VERSION_0_VANILLA)
-  const { kid } = await did.verifyJWS(jws)
+  const { kid } = await did.verifyJWS(jwsV0)
   expect(kid).toEqual(
-    'did:3:kjzl6cwe1jw146yuapa8cizijrc49janatf1g6dns5rzxef09zqee7zzzq90ftr?version-id=0#vwgkzudRSEdS2dW'
+    'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv'
   )
 })
 
-test('rotated key', async () => {
+describe('rotatedKey', () => {
   const did = new DID()
   did.resolve = (didUrl) => {
     const isVersion0 = /version-id=0/.exec(didUrl)
@@ -154,7 +155,14 @@ test('rotated key', async () => {
       return Promise.resolve(VERSION_NEXT)
     }
   }
-  await expect(did.verifyJWS(jws)).rejects.toThrow(/JWS was signed with a revoked DID version/)
+
+  test('throw', async () => {
+    await expect(did.verifyJWS(jwsV0)).rejects.toThrow(/JWS was signed with a revoked DID version/)
+  })
+
+  test('pass if timecheck disabled', async () => {
+    await expect(did.verifyJWS(jwsV0, { disableTimecheck: true })).resolves.toBeTruthy()
+  })
 })
 
 describe('atTime', () => {
@@ -171,29 +179,39 @@ describe('atTime', () => {
     did.resolve = fauxResolve
   })
 
+  const beforeRotation = new Date('2021-07-07T08:00:19Z').valueOf()
+  const afterRotation = new Date('2021-07-07T08:40:19Z').valueOf()
+
   test('ok before rotation', async () => {
-    const beforeRotation = new Date('2021-06-21T08:20:46Z').valueOf()
-    const { kid } = await did.verifyJWS(jws, { atTime: beforeRotation })
+    const { kid } = await did.verifyJWS(jwsV0, { atTime: beforeRotation })
     expect(kid).toMatchSnapshot()
   })
   test('fail after rotation', async () => {
-    const afterRotation = new Date('2021-07-07T07:40:28Z').valueOf()
-    await expect(did.verifyJWS(jws, { atTime: afterRotation })).rejects.toThrow(
+    await expect(did.verifyJWS(jwsV0, { atTime: afterRotation })).rejects.toThrow(
       /JWS was signed with a revoked DID version/
     )
+  })
+  test('ok after rotation if timecheck disabled', async () => {
+    await expect(
+      did.verifyJWS(jwsV0, { atTime: afterRotation, disableTimecheck: true })
+    ).resolves.toBeTruthy()
   })
 
   test('before DID version available', async () => {
     did.resolve = () => Promise.resolve(VERSION_NEXT)
-    const beforeCreated = new Date('2021-07-01T00:00:00Z').valueOf()
+    await expect(did.verifyJWS(jwsVNext, { atTime: beforeRotation })).rejects.toThrow(
+      /not-yet created/
+    )
+  })
+  test('before DID version available if timecheck disabled', async () => {
+    did.resolve = () => Promise.resolve(VERSION_NEXT)
     // Have lost keys for the old DID, so here is a new one.
-    const jws =
-      'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0OXJ1cnFuaTRyMDY0YWh0MmFwbmJpZnJjMjlnaGZxam05bndkcGl6Nml4cmNuNnI0YXA_dmVyc2lvbi1pZD1iYWZ5cmVpZnRuNDJ6aHI3a2ZtdW9jYmthZXRlY2JrcG03anUyeHJlYXJlZmNsMnVhbGpmZWNnYjIycSNMV2RRZTVKQ0RGcGF5MUIiLCJhbGciOiJFUzI1NksifQ.eyJoZWxsbyI6IndvcmxkIn0.zXK7AKLADudA5UPBi4rgo1X3ZhMRT3wuWjZDfIwQ2VmB-Q7ZczXk8xJI-Wgv0K_YdDYmi5KslO9ObKCbe0fBmw'
-    await expect(did.verifyJWS(jws, { atTime: beforeCreated })).rejects.toThrow(/not-yet created/)
+    await expect(
+      did.verifyJWS(jwsVNext, { atTime: beforeRotation, disableTimecheck: true })
+    ).resolves.toBeTruthy()
   })
   test('before DID available for v0', async () => {
-    const beforeCreation = new Date('2021-06-01T08:51:40Z').valueOf()
-    const { kid } = await did.verifyJWS(jws, { atTime: beforeCreation })
+    const { kid } = await did.verifyJWS(jwsV0, { atTime: beforeRotation })
     expect(kid).toMatchSnapshot()
   })
 })
