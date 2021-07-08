@@ -41,6 +41,11 @@ export interface VerifyJWSOptions {
    * JS timestamp when the signature was allegedly made. `undefined` means _now_.
    */
   atTime?: number
+
+  /**
+   * If true, timestamp checking is disabled.
+   */
+  disableTimecheck?: boolean
 }
 
 export interface VerifyJWSResult {
@@ -211,16 +216,26 @@ export class DID {
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
     const didResolutionResult = await this.resolve(kid)
-    const nextUpdate = didResolutionResult.didDocumentMetadata?.nextUpdate
-    if (nextUpdate) {
-      // This version of the DID document has been revoked. Check if the JWS
-      // was signed before it the revocation happened.
-      const isEarlier = options.atTime && options.atTime < new Date(nextUpdate).valueOf()
-      if (!isEarlier) {
-        // Do not allow using a key _after_ it is being revoked
-        throw new Error(`JWS was signed with a revoked DID version: ${kid}`)
+    const timecheckEnabled = !options.disableTimecheck
+    if (timecheckEnabled) {
+      const nextUpdate = didResolutionResult.didDocumentMetadata?.nextUpdate
+      if (nextUpdate) {
+        // This version of the DID document has been revoked. Check if the JWS
+        // was signed before it the revocation happened.
+        const isEarlier = options.atTime && options.atTime < new Date(nextUpdate).valueOf()
+        const isLater = !isEarlier
+        if (isLater) {
+          // Do not allow using a key _after_ it is being revoked
+          throw new Error(`invalid_jws: signature authored with a revoked DID version: ${kid}`)
+        }
+      }
+      // Key used before `updated` date
+      const updated = didResolutionResult.didDocumentMetadata?.updated
+      if (updated && options.atTime && options.atTime < new Date(updated).valueOf()) {
+        throw new Error(`invalid_jws: signature authored before creation of DID version: ${kid}`)
       }
     }
+
     const publicKeys = didResolutionResult.didDocument?.verificationMethod || []
     // verifyJWS will throw an error if the signature is invalid
     verifyJWS(jws, publicKeys)

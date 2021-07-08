@@ -1,3 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`atTime ok before rotation 1`] = `"did:3:kjzl6cwe1jw14acsxto0wvxwl62usq32y4ncfonzdmg5i5jorjcs2haniuabvzl?version-id=0#dkbnB3Dd1z5wByn"`;
+exports[`atTime before DID available for v0 1`] = `"did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv"`;
+
+exports[`atTime ok before rotation 1`] = `"did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv"`;
