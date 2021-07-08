@@ -1,3 +1,8 @@
+## v2.3.0 (2021-07-08)
+
+feat: Flag for disabled time-check of a signature
+feat: Make sure key is not used before it is available in DID document
+
 ## v2.2.1 (2021-07-02)
 
 feat: Use implicit notion of _now_, instead of explicit `new Date`
