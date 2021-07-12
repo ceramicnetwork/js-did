@@ -269,7 +269,7 @@ describe('issuer', () => {
   test('does not include signer as controller', async () => {
     const issuer = COMPOSITE_ISSUER_EMPTY.didDocument.id
     await expect(did.verifyJWS(jwsV0, { issuer: issuer })).rejects.toThrow(
-      /invalid_jws: kid does not belong to issuer/
+      /invalid_jws: not a valid verificationMethod for issuer/
     )
   })
 })

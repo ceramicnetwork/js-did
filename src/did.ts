@@ -249,7 +249,7 @@ export class DID {
       const issuerResolution = await this.resolve(issuerUrl)
       const controllerProperty = issuerResolution.didDocument?.controller
       const controllers = extractControllers(controllerProperty)
-      const signerIsController = controllers.some((controller) => controller === signerDid)
+      const signerIsController = signerDid ? controllers.includes(signerDid) : false
       if (!signerIsController) {
         throw new Error(`invalid_jws: not a valid verificationMethod for issuer: ${kid}`)
       }
