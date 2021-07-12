@@ -1,3 +1,7 @@
+## v2.4.0 (2021-07-12)
+
+feat: Pass explicit issuer to verifyJWS function
+
 ## v2.3.0 (2021-07-08)
 
 feat: Flag for disabled time-check of a signature
