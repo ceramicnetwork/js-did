@@ -129,6 +129,17 @@ const VERSION_NEXT = {
   },
 }
 
+const COMPOSITE_ISSUER_EMPTY = {
+  didResolutionMetadata: {
+    contentType: 'application/did+json',
+  },
+  didDocument: {
+    id: 'did:composite:foo',
+    controller: [],
+  },
+  didDocumentMetadata: {},
+}
+
 // v0: did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv
 const jwsV0 =
   'eyJraWQiOiJkaWQ6MzpranpsNmN3ZTFqdzE0YWg4d2p5OGdyZ3psNTJzbDE4c2J5aXJnaTlicXk5eXp1MjhrYnh2am1oaXA5OXIxNGs_dmVyc2lvbi1pZD0wIzd3WU5IbTNuR29OQTNLdiIsImFsZyI6IkVTMjU2SyJ9.eyJoZWxsbyI6IndvcmxkIn0.cHVXU7QW2pvBJpVIBCLhnkCQ0k4Up3cNRqiyeryRbPOSrZdAoQmWy1OfzNFzgY90nol26KJxHWnknSyu5sY__Q'
@@ -215,5 +226,50 @@ describe('atTime', () => {
   test('before DID available for v0', async () => {
     const { kid } = await did.verifyJWS(jwsV0, { atTime: beforeRotation })
     expect(kid).toMatchSnapshot()
+  })
+})
+
+describe('issuer', () => {
+  const SIGNER_DID = VERSION_0_VANILLA.didDocument.id
+  const did = new DID()
+
+  beforeEach(() => {
+    did.resolve = jest.fn((didUrl: string) => {
+      if (didUrl === COMPOSITE_ISSUER_EMPTY.didDocument.id) {
+        return Promise.resolve(COMPOSITE_ISSUER_EMPTY)
+      }
+      return Promise.resolve(VERSION_0_VANILLA)
+    })
+  })
+
+  test('same as signer', async () => {
+    const { kid } = await did.verifyJWS(jwsV0, { issuer: SIGNER_DID })
+    expect(kid).toMatchSnapshot()
+  })
+  test('includes signer as controller', async () => {
+    const fauxResolve = jest.fn((didUrl: string) => {
+      if (didUrl === COMPOSITE_ISSUER_EMPTY.didDocument.id) {
+        const included = {
+          ...COMPOSITE_ISSUER_EMPTY,
+          didDocument: {
+            ...COMPOSITE_ISSUER_EMPTY.didDocument,
+            controller: [SIGNER_DID],
+          },
+        }
+        return Promise.resolve(included)
+      }
+      return Promise.resolve(VERSION_0_VANILLA)
+    })
+    did.resolve = fauxResolve
+    const issuer = COMPOSITE_ISSUER_EMPTY.didDocument.id
+    const { kid } = await did.verifyJWS(jwsV0, { issuer: issuer })
+    expect(kid).toMatchSnapshot()
+    expect(fauxResolve).toBeCalledWith(issuer)
+  })
+  test('does not include signer as controller', async () => {
+    const issuer = COMPOSITE_ISSUER_EMPTY.didDocument.id
+    await expect(did.verifyJWS(jwsV0, { issuer: issuer })).rejects.toThrow(
+      /invalid_jws: not a valid verificationMethod for issuer/
+    )
   })
 })

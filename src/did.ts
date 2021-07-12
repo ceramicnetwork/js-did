@@ -11,6 +11,8 @@ import {
   decodeBase64,
   encodeBase64Url,
   randomString,
+  didWithTime,
+  extractControllers,
 } from './utils'
 
 export interface AuthenticateOptions {
@@ -46,6 +48,11 @@ export interface VerifyJWSOptions {
    * If true, timestamp checking is disabled.
    */
   disableTimecheck?: boolean
+
+  /**
+   * DID that issued the signature.
+   */
+  issuer?: string
 }
 
 export interface VerifyJWSResult {
@@ -233,6 +240,18 @@ export class DID {
       const updated = didResolutionResult.didDocumentMetadata?.updated
       if (updated && options.atTime && options.atTime < new Date(updated).valueOf()) {
         throw new Error(`invalid_jws: signature authored before creation of DID version: ${kid}`)
+      }
+    }
+
+    const signerDid = didResolutionResult.didDocument?.id
+    if (options.issuer && options.issuer !== signerDid) {
+      const issuerUrl = didWithTime(options.issuer, options.atTime)
+      const issuerResolution = await this.resolve(issuerUrl)
+      const controllerProperty = issuerResolution.didDocument?.controller
+      const controllers = extractControllers(controllerProperty)
+      const signerIsController = signerDid ? controllers.includes(signerDid) : false
+      if (!signerIsController) {
+        throw new Error(`invalid_jws: not a valid verificationMethod for issuer: ${kid}`)
       }
     }
 
