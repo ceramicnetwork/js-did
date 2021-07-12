@@ -251,7 +251,7 @@ export class DID {
       const controllers = extractControllers(controllerProperty)
       const signerIsController = controllers.some((controller) => controller === signerDid)
       if (!signerIsController) {
-        throw new Error(`invalid_jws: kid does not belong to issuer`)
+        throw new Error(`invalid_jws: not a valid verificationMethod for issuer: ${kid}`)
       }
     }
 
