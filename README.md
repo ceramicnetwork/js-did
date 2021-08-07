@@ -108,7 +108,7 @@ import KeyResolver from 'key-did-resolver'
 const did = new DID({ resolver: KeyResolver.getResolver() })
 
 // Resolve a DID document
-await did.resolve('did:test:...')
+await did.resolve('did:key:...')
 ```
 
 ## License
