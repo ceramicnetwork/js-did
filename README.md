@@ -102,7 +102,7 @@ console.log(await did.decryptDagJWE(dagJWE))
 
 ```js
 import { DID } from 'dids'
-import KeyResolver from '@ceramicnetwork/key-did-resolver'
+import KeyResolver from 'key-did-resolver'
 
 // See https://github.com/decentralized-identity/did-resolver
 const did = new DID({ resolver: KeyResolver.getResolver() })
