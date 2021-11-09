@@ -34,12 +34,13 @@
   "dependencies": {
     "@stablelib/random": "^1.0.1",
     "cids": "^1.1.6",
-    "dag-jose-utils": "^0.1.1",
+    "dag-jose-utils": "^1.0.0",
     "did-jwt": "^5.6.1",
     "did-resolver": "^3.1.0",
+    "multiformats": "^9.4.10",
+    "query-string": "^7.0.0",
     "rpc-utils": "^0.3.4",
-    "uint8arrays": "^2.1.5",
-    "query-string": "^7.0.0"
+    "uint8arrays": "^2.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
