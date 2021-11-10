@@ -6,6 +6,7 @@ import { randomBytes } from '@stablelib/random'
 import { generateKeyPairFromSeed } from '@stablelib/x25519'
 import { x25519Decrypter, decryptJWE, JWE } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
+import crypto from 'crypto'
 
 import * as utils from '../utils'
 // @ts-ignore
@@ -13,6 +14,7 @@ utils.randomString = () => 'rWCXyH1otp5/F78tycckgg'
 const { encodeBase64, encodeBase64Url } = utils
 
 global.Date.now = jest.fn(() => 1606236374000)
+global.crypto = crypto.webcrypto
 
 import { DID } from '../did'
 import { DIDProvider } from '../types'
