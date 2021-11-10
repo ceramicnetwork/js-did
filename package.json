@@ -54,11 +54,9 @@
     "eslint": "^7.28.0",
     "eslint-config-3box": "^0.2.0",
     "jest": "^27.0.4",
+    "jest-resolver-enhanced": "^1.0.1",
     "prettier": "^2.3.1",
     "typedoc": "^0.20.37",
     "typescript": "^4.2.4"
-  },
-  "jest": {
-    "testRegex": ".(spec|test).ts$"
   }
 }
