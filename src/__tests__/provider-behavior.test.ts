@@ -488,7 +488,8 @@ describe('`decryptDagJWE` method', () => {
 
   test('uses the provider attached to the instance', async () => {
     const clearObj = { asdf: 432 }
-    const cleartext = encodeBase64(prepareCleartext(clearObj))
+    const preparedCleartext = await prepareCleartext(clearObj)
+    const cleartext = encodeBase64(preparedCleartext)
     const provider = {
       send: jest.fn((req: { id: string }) => {
         return Promise.resolve({

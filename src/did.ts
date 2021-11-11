@@ -2,6 +2,7 @@ import { ResolverOptions, DIDResolutionResult, ResolverRegistry, Resolver } from
 import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import { RPCClient } from 'rpc-utils'
+import { CID } from 'multiformats/cid'
 
 import type { DagJWS, DIDProvider, DIDProviderClient } from './types'
 import {
@@ -206,7 +207,14 @@ export class DID {
     const payloadCid = encodeBase64Url(cid.bytes)
     Object.assign(options, { linkedBlock: encodeBase64(linkedBlock) })
     const jws = await this.createJWS(payloadCid, options)
-    jws.link = cid
+
+    const compatibleCID = CID.asCID(cid)
+    if (!compatibleCID) {
+      throw new Error(
+        'CID of the JWS cannot be set to the encoded payload cid as they are incompatible'
+      )
+    }
+    jws.link = compatibleCID
     return { jws, linkedBlock }
   }
 
@@ -295,7 +303,8 @@ export class DID {
     recipients: Array<string>,
     options: CreateJWEOptions = {}
   ): Promise<JWE> {
-    return this.createJWE(prepareCleartext(cleartext), recipients, options)
+    const preparedCleartext = await prepareCleartext(cleartext)
+    return this.createJWE(preparedCleartext, recipients, options)
   }
 
   /**
