@@ -2,13 +2,18 @@
   "name": "dids",
   "version": "3.0.0-alpha.0",
   "description": "Typescript library for interacting with DIDs",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.js"
+  },
   "files": [
     "lib/*"
   ],
+  "sideEffects": false,
   "scripts": {
     "test": "jest",
-    "build": "tsc -p tsconfig.json",
+    "build": "./node_modules/.bin/tsc --project tsconfig.build.json",
     "prepublishOnly": "npm run build",
     "prebuild": "npm run clean",
     "lint": "eslint ./src --ext .js,.ts",

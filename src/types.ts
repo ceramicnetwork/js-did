@@ -1,4 +1,4 @@
-import { CID } from 'multiformats/cid'
+import type { CID } from 'multiformats/cid'
 import type { JWE } from 'did-jwt'
 import type { RPCClient, RPCConnection, RPCRequest, RPCResponse } from 'rpc-utils'
 

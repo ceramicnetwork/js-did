@@ -2,13 +2,13 @@
 
 import { DIDResolutionResult, Resolver } from 'did-resolver'
 
-import * as utils from '../utils'
+import * as utils from '../utils.js'
 // @ts-ignore
 utils.randomString = () => 'rWCXyH1otp5/F78tycckgg'
 
 global.Date.now = jest.fn(() => 1606236374000)
 
-import { DID } from '../did'
+import { DID } from '../did.js'
 
 test('uses the given Resolver instance', () => {
   const resolver = new Resolver()
