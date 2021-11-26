@@ -1,3 +1,3 @@
 export type { DIDResolutionResult } from 'did-resolver'
-export * from './types'
-export * from './did'
+export * from './types.js'
+export * from './did.js'

@@ -1,4 +1,4 @@
-import { DID } from '../did'
+import { DID } from '../did.js'
 
 const VERSION_0_VANILLA = {
   didResolutionMetadata: {

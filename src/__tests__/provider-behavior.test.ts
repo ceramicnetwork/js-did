@@ -7,7 +7,7 @@ import { generateKeyPairFromSeed } from '@stablelib/x25519'
 import { x25519Decrypter, decryptJWE, JWE } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 
-import * as utils from '../utils'
+import * as utils from '../utils.js'
 // @ts-ignore
 utils.randomString = () => 'rWCXyH1otp5/F78tycckgg'
 const { encodeBase64, encodeBase64Url } = utils

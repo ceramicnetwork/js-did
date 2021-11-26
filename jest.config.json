@@ -2,5 +2,14 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "testRegex": ".(spec|test).ts$",
   "testEnvironment": "node",
-  "resolver": "jest-resolver-enhanced"
+  "resolver": "jest-resolver-enhanced",
+  "extensionsToTreatAsEsm": [".ts"],
+  "globals": {
+    "ts-jest": {
+      "useESM": true
+    }
+  },
+  "moduleNameMapper": {
+    "^(\\.{1,2}/.*)\\.js$": "$1"
+  }
 }

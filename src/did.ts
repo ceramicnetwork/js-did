@@ -4,7 +4,7 @@ import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils
 import { RPCClient } from 'rpc-utils'
 import { CID } from 'multiformats/cid'
 
-import type { DagJWS, DIDProvider, DIDProviderClient } from './types'
+import type { DagJWS, DIDProvider, DIDProviderClient } from './types.js'
 import {
   fromDagJWS,
   encodeBase64,
@@ -14,7 +14,7 @@ import {
   randomString,
   didWithTime,
   extractControllers,
-} from './utils'
+} from './utils.js'
 
 export interface AuthenticateOptions {
   provider?: DIDProvider
@@ -328,7 +328,6 @@ export class DID {
    * Try to decrypt the given DagJWE with the currently authenticated user.
    *
    * @param jwe                 The JWE to decrypt
-   * @param options             Optional parameters
    * @returns                   An ipld object
    */
   async decryptDagJWE(jwe: JWE): Promise<Record<string, any>> {
