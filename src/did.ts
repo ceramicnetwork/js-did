@@ -116,7 +116,7 @@ export class DID {
    * Check if the DID has a capability attached
    */
   get capability(): CacaoBlock {
-    if (this._capability == undefined) {
+    if (this._capability === undefined) {
       throw new Error('DID has no capability attached')
     }
     return this._capability

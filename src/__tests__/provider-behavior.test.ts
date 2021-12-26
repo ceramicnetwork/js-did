@@ -250,7 +250,7 @@ describe('`createDagJWS method`', () => {
     await expect(did.createJWS({})).rejects.toThrow('No provider available')
   })
 
-  test.only('creates a DagJWS with capability correctly', async () => {
+  test('creates a DagJWS with capability correctly', async () => {
     let authCalled = false
     const provider = {
       send: jest.fn((req: { id: string }) => {
