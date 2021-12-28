@@ -29,7 +29,6 @@ export type DagJWS = {
   payload: string
   signatures: Array<JWSSignature>
   link?: CID
-  cap?: CID
 }
 
 export type GeneralJWS = {

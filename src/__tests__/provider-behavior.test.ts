@@ -286,7 +286,7 @@ describe('`createDagJWS method`', () => {
     })
     const cacao = Cacao.fromSiweMessage(siwe)
     const cacaoBlock = await CacaoBlock.fromCacao(cacao)
-    const did = new DID({ provider, resolver: MOCK_RESOLVER_REGISTRY, capability: cacaoBlock })
+    const did = new DID({ provider, resolver: MOCK_RESOLVER_REGISTRY, capability: cacao })
     await did.authenticate()
     const data = {
       foo: Buffer.from('foo'),
@@ -300,10 +300,9 @@ describe('`createDagJWS method`', () => {
         link: encPayload.cid,
         payload: '234',
         signatures: [{ protected: '5678', signature: '4324' }],
-        cap: cacaoBlock.cid,
       },
       linkedBlock: encPayload.linkedBlock,
-      capabilityBlock: cacaoBlock.bytes,
+      cacaoBlock: cacaoBlock.bytes,
     })
 
     // @ts-ignore
@@ -316,7 +315,9 @@ describe('`createDagJWS method`', () => {
         did: MOCK_DID,
         payload: encodeBase64Url(encPayload.cid.bytes),
         linkedBlock: encodeBase64(encPayload.linkedBlock),
-        capabilityBlock: encodeBase64(cacaoBlock.bytes),
+        protected: {
+          cap: 'ipfs://bafyreie6keugn6cizhv4ktzpixg2scc2y2gvnhnz4y2nrfi4zily6tpbfi',
+        },
       },
     })
   })

@@ -3,7 +3,8 @@ import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import { RPCClient } from 'rpc-utils'
 import { CID } from 'multiformats/cid'
-import type { CacaoBlock } from 'ceramic-cacao'
+import type { Cacao } from 'ceramic-cacao'
+import { CacaoBlock } from 'ceramic-cacao'
 
 import type { DagJWS, DIDProvider, DIDProviderClient } from './types.js'
 import {
@@ -79,14 +80,14 @@ export interface DecryptJWEResult {
 export interface DagJWSResult {
   jws: DagJWS
   linkedBlock: Uint8Array
-  capabilityBlock?: Uint8Array
+  cacaoBlock?: Uint8Array
 }
 
 export interface DIDOptions {
   provider?: DIDProvider
   resolver?: Resolver | ResolverRegistry
   resolverOptions?: ResolverOptions
-  capability?: CacaoBlock
+  capability?: Cacao
 }
 
 function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver {
@@ -100,7 +101,7 @@ export class DID {
   private _client?: DIDProviderClient
   private _id?: string
   private _resolver!: Resolver
-  private _capability?: CacaoBlock
+  private _capability?: Cacao
 
   constructor({ provider, resolver = {}, resolverOptions, capability }: DIDOptions = {}) {
     if (provider != null) {
@@ -115,7 +116,7 @@ export class DID {
   /**
    * Check if the DID has a capability attached
    */
-  get capability(): CacaoBlock {
+  get capability(): Cacao {
     if (this._capability === undefined) {
       throw new Error('DID has no capability attached')
     }
@@ -144,7 +145,7 @@ export class DID {
    * @param cap The capability to attach
    * @returns A new DID instance with the capability attached
    */
-  withCapability(cap: CacaoBlock): DID {
+  withCapability(cap: Cacao): DID {
     return new DID({
       provider: this._client?.connection,
       resolver: this._resolver,
@@ -214,6 +215,17 @@ export class DID {
   async createJWS<T = any>(payload: T, options: CreateJWSOptions = {}): Promise<DagJWS> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
+    if (this._capability) {
+      const cacaoBlock = await CacaoBlock.fromCacao(this._capability)
+      const capCID = CID.asCID(cacaoBlock.cid)
+      if (!capCID) {
+        throw new Error(
+          `Capability CID of the JWS cannot be set to the capability payload cid as they are incompatible`
+        )
+      }
+      options.protected = options.protected || {}
+      options.protected.cap = `ipfs://${capCID?.toString()}`
+    }
     const { jws } = await this._client.request('did_createJWS', {
       did: this._id,
       ...options,
@@ -236,9 +248,6 @@ export class DID {
     const { cid, linkedBlock } = await encodePayload(payload)
     const payloadCid = encodeBase64Url(cid.bytes)
     Object.assign(options, { linkedBlock: encodeBase64(linkedBlock) })
-    if (this._capability) {
-      Object.assign(options, { capabilityBlock: encodeBase64(this._capability.bytes) })
-    }
     const jws = await this.createJWS(payloadCid, options)
 
     const compatibleCID = CID.asCID(cid)
@@ -250,14 +259,8 @@ export class DID {
     jws.link = compatibleCID
 
     if (this._capability) {
-      const capCID = CID.asCID(this._capability.cid)
-      if (!capCID) {
-        throw new Error(
-          `Capability CID of the JWS cannot be set to the capability payload cid as they are incompatible`
-        )
-      }
-      jws.cap = capCID
-      return { jws, linkedBlock, capabilityBlock: this._capability.bytes }
+      const cacaoBlock = await CacaoBlock.fromCacao(this._capability)
+      return { jws, linkedBlock, cacaoBlock: cacaoBlock.bytes }
     }
     return { jws, linkedBlock }
   }
