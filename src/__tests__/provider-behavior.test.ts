@@ -316,7 +316,7 @@ describe('`createDagJWS method`', () => {
         payload: encodeBase64Url(encPayload.cid.bytes),
         linkedBlock: encodeBase64(encPayload.linkedBlock),
         protected: {
-          cap: 'ipfs://bafyreie6keugn6cizhv4ktzpixg2scc2y2gvnhnz4y2nrfi4zily6tpbfi',
+          cap: 'ipfs://bafyreicegit2qjmlnkuwp3tftqd56ctlinbb6aut4cor5thfyrz3tbmtpu',
         },
       },
     })
