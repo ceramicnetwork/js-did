@@ -111,7 +111,9 @@ const did = new DID({ resolver: KeyResolver.getResolver() })
 await did.resolve('did:key:...')
 ```
 
-### Using CACAO OCAPs to create a Key DID that can sign on behalf of a PKH DID.
+### Creating a DID with attached CACAO
+
+Using CACAO OCAPs to create a Key DID that can sign on behalf of a PKH DID.
 
 ```js
 import { DID } from 'dids'
