@@ -111,7 +111,7 @@ const did = new DID({ resolver: KeyResolver.getResolver() })
 await did.resolve('did:key:...')
 ```
 
-### Creating a DID with attached CACAO
+### Using CACAO OCAPs to create a Key DID that can sign on behalf of a PKH DID.
 
 ```js
 import { DID } from 'dids'
@@ -125,9 +125,11 @@ const provider = new Ed25519Provider(seed)
 const siwe = new SiweMessage("...");
 const cacao = Cacao.fromSiweMessage(siwe);
 
+// Add capability to existing DID instance
 const did = new DID({ provider, resolver: KeyResolver.getResolver() })
 const didWithCap = did.withCapability(cacao)
 
+// Add capability to new DID instance
 const didWithCap2 = new DID({provider, resolver: KeyResolver.getResolver(), capability: cacao})
 ```
 
