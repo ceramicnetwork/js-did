@@ -9,6 +9,7 @@ npm install dids
 ```
 
 ## API
+
 [API documentation](https://ceramicnetwork.github.io/js-did/classes/did.html)
 
 ## Examples
@@ -90,7 +91,6 @@ const jwe = await did.createDagJWE(cleartext, ['did:3:bafy89h4f9...', 'did:key:z
 // put the JWE into the ipfs dag
 const jweCid = await ipfs.dag.put(jwe, { format: 'dag-jose', hashAlg: 'sha2-256' })
 
-
 // get the jwe from the dag and decrypt it
 const dagJWE = await ipfs.dag.get(jweCid)
 console.log(await did.decryptDagJWE(dagJWE))
@@ -109,6 +109,30 @@ const did = new DID({ resolver: KeyResolver.getResolver() })
 
 // Resolve a DID document
 await did.resolve('did:key:...')
+```
+
+### Creating a DID with attached CACAO
+
+Using CACAO OCAPs to create a Key DID that can sign on behalf of a PKH DID.
+
+```js
+import { DID } from 'dids'
+import Ed25519Provider from 'key-did-provider-ed25519'
+import KeyResolver from 'key-did-resolver'
+import { Cacao, SiweMessage } from 'ceramic-cacao'
+
+const seed = // 32 bytes of entropy, Uint8Array
+const provider = new Ed25519Provider(seed)
+
+const siwe = new SiweMessage("...");
+const cacao = Cacao.fromSiweMessage(siwe);
+
+// Add capability to existing DID instance
+const did = new DID({ provider, resolver: KeyResolver.getResolver() })
+const didWithCap = did.withCapability(cacao)
+
+// Add capability to new DID instance
+const didWithCap2 = new DID({provider, resolver: KeyResolver.getResolver(), capability: cacao})
 ```
 
 ## License

@@ -16,6 +16,7 @@ global.Date.now = jest.fn(() => 1606236374000)
 
 import { DID } from '../did'
 import { DIDProvider } from '../types'
+import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
 
 const MOCK_AUTH_JWS = {
   payload:
@@ -247,6 +248,78 @@ describe('`createDagJWS method`', () => {
   test('throws an error if there is no provider', async () => {
     const did = new DID()
     await expect(did.createJWS({})).rejects.toThrow('No provider available')
+  })
+
+  test('creates a DagJWS with capability correctly', async () => {
+    let authCalled = false
+    const provider = {
+      send: jest.fn((req: { id: string }) => {
+        let result
+        if (authCalled) {
+          result = {
+            jws: { payload: '234', signatures: [{ protected: '5678', signature: '4324' }] },
+          }
+        } else {
+          authCalled = true
+          result = MOCK_AUTH_JWS
+        }
+        return Promise.resolve({
+          jsonrpc: '2.0',
+          id: req.id,
+          result,
+        })
+      }),
+    } as DIDProvider
+    const siwe = new SiweMessage({
+      domain: 'service.org',
+      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
+      uri: 'https://service.org/login',
+      version: '1',
+      nonce: '32891757',
+      issuedAt: '2021-09-30T16:25:24.000Z',
+      chainId: '1',
+      resources: [
+        'ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu',
+        'https://example.com/my-web2-claim.json',
+      ],
+    })
+    const cacao = Cacao.fromSiweMessage(siwe)
+    const cacaoBlock = await CacaoBlock.fromCacao(cacao)
+    const did = new DID({ provider, resolver: MOCK_RESOLVER_REGISTRY, capability: cacao })
+    await did.authenticate()
+    const data = {
+      foo: Buffer.from('foo'),
+    }
+
+    const res = await did.createDagJWS(data)
+    const encPayload = await encodePayload(data)
+
+    expect(res).toEqual({
+      jws: {
+        link: encPayload.cid,
+        payload: '234',
+        signatures: [{ protected: '5678', signature: '4324' }],
+      },
+      linkedBlock: encPayload.linkedBlock,
+      cacaoBlock: cacaoBlock.bytes,
+    })
+
+    // @ts-ignore
+    expect(provider.send.mock.calls[1][0]).toEqual({
+      jsonrpc: '2.0',
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      id: expect.any(String),
+      method: 'did_createJWS',
+      params: {
+        did: MOCK_DID,
+        payload: encodeBase64Url(encPayload.cid.bytes),
+        linkedBlock: encodeBase64(encPayload.linkedBlock),
+        protected: {
+          cap: 'ipfs://bafyreie6keugn6cizhv4ktzpixg2scc2y2gvnhnz4y2nrfi4zily6tpbfi',
+        },
+      },
+    })
   })
 
   test('creates a DagJWS correctly', async () => {
