@@ -311,23 +311,6 @@ describe('`createDagJWS method`', () => {
             authentication: [
               'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr#z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
             ],
-            assertionMethod: [
-              'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr#z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
-            ],
-            capabilityDelegation: [
-              'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr#z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
-            ],
-            capabilityInvocation: [
-              'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr#z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
-            ],
-            keyAgreement: [
-              {
-                id: 'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr#z6LSrF5fu2BTRAxk4N6zPJSbc6ouoP1xRrvDX6FJJgr7Dzvx',
-                type: 'X25519KeyAgreementKey2019',
-                controller: 'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
-                publicKeyBase58: 'FZuWNiNbKiEzxyjDreveHWbRxEUqjFk4e7XcpECaWdAC',
-              },
-            ],
           },
           didDocumentMetadata: {},
         }),
@@ -368,7 +351,7 @@ describe('`createDagJWS method`', () => {
       await did.verifyJWS(res.jws, {
         issuer: `did:pkh:eip155:1:${wallet.address}`,
         capability: cacao,
-        atTime: Date.parse('2021-10-30T16:25:24.000Z'),
+        atTime: Date.parse('2021-10-30T16:25:24.000Z') / 1000,
       })
     }).not.toThrowError()
 
