@@ -38,10 +38,11 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
     "@stablelib/random": "^1.0.1",
-    "ceramic-cacao": "0.0.5",
+    "ceramic-cacao": "0.0.6",
     "dag-jose-utils": "^1.0.0",
     "did-jwt": "^5.11.1",
     "did-resolver": "^3.1.3",
+    "ethers": "^5.5.2",
     "multiformats": "^9.4.10",
     "query-string": "^7.0.1",
     "rpc-utils": "^0.4.0",

@@ -303,7 +303,15 @@ export class DID {
     }
 
     const signerDid = didResolutionResult.didDocument?.id
-    if (options.issuer && options.issuer !== signerDid) {
+    if (
+      options.issuer &&
+      options.issuer === options.capability?.p.iss &&
+      signerDid === options.capability.p.aud
+    ) {
+      Cacao.verify(options.capability, {
+        atTime: options.atTime,
+      })
+    } else if (options.issuer && options.issuer !== signerDid) {
       const issuerUrl = didWithTime(options.issuer, options.atTime)
       const issuerResolution = await this.resolve(issuerUrl)
       const controllerProperty = issuerResolution.didDocument?.controller
