@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { DIDDocument, ResolverRegistry } from 'did-resolver'
-import * as u8a from 'uint8arrays'
 import { randomBytes } from '@stablelib/random'
 import { generateKeyPairFromSeed } from '@stablelib/x25519'
-import { x25519Decrypter, decryptJWE, JWE } from 'did-jwt'
-import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
-
+import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
+import { decodeCleartext, encodePayload, prepareCleartext } from 'dag-jose-utils'
+import { decryptJWE, JWE, x25519Decrypter } from 'did-jwt'
+import { DIDDocument, ResolverRegistry } from 'did-resolver'
+import { Wallet } from 'ethers'
+import * as u8a from 'uint8arrays'
+import { DID } from '../did'
+import { DIDProvider } from '../types'
 import * as utils from '../utils.js'
+
 // @ts-ignore
 utils.randomString = () => 'rWCXyH1otp5/F78tycckgg'
 const { encodeBase64, encodeBase64Url } = utils
 
 global.Date.now = jest.fn(() => 1606236374000)
-
-import { DID } from '../did'
-import { DIDProvider } from '../types'
-import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
 
 const MOCK_AUTH_JWS = {
   payload:
@@ -257,11 +257,32 @@ describe('`createDagJWS method`', () => {
         let result
         if (authCalled) {
           result = {
-            jws: { payload: '234', signatures: [{ protected: '5678', signature: '4324' }] },
+            jws: {
+              payload: 'AXESIF0YCN-uia9HZG8dCzmQ-c3SooWwZ_k01MzQXUgERz_s',
+              signatures: [
+                {
+                  protected:
+                    'eyJhbGciOiJFZERTQSIsImNhcCI6ImlwZnM6Ly9iYWZ5cmVpY2szajZ2d2E3bTJ5dWgzb3VuY3ZkM2x1cTRtMzNlc3Q3NWU0dWQ3emx1azZza2V4eXN6NCIsImtpZCI6ImRpZDprZXk6ejZNa3JCZE5kd1VQblhEVkQxREN4ZWR6VlZCcGFHaThhU21vWEZBZUtOZ3RBZXI4I3o2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCJ9',
+                  signature:
+                    'GpxlcwZ8ouPVV4rYVxc5fka6-9rq4iVKwRLejh7IdVoa50gqP8wn01ivlv4PlpITNJUBELKqSZhUaWnG9wg5Dg',
+                },
+              ],
+            },
           }
         } else {
           authCalled = true
-          result = MOCK_AUTH_JWS
+          result = {
+            payload:
+              'eyJkaWQiOiJkaWQ6a2V5Ono2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCIsImV4cCI6MTYwNjIzNjk3NCwibm9uY2UiOiJyV0NYeUgxb3RwNS9GNzh0eWNja2dnIiwicGF0aHMiOltdfQ',
+            signatures: [
+              {
+                protected:
+                  'eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3JCZE5kd1VQblhEVkQxREN4ZWR6VlZCcGFHaThhU21vWEZBZUtOZ3RBZXI4I3o2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCJ9',
+                signature:
+                  'uGjLPvi5hAFXuBp6jSDcAdQcRfgHEuD7cSH6XqyiYMGP3xBw45O_cIfeUcP0u8w57AJk9Mgg2aiL9sTC1ERiCw',
+              },
+            ],
+          }
         }
         return Promise.resolve({
           jsonrpc: '2.0',
@@ -270,24 +291,55 @@ describe('`createDagJWS method`', () => {
         })
       }),
     } as DIDProvider
+    const resolver: ResolverRegistry = {
+      key: () =>
+        Promise.resolve({
+          didResolutionMetadata: {
+            contentType: 'application/did+json',
+          },
+          didDocument: {
+            id: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+            verificationMethod: [
+              {
+                id: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8#z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+                type: 'Ed25519VerificationKey2018',
+                controller: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+                publicKeyBase58: 'CjNL3hDxSyj26WNWH5g9ePdpkhSHAZXSqEFiV6isFS4k',
+              },
+            ],
+            authentication: [
+              'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8#z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+            ],
+          },
+          didDocumentMetadata: {},
+        }),
+    }
+
+    const wallet = new Wallet('0x01104074416bab5b755dd6cd1fb177db7e981335e18b935b1d887d5640015e4c')
     const siwe = new SiweMessage({
       domain: 'service.org',
-      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      address: wallet.address,
       statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
-      uri: 'https://service.org/login',
+      uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
       version: '1',
       nonce: '32891757',
       issuedAt: '2021-09-30T16:25:24.000Z',
+      notBefore: '2021-09-30T16:25:24.000Z',
       chainId: '1',
       resources: [
         'ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu',
         'https://example.com/my-web2-claim.json',
       ],
     })
+
+    const signature = await wallet.signMessage(siwe.toMessage())
+    siwe.signature = signature
+
     const cacao = Cacao.fromSiweMessage(siwe)
     const cacaoBlock = await CacaoBlock.fromCacao(cacao)
-    const did = new DID({ provider, resolver: MOCK_RESOLVER_REGISTRY, capability: cacao })
+    const did = new DID({ provider, resolver, capability: cacao })
     await did.authenticate()
+
     const data = {
       foo: Buffer.from('foo'),
     }
@@ -295,30 +347,29 @@ describe('`createDagJWS method`', () => {
     const res = await did.createDagJWS(data)
     const encPayload = await encodePayload(data)
 
+    expect(async () => {
+      await did.verifyJWS(res.jws, {
+        issuer: `did:pkh:eip155:1:${wallet.address}`,
+        capability: cacao,
+        atTime: Math.floor(Date.parse('2021-10-30T16:25:24.000Z') / 1000),
+      })
+    }).not.toThrowError()
+
     expect(res).toEqual({
       jws: {
         link: encPayload.cid,
-        payload: '234',
-        signatures: [{ protected: '5678', signature: '4324' }],
+        payload: 'AXESIF0YCN-uia9HZG8dCzmQ-c3SooWwZ_k01MzQXUgERz_s',
+        signatures: [
+          {
+            protected:
+              'eyJhbGciOiJFZERTQSIsImNhcCI6ImlwZnM6Ly9iYWZ5cmVpY2szajZ2d2E3bTJ5dWgzb3VuY3ZkM2x1cTRtMzNlc3Q3NWU0dWQ3emx1azZza2V4eXN6NCIsImtpZCI6ImRpZDprZXk6ejZNa3JCZE5kd1VQblhEVkQxREN4ZWR6VlZCcGFHaThhU21vWEZBZUtOZ3RBZXI4I3o2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCJ9',
+            signature:
+              'GpxlcwZ8ouPVV4rYVxc5fka6-9rq4iVKwRLejh7IdVoa50gqP8wn01ivlv4PlpITNJUBELKqSZhUaWnG9wg5Dg',
+          },
+        ],
       },
       linkedBlock: encPayload.linkedBlock,
       cacaoBlock: cacaoBlock.bytes,
-    })
-
-    // @ts-ignore
-    expect(provider.send.mock.calls[1][0]).toEqual({
-      jsonrpc: '2.0',
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      id: expect.any(String),
-      method: 'did_createJWS',
-      params: {
-        did: MOCK_DID,
-        payload: encodeBase64Url(encPayload.cid.bytes),
-        linkedBlock: encodeBase64(encPayload.linkedBlock),
-        protected: {
-          cap: 'ipfs://bafyreie6keugn6cizhv4ktzpixg2scc2y2gvnhnz4y2nrfi4zily6tpbfi',
-        },
-      },
     })
   })
 

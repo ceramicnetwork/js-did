@@ -3,8 +3,7 @@ import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import { RPCClient } from 'rpc-utils'
 import { CID } from 'multiformats/cid'
-import type { Cacao } from 'ceramic-cacao'
-import { CacaoBlock } from 'ceramic-cacao'
+import { CacaoBlock, Cacao } from 'ceramic-cacao'
 
 import type { DagJWS, DIDProvider, DIDProviderClient } from './types.js'
 import {
@@ -56,6 +55,11 @@ export interface VerifyJWSOptions {
    * DID that issued the signature.
    */
   issuer?: string
+
+  /**
+   * Cacao OCAP to verify the JWS with.
+   */
+  capability?: Cacao
 }
 
 export interface VerifyJWSResult {
@@ -299,14 +303,35 @@ export class DID {
     }
 
     const signerDid = didResolutionResult.didDocument?.id
-    if (options.issuer && options.issuer !== signerDid) {
+    if (
+      options.issuer &&
+      options.issuer === options.capability?.p.iss &&
+      signerDid === options.capability.p.aud
+    ) {
+      Cacao.verify(options.capability, {
+        atTime: options.atTime,
+      })
+    } else if (options.issuer && options.issuer !== signerDid) {
       const issuerUrl = didWithTime(options.issuer, options.atTime)
       const issuerResolution = await this.resolve(issuerUrl)
       const controllerProperty = issuerResolution.didDocument?.controller
       const controllers = extractControllers(controllerProperty)
-      const signerIsController = signerDid ? controllers.includes(signerDid) : false
-      if (!signerIsController) {
-        throw new Error(`invalid_jws: not a valid verificationMethod for issuer: ${kid}`)
+
+      if (options.capability && options.capability.s) {
+        if (
+          (options.capability.p.iss === options.issuer ||
+            controllers.includes(options.capability.p.iss)) &&
+          options.capability.p.aud === signerDid
+        ) {
+          Cacao.verify(options.capability, {
+            atTime: options.atTime,
+          })
+        }
+      } else {
+        const signerIsController = signerDid ? controllers.includes(signerDid) : false
+        if (!signerIsController) {
+          throw new Error(`invalid_jws: not a valid verificationMethod for issuer: ${kid}`)
+        }
       }
     }
 
