@@ -262,9 +262,9 @@ describe('`createDagJWS method`', () => {
               signatures: [
                 {
                   protected:
-                    'eyJhbGciOiJFZERTQSIsImNhcCI6ImlwZnM6Ly9iYWZ5cmVpYm1oam1xdGR2d3hoZm03aXdwY2p6dWJ6anJuNmI0dWQ0dXd0Y3lkcXptaWZ0c3FmcXlyZSIsImtpZCI6ImRpZDprZXk6ejZNa21XWEplVllVbUFHUUhqZWlIYkpuMXpXMVZ1TXpQNFFlZnV4WjVpZUI3eEFyI3o2TWttV1hKZVZZVW1BR1FIamVpSGJKbjF6VzFWdU16UDRRZWZ1eFo1aWVCN3hBciJ9',
+                    'eyJhbGciOiJFZERTQSIsImNhcCI6ImlwZnM6Ly9iYWZ5cmVpY2szajZ2d2E3bTJ5dWgzb3VuY3ZkM2x1cTRtMzNlc3Q3NWU0dWQ3emx1azZza2V4eXN6NCIsImtpZCI6ImRpZDprZXk6ejZNa3JCZE5kd1VQblhEVkQxREN4ZWR6VlZCcGFHaThhU21vWEZBZUtOZ3RBZXI4I3o2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCJ9',
                   signature:
-                    'eStPWv8KzmSCFSvHoxEmaJJ34TDsJh15OfOdFCI1bjE8RxvQbNU6Cg-nx0CcWz6cp-ZfOa5dre4fTpw4N49cBg',
+                    'GpxlcwZ8ouPVV4rYVxc5fka6-9rq4iVKwRLejh7IdVoa50gqP8wn01ivlv4PlpITNJUBELKqSZhUaWnG9wg5Dg',
                 },
               ],
             },
@@ -273,13 +273,13 @@ describe('`createDagJWS method`', () => {
           authCalled = true
           result = {
             payload:
-              'eyJkaWQiOiJkaWQ6a2V5Ono2TWttV1hKZVZZVW1BR1FIamVpSGJKbjF6VzFWdU16UDRRZWZ1eFo1aWVCN3hBciIsImV4cCI6MTYwNjIzNjk3NCwibm9uY2UiOiJyV0NYeUgxb3RwNS9GNzh0eWNja2dnIiwicGF0aHMiOltdfQ',
+              'eyJkaWQiOiJkaWQ6a2V5Ono2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCIsImV4cCI6MTYwNjIzNjk3NCwibm9uY2UiOiJyV0NYeUgxb3RwNS9GNzh0eWNja2dnIiwicGF0aHMiOltdfQ',
             signatures: [
               {
                 protected:
-                  'eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa21XWEplVllVbUFHUUhqZWlIYkpuMXpXMVZ1TXpQNFFlZnV4WjVpZUI3eEFyI3o2TWttV1hKZVZZVW1BR1FIamVpSGJKbjF6VzFWdU16UDRRZWZ1eFo1aWVCN3hBciJ9',
+                  'eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3JCZE5kd1VQblhEVkQxREN4ZWR6VlZCcGFHaThhU21vWEZBZUtOZ3RBZXI4I3o2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCJ9',
                 signature:
-                  'qVJK0L5vFP3hY3nMKJCqwqnNScyd5-ZdBtvKdNAcyeN5uhc3xUANgeOQmjxP1Z66NVuVvpkygPd4dCxEa298Cw',
+                  'uGjLPvi5hAFXuBp6jSDcAdQcRfgHEuD7cSH6XqyiYMGP3xBw45O_cIfeUcP0u8w57AJk9Mgg2aiL9sTC1ERiCw',
               },
             ],
           }
@@ -291,7 +291,6 @@ describe('`createDagJWS method`', () => {
         })
       }),
     } as DIDProvider
-
     const resolver: ResolverRegistry = {
       key: () =>
         Promise.resolve({
@@ -299,17 +298,17 @@ describe('`createDagJWS method`', () => {
             contentType: 'application/did+json',
           },
           didDocument: {
-            id: 'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
+            id: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
             verificationMethod: [
               {
-                id: 'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr#z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
+                id: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8#z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
                 type: 'Ed25519VerificationKey2018',
-                controller: 'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
-                publicKeyBase58: '84GG4FJ3RcmwBEp1c2LwAtx1gL68yBAHyu3dFSgACjPU',
+                controller: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+                publicKeyBase58: 'CjNL3hDxSyj26WNWH5g9ePdpkhSHAZXSqEFiV6isFS4k',
               },
             ],
             authentication: [
-              'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr#z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
+              'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8#z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
             ],
           },
           didDocumentMetadata: {},
@@ -321,7 +320,7 @@ describe('`createDagJWS method`', () => {
       domain: 'service.org',
       address: wallet.address,
       statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
-      uri: 'did:key:z6MkmWXJeVYUmAGQHjeiHbJn1zW1VuMzP4QefuxZ5ieB7xAr',
+      uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
       version: '1',
       nonce: '32891757',
       issuedAt: '2021-09-30T16:25:24.000Z',
@@ -340,6 +339,7 @@ describe('`createDagJWS method`', () => {
     const cacaoBlock = await CacaoBlock.fromCacao(cacao)
     const did = new DID({ provider, resolver, capability: cacao })
     await did.authenticate()
+
     const data = {
       foo: Buffer.from('foo'),
     }
@@ -362,9 +362,9 @@ describe('`createDagJWS method`', () => {
         signatures: [
           {
             protected:
-              'eyJhbGciOiJFZERTQSIsImNhcCI6ImlwZnM6Ly9iYWZ5cmVpYm1oam1xdGR2d3hoZm03aXdwY2p6dWJ6anJuNmI0dWQ0dXd0Y3lkcXptaWZ0c3FmcXlyZSIsImtpZCI6ImRpZDprZXk6ejZNa21XWEplVllVbUFHUUhqZWlIYkpuMXpXMVZ1TXpQNFFlZnV4WjVpZUI3eEFyI3o2TWttV1hKZVZZVW1BR1FIamVpSGJKbjF6VzFWdU16UDRRZWZ1eFo1aWVCN3hBciJ9',
+              'eyJhbGciOiJFZERTQSIsImNhcCI6ImlwZnM6Ly9iYWZ5cmVpY2szajZ2d2E3bTJ5dWgzb3VuY3ZkM2x1cTRtMzNlc3Q3NWU0dWQ3emx1azZza2V4eXN6NCIsImtpZCI6ImRpZDprZXk6ejZNa3JCZE5kd1VQblhEVkQxREN4ZWR6VlZCcGFHaThhU21vWEZBZUtOZ3RBZXI4I3o2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCJ9',
             signature:
-              'eStPWv8KzmSCFSvHoxEmaJJ34TDsJh15OfOdFCI1bjE8RxvQbNU6Cg-nx0CcWz6cp-ZfOa5dre4fTpw4N49cBg',
+              'GpxlcwZ8ouPVV4rYVxc5fka6-9rq4iVKwRLejh7IdVoa50gqP8wn01ivlv4PlpITNJUBELKqSZhUaWnG9wg5Dg',
           },
         ],
       },
