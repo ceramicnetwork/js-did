@@ -46,7 +46,7 @@ const payload = { some: 'data' }
 const { jws, linkedBlock } = await did.createDagJWS(payload)
 
 // put the JWS into the ipfs dag
-const jwsCid = await ipfs.dag.put(jws, { format: 'dag-jose', hashAlg: 'sha2-256' })
+const jwsCid = await ipfs.dag.put(jws, { storeCodec: 'dag-jose', hashAlg: 'sha2-256' })
 
 // put the payload into the ipfs dag
 const block = await ipfs.block.put(linkedBlock, { cid: jws.link })
@@ -89,7 +89,7 @@ const cleartext = { some: 'data', coolLink: new CID('bafyqacnbmrqxgzdgdeaui') }
 const jwe = await did.createDagJWE(cleartext, ['did:3:bafy89h4f9...', 'did:key:za234...'])
 
 // put the JWE into the ipfs dag
-const jweCid = await ipfs.dag.put(jwe, { format: 'dag-jose', hashAlg: 'sha2-256' })
+const jweCid = await ipfs.dag.put(jwe, { storeCodec: 'dag-jose', hashAlg: 'sha2-256' })
 
 // get the jwe from the dag and decrypt it
 const dagJWE = await ipfs.dag.get(jweCid)
