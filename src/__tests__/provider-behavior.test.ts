@@ -351,7 +351,7 @@ describe('`createDagJWS method`', () => {
       await did.verifyJWS(res.jws, {
         issuer: `did:pkh:eip155:1:${wallet.address}`,
         capability: cacao,
-        atTime: Date.parse('2021-10-30T16:25:24.000Z'),
+        atTime: Math.floor(Date.parse('2021-10-30T16:25:24.000Z') / 1000),
       })
     }).not.toThrowError()
 
