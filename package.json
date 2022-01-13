@@ -2,10 +2,14 @@
   "name": "dids",
   "version": "3.0.0-alpha.3",
   "description": "Typescript library for interacting with DIDs",
-  "main": "./lib/index.js",
   "type": "module",
+  "main": "./lib/index.cjs",
+  "types": "./lib/index.d.ts",
   "exports": {
-    ".": "./lib/index.js"
+    ".": {
+      "require": "./lib/index.cjs",
+      "import": "./lib/index.mjs"
+    }
   },
   "files": [
     "lib/*"
@@ -13,7 +17,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-    "build": "./node_modules/.bin/tsc --project tsconfig.build.json",
+    "build": "./node_modules/.bin/microbundle --compress=false --tsconfig tsconfig.build.json",
     "prepublishOnly": "npm run build",
     "prebuild": "npm run clean",
     "lint": "./node_modules/.bin/eslint ./src --ext .js,.ts",
@@ -38,7 +42,7 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
     "@stablelib/random": "^1.0.1",
-    "ceramic-cacao": "^0.0.10",
+    "ceramic-cacao": "^0.0.11",
     "dag-jose-utils": "^1.0.0",
     "did-jwt": "^5.12.3",
     "did-resolver": "^3.1.5",
@@ -59,7 +63,7 @@
     "eslint": "^8.6.0",
     "eslint-config-3box": "^0.4.0",
     "jest": "^27.4.7",
-    "jest-resolver-enhanced": "^1.0.1",
+    "microbundle": "^0.14.2",
     "prettier": "^2.5.1",
     "typedoc": "^0.22.10",
     "typescript": "^4.5.4"
