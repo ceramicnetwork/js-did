@@ -1,8 +1,8 @@
 import { toString } from 'uint8arrays/to-string'
 import { fromString } from 'uint8arrays/from-string'
-import { randomBytes } from '@stablelib/random'
 
-import type { DagJWS } from './types'
+import type { DagJWS } from './types.js'
+export * from './random-string.util.js'
 
 const B64 = 'base64pad'
 const B64_URL = 'base64url'
@@ -21,10 +21,6 @@ export function decodeBase64(s: string): Uint8Array {
 
 export function base64urlToJSON(s: string): Record<string, any> {
   return JSON.parse(toString(fromString(s, B64_URL))) as Record<string, any>
-}
-
-export function randomString(): string {
-  return toString(randomBytes(16), 'base64')
 }
 
 export function fromDagJWS(jws: DagJWS): string {

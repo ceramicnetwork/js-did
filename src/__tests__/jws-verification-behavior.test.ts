@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals'
 import { DID } from '../did.js'
 
 const VERSION_0_VANILLA = {
