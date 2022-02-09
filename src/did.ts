@@ -316,16 +316,16 @@ export class DID {
       const controllerProperty = issuerResolution.didDocument?.controller
       const controllers = extractControllers(controllerProperty)
 
-      if (options.capability && options.capability.s) {
-        if (
-          (options.capability.p.iss === options.issuer ||
-            controllers.includes(options.capability.p.iss)) &&
-          options.capability.p.aud === signerDid
-        ) {
-          Cacao.verify(options.capability, {
-            atTime: options.atTime,
-          })
-        }
+      if (
+        options.capability &&
+        options.capability.s &&
+        options.capability.p.aud === signerDid &&
+        (options.capability.p.iss === options.issuer ||
+          controllers.includes(options.capability.p.iss))
+      ) {
+        Cacao.verify(options.capability, {
+          atTime: options.atTime,
+        })
       } else {
         const signerIsController = signerDid ? controllers.includes(signerDid) : false
         if (!signerIsController) {
