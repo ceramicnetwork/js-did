@@ -317,11 +317,9 @@ export class DID {
       const controllers = extractControllers(controllerProperty)
 
       if (
-        options.capability &&
-        options.capability.s &&
+        options.capability?.s &&
         options.capability.p.aud === signerDid &&
-        (options.capability.p.iss === options.issuer ||
-          controllers.includes(options.capability.p.iss))
+        controllers.includes(options.capability.p.iss)
       ) {
         Cacao.verify(options.capability, {
           atTime: options.atTime,
