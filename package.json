@@ -3,7 +3,7 @@
   "version": "3.0.0-alpha.6",
   "description": "Typescript library for interacting with DIDs",
   "type": "module",
-  "main": "./lib/index.cjs",
+  "main": "./lib/index.mjs",
   "types": "./lib/index.d.ts",
   "exports": {
     ".": {
