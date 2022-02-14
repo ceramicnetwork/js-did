@@ -1,14 +1,13 @@
 {
   "name": "dids",
-  "version": "3.0.0-alpha.7",
+  "version": "3.0.0-alpha.8",
   "description": "Typescript library for interacting with DIDs",
   "type": "module",
-  "main": "./lib/index.cjs",
+  "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "require": "./lib/index.cjs",
-      "import": "./lib/index.mjs"
+      "import": "./lib/index.js"
     }
   },
   "files": [
@@ -17,7 +16,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-    "build": "./node_modules/.bin/microbundle --compress=false --tsconfig tsconfig.build.json",
+    "build": "./node_modules/.bin/tsc --project tsconfig.build.json",
     "prepublishOnly": "npm run build",
     "prebuild": "npm run clean",
     "lint": "./node_modules/.bin/eslint ./src --ext .js,.ts",
@@ -49,7 +48,7 @@
     "ethers": "^5.5.2",
     "multiformats": "^9.4.10",
     "query-string": "^7.0.1",
-    "rpc-utils": "^0.4.0",
+    "rpc-utils": "^0.6.1",
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
@@ -63,7 +62,6 @@
     "eslint": "^8.6.0",
     "eslint-config-3box": "^0.4.0",
     "jest": "^27.4.7",
-    "microbundle": "^0.14.2",
     "prettier": "^2.5.1",
     "typedoc": "^0.22.10",
     "typescript": "^4.5.4"
