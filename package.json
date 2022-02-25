@@ -21,7 +21,8 @@
     "prebuild": "npm run clean",
     "lint": "./node_modules/.bin/eslint ./src --ext .js,.ts",
     "docs": "./node_modules/.bin/typedoc ./src/index.ts --excludePrivate --name DID --includeVersion ; touch docs/.nojekyll",
-    "clean": "rm -rf ./lib"
+    "clean": "rm -rf ./lib",
+    "webpack": "webpack --mode production ./lib/index.esm.js"
   },
   "repository": {
     "type": "git",
@@ -64,6 +65,8 @@
     "jest": "^27.4.7",
     "prettier": "^2.5.1",
     "typedoc": "^0.22.10",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
   }
 }

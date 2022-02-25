@@ -33,3 +33,6 @@ jobs:
         run: npm run build
         env:
           CI: true
+
+      - name: Browser compatibility
+        run: npm run webpack
