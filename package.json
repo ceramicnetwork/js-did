@@ -42,7 +42,7 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
     "@stablelib/random": "^1.0.1",
-    "ceramic-cacao": "^0.0.14",
+    "ceramic-cacao": "^0.0.15",
     "dag-jose-utils": "^1.0.0",
     "did-jwt": "^5.12.3",
     "did-resolver": "^3.1.5",
