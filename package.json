@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "3.0.0-alpha.8",
+  "version": "3.0.0-alpha.9",
   "description": "Typescript library for interacting with DIDs",
   "type": "module",
   "main": "./lib/index.js",
