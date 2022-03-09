@@ -210,6 +210,21 @@ describe('atTime', () => {
       did.verifyJWS(jwsV0, { atTime: afterRotation, disableTimecheck: true })
     ).resolves.toBeTruthy()
   })
+  test('ok after rotation if within revocationPhaseOut period', async () => {
+    const revocationPhaseOut =
+      (afterRotation - new Date(VERSION_0_ROTATED.didDocumentMetadata.nextUpdate).valueOf() + 1) /
+      1000
+    await expect(
+      did.verifyJWS(jwsV0, { atTime: afterRotation, revocationPhaseOut })
+    ).resolves.toBeTruthy()
+  })
+  test('fail after rotation if not within revocationPhaseOut period', async () => {
+    const revocationPhaseOut =
+      (afterRotation - new Date(VERSION_0_ROTATED.didDocumentMetadata.nextUpdate).valueOf()) / 1000
+    await expect(
+      did.verifyJWS(jwsV0, { atTime: afterRotation, revocationPhaseOut })
+    ).rejects.toThrow(/invalid_jws: signature authored with a revoked DID version/)
+  })
 
   test('before DID version available', async () => {
     did.resolve = () => Promise.resolve(VERSION_NEXT)
