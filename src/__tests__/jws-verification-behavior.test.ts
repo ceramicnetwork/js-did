@@ -195,6 +195,9 @@ describe('atTime', () => {
 
   const beforeRotation = new Date('2021-07-07T08:00:19Z').valueOf()
   const afterRotation = new Date('2021-07-07T08:40:19Z').valueOf()
+  const timeKeysRotatedInSec = Math.floor(
+    new Date(VERSION_0_ROTATED.didDocumentMetadata.nextUpdate).valueOf() / 1000
+  )
 
   test('ok before rotation', async () => {
     const { kid } = await did.verifyJWS(jwsV0, { atTime: beforeRotation })
@@ -211,18 +214,21 @@ describe('atTime', () => {
     ).resolves.toBeTruthy()
   })
   test('ok after rotation if within revocationPhaseOut period', async () => {
-    const revocationPhaseOut =
-      (afterRotation - new Date(VERSION_0_ROTATED.didDocumentMetadata.nextUpdate).valueOf() + 1) /
-      1000
+    // values in s
+    const revocationPhaseOut = 10
+    const afterRotationBeforePhaseOut = timeKeysRotatedInSec + revocationPhaseOut - 1
+
     await expect(
-      did.verifyJWS(jwsV0, { atTime: afterRotation, revocationPhaseOut })
+      did.verifyJWS(jwsV0, { atTime: afterRotationBeforePhaseOut * 1000, revocationPhaseOut })
     ).resolves.toBeTruthy()
   })
   test('fail after rotation if not within revocationPhaseOut period', async () => {
-    const revocationPhaseOut =
-      (afterRotation - new Date(VERSION_0_ROTATED.didDocumentMetadata.nextUpdate).valueOf()) / 1000
+    // values in s
+    const revocationPhaseOut = 10
+    const afterRotationAfterPhaseOut = timeKeysRotatedInSec + revocationPhaseOut
+
     await expect(
-      did.verifyJWS(jwsV0, { atTime: afterRotation, revocationPhaseOut })
+      did.verifyJWS(jwsV0, { atTime: afterRotationAfterPhaseOut * 1000, revocationPhaseOut })
     ).rejects.toThrow(/invalid_jws: signature authored with a revoked DID version/)
   })
 
