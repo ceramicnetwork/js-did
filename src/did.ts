@@ -59,6 +59,11 @@ export interface VerifyJWSOptions {
    * Cacao OCAP to verify the JWS with.
    */
   capability?: Cacao
+
+  /**
+   * Number of seconds that a revoked key stays valid for after it was revoked
+   */
+  revocationPhaseOut?: number
 }
 
 export interface VerifyJWSResult {
@@ -286,8 +291,10 @@ export class DID {
       const nextUpdate = didResolutionResult.didDocumentMetadata?.nextUpdate
       if (nextUpdate) {
         // This version of the DID document has been revoked. Check if the JWS
-        // was signed before it the revocation happened.
-        const isEarlier = options.atTime && options.atTime < new Date(nextUpdate).valueOf()
+        // was signed before the revocation happened.
+        const phaseOutMS = options.revocationPhaseOut ? options.revocationPhaseOut * 1000 : 0
+        const revocationTime = new Date(nextUpdate).valueOf() + phaseOutMS
+        const isEarlier = options.atTime && options.atTime < revocationTime
         const isLater = !isEarlier
         if (isLater) {
           // Do not allow using a key _after_ it is being revoked
