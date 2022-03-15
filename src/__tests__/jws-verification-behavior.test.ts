@@ -213,27 +213,27 @@ describe('atTime', () => {
       did.verifyJWS(jwsV0, { atTime: afterRotation, disableTimecheck: true })
     ).resolves.toBeTruthy()
   })
-  test('ok after rotation if within revocationPhaseOut period', async () => {
+  test('ok after rotation if within revocation phase out period', async () => {
     // values in s
-    const revocationPhaseOut = 10
-    const afterRotationBeforePhaseOut = timeKeysRotatedInSec + revocationPhaseOut - 1
+    const revocationPhaseOutSecs = 10
+    const afterRotationBeforePhaseOut = timeKeysRotatedInSec + revocationPhaseOutSecs - 1
 
     await expect(
       did.verifyJWS(jwsV0, {
         atTime: new Date(afterRotationBeforePhaseOut * 1000),
-        revocationPhaseOut,
+        revocationPhaseOutSecs,
       })
     ).resolves.toBeTruthy()
   })
-  test('fail after rotation if not within revocationPhaseOut period', async () => {
+  test('fail after rotation if not within revocation phase out period', async () => {
     // values in s
-    const revocationPhaseOut = 10
-    const afterRotationAfterPhaseOut = timeKeysRotatedInSec + revocationPhaseOut
+    const revocationPhaseOutSecs = 10
+    const afterRotationAfterPhaseOut = timeKeysRotatedInSec + revocationPhaseOutSecs
 
     await expect(
       did.verifyJWS(jwsV0, {
         atTime: new Date(afterRotationAfterPhaseOut * 1000),
-        revocationPhaseOut,
+        revocationPhaseOutSecs,
       })
     ).rejects.toThrow(/invalid_jws: signature authored with a revoked DID version/)
   })

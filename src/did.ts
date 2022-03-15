@@ -63,7 +63,7 @@ export interface VerifyJWSOptions {
   /**
    * Number of seconds that a revoked key stays valid for after it was revoked
    */
-  revocationPhaseOut?: number
+  revocationPhaseOutSecs?: number
 }
 
 export interface VerifyJWSResult {
@@ -292,7 +292,9 @@ export class DID {
       if (nextUpdate) {
         // This version of the DID document has been revoked. Check if the JWS
         // was signed before the revocation happened.
-        const phaseOutMS = options.revocationPhaseOut ? options.revocationPhaseOut * 1000 : 0
+        const phaseOutMS = options.revocationPhaseOutSecs
+          ? options.revocationPhaseOutSecs * 1000
+          : 0
         const revocationTime = new Date(nextUpdate).valueOf() + phaseOutMS
         const isEarlier = options.atTime && options.atTime.getTime() < revocationTime
         const isLater = !isEarlier
