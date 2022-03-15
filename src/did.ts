@@ -315,8 +315,7 @@ export class DID {
       signerDid === options.capability.p.aud
     ) {
       Cacao.verify(options.capability, {
-        // CACAO requires `atTime` in seconds
-        atTime: options.atTime ? options.atTime.getTime() / 1000 : undefined,
+        atTime: options.atTime ? options.atTime : undefined,
       })
     } else if (options.issuer && options.issuer !== signerDid) {
       const issuerUrl = didWithTime(options.issuer, options.atTime)
@@ -330,8 +329,7 @@ export class DID {
         controllers.includes(options.capability.p.iss)
       ) {
         Cacao.verify(options.capability, {
-          // CACAO requires `atTime` in seconds
-          atTime: options.atTime ? options.atTime.getTime() / 1000 : undefined,
+          atTime: options.atTime ? options.atTime : undefined,
         })
       } else {
         const signerIsController = signerDid ? controllers.includes(signerDid) : false
