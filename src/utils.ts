@@ -31,9 +31,9 @@ export function fromDagJWS(jws: DagJWS): string {
 /**
  * Make DID URL from DID and timestamp (= versionTime query)
  */
-export function didWithTime(did: string, atTime?: number): string {
+export function didWithTime(did: string, atTime?: Date): string {
   if (atTime) {
-    const versionTime = new Date(atTime).toISOString().split('.')[0] + 'Z'
+    const versionTime = atTime.toISOString().split('.')[0] + 'Z'
     return `${did}?versionTime=${versionTime}`
   } else {
     return did
