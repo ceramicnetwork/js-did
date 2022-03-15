@@ -43,7 +43,7 @@ export interface VerifyJWSOptions {
   /**
    * JS timestamp when the signature was allegedly made. `undefined` means _now_.
    */
-  atTime?: number
+  atTime?: Date
 
   /**
    * If true, timestamp checking is disabled.
@@ -294,7 +294,7 @@ export class DID {
         // was signed before the revocation happened.
         const phaseOutMS = options.revocationPhaseOut ? options.revocationPhaseOut * 1000 : 0
         const revocationTime = new Date(nextUpdate).valueOf() + phaseOutMS
-        const isEarlier = options.atTime && options.atTime < revocationTime
+        const isEarlier = options.atTime && options.atTime.getTime() < revocationTime
         const isLater = !isEarlier
         if (isLater) {
           // Do not allow using a key _after_ it is being revoked
@@ -303,7 +303,7 @@ export class DID {
       }
       // Key used before `updated` date
       const updated = didResolutionResult.didDocumentMetadata?.updated
-      if (updated && options.atTime && options.atTime < new Date(updated).valueOf()) {
+      if (updated && options.atTime && options.atTime.getTime() < new Date(updated).valueOf()) {
         throw new Error(`invalid_jws: signature authored before creation of DID version: ${kid}`)
       }
     }
@@ -315,7 +315,7 @@ export class DID {
       signerDid === options.capability.p.aud
     ) {
       Cacao.verify(options.capability, {
-        atTime: options.atTime,
+        atTime: options.atTime ? options.atTime : undefined,
       })
     } else if (options.issuer && options.issuer !== signerDid) {
       const issuerUrl = didWithTime(options.issuer, options.atTime)
@@ -329,7 +329,7 @@ export class DID {
         controllers.includes(options.capability.p.iss)
       ) {
         Cacao.verify(options.capability, {
-          atTime: options.atTime,
+          atTime: options.atTime ? options.atTime : undefined,
         })
       } else {
         const signerIsController = signerDid ? controllers.includes(signerDid) : false
