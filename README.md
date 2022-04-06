@@ -135,6 +135,22 @@ const didWithCap = did.withCapability(cacao)
 const didWithCap2 = new DID({provider, resolver: KeyResolver.getResolver(), capability: cacao})
 ```
 
+## Security Considerations
+
+Ceramic allows for keys attached to DIDs to continue making updates to streams after revocation for a certain grace period. This is done to ensure that if multiple updates were committed to different nodes before the key was revoked, but the nodes chose to anchor commits at different times, the updates still make it through.
+
+1. Commit for an update is made to Node A
+2. Key revocation commit is made to Node B
+3. Node A later tries to anchor the commit made earlier
+
+In this case, an external outlook might lead you to believe Node A's commit is invalid because the key had been revoked, but that's not necessarily true as in this case the commit was made earlier, just not anchored at that time. For this reason, a grace period is provided for updates created by revoked keys to still be verified successfully.
+
+Specifically, the `verifyJWS` function in `dids` uses `options.revocationPhaseOutSecs` as the seconds representing the grace period within which signatures authored by a given key will still be considered valid.
+
+While this approach has it's use cases, it also implies that an attacker could potentially author signatures from a stolen key and commit updates to streams using that stolen key. Even if the original owner revoked it, the attacker has a grace period within which they can make fake commits.
+
+The `revocationPhaseOutSecs` value, therefore, should be set with this consideration in mind to a reasonable value. It either allows for a better UX for the owner and allows for a small window of attack for an attacker, or it does not allow for an attack window but can potentially mark certain commits as invalid due to latency in commits occuring.
+
 ## License
 
 MIT
