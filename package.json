@@ -22,7 +22,7 @@
     "lint": "./node_modules/.bin/eslint ./src --ext .js,.ts",
     "docs": "./node_modules/.bin/typedoc ./src/index.ts --excludePrivate --name DID --includeVersion ; touch docs/.nojekyll",
     "clean": "rm -rf ./lib",
-    "webpack": "webpack --mode production ./lib/index.esm.js"
+    "webpack": "webpack --mode production ./lib/index.js"
   },
   "repository": {
     "type": "git",
