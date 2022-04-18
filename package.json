@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "3.0.0-alpha.12",
+  "version": "3.0.0-rc.0",
   "description": "Typescript library for interacting with DIDs",
   "type": "module",
   "main": "./lib/index.js",
@@ -42,7 +42,7 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
     "@stablelib/random": "^1.0.1",
-    "ceramic-cacao": "^0.0.17",
+    "ceramic-cacao": "^1.0.0-rc.0",
     "dag-jose-utils": "^2.0.0-rc.0",
     "did-jwt": "^6.0.0",
     "did-resolver": "^3.1.5",
