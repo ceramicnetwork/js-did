@@ -371,6 +371,7 @@ describe('`createDagJWS method`', () => {
 
     expect(did.parent).toBe(`did:pkh:eip155:1:${wallet.address}`)
     expect(did.hasParent).toBe(true)
+    expect(did.hasCapability).toBe(true)
 
     expect(async () => {
       await did.verifyJWS(res.jws, {

@@ -130,13 +130,20 @@ export class DID {
   }
 
   /**
-   * Check if the DID has a capability attached
+   *  Get attached capability
    */
   get capability(): Cacao {
     if (!this._capability) {
       throw new Error('DID has no capability attached')
     }
     return this._capability
+  }
+
+  /**
+   * Check if the DID has a capability attached
+   */
+  get hasCapability(): boolean {
+    return this._capability != null
   }
 
   /**
@@ -157,13 +164,6 @@ export class DID {
   }
 
   /**
-   * Check if user is authenticated.
-   */
-  get authenticated(): boolean {
-    return this._id != null
-  }
-
-  /**
    * Get the DID identifier of the user.
    */
   get id(): string {
@@ -171,6 +171,13 @@ export class DID {
       throw new Error('DID is not authenticated')
     }
     return this._id
+  }
+
+  /**
+   * Check if user is authenticated.
+   */
+  get authenticated(): boolean {
+    return this._id != null
   }
 
   /**
