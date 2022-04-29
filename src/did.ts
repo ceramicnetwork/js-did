@@ -96,6 +96,7 @@ export interface DIDOptions {
   resolver?: Resolver | ResolverRegistry
   resolverOptions?: ResolverOptions
   capability?: Cacao
+  parent?: string
 }
 
 function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver {
@@ -110,19 +111,26 @@ export class DID {
   private _id?: string
   private _resolver!: Resolver
   private _capability?: Cacao
+  private _parentId?: string
 
-  constructor({ provider, resolver = {}, resolverOptions, capability }: DIDOptions = {}) {
+  constructor({ provider, resolver = {}, resolverOptions, capability, parent }: DIDOptions = {}) {
     if (provider != null) {
       this._client = new RPCClient(provider)
     }
     if (capability) {
       this._capability = capability
+      this._parentId = this._capability.p.iss
+      if (parent && this._parentId !== parent)
+        throw new Error('Capability issuer and parent not equal')
+    } else if (parent) {
+      this._parentId = parent
     }
+
     this.setResolver(resolver, resolverOptions)
   }
 
   /**
-   * Check if the DID has a capability attached
+   *  Get attached capability
    */
   get capability(): Cacao {
     if (!this._capability) {
@@ -132,10 +140,27 @@ export class DID {
   }
 
   /**
-   * Check if user is authenticated.
+   * Check if the DID has a capability attached
    */
-  get authenticated(): boolean {
-    return this._id != null
+  get hasCapability(): boolean {
+    return this._capability != null
+  }
+
+  /**
+   * Get parent DID, parent DID is the capability issuer
+   */
+  get parent(): string {
+    if (!this._parentId) {
+      throw new Error('DID has no parent DID')
+    }
+    return this._parentId
+  }
+
+  /**
+   * Check if DID has parent DID
+   */
+  get hasParent(): boolean {
+    return this._parentId != null
   }
 
   /**
@@ -149,6 +174,13 @@ export class DID {
   }
 
   /**
+   * Check if user is authenticated.
+   */
+  get authenticated(): boolean {
+    return this._id != null
+  }
+
+  /**
    * Attach a capability to the DID instance
    * @param cap The capability to attach
    * @returns A new DID instance with the capability attached
@@ -158,6 +190,7 @@ export class DID {
       provider: this._client?.connection,
       resolver: this._resolver,
       capability: cap,
+      parent: this._parentId,
     })
   }
 

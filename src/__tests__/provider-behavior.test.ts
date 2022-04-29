@@ -86,6 +86,17 @@ test('`id` property', async () => {
   expect(() => did.id).toThrow('DID is not authenticated')
 })
 
+test('`parent` property', async () => {
+  const { DID } = await import('../did.js')
+  const did = new DID(defaultOptions)
+  expect(() => did.parent).toThrow('DID has no parent DID')
+  expect(did.hasParent).toBe(false)
+  const parent = 'did:pkh:eip155:1:0xh...'
+  const didWParent = new DID(Object.assign(defaultOptions, { parent }))
+  expect(didWParent.parent).toBe(parent)
+  expect(didWParent.hasParent).toBe(true)
+})
+
 test('RPC calls throw an error if the response payload is an error', async () => {
   const { DID } = await import('../did.js')
   const provider1 = {
@@ -357,6 +368,10 @@ describe('`createDagJWS method`', () => {
 
     const res = await did.createDagJWS(data)
     const encPayload = await encodePayload(data)
+
+    expect(did.parent).toBe(`did:pkh:eip155:1:${wallet.address}`)
+    expect(did.hasParent).toBe(true)
+    expect(did.hasCapability).toBe(true)
 
     expect(async () => {
       await did.verifyJWS(res.jws, {
