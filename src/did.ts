@@ -351,6 +351,7 @@ export class DID {
     ) {
       Cacao.verify(options.capability, {
         atTime: options.atTime ? options.atTime : undefined,
+        revocationPhaseOutSecs: options.revocationPhaseOutSecs,
       })
     } else if (options.issuer && options.issuer !== signerDid) {
       const issuerUrl = didWithTime(options.issuer, options.atTime)
@@ -365,6 +366,7 @@ export class DID {
       ) {
         Cacao.verify(options.capability, {
           atTime: options.atTime ? options.atTime : undefined,
+          revocationPhaseOutSecs: options.revocationPhaseOutSecs,
         })
       } else {
         const signerIsController = signerDid ? controllers.includes(signerDid) : false
