@@ -143,7 +143,7 @@ Ceramic allows for keys attached to DIDs to continue making updates to streams a
 2. Node B's key revocation commit is anchored before node A's update
 3. Node A later tries to anchor the commit made earlier
 
-In this case, an external outlook might lead you to believe Node A's commit is invalid because the key had been revoked, but that's not necessarily true as in this case the commit was made earlier, just not anchored at that time. For this reason, a grace period is provided for updates created by revoked keys to still be verified successfully.
+In this case, an external outlook might lead you to believe Node A's commit is invalid because the key had been revoked when it was made, but that's not actually true as in this case the commit was in fact made earlier in real world time, it just wasn't assigned a timestamp by the anchoring system until after. For this reason, a grace period is provided for updates created by revoked keys to still be verified successfully.
 
 Specifically, the `verifyJWS` function in `dids` uses `options.revocationPhaseOutSecs` as the seconds representing the grace period within which signatures authored by a given key that otherwise appears to be revoked will still be considered valid.
 
