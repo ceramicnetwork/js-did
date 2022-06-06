@@ -135,6 +135,22 @@ const didWithCap = did.withCapability(cacao)
 const didWithCap2 = new DID({provider, resolver: KeyResolver.getResolver(), capability: cacao})
 ```
 
+## Security Considerations
+
+Ceramic allows for keys attached to DIDs to continue making updates to streams after revocation for a certain grace period. This is done to avoid incorrectly rejecting valid signatures as being performed with a revoked key when in fact the key was valid at the time of the signature. This can happen due to the implementation details of how Ceramic determines when a DID issues a signature as well as how Ceramic determines when an authentication key for a DID is revoked. Since we cannot trust the system clock time on the client's machine when performing a signature or key revocation, Ceramic periodically "anchors" updates on a blockchain to get a timestamp before which we know the write must have happened. Consider the following scenario:
+
+1. Commit for an update is made to Node A
+2. Node B's key revocation commit is anchored before node A's update
+3. Node A later tries to anchor the commit made earlier
+
+In this case, an external outlook might lead you to believe Node A's commit is invalid because the key had been revoked when it was made, but that's not actually true as in this case the commit was in fact made earlier in real world time, it just wasn't assigned a timestamp by the anchoring system until after. For this reason, a grace period is provided for updates created by revoked keys to still be verified successfully.
+
+Specifically, the `verifyJWS` function in `dids` uses `options.revocationPhaseOutSecs` as the seconds representing the grace period within which signatures authored by a given key that otherwise appears to be revoked will still be considered valid.
+
+While this approach helps solve the problem of incorrectly rejecting valid updates, it also implies that an attacker could potentially author signatures from a stolen key and commit updates to streams using that stolen key. Even if the original owner revoked the compromised key, the attacker has a grace period within which they can continue to make new commits. The best practice to mitigate this is to rotate keys associated to DIDs on a regular basis to make it less likely to have a compromised key associated with the DID.
+
+The `revocationPhaseOutSecs` value, therefore, should be set with this consideration in mind to a reasonable value. It either allows for a better UX for the owner and allows for a small window of attack for an attacker, or it does not allow for an attack window but can potentially mark certain commits as invalid due to latency in commits occuring.
+
 ## License
 
 MIT
