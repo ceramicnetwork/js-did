@@ -1,5 +1,5 @@
 {
-  "name": "did",
+  "name": "did-repository",
   "private": true,
   "workspaces": {
     "packages": [

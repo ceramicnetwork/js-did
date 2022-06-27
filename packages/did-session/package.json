@@ -1,0 +1,69 @@
+{
+  "name": "did-session",
+  "version": "0.0.1-rc.0",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://github.com/ceramicnetwork/js-did#readme",
+  "keywords": [
+    "ceramic",
+    "glaze",
+    "did"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceramicnetwork/js-did",
+    "directory": "packages/did-session"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.14"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "yarn build:clean && yarn build:types && yarn build:js",
+    "lint": "eslint src test --fix",
+    "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
+    "test:ci": "yarn test --ci --coverage",
+    "prepare": "yarn build",
+    "prepublishOnly": "package-check"
+  },
+  "dependencies": {
+    "@ceramicnetwork/blockchain-utils-linking": "^2.0.0",
+    "@ceramicnetwork/streamid": "^2.1.0",
+    "@stablelib/random": "^1.0.1",
+    "dids": "^3.2.0",
+    "key-did-provider-ed25519": "^2.0.0",
+    "key-did-resolver": "^2.0.4"
+  },
+  "devDependencies": {
+    "@ethersproject/wallet": "^5.6.2",
+    "uint8arrays": "^3.0.0"
+  },
+  "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)s$": [
+        "@swc/jest",
+        {
+          "root": "../.."
+        }
+      ]
+    }
+  }
+}

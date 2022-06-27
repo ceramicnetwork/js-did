@@ -6,6 +6,7 @@
     "baseUrl": ".",
     "typeRoots": ["./node_modules/@types"],
     "paths": {
+      "did-session": ["packages/did-session/src"],
       "dids": ["packages/dids/src"]
     }
   }

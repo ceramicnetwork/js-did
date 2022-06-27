@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.build.json",
-  "include": ["./packages/dids/src"],
+  "include": ["./packages/did-session/src", "./packages/dids/src"],
   "compilerOptions": {
     "jsx": "preserve",
     "lib": ["DOM", "ES2020"],
@@ -8,7 +8,7 @@
   },
   "typedocOptions": {
     "name": "DID API",
-    "entryPoints": ["./packages/dids/src/index.ts"],
+    "entryPoints": ["./packages/did-session/src/index.ts", "./packages/dids/src/index.ts"],
     "excludePrivate": true,
     "includeVersion": true,
     "githubPages": true
