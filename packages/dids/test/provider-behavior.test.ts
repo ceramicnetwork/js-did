@@ -8,9 +8,9 @@ import { decryptJWE, JWE, x25519Decrypter } from 'did-jwt'
 import { DIDDocument, ResolverRegistry } from 'did-resolver'
 import { Wallet } from 'ethers'
 import * as u8a from 'uint8arrays'
-import type { DIDProvider } from '../types.js'
+import type { DIDProvider } from '../src/types.js'
 
-jest.unstable_mockModule('../random-string.util.js', () => {
+jest.unstable_mockModule('../src/random-string.util.js', () => {
   return {
     randomString: () => 'rWCXyH1otp5/F78tycckgg',
   }
@@ -75,19 +75,19 @@ const MOCK_RESOLVER_REGISTRY: ResolverRegistry = {
 const defaultOptions = { provider: { send: jest.fn() } as DIDProvider }
 
 test('`authenticated` property', async () => {
-  const { DID } = await import('../did.js')
+  const { DID } = await import('../src/did.js')
   const did = new DID(defaultOptions)
   expect(did.authenticated).toBe(false)
 })
 
 test('`id` property', async () => {
-  const { DID } = await import('../did.js')
+  const { DID } = await import('../src/did.js')
   const did = new DID(defaultOptions)
   expect(() => did.id).toThrow('DID is not authenticated')
 })
 
 test('`parent` property', async () => {
-  const { DID } = await import('../did.js')
+  const { DID } = await import('../src/did.js')
   const did = new DID(defaultOptions)
   expect(() => did.parent).toThrow('DID has no parent DID')
   expect(did.hasParent).toBe(false)
@@ -98,7 +98,7 @@ test('`parent` property', async () => {
 })
 
 test('RPC calls throw an error if the response payload is an error', async () => {
-  const { DID } = await import('../did.js')
+  const { DID } = await import('../src/did.js')
   const provider1 = {
     send: jest.fn((req: { id: number }) => {
       return Promise.resolve({
@@ -125,7 +125,7 @@ test('RPC calls throw an error if the response payload is an error', async () =>
 })
 
 test('`setProvider` method', async () => {
-  const { DID } = await import('../did.js')
+  const { DID } = await import('../src/did.js')
   const provider1 = {} as DIDProvider
   const provider2 = {} as DIDProvider
 
@@ -145,7 +145,7 @@ test('`setProvider` method', async () => {
 
 describe('`authenticate` method', () => {
   test('uses the provider attached to the instance', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const provider = {
       send: jest.fn((req: { id: number }) => {
         return Promise.resolve({
@@ -175,7 +175,7 @@ describe('`authenticate` method', () => {
   })
 
   test('uses the provider given in options', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const provider = {
       send: jest.fn((req: { id: number }) => {
         return Promise.resolve({
@@ -205,7 +205,7 @@ describe('`authenticate` method', () => {
   })
 
   test('throws an error if there is no provider', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID()
     await expect(did.authenticate()).rejects.toThrow('No provider available')
   })
@@ -213,7 +213,7 @@ describe('`authenticate` method', () => {
 
 describe('`createJWS` method', () => {
   test('uses the provider attached to the instance', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     let authCalled = false
     const provider = {
       send: jest.fn((req: { id: string }) => {
@@ -258,7 +258,7 @@ describe('`createJWS` method', () => {
   })
 
   test('throws an error if there is no provider', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID()
     await expect(did.createJWS({})).rejects.toThrow('No provider available')
   })
@@ -266,13 +266,13 @@ describe('`createJWS` method', () => {
 
 describe('`createDagJWS method`', () => {
   test('throws an error if there is no provider', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID()
     await expect(did.createJWS({})).rejects.toThrow('No provider available')
   })
 
   test('creates a DagJWS with capability correctly', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     let authCalled = false
     const provider = {
       send: jest.fn((req: { id: string }) => {
@@ -400,8 +400,8 @@ describe('`createDagJWS method`', () => {
   })
 
   test('creates a DagJWS correctly', async () => {
-    const { DID } = await import('../did.js')
-    const { encodeBase64Url, encodeBase64 } = await import('../utils.js')
+    const { DID } = await import('../src/did.js')
+    const { encodeBase64Url, encodeBase64 } = await import('../src/utils.js')
     let authCalled = false
     const provider = {
       send: jest.fn((req: { id: string }) => {
@@ -485,7 +485,7 @@ describe('`verifyJWS method`', () => {
     '3': () => Promise.resolve(THREE_ID_RESOLVER_RESULT),
   }
   test('correctly verifies jws string', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID({ resolver: resolverRegistry })
     const jws =
       'eyJraWQiOiJkaWQ6MzpiYWdjcWNlcmFza3hxeng0N2l2b2tqcW9md295dXliMjN0aWFlcGRyYXpxNXJsem4yaHg3a215YWN6d29hP3ZlcnNpb24taWQ9MCNrV01YTU1xazVXc290UW0iLCJhbGciOiJFUzI1NksifQ.AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB.h7bHmTaBGza_QlFRI9LBfgB3Nw0m7hLzwMm4nLvcR3n9sHKRoCrY0soWnDbmuG7jfVgx4rYkjJohDuMNgbTpEQ'
@@ -496,7 +496,7 @@ describe('`verifyJWS method`', () => {
   })
 
   test('correctly verifies DagJWS', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID({ resolver: resolverRegistry })
     const jws = {
       payload: 'AXESIHhRlyKdyLsRUpRdpY4jSPfiee7e0GzCynNtDoeYWLUB',
@@ -516,7 +516,7 @@ describe('`verifyJWS method`', () => {
   })
 
   test('correctly verifies jws auth JWS', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID({ resolver: resolverRegistry })
     expect(await did.verifyJWS(MOCK_AUTH_JWS)).toEqual({
       didResolutionResult: MOCK_RESOLVER_RESULT,
@@ -555,7 +555,7 @@ describe('`createJWE method`', () => {
     jest.resetAllMocks()
   })
   test('correctly encrypts, one recipient', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const recipient = 'did:test:asdf'
     const secretKey = randomBytes(32)
     const registry = createRegistry({ [recipient]: secretKey })
@@ -568,7 +568,7 @@ describe('`createJWE method`', () => {
   })
 
   test('correctly encrypts, two recipients', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const recipient1 = 'did:test:asdf'
     const secretKey1 = randomBytes(32)
     const recipient2 = 'did:test:lalal'
@@ -587,7 +587,7 @@ describe('`createJWE method`', () => {
 
 describe('`createDagJWE method`', () => {
   test('correctly formats dagJWE cleartext', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const recipient = 'did:test:asdf'
     const secretKey = randomBytes(32)
     const registry = createRegistry({ [recipient]: secretKey })
@@ -603,13 +603,13 @@ describe('`createDagJWE method`', () => {
 
 describe('`decryptJWE method`', () => {
   test('throws an error if there is no provider', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID()
     await expect(did.createJWS({})).rejects.toThrow('No provider available')
   })
 
   test('uses the provider attached to the instance', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const provider = {
       send: jest.fn((req: { id: string }) => {
         return Promise.resolve({
@@ -642,14 +642,14 @@ describe('`decryptJWE method`', () => {
 
 describe('`decryptDagJWE` method', () => {
   test('throws an error if there is no provider', async () => {
-    const { DID } = await import('../did.js')
+    const { DID } = await import('../src/did.js')
     const did = new DID()
     await expect(did.createJWS({})).rejects.toThrow('No provider available')
   })
 
   test('uses the provider attached to the instance', async () => {
-    const { DID } = await import('../did.js')
-    const { encodeBase64 } = await import('../utils.js')
+    const { DID } = await import('../src/did.js')
+    const { encodeBase64 } = await import('../src/utils.js')
     const clearObj = { asdf: 432 }
     const preparedCleartext = await prepareCleartext(clearObj)
     const cleartext = encodeBase64(preparedCleartext)

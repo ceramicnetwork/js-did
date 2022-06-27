@@ -1,287 +1,74 @@
-<!doctype html>
-<html class="default no-js">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>DID - v2.2.0</title>
-	<meta name="description" content="Documentation for DID - v2.2.0">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
-	<script async src="assets/js/search.js" id="search-script"></script>
-</head>
-<body>
-<header>
-	<div class="tsd-page-toolbar">
-		<div class="container">
-			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
-					<div class="field">
-						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-						<input id="tsd-search-field" type="text" />
-					</div>
-					<ul class="results">
-						<li class="state loading">Preparing search index...</li>
-						<li class="state failure">The search index is not available</li>
-					</ul>
-					<a href="index.html" class="title">DID - v2.2.0</a>
-				</div>
-				<div class="table-cell" id="tsd-widgets">
-					<div id="tsd-filter">
-						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
-						<div class="tsd-filter-group">
-							<div class="tsd-select" id="tsd-filter-visibility">
-								<span class="tsd-select-label">All</span>
-								<ul class="tsd-select-list">
-									<li data-value="public">Public</li>
-									<li data-value="protected">Public/Protected</li>
-									<li data-value="private" class="selected">All</li>
-								</ul>
-							</div>
-							<input type="checkbox" id="tsd-filter-inherited" checked />
-							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
-						</div>
-					</div>
-					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="tsd-page-title">
-		<div class="container">
-			<h1>DID - v2.2.0</h1>
-		</div>
-	</div>
-</header>
-<div class="container container-main">
-	<div class="row">
-		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#did" id="did" style="color: inherit; text-decoration: none;">
-					<h1>DID</h1>
-				</a>
-				<p>A simple library to interact with DIDs that conform to the DID-provider interface.</p>
-				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
-					<h2>Installation</h2>
-				</a>
-				<pre><code class="language-sh"><span style="color: #000000">npm install dids</span>
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>DID API - v3.2.0</title><meta name="description" content="Documentation for DID API - v3.2.0"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">DID API - v3.2.0</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>DID API - v3.2.0 </h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<a href="#did" id="did" style="color: inherit; text-decoration: none;">
+  <h1>DID</h1>
+</a>
+<p>A simple library to interact with DIDs that conform to the DID-provider interface.</p>
+
+<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+  <h2>Installation</h2>
+</a>
+<pre><code class="language-sh"><span class="hl-0">npm install dids</span>
 </code></pre>
-				<a href="#api" id="api" style="color: inherit; text-decoration: none;">
-					<h2>API</h2>
-				</a>
-				<p><a href="https://ceramicnetwork.github.io/js-did/classes/did.html">API documentation</a></p>
-				<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
-					<h2>Examples</h2>
-				</a>
-				<a href="#authentication-with-the-provider" id="authentication-with-the-provider" style="color: inherit; text-decoration: none;">
-					<h3>Authentication with the DID provider</h3>
-				</a>
-				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DID</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dids&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">Ed25519Provider</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;key-did-provider-ed25519&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;key-did-resolver&#039;</span>
 
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">seed</span><span style="color: #000000"> = </span><span style="color: #008000">// 32 bytes of entropy, Uint8Array</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">provider</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Ed25519Provider</span><span style="color: #000000">(</span><span style="color: #001080">seed</span><span style="color: #000000">)</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">did</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DID</span><span style="color: #000000">({ </span><span style="color: #001080">provider</span><span style="color: #000000">, </span><span style="color: #001080">resolver:</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000">.</span><span style="color: #795E26">getResolver</span><span style="color: #000000">() })</span>
+<a href="#api" id="api" style="color: inherit; text-decoration: none;">
+  <h2>API</h2>
+</a>
+<p><a href="https://ceramicnetwork.github.io/js-did/classes/did.html">API documentation</a></p>
 
-<span style="color: #008000">// Authenticate with the provider</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">authenticate</span><span style="color: #000000">()</span>
+<a href="#examples" id="examples" style="color: inherit; text-decoration: none;">
+  <h2>Examples</h2>
+</a>
 
-<span style="color: #008000">// Read the DID string - this will throw an error if the DID instance is not authenticated</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">aliceDID</span><span style="color: #000000"> = </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #001080">id</span>
-
-<span style="color: #008000">// Create a JWS - this will throw an error if the DID instance is not authenticated</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jws</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">createJWS</span><span style="color: #000000">({ </span><span style="color: #001080">hello:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;world&#039;</span><span style="color: #000000"> })</span>
+<a href="#authentication-with-the-provider" id="authentication-with-the-provider" style="color: inherit; text-decoration: none;">
+  <h3>Authentication with the provider</h3>
+</a>
+<pre><code class="language-js"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">DID</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;dids&#39;</span><br/><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">Ed25519Provider</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;key-did-provider-ed25519&#39;</span><br/><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">KeyResolver</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;key-did-resolver&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">seed</span><span class="hl-0"> = </span><span class="hl-6">// 32 bytes of entropy, Uint8Array</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">provider</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">Ed25519Provider</span><span class="hl-0">(</span><span class="hl-2">seed</span><span class="hl-0">)</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">did</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">DID</span><span class="hl-0">({ </span><span class="hl-2">provider</span><span class="hl-0">, </span><span class="hl-2">resolver:</span><span class="hl-0"> </span><span class="hl-2">KeyResolver</span><span class="hl-0">.</span><span class="hl-7">getResolver</span><span class="hl-0">() })</span><br/><br/><span class="hl-6">// Authenticate with the provider</span><br/><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-7">authenticate</span><span class="hl-0">()</span><br/><br/><span class="hl-6">// Read the DID string - this will throw an error if the DID instance is not authenticated</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">aliceDID</span><span class="hl-0"> = </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-2">id</span><br/><br/><span class="hl-6">// Create a JWS - this will throw an error if the DID instance is not authenticated</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">jws</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-7">createJWS</span><span class="hl-0">({ </span><span class="hl-2">hello:</span><span class="hl-0"> </span><span class="hl-3">&#39;world&#39;</span><span class="hl-0"> })</span>
 </code></pre>
-				<a href="#use-dagjws-with-ipfs" id="use-dagjws-with-ipfs" style="color: inherit; text-decoration: none;">
-					<h3>Use DagJWS with IPFS</h3>
-				</a>
-				<p>The DagJWS functionality of the DID library can be used in conjunction with IPFS.</p>
-				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">payload</span><span style="color: #000000"> = { </span><span style="color: #001080">some:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data&#039;</span><span style="color: #000000"> }</span>
 
-<span style="color: #008000">// sign the payload as dag-jose</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> { </span><span style="color: #0070C1">jws</span><span style="color: #000000">, </span><span style="color: #0070C1">linkedBlock</span><span style="color: #000000"> } = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">createDagJWS</span><span style="color: #000000">(</span><span style="color: #001080">payload</span><span style="color: #000000">)</span>
-
-<span style="color: #008000">// put the JWS into the ipfs dag</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jwsCid</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">put</span><span style="color: #000000">(</span><span style="color: #001080">jws</span><span style="color: #000000">, { </span><span style="color: #001080">format:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dag-jose&#039;</span><span style="color: #000000">, </span><span style="color: #001080">hashAlg:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;sha2-256&#039;</span><span style="color: #000000"> })</span>
-
-<span style="color: #008000">// put the payload into the ipfs dag</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">block</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">block</span><span style="color: #000000">.</span><span style="color: #795E26">put</span><span style="color: #000000">(</span><span style="color: #001080">linkedBlock</span><span style="color: #000000">, { </span><span style="color: #001080">cid:</span><span style="color: #000000"> </span><span style="color: #001080">jws</span><span style="color: #000000">.</span><span style="color: #001080">link</span><span style="color: #000000"> })</span>
-
-<span style="color: #008000">// get the value of the payload using the payload cid</span>
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">((</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jws</span><span style="color: #000000">.</span><span style="color: #001080">link</span><span style="color: #000000">)).</span><span style="color: #001080">value</span><span style="color: #000000">)</span>
-<span style="color: #008000">// output:</span>
-<span style="color: #008000">// &gt; { some: &#039;data&#039; }</span>
-
-<span style="color: #008000">// alternatively get it using the ipld path from the JWS cid</span>
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">((</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jwsCid</span><span style="color: #000000">, { </span><span style="color: #001080">path:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;/link&#039;</span><span style="color: #000000"> })).</span><span style="color: #001080">value</span><span style="color: #000000">)</span>
-<span style="color: #008000">// output:</span>
-<span style="color: #008000">// &gt; { some: &#039;data&#039; }</span>
-
-<span style="color: #008000">// get the jws from the dag</span>
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">((</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jwsCid</span><span style="color: #000000">)).</span><span style="color: #001080">value</span><span style="color: #000000">)</span>
-<span style="color: #008000">// output:</span>
-<span style="color: #008000">// &gt; {</span>
-<span style="color: #008000">// &gt;   payload: &#039;AXESINDmZIeFXbbpBQWH1bXt7F2Ysg03pRcvzsvSc7vMNurc&#039;,</span>
-<span style="color: #008000">// &gt;   signatures: [</span>
-<span style="color: #008000">// &gt;     {</span>
-<span style="color: #008000">// &gt;       protected: &#039;eyJraWQiOiJkaWQ6Mzp1bmRlZmluZWQ_dmVyc2lvbj0wI3NpZ25pbmciLCJhbGciOiJFUzI1NksifQ&#039;,</span>
-<span style="color: #008000">// &gt;       signature: &#039;pNz3i10YMlv-BiVfqBbHvHQp5NH3x4TAHQ5oqSmNBUx1DH_MONa_VBZSP2o9r9epDdbRRBLQjrIeigdDWoXrBQ&#039;</span>
-<span style="color: #008000">// &gt;     }</span>
-<span style="color: #008000">// &gt;   ],</span>
-<span style="color: #008000">// &gt;   link: CID(bafyreigq4zsipbk5w3uqkbmh2w2633c5tcza2n5fc4x45s6soo54ynxk3q)</span>
-<span style="color: #008000">// &gt; }</span>
+<a href="#use-dagjws-with-ipfs" id="use-dagjws-with-ipfs" style="color: inherit; text-decoration: none;">
+  <h3>Use DagJWS with IPFS</h3>
+</a>
+<p>The DagJWS functionality of the DID library can be used in conjunction with IPFS.</p>
+<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">payload</span><span class="hl-0"> = { </span><span class="hl-2">some:</span><span class="hl-0"> </span><span class="hl-3">&#39;data&#39;</span><span class="hl-0"> }</span><br/><br/><span class="hl-6">// sign the payload as dag-jose</span><br/><span class="hl-4">const</span><span class="hl-0"> { </span><span class="hl-5">jws</span><span class="hl-0">, </span><span class="hl-5">linkedBlock</span><span class="hl-0"> } = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-7">createDagJWS</span><span class="hl-0">(</span><span class="hl-2">payload</span><span class="hl-0">)</span><br/><br/><span class="hl-6">// put the JWS into the ipfs dag</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">jwsCid</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">ipfs</span><span class="hl-0">.</span><span class="hl-2">dag</span><span class="hl-0">.</span><span class="hl-7">put</span><span class="hl-0">(</span><span class="hl-2">jws</span><span class="hl-0">, { </span><span class="hl-2">storeCodec:</span><span class="hl-0"> </span><span class="hl-3">&#39;dag-jose&#39;</span><span class="hl-0">, </span><span class="hl-2">hashAlg:</span><span class="hl-0"> </span><span class="hl-3">&#39;sha2-256&#39;</span><span class="hl-0"> })</span><br/><br/><span class="hl-6">// put the payload into the ipfs dag</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">block</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">ipfs</span><span class="hl-0">.</span><span class="hl-2">block</span><span class="hl-0">.</span><span class="hl-7">put</span><span class="hl-0">(</span><span class="hl-2">linkedBlock</span><span class="hl-0">, { </span><span class="hl-2">cid:</span><span class="hl-0"> </span><span class="hl-2">jws</span><span class="hl-0">.</span><span class="hl-2">link</span><span class="hl-0"> })</span><br/><br/><span class="hl-6">// get the value of the payload using the payload cid</span><br/><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-7">log</span><span class="hl-0">((</span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">ipfs</span><span class="hl-0">.</span><span class="hl-2">dag</span><span class="hl-0">.</span><span class="hl-7">get</span><span class="hl-0">(</span><span class="hl-2">jws</span><span class="hl-0">.</span><span class="hl-2">link</span><span class="hl-0">)).</span><span class="hl-2">value</span><span class="hl-0">)</span><br/><span class="hl-6">// output:</span><br/><span class="hl-6">// &gt; { some: &#39;data&#39; }</span><br/><br/><span class="hl-6">// alternatively get it using the ipld path from the JWS cid</span><br/><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-7">log</span><span class="hl-0">((</span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">ipfs</span><span class="hl-0">.</span><span class="hl-2">dag</span><span class="hl-0">.</span><span class="hl-7">get</span><span class="hl-0">(</span><span class="hl-2">jwsCid</span><span class="hl-0">, { </span><span class="hl-2">path:</span><span class="hl-0"> </span><span class="hl-3">&#39;/link&#39;</span><span class="hl-0"> })).</span><span class="hl-2">value</span><span class="hl-0">)</span><br/><span class="hl-6">// output:</span><br/><span class="hl-6">// &gt; { some: &#39;data&#39; }</span><br/><br/><span class="hl-6">// get the jws from the dag</span><br/><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-7">log</span><span class="hl-0">((</span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">ipfs</span><span class="hl-0">.</span><span class="hl-2">dag</span><span class="hl-0">.</span><span class="hl-7">get</span><span class="hl-0">(</span><span class="hl-2">jwsCid</span><span class="hl-0">)).</span><span class="hl-2">value</span><span class="hl-0">)</span><br/><span class="hl-6">// output:</span><br/><span class="hl-6">// &gt; {</span><br/><span class="hl-6">// &gt;   payload: &#39;AXESINDmZIeFXbbpBQWH1bXt7F2Ysg03pRcvzsvSc7vMNurc&#39;,</span><br/><span class="hl-6">// &gt;   signatures: [</span><br/><span class="hl-6">// &gt;     {</span><br/><span class="hl-6">// &gt;       protected: &#39;eyJraWQiOiJkaWQ6Mzp1bmRlZmluZWQ_dmVyc2lvbj0wI3NpZ25pbmciLCJhbGciOiJFUzI1NksifQ&#39;,</span><br/><span class="hl-6">// &gt;       signature: &#39;pNz3i10YMlv-BiVfqBbHvHQp5NH3x4TAHQ5oqSmNBUx1DH_MONa_VBZSP2o9r9epDdbRRBLQjrIeigdDWoXrBQ&#39;</span><br/><span class="hl-6">// &gt;     }</span><br/><span class="hl-6">// &gt;   ],</span><br/><span class="hl-6">// &gt;   link: CID(bafyreigq4zsipbk5w3uqkbmh2w2633c5tcza2n5fc4x45s6soo54ynxk3q)</span><br/><span class="hl-6">// &gt; }</span>
 </code></pre>
-				<p>As can be observed above the <code>createDagJWS</code> method takes the payload, encodes it using <code>dag-cbor</code> and computes it&#39;s CID. It then uses this CID as the payload of the JWS that is then signed. The JWS that was just created can be put into ipfs using the <code>dag-jose</code> codec. Returned is also the encoded block of the payload. This can be put into ipfs using <code>ipfs.block.put</code>. Alternatively <code>ipfs.dag.put(payload)</code> would have the same effect.</p>
-				<a href="#use-dagjwe-with-ipfs" id="use-dagjwe-with-ipfs" style="color: inherit; text-decoration: none;">
-					<h3>Use DagJWE with IPFS</h3>
-				</a>
-				<p>The DagJWE functionality allows us to encrypt IPLD data to one or multiple DIDs. The resulting JWE object can then be put into ipfs using the <a href="https://github.com/ceramicnetwork/js-dag-jose">dag-jose</a> codec. A user that is authenticated can at a later point decrypt this object.</p>
-				<pre><code class="language-js"><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">cleartext</span><span style="color: #000000"> = { </span><span style="color: #001080">some:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;data&#039;</span><span style="color: #000000">, </span><span style="color: #001080">coolLink:</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">CID</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;bafyqacnbmrqxgzdgdeaui&#039;</span><span style="color: #000000">) }</span>
+<p>As can be observed above the <code>createDagJWS</code> method takes the payload, encodes it using <code>dag-cbor</code> and computes it&#39;s CID. It then uses this CID as the payload of the JWS that is then signed. The JWS that was just created can be put into ipfs using the <code>dag-jose</code> codec. Returned is also the encoded block of the payload. This can be put into ipfs using <code>ipfs.block.put</code>. Alternatively <code>ipfs.dag.put(payload)</code> would have the same effect.</p>
 
-<span style="color: #008000">// encrypt the cleartext object</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jwe</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">createDagJWE</span><span style="color: #000000">(</span><span style="color: #001080">cleartext</span><span style="color: #000000">, [</span><span style="color: #A31515">&#039;did:3:bafy89h4f9...&#039;</span><span style="color: #000000">, </span><span style="color: #A31515">&#039;did:key:za234...&#039;</span><span style="color: #000000">])</span>
-
-<span style="color: #008000">// put the JWE into the ipfs dag</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">jweCid</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">put</span><span style="color: #000000">(</span><span style="color: #001080">jwe</span><span style="color: #000000">, { </span><span style="color: #001080">format:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dag-jose&#039;</span><span style="color: #000000">, </span><span style="color: #001080">hashAlg:</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;sha2-256&#039;</span><span style="color: #000000"> })</span>
-
-
-<span style="color: #008000">// get the jwe from the dag and decrypt it</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">dagJWE</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ipfs</span><span style="color: #000000">.</span><span style="color: #001080">dag</span><span style="color: #000000">.</span><span style="color: #795E26">get</span><span style="color: #000000">(</span><span style="color: #001080">jweCid</span><span style="color: #000000">)</span>
-<span style="color: #001080">console</span><span style="color: #000000">.</span><span style="color: #795E26">log</span><span style="color: #000000">(</span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">decryptDagJWE</span><span style="color: #000000">(</span><span style="color: #001080">dagJWE</span><span style="color: #000000">))</span>
-<span style="color: #008000">// output:</span>
-<span style="color: #008000">// &gt; { some: &#039;data&#039; }</span>
+<a href="#use-dagjwe-with-ipfs" id="use-dagjwe-with-ipfs" style="color: inherit; text-decoration: none;">
+  <h3>Use DagJWE with IPFS</h3>
+</a>
+<p>The DagJWE functionality allows us to encrypt IPLD data to one or multiple DIDs. The resulting JWE object can then be put into ipfs using the <a href="https://github.com/ceramicnetwork/js-dag-jose">dag-jose</a> codec. A user that is authenticated can at a later point decrypt this object.</p>
+<pre><code class="language-js"><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">cleartext</span><span class="hl-0"> = { </span><span class="hl-2">some:</span><span class="hl-0"> </span><span class="hl-3">&#39;data&#39;</span><span class="hl-0">, </span><span class="hl-2">coolLink:</span><span class="hl-0"> </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">CID</span><span class="hl-0">(</span><span class="hl-3">&#39;bafyqacnbmrqxgzdgdeaui&#39;</span><span class="hl-0">) }</span><br/><br/><span class="hl-6">// encrypt the cleartext object</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">jwe</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-7">createDagJWE</span><span class="hl-0">(</span><span class="hl-2">cleartext</span><span class="hl-0">, [</span><span class="hl-3">&#39;did:3:bafy89h4f9...&#39;</span><span class="hl-0">, </span><span class="hl-3">&#39;did:key:za234...&#39;</span><span class="hl-0">])</span><br/><br/><span class="hl-6">// put the JWE into the ipfs dag</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">jweCid</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">ipfs</span><span class="hl-0">.</span><span class="hl-2">dag</span><span class="hl-0">.</span><span class="hl-7">put</span><span class="hl-0">(</span><span class="hl-2">jwe</span><span class="hl-0">, { </span><span class="hl-2">storeCodec:</span><span class="hl-0"> </span><span class="hl-3">&#39;dag-jose&#39;</span><span class="hl-0">, </span><span class="hl-2">hashAlg:</span><span class="hl-0"> </span><span class="hl-3">&#39;sha2-256&#39;</span><span class="hl-0"> })</span><br/><br/><span class="hl-6">// get the jwe from the dag and decrypt it</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">dagJWE</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">ipfs</span><span class="hl-0">.</span><span class="hl-2">dag</span><span class="hl-0">.</span><span class="hl-7">get</span><span class="hl-0">(</span><span class="hl-2">jweCid</span><span class="hl-0">)</span><br/><span class="hl-2">console</span><span class="hl-0">.</span><span class="hl-7">log</span><span class="hl-0">(</span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-7">decryptDagJWE</span><span class="hl-0">(</span><span class="hl-2">dagJWE</span><span class="hl-0">))</span><br/><span class="hl-6">// output:</span><br/><span class="hl-6">// &gt; { some: &#39;data&#39; }</span>
 </code></pre>
-				<a href="#resolving-dids" id="resolving-dids" style="color: inherit; text-decoration: none;">
-					<h3>Resolving DIDs</h3>
-				</a>
-				<pre><code class="language-js"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">DID</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;dids&#039;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000"> </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@ceramicnetwork/key-did-resolver&#039;</span>
 
-<span style="color: #008000">// See https://github.com/decentralized-identity/did-resolver</span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">did</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DID</span><span style="color: #000000">({ </span><span style="color: #001080">resolver:</span><span style="color: #000000"> </span><span style="color: #001080">KeyResolver</span><span style="color: #000000">.</span><span style="color: #795E26">getResolver</span><span style="color: #000000">() })</span>
-
-<span style="color: #008000">// Resolve a DID document</span>
-<span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">did</span><span style="color: #000000">.</span><span style="color: #795E26">resolve</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;did:test:...&#039;</span><span style="color: #000000">)</span>
+<a href="#resolving-dids" id="resolving-dids" style="color: inherit; text-decoration: none;">
+  <h3>Resolving DIDs</h3>
+</a>
+<pre><code class="language-js"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">DID</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;dids&#39;</span><br/><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">KeyResolver</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;key-did-resolver&#39;</span><br/><br/><span class="hl-6">// See https://github.com/decentralized-identity/did-resolver</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">did</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">DID</span><span class="hl-0">({ </span><span class="hl-2">resolver:</span><span class="hl-0"> </span><span class="hl-2">KeyResolver</span><span class="hl-0">.</span><span class="hl-7">getResolver</span><span class="hl-0">() })</span><br/><br/><span class="hl-6">// Resolve a DID document</span><br/><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-7">resolve</span><span class="hl-0">(</span><span class="hl-3">&#39;did:key:...&#39;</span><span class="hl-0">)</span>
 </code></pre>
-				<a href="#license" id="license" style="color: inherit; text-decoration: none;">
-					<h2>License</h2>
-				</a>
-				<p>MIT</p>
-			</div>
-		</div>
-		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
-			<nav class="tsd-navigation primary">
-				<ul>
-					<li class=" ">
-						<a href="modules.html">Exports</a>
-					</li>
-				</ul>
-			</nav>
-			<nav class="tsd-navigation secondary menu-sticky">
-				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="classes/did.html" class="tsd-kind-icon">DID</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/authenticateoptions.html" class="tsd-kind-icon">Authenticate<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/authenticateparams.html" class="tsd-kind-icon">Authenticate<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/authenticateresponse.html" class="tsd-kind-icon">Authenticate<wbr>Response</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/createjweoptions.html" class="tsd-kind-icon">CreateJWEOptions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/createjwsoptions.html" class="tsd-kind-icon">CreateJWSOptions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/didoptions.html" class="tsd-kind-icon">DIDOptions</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/didresolutionresult.html" class="tsd-kind-icon">DIDResolution<wbr>Result</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/dagjwsresult.html" class="tsd-kind-icon">DagJWSResult</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/decryptjweoptions.html" class="tsd-kind-icon">DecryptJWEOptions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/decryptjweresult.html" class="tsd-kind-icon">DecryptJWEResult</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/verifyjwsoptions.html" class="tsd-kind-icon">VerifyJWSOptions</a>
-					</li>
-					<li class=" tsd-kind-interface">
-						<a href="interfaces/verifyjwsresult.html" class="tsd-kind-icon">VerifyJWSResult</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#authparams" class="tsd-kind-icon">Auth<wbr>Params</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#createjwsparams" class="tsd-kind-icon">CreateJWSParams</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#didmethodname" class="tsd-kind-icon">DIDMethod<wbr>Name</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#didprovider" class="tsd-kind-icon">DIDProvider</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#didproviderclient" class="tsd-kind-icon">DIDProvider<wbr>Client</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#didprovidermethods" class="tsd-kind-icon">DIDProvider<wbr>Methods</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#didproviderorclient" class="tsd-kind-icon">DIDProvider<wbr>OrClient</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="modules.html#didrequest" class="tsd-kind-icon">DIDRequest</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-has-type-parameter">
-						<a href="modules.html#didresponse" class="tsd-kind-icon">DIDResponse</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#dagjws" class="tsd-kind-icon">DagJWS</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#decryptjweparams" class="tsd-kind-icon">DecryptJWEParams</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#generaljws" class="tsd-kind-icon">GeneralJWS</a>
-					</li>
-					<li class=" tsd-kind-type-alias">
-						<a href="modules.html#jwssignature" class="tsd-kind-icon">JWSSignature</a>
-					</li>
-				</ul>
-			</nav>
-		</div>
-	</div>
-</div>
-<footer class="with-border-bottom">
-	<div class="container">
-		<h2>Legend</h2>
-		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-			</ul>
-		</div>
-	</div>
-</footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
-<div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-</body>
-</html>
+
+<a href="#creating-a-did-with-attached-cacao" id="creating-a-did-with-attached-cacao" style="color: inherit; text-decoration: none;">
+  <h3>Creating a DID with attached CACAO</h3>
+</a>
+<p>Using CACAO OCAPs to create a Key DID that can sign on behalf of a PKH DID.</p>
+<pre><code class="language-js"><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">DID</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;dids&#39;</span><br/><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">Ed25519Provider</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;key-did-provider-ed25519&#39;</span><br/><span class="hl-1">import</span><span class="hl-0"> </span><span class="hl-2">KeyResolver</span><span class="hl-0"> </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;key-did-resolver&#39;</span><br/><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">Cacao</span><span class="hl-0">, </span><span class="hl-2">SiweMessage</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;ceramic-cacao&#39;</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">seed</span><span class="hl-0"> = </span><span class="hl-6">// 32 bytes of entropy, Uint8Array</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">provider</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">Ed25519Provider</span><span class="hl-0">(</span><span class="hl-2">seed</span><span class="hl-0">)</span><br/><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">siwe</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">SiweMessage</span><span class="hl-0">(</span><span class="hl-3">&quot;...&quot;</span><span class="hl-0">);</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">cacao</span><span class="hl-0"> = </span><span class="hl-2">Cacao</span><span class="hl-0">.</span><span class="hl-7">fromSiweMessage</span><span class="hl-0">(</span><span class="hl-2">siwe</span><span class="hl-0">);</span><br/><br/><span class="hl-6">// Add capability to existing DID instance</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">did</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">DID</span><span class="hl-0">({ </span><span class="hl-2">provider</span><span class="hl-0">, </span><span class="hl-2">resolver:</span><span class="hl-0"> </span><span class="hl-2">KeyResolver</span><span class="hl-0">.</span><span class="hl-7">getResolver</span><span class="hl-0">() })</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">didWithCap</span><span class="hl-0"> = </span><span class="hl-2">did</span><span class="hl-0">.</span><span class="hl-7">withCapability</span><span class="hl-0">(</span><span class="hl-2">cacao</span><span class="hl-0">)</span><br/><br/><span class="hl-6">// Add capability to new DID instance</span><br/><span class="hl-4">const</span><span class="hl-0"> </span><span class="hl-5">didWithCap2</span><span class="hl-0"> = </span><span class="hl-4">new</span><span class="hl-0"> </span><span class="hl-7">DID</span><span class="hl-0">({</span><span class="hl-2">provider</span><span class="hl-0">, </span><span class="hl-2">resolver:</span><span class="hl-0"> </span><span class="hl-2">KeyResolver</span><span class="hl-0">.</span><span class="hl-7">getResolver</span><span class="hl-0">(), </span><span class="hl-2">capability:</span><span class="hl-0"> </span><span class="hl-2">cacao</span><span class="hl-0">})</span>
+</code></pre>
+
+<a href="#security-considerations" id="security-considerations" style="color: inherit; text-decoration: none;">
+  <h2>Security Considerations</h2>
+</a>
+<p>Ceramic allows for keys attached to DIDs to continue making updates to streams after revocation for a certain grace period. This is done to avoid incorrectly rejecting valid signatures as being performed with a revoked key when in fact the key was valid at the time of the signature. This can happen due to the implementation details of how Ceramic determines when a DID issues a signature as well as how Ceramic determines when an authentication key for a DID is revoked. Since we cannot trust the system clock time on the client&#39;s machine when performing a signature or key revocation, Ceramic periodically &quot;anchors&quot; updates on a blockchain to get a timestamp before which we know the write must have happened. Consider the following scenario:</p>
+<ol>
+<li>Commit for an update is made to Node A</li>
+<li>Node B&#39;s key revocation commit is anchored before node A&#39;s update</li>
+<li>Node A later tries to anchor the commit made earlier</li>
+</ol>
+<p>In this case, an external outlook might lead you to believe Node A&#39;s commit is invalid because the key had been revoked when it was made, but that&#39;s not actually true as in this case the commit was in fact made earlier in real world time, it just wasn&#39;t assigned a timestamp by the anchoring system until after. For this reason, a grace period is provided for updates created by revoked keys to still be verified successfully.</p>
+<p>Specifically, the <code>verifyJWS</code> function in <code>dids</code> uses <code>options.revocationPhaseOutSecs</code> as the seconds representing the grace period within which signatures authored by a given key that otherwise appears to be revoked will still be considered valid.</p>
+<p>While this approach helps solve the problem of incorrectly rejecting valid updates, it also implies that an attacker could potentially author signatures from a stolen key and commit updates to streams using that stolen key. Even if the original owner revoked the compromised key, the attacker has a grace period within which they can continue to make new commits. The best practice to mitigate this is to rotate keys associated to DIDs on a regular basis to make it less likely to have a compromised key associated with the DID.</p>
+<p>The <code>revocationPhaseOutSecs</code> value, therefore, should be set with this consideration in mind to a reasonable value. It either allows for a better UX for the owner and allows for a small window of attack for an attacker, or it does not allow for an attack window but can potentially mark certain commits as invalid due to latency in commits occuring.</p>
+
+<a href="#license" id="license" style="color: inherit; text-decoration: none;">
+  <h2>License</h2>
+</a>
+<p>MIT</p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-class"><a href="classes/DID.html" class="tsd-kind-icon">DID</a></li><li class="tsd-kind-interface"><a href="interfaces/AuthenticateOptions.html" class="tsd-kind-icon">Authenticate<wbr/>Options</a></li><li class="tsd-kind-interface"><a href="interfaces/AuthenticateParams.html" class="tsd-kind-icon">Authenticate<wbr/>Params</a></li><li class="tsd-kind-interface"><a href="interfaces/AuthenticateResponse.html" class="tsd-kind-icon">Authenticate<wbr/>Response</a></li><li class="tsd-kind-interface"><a href="interfaces/CreateJWEOptions.html" class="tsd-kind-icon">CreateJWEOptions</a></li><li class="tsd-kind-interface"><a href="interfaces/CreateJWSOptions.html" class="tsd-kind-icon">CreateJWSOptions</a></li><li class="tsd-kind-interface"><a href="interfaces/DIDOptions.html" class="tsd-kind-icon">DIDOptions</a></li><li class="tsd-kind-interface tsd-is-external"><a href="interfaces/DIDResolutionResult.html" class="tsd-kind-icon">DIDResolution<wbr/>Result</a></li><li class="tsd-kind-interface"><a href="interfaces/DagJWSResult.html" class="tsd-kind-icon">DagJWSResult</a></li><li class="tsd-kind-interface"><a href="interfaces/DecryptJWEOptions.html" class="tsd-kind-icon">DecryptJWEOptions</a></li><li class="tsd-kind-interface"><a href="interfaces/DecryptJWEResult.html" class="tsd-kind-icon">DecryptJWEResult</a></li><li class="tsd-kind-interface"><a href="interfaces/VerifyJWSOptions.html" class="tsd-kind-icon">VerifyJWSOptions</a></li><li class="tsd-kind-interface"><a href="interfaces/VerifyJWSResult.html" class="tsd-kind-icon">VerifyJWSResult</a></li><li class="tsd-kind-type-alias"><a href="modules.html#AuthParams" class="tsd-kind-icon">Auth<wbr/>Params</a></li><li class="tsd-kind-type-alias"><a href="modules.html#CreateJWSParams" class="tsd-kind-icon">CreateJWSParams</a></li><li class="tsd-kind-type-alias"><a href="modules.html#DIDMethodName" class="tsd-kind-icon">DIDMethod<wbr/>Name</a></li><li class="tsd-kind-type-alias"><a href="modules.html#DIDProvider" class="tsd-kind-icon">DIDProvider</a></li><li class="tsd-kind-type-alias"><a href="modules.html#DIDProviderClient" class="tsd-kind-icon">DIDProvider<wbr/>Client</a></li><li class="tsd-kind-type-alias"><a href="modules.html#DIDProviderMethods" class="tsd-kind-icon">DIDProvider<wbr/>Methods</a></li><li class="tsd-kind-type-alias"><a href="modules.html#DIDProviderOrClient" class="tsd-kind-icon">DIDProvider<wbr/>Or<wbr/>Client</a></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#DIDRequest" class="tsd-kind-icon">DIDRequest</a></li><li class="tsd-kind-type-alias tsd-has-type-parameter"><a href="modules.html#DIDResponse" class="tsd-kind-icon">DIDResponse</a></li><li class="tsd-kind-type-alias"><a href="modules.html#DagJWS" class="tsd-kind-icon">DagJWS</a></li><li class="tsd-kind-type-alias"><a href="modules.html#DecryptJWEParams" class="tsd-kind-icon">DecryptJWEParams</a></li><li class="tsd-kind-type-alias"><a href="modules.html#GeneralJWS" class="tsd-kind-icon">GeneralJWS</a></li><li class="tsd-kind-type-alias"><a href="modules.html#JWSSignature" class="tsd-kind-icon">JWSSignature</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

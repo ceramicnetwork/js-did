@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals'
 import { DIDResolutionResult, Resolver } from 'did-resolver'
-import { DID } from '../did.js'
+import { DID } from '../src/did.js'
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
