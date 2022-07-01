@@ -304,10 +304,6 @@ export class DID {
     jws.link = compatibleCID
 
     if (this._capability) {
-      const exp = this._capability.p.exp
-      if (exp && Date.parse(exp) < Date.now()) {
-        throw new Error('Capability is expired, cannot create a valid signature')
-      }
       const cacaoBlock = await CacaoBlock.fromCacao(this._capability)
       return { jws, linkedBlock, cacaoBlock: cacaoBlock.bytes }
     }

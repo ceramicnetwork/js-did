@@ -399,7 +399,7 @@ describe('`createDagJWS method`', () => {
     })
   })
 
-  test('create a DagJWS throws when using expired capability', async () => {
+  test('create a JWW/DagJWS throws when using expired capability', async () => {
     const { DID } = await import('../did.js')
     const provider = {
       send: jest.fn((req: { id: string }) => {
@@ -477,6 +477,7 @@ describe('`createDagJWS method`', () => {
     }
 
     await expect(did.createDagJWS(data)).rejects.toThrowError(/Capability is expired/)
+    await expect(did.createJWS(data)).rejects.toThrowError(/Capability is expired/)
   })
 
   test('creates a DagJWS correctly', async () => {
