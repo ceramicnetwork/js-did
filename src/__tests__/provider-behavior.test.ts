@@ -399,6 +399,87 @@ describe('`createDagJWS method`', () => {
     })
   })
 
+  test('create a JWW/DagJWS throws when using expired capability', async () => {
+    const { DID } = await import('../did.js')
+    const provider = {
+      send: jest.fn((req: { id: string }) => {
+        const result = {
+          payload:
+            'eyJkaWQiOiJkaWQ6a2V5Ono2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCIsImV4cCI6MTYwNjIzNjk3NCwibm9uY2UiOiJyV0NYeUgxb3RwNS9GNzh0eWNja2dnIiwicGF0aHMiOltdfQ',
+          signatures: [
+            {
+              protected:
+                'eyJhbGciOiJFZERTQSIsImtpZCI6ImRpZDprZXk6ejZNa3JCZE5kd1VQblhEVkQxREN4ZWR6VlZCcGFHaThhU21vWEZBZUtOZ3RBZXI4I3o2TWtyQmROZHdVUG5YRFZEMURDeGVkelZWQnBhR2k4YVNtb1hGQWVLTmd0QWVyOCJ9',
+              signature:
+                'uGjLPvi5hAFXuBp6jSDcAdQcRfgHEuD7cSH6XqyiYMGP3xBw45O_cIfeUcP0u8w57AJk9Mgg2aiL9sTC1ERiCw',
+            },
+          ],
+        }
+        // }
+        return Promise.resolve({
+          jsonrpc: '2.0',
+          id: req.id,
+          result,
+        })
+      }),
+    } as DIDProvider
+    const resolver: ResolverRegistry = {
+      key: () =>
+        Promise.resolve({
+          didResolutionMetadata: {
+            contentType: 'application/did+json',
+          },
+          didDocument: {
+            id: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+            verificationMethod: [
+              {
+                id: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8#z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+                type: 'Ed25519VerificationKey2018',
+                controller: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+                publicKeyBase58: 'CjNL3hDxSyj26WNWH5g9ePdpkhSHAZXSqEFiV6isFS4k',
+              },
+            ],
+            authentication: [
+              'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8#z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+            ],
+          },
+          didDocumentMetadata: {},
+        }),
+    }
+
+    const wallet = new Wallet('0x01104074416bab5b755dd6cd1fb177db7e981335e18b935b1d887d5640015e4c')
+    const siwe = new SiweMessage({
+      domain: 'service.org',
+      address: wallet.address,
+      statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
+      uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+      version: '1',
+      nonce: '32891757',
+      issuedAt: '20218-09-30T16:25:24.000Z',
+      notBefore: '2018-09-30T16:25:24.000Z',
+      expirationTime: '2019-09-30T16:25:24.000Z',
+      chainId: '1',
+      resources: [
+        'ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu',
+        'https://example.com/my-web2-claim.json',
+      ],
+    })
+
+    const signature = await wallet.signMessage(siwe.toMessage())
+    siwe.signature = signature
+
+    const cacao = Cacao.fromSiweMessage(siwe)
+    const did = new DID({ provider, resolver, capability: cacao })
+    await did.authenticate()
+
+    const data = {
+      foo: Buffer.from('foo'),
+    }
+
+    await expect(did.createDagJWS(data)).rejects.toThrowError(/Capability is expired/)
+    await expect(did.createJWS(data)).rejects.toThrowError(/Capability is expired/)
+  })
+
   test('creates a DagJWS correctly', async () => {
     const { DID } = await import('../did.js')
     const { encodeBase64Url, encodeBase64 } = await import('../utils.js')

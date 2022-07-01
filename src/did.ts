@@ -257,6 +257,10 @@ export class DID {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
     if (this._capability) {
+      const exp = this._capability.p.exp
+      if (exp && Date.parse(exp) < Date.now()) {
+        throw new Error('Capability is expired, cannot create a valid signature')
+      }
       const cacaoBlock = await CacaoBlock.fromCacao(this._capability)
       const capCID = CID.asCID(cacaoBlock.cid)
       if (!capCID) {
