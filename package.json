@@ -1,71 +1,42 @@
 {
-  "name": "dids",
-  "version": "3.2.0",
-  "description": "Typescript library for interacting with DIDs",
-  "type": "module",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./lib/index.js"
+    "name": "dids",
+    "private": true,
+    "packageManager": "yarn@1.18.0",
+    "workspaces": {
+      "packages": [
+        "packages/*"
+      ],
+      "nohoist": [
+        "ajv",
+        "execa"
+      ]
+    },
+    "scripts": {
+      "docs": "typedoc --tsconfig tsconfig.docs.json",
+      "test": "yarn turbo run test",
+      "test:ci": "yarn turbo run test:ci",
+      "lint": "yarn turbo run lint",
+      "build": "lerna run build:types && yarn turbo run build:js",
+      "prepare": "yarn build"
+    },
+    "devDependencies": {
+      "@skypack/package-check": "^0.2.2",
+      "@swc/cli": "^0.1.57",
+      "@swc/core": "^1.2.209",
+      "@swc/jest": "^0.2.20",
+      "@types/jest": "^28.1.2",
+      "@typescript-eslint/eslint-plugin": "^5.30.5",
+      "@typescript-eslint/parser": "^5.30.5",
+      "del-cli": "^4.0.1",
+      "eslint": "^8.19.0",
+      "eslint-config-3box": "^0.4.0",
+      "eslint-plugin-jest": "^26.5.3",
+      "jest": "^28.1.2",
+      "lerna": "^5.1.6",
+      "prettier": "^2.7.1",
+      "turbo": "^1.3.1",
+      "typedoc": "0.23.5",
+      "typedoc-plugin-markdown": "^3.12.1",
+      "typescript": "^4.7.4"
     }
-  },
-  "files": [
-    "lib/*"
-  ],
-  "sideEffects": false,
-  "scripts": {
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-    "build": "./node_modules/.bin/tsc --project tsconfig.build.json",
-    "prepublishOnly": "npm run build",
-    "prebuild": "npm run clean",
-    "lint": "./node_modules/.bin/eslint ./src --ext .js,.ts",
-    "docs": "./node_modules/.bin/typedoc ./src/index.ts --excludePrivate --name DID --includeVersion ; touch docs/.nojekyll",
-    "clean": "rm -rf ./lib",
-    "webpack": "webpack --mode production ./lib/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ceramicnetwork/js-did.git"
-  },
-  "keywords": [
-    "DID",
-    "identity",
-    "did-provider",
-    "self-sovereign"
-  ],
-  "author": "Joel Thorstensson <oed@3box.io>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ceramicnetwork/js-did/issues"
-  },
-  "homepage": "https://github.com/ceramicnetwork/js-did#readme",
-  "dependencies": {
-    "@stablelib/random": "^1.0.1",
-    "ceramic-cacao": "^1.1.0",
-    "dag-jose-utils": "^2.0.0",
-    "did-jwt": "^6.0.0",
-    "did-resolver": "^3.1.5",
-    "multiformats": "^9.4.10",
-    "rpc-utils": "^0.6.1",
-    "uint8arrays": "^3.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/preset-env": "^7.14.5",
-    "@babel/preset-typescript": "^7.14.5",
-    "@types/jest": "^27.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.9.1",
-    "@typescript-eslint/parser": "^5.9.1",
-    "babel-jest": "^27.4.6",
-    "eslint": "^8.6.0",
-    "eslint-config-3box": "^0.4.0",
-    "ethers": "^5.5.2",
-    "jest": "^27.4.7",
-    "prettier": "^2.5.1",
-    "typedoc": "^0.22.10",
-    "typescript": "^4.5.4",
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2"
   }
-}

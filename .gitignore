@@ -3,3 +3,5 @@ lib/
 coverage/
 dist/
 .idea
+*.log
+.DS_Store

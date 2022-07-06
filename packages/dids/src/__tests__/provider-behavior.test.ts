@@ -242,7 +242,7 @@ describe('`createJWS` method', () => {
     const jws = await did.createJWS(data)
     expect(jws).toBe('5678')
     expect(provider.send).toHaveBeenCalledTimes(2)
-    // @ts-expect-error
+    // @ts-expect-error mock
     expect(provider.send.mock.calls[1][0]).toEqual({
       jsonrpc: '2.0',
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -521,7 +521,7 @@ describe('`createDagJWS method`', () => {
       linkedBlock: encPayload.linkedBlock,
     })
 
-    // @ts-ignore
+    // @ts-expect-error mock
     expect(provider.send.mock.calls[1][0]).toEqual({
       jsonrpc: '2.0',
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -707,7 +707,7 @@ describe('`decryptJWE method`', () => {
     const cleartext = await did.decryptJWE(jwe)
     expect(cleartext).toEqual(u8a.fromString('abcde'))
     expect(provider.send).toHaveBeenCalledTimes(1)
-    // @ts-expect-error
+    // @ts-expect-error mock
     expect(provider.send.mock.calls[0][0]).toEqual({
       jsonrpc: '2.0',
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -750,7 +750,7 @@ describe('`decryptDagJWE` method', () => {
     const decrypted = await did.decryptDagJWE(jwe)
     expect(decrypted).toEqual(clearObj)
     expect(provider.send).toHaveBeenCalledTimes(1)
-    // @ts-expect-error
+    // @ts-expect-error mock
     expect(provider.send.mock.calls[0][0]).toEqual({
       jsonrpc: '2.0',
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
