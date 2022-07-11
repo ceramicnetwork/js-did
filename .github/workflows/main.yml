@@ -15,24 +15,21 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install --frozen-lockfile
+        run: yarn install --frozen-lockfile
         env:
           CI: true
 
       - name: Lint
-        run: npm run lint
+        run: yarn lint
         env:
           CI: true
 
       - name: Test
-        run: npm test -- --ci --coverage --maxWorkers=2
+        run: yarn test:ci
         env:
           CI: true
 
       - name: Build
-        run: npm run build
+        run: yarn build
         env:
           CI: true
-
-      - name: Browser compatibility
-        run: npm run webpack

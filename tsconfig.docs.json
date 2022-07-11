@@ -1,0 +1,30 @@
+
+
+{
+  "extends": "./tsconfig.build.json",
+  "include": [
+    "./packages/did-session/src",
+    "./packages/dids/src"
+  ],
+  "compilerOptions": {
+    "jsx": "preserve",
+    "lib": ["DOM", "ES2020"],
+    "skipLibCheck": true
+  },
+  "typedocOptions": {
+    "name": "DIDs API",
+    "readme": "none",
+    "entryDocument": "overview.md",
+    "entryPoints": [
+      "./packages/did-session/src/index.ts",
+      "./packages/dids/src/index.ts"
+    ],
+    "disableSources": true,
+    "excludeExternals": true,
+    "excludeInternal": true,
+    "excludePrivate": true,
+    "githubPages": false,
+    "hideBreadcrumbs": true,
+    "hideInPageTOC": true
+  }
+}
