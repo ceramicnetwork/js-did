@@ -1,6 +1,6 @@
 # Interface: DecryptJWEResult
 
-[dids/src](../modules/dids_src.md).DecryptJWEResult
+[dids](../modules/dids.md).DecryptJWEResult
 
 ## Properties
 

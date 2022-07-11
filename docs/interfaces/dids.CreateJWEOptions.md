@@ -1,6 +1,6 @@
 # Interface: CreateJWEOptions
 
-[dids/src](../modules/dids_src.md).CreateJWEOptions
+[dids](../modules/dids.md).CreateJWEOptions
 
 ## Properties
 

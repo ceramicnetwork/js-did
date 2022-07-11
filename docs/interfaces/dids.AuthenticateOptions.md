@@ -1,6 +1,6 @@
 # Interface: AuthenticateOptions
 
-[dids/src](../modules/dids_src.md).AuthenticateOptions
+[dids](../modules/dids.md).AuthenticateOptions
 
 ## Properties
 
@@ -18,4 +18,4 @@ ___
 
 ### provider
 
-• `Optional` **provider**: [`DIDProvider`](../modules/dids_src.md#didprovider)
+• `Optional` **provider**: [`DIDProvider`](../modules/dids.md#didprovider)

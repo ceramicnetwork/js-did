@@ -1,6 +1,6 @@
 # Interface: DagJWSResult
 
-[dids/src](../modules/dids_src.md).DagJWSResult
+[dids](../modules/dids.md).DagJWSResult
 
 ## Properties
 
@@ -12,7 +12,7 @@ ___
 
 ### jws
 
-• **jws**: [`DagJWS`](../modules/dids_src.md#dagjws)
+• **jws**: [`DagJWS`](../modules/dids.md#dagjws)
 
 ___
 

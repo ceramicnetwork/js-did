@@ -1,6 +1,6 @@
 # Interface: DIDOptions
 
-[dids/src](../modules/dids_src.md).DIDOptions
+[dids](../modules/dids.md).DIDOptions
 
 ## Properties
 
@@ -18,7 +18,7 @@ ___
 
 ### provider
 
-• `Optional` **provider**: [`DIDProvider`](../modules/dids_src.md#didprovider)
+• `Optional` **provider**: [`DIDProvider`](../modules/dids.md#didprovider)
 
 ___
 

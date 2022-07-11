@@ -1,6 +1,6 @@
 # Class: DID
 
-[dids/src](../modules/dids_src.md).DID
+[dids](../modules/dids.md).DID
 
 Interact with DIDs.
 
@@ -14,7 +14,7 @@ Interact with DIDs.
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | [`DIDOptions`](../interfaces/dids_src.DIDOptions.md) |
+| `__namedParameters` | [`DIDOptions`](../interfaces/dids.DIDOptions.md) |
 
 ## Accessors
 
@@ -100,7 +100,7 @@ Authenticate the user.
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | [`AuthenticateOptions`](../interfaces/dids_src.AuthenticateOptions.md) |
+| `__namedParameters` | [`AuthenticateOptions`](../interfaces/dids.AuthenticateOptions.md) |
 
 #### Returns
 
@@ -120,7 +120,7 @@ Create an IPFS compatibe DagJWE encrypted to the given recipients.
 | :------ | :------ | :------ |
 | `cleartext` | `Record`<`string`, `any`\> | The cleartext to be encrypted, may include ipld links |
 | `recipients` | `string`[] | An array of DIDs |
-| `options` | [`CreateJWEOptions`](../interfaces/dids_src.CreateJWEOptions.md) | Optional parameters |
+| `options` | [`CreateJWEOptions`](../interfaces/dids.CreateJWEOptions.md) | Optional parameters |
 
 #### Returns
 
@@ -130,7 +130,7 @@ ___
 
 ### createDagJWS
 
-▸ **createDagJWS**(`payload`, `options?`): `Promise`<[`DagJWSResult`](../interfaces/dids_src.DagJWSResult.md)\>
+▸ **createDagJWS**(`payload`, `options?`): `Promise`<[`DagJWSResult`](../interfaces/dids.DagJWSResult.md)\>
 
 Create an IPFS compatibe DagJWS encoded signature over the given payload.
 Will be signed by the currently authenticated DID.
@@ -140,11 +140,11 @@ Will be signed by the currently authenticated DID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `payload` | `Record`<`string`, `any`\> | The payload to sign, may include ipld links |
-| `options` | [`CreateJWSOptions`](../interfaces/dids_src.CreateJWSOptions.md) | Optional parameters |
+| `options` | [`CreateJWSOptions`](../interfaces/dids.CreateJWSOptions.md) | Optional parameters |
 
 #### Returns
 
-`Promise`<[`DagJWSResult`](../interfaces/dids_src.DagJWSResult.md)\>
+`Promise`<[`DagJWSResult`](../interfaces/dids.DagJWSResult.md)\>
 
 ___
 
@@ -160,7 +160,7 @@ Create a JWE encrypted to the given recipients.
 | :------ | :------ | :------ |
 | `cleartext` | `Uint8Array` | The cleartext to be encrypted |
 | `recipients` | `string`[] | An array of DIDs |
-| `options` | [`CreateJWEOptions`](../interfaces/dids_src.CreateJWEOptions.md) | Optional parameters |
+| `options` | [`CreateJWEOptions`](../interfaces/dids.CreateJWEOptions.md) | Optional parameters |
 
 #### Returns
 
@@ -170,7 +170,7 @@ ___
 
 ### createJWS
 
-▸ **createJWS**<`T`\>(`payload`, `options?`): `Promise`<[`DagJWS`](../modules/dids_src.md#dagjws)\>
+▸ **createJWS**<`T`\>(`payload`, `options?`): `Promise`<[`DagJWS`](../modules/dids.md#dagjws)\>
 
 Create a JWS encoded signature over the given payload.
 Will be signed by the currently authenticated DID.
@@ -186,11 +186,11 @@ Will be signed by the currently authenticated DID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `payload` | `T` | The payload to sign |
-| `options` | [`CreateJWSOptions`](../interfaces/dids_src.CreateJWSOptions.md) | Optional parameters |
+| `options` | [`CreateJWSOptions`](../interfaces/dids.CreateJWSOptions.md) | Optional parameters |
 
 #### Returns
 
-`Promise`<[`DagJWS`](../modules/dids_src.md#dagjws)\>
+`Promise`<[`DagJWS`](../modules/dids.md#dagjws)\>
 
 ___
 
@@ -225,7 +225,7 @@ Try to decrypt the given JWE with the currently authenticated user.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `jwe` | `JWE` | The JWE to decrypt |
-| `options` | [`DecryptJWEOptions`](../interfaces/dids_src.DecryptJWEOptions.md) | Optional parameters |
+| `options` | [`DecryptJWEOptions`](../interfaces/dids.DecryptJWEOptions.md) | Optional parameters |
 
 #### Returns
 
@@ -262,7 +262,7 @@ Only callable if provider not already set.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `provider` | [`DIDProvider`](../modules/dids_src.md#didprovider) | The DIDProvider to use |
+| `provider` | [`DIDProvider`](../modules/dids.md#didprovider) | The DIDProvider to use |
 
 #### Returns
 
@@ -291,7 +291,7 @@ ___
 
 ### verifyJWS
 
-▸ **verifyJWS**(`jws`, `options?`): `Promise`<[`VerifyJWSResult`](../interfaces/dids_src.VerifyJWSResult.md)\>
+▸ **verifyJWS**(`jws`, `options?`): `Promise`<[`VerifyJWSResult`](../interfaces/dids.VerifyJWSResult.md)\>
 
 Verify a JWS. Uses the 'kid' in the header as the way to resolve
 the author public key.
@@ -300,12 +300,12 @@ the author public key.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `jws` | `string` \| [`DagJWS`](../modules/dids_src.md#dagjws) | The JWS to verify |
-| `options` | [`VerifyJWSOptions`](../interfaces/dids_src.VerifyJWSOptions.md) | Optional arguments for verification |
+| `jws` | `string` \| [`DagJWS`](../modules/dids.md#dagjws) | The JWS to verify |
+| `options` | [`VerifyJWSOptions`](../interfaces/dids.VerifyJWSOptions.md) | Optional arguments for verification |
 
 #### Returns
 
-`Promise`<[`VerifyJWSResult`](../interfaces/dids_src.VerifyJWSResult.md)\>
+`Promise`<[`VerifyJWSResult`](../interfaces/dids.VerifyJWSResult.md)\>
 
 Information about the signed JWS
 
@@ -313,7 +313,7 @@ ___
 
 ### withCapability
 
-▸ **withCapability**(`cap`): [`DID`](dids_src.DID.md)
+▸ **withCapability**(`cap`): [`DID`](dids.DID.md)
 
 Attach a capability to the DID instance
 
@@ -325,6 +325,6 @@ Attach a capability to the DID instance
 
 #### Returns
 
-[`DID`](dids_src.DID.md)
+[`DID`](dids.DID.md)
 
 A new DID instance with the capability attached

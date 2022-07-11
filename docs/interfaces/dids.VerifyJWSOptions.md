@@ -1,6 +1,6 @@
 # Interface: VerifyJWSOptions
 
-[dids/src](../modules/dids_src.md).VerifyJWSOptions
+[dids](../modules/dids.md).VerifyJWSOptions
 
 ## Properties
 

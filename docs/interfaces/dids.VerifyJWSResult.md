@@ -1,6 +1,6 @@
 # Interface: VerifyJWSResult
 
-[dids/src](../modules/dids_src.md).VerifyJWSResult
+[dids](../modules/dids.md).VerifyJWSResult
 
 ## Properties
 

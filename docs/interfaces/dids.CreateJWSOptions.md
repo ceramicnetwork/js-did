@@ -1,6 +1,6 @@
 # Interface: CreateJWSOptions
 
-[dids/src](../modules/dids_src.md).CreateJWSOptions
+[dids](../modules/dids.md).CreateJWSOptions
 
 ## Properties
 

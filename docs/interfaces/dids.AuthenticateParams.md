@@ -1,12 +1,12 @@
 # Interface: AuthenticateParams
 
-[dids/src](../modules/dids_src.md).AuthenticateParams
+[dids](../modules/dids.md).AuthenticateParams
 
 ## Hierarchy
 
 - **`AuthenticateParams`**
 
-  ↳ [`AuthenticateResponse`](dids_src.AuthenticateResponse.md)
+  ↳ [`AuthenticateResponse`](dids.AuthenticateResponse.md)
 
 ## Properties
 

@@ -1,6 +1,6 @@
 # Interface: DecryptJWEOptions
 
-[dids/src](../modules/dids_src.md).DecryptJWEOptions
+[dids](../modules/dids.md).DecryptJWEOptions
 
 ## Properties
 
