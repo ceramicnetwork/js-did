@@ -2,11 +2,11 @@
  * A simple library to interact with DIDs that conform to the DID-provider interface.
  *
  * ## Installation
- * 
+ *
  * ```sh
  * npm install dids
  * ```
- * 
+ *
  * @module dids
  */
 

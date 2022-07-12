@@ -185,6 +185,21 @@ describe('did-session', () => {
     expect(session.isAuthorized([`ceramic://*`])).toBe(false)
   })
 
+  test('pass expiresInSecs option for custom time, override default 1 day', async () => {
+    const oneWeek = 60 * 60 * 24 * 7
+    const session = await DIDSession.authorize(authProvider, {
+      resources: testResources,
+      domain: 'myApp',
+      expiresInSecs: oneWeek,
+    })
+    expect(session.expireInSecs > oneWeek - 5 && session.expireInSecs <= oneWeek).toBe(true)
+  })
+
+  test('throws if resources not given', async () => {
+    await expect(DIDSession.authorize(authProvider, {})).rejects.toThrow(/Required:/)
+    await expect(DIDSession.authorize(authProvider, { resources: []})).rejects.toThrow(/Required:/)
+  })
+
   test('isAuthorized/isExpired, with expired session', async () => {
     // Expired 5 min ago
     const msg = new SiweMessage({
