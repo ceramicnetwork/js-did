@@ -129,13 +129,9 @@ import type { Cacao } from 'ceramic-cacao'
 import * as u8a from 'uint8arrays'
 
 export type SessionParams = {
-  /**
-   * An authProvider for the chain you wish to support, only ETH supported at moment
-   */
-  authProvider: EthereumAuthProvider
-  resources?: Array<string>
-  keySeed?: Uint8Array
-  cacao?: Cacao
+  keySeed: Uint8Array
+  cacao: Cacao
+  did: DID
 }
 
 type SessionObj = {
@@ -151,6 +147,12 @@ export async function createDIDKey(seed?: Uint8Array): Promise<DID> {
   })
   await didKey.authenticate()
   return didKey
+}
+
+export async function createDIDCacao(didKey: DID, cacao: Cacao): Promise<DID> {
+  const didWithCap = didKey.withCapability(cacao)
+  await didWithCap.authenticate()
+  return didWithCap
 }
 
 function JSONToBase64url(object: Record<string, any>): string {
@@ -177,52 +179,42 @@ function base64ToBytes(s: string): Uint8Array {
  * ```
  */
 export class DIDSession {
-  #authProvider: EthereumAuthProvider
-  #resources: Array<string>
-  #did?: DID
-  #keySeed?: Uint8Array
-  #cacao?: Cacao
+  #did: DID
+  #keySeed: Uint8Array
+  #cacao: Cacao
 
   constructor(params: SessionParams) {
-    this.#authProvider = params.authProvider
     this.#keySeed = params.keySeed
     this.#cacao = params.cacao
-    this.#resources = params.resources ?? [`ceramic://*`]
-  }
-
-  /**
-   * Get authProvider
-   */
-  get authProvider() {
-    return this.#authProvider
+    this.#did = params.did // Remove did init param if/when async didKey authorize is removed
   }
 
   /**
    * Request authorization for session
    */
-  async authorize(capabilityOpts: CapabilityOpts = {}): Promise<DID> {
-    this.#keySeed = randomBytes(32)
-    const didKey = await createDIDKey(this.#keySeed)
+  static async authorize(
+    authProvider: EthereumAuthProvider,
+    capabilityOpts: CapabilityOpts = {}
+  ): Promise<DIDSession> {
+    // TOOD cap opts reuquired?
+    const keySeed = randomBytes(32)
+    const didKey = await createDIDKey(keySeed)
     // Pass through opts resources instead, resource arg does not support anything but streamids at moment
-    const opts = Object.assign({ resources: this.#resources }, capabilityOpts)
-    this.#cacao = await this.#authProvider.requestCapability(didKey.id, [], opts)
-    return this.initDID(didKey, this.#cacao)
+    const cacao = await authProvider.requestCapability(didKey.id, [], capabilityOpts)
+    const did = await createDIDCacao(didKey, cacao)
+    return new DIDSession({ cacao, keySeed, did })
   }
 
-  async initDID(didKey: DID, cacao: Cacao): Promise<DID> {
+  static async initDID(didKey: DID, cacao: Cacao): Promise<DID> {
     const didWithCap = didKey.withCapability(cacao)
     await didWithCap.authenticate()
-    this.#did = didWithCap
     return didWithCap
   }
 
   /**
    * Get DID instance, if authorized
    */
-  getDID(): DID {
-    if (!this.#did) {
-      throw new Error('DID not available, has not authorized')
-    }
+  get did(): DID {
     return this.#did
   }
 
@@ -230,7 +222,6 @@ export class DIDSession {
    * Serialize session into string, can store and initalize the same session again while valid
    */
   serialize(): string {
-    if (!this.#keySeed || !this.#cacao) throw new Error('No session to seralize')
     const session = {
       sessionKeySeed: bytesToBase64(this.#keySeed),
       cacao: this.#cacao,
@@ -241,15 +232,12 @@ export class DIDSession {
   /**
    * Initialize a session from a serialized session string
    */
-  static async fromSession(
-    session: string,
-    authProvider: EthereumAuthProvider
-  ): Promise<DIDSession> {
+  static async fromSession(session: string): Promise<DIDSession> {
     const { sessionKeySeed, cacao } = base64urlToJSON(session) as SessionObj
-    const dsession = new DIDSession({ authProvider, cacao, keySeed: base64ToBytes(sessionKeySeed) })
-    const didKey = await createDIDKey(dsession.#keySeed)
-    await dsession.initDID(didKey, cacao)
-    return dsession
+    const keySeed = base64ToBytes(sessionKeySeed)
+    const didKey = await createDIDKey(keySeed)
+    const did = await DIDSession.initDID(didKey, cacao)
+    return new DIDSession({ cacao, keySeed, did })
   }
 
   get hasSession(): boolean {
@@ -260,7 +248,6 @@ export class DIDSession {
    * Determine if a session is expired or not
    */
   get isExpired(): boolean {
-    if (!this.#cacao) throw new Error('No session available')
     const expTime = this.#cacao.p.exp
     if (!expTime) return false
     return Date.parse(expTime) < Date.now()
@@ -270,9 +257,8 @@ export class DIDSession {
    * Number of seconds until a session expires
    */
   get expireInSecs(): number {
-    if (!this.#cacao) throw new Error('No session available')
     const expTime = this.#cacao.p.exp
-    if (!expTime) throw new Error('Session does not expire')
+    if (!expTime) throw new Error('Session does not expire') // Removed in future
     const timeDiff = Date.parse(expTime) - Date.now()
     return timeDiff < 0 ? 0 : timeDiff / 1000
   }
@@ -288,7 +274,6 @@ export class DIDSession {
    * Get the session CACAO
    */
   get cacao(): Cacao {
-    if (!this.#cacao) throw new Error('No session available')
     return this.#cacao
   }
 
@@ -303,9 +288,6 @@ export class DIDSession {
 
   /** DID string associated to the session instance. session.id == session.getDID().parent */
   get id(): string {
-    if (!this.#did) {
-      throw new Error('ID not available, has not authorized')
-    }
     return this.#did.parent
   }
 }
