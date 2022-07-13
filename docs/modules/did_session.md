@@ -108,6 +108,11 @@ const session = await DIDSession.authorize(authProvider, { resources: [...], dom
 A typical pattern is to store a serialized session in local storage and load on use if available. Then
 check that a session is still valid before making writes.
 
+**Warning:** LocalStorage is used for illustrative purposes here and may not be best for your app, as 
+there is a number of known issues with storing secret material in browser storage. The session string 
+allows anyone with access to that string to make writes for that user for the time and resources that 
+session is valid for. How that session string is stored and managed is the responsibility of the application.
+
 ```ts
 import { DIDSession } from 'did-session'
 import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
