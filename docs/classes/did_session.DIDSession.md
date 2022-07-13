@@ -22,18 +22,6 @@ import { DIDSession } from '@glazed/did-session'
 
 ## Accessors
 
-### authProvider
-
-• `get` **authProvider**(): `EthereumAuthProvider`
-
-Get authProvider
-
-#### Returns
-
-`EthereumAuthProvider`
-
-___
-
 ### authorizations
 
 • `get` **authorizations**(): `string`[]
@@ -55,6 +43,18 @@ Get the session CACAO
 #### Returns
 
 `Cacao`
+
+___
+
+### did
+
+• `get` **did**(): `DID`
+
+Get DID instance, if authorized
+
+#### Returns
+
+`DID`
 
 ___
 
@@ -104,53 +104,6 @@ Determine if a session is expired or not
 
 ## Methods
 
-### authorize
-
-▸ **authorize**(`capabilityOpts?`): `Promise`<`DID`\>
-
-Request authorization for session
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `capabilityOpts` | `CapabilityOpts` |
-
-#### Returns
-
-`Promise`<`DID`\>
-
-___
-
-### getDID
-
-▸ **getDID**(): `DID`
-
-Get DID instance, if authorized
-
-#### Returns
-
-`DID`
-
-___
-
-### initDID
-
-▸ **initDID**(`didKey`, `cacao`): `Promise`<`DID`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `didKey` | `DID` |
-| `cacao` | `Cacao` |
-
-#### Returns
-
-`Promise`<`DID`\>
-
-___
-
 ### isAuthorized
 
 ▸ **isAuthorized**(`resources?`): `boolean`
@@ -181,9 +134,28 @@ Serialize session into string, can store and initalize the same session again wh
 
 ___
 
+### authorize
+
+▸ `Static` **authorize**(`authProvider`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+
+Request authorization for session
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `authProvider` | `EthereumAuthProvider` |
+| `authOpts` | `AuthOpts` |
+
+#### Returns
+
+`Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+
+___
+
 ### fromSession
 
-▸ `Static` **fromSession**(`session`, `authProvider`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+▸ `Static` **fromSession**(`session`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
 
 Initialize a session from a serialized session string
 
@@ -192,8 +164,24 @@ Initialize a session from a serialized session string
 | Name | Type |
 | :------ | :------ |
 | `session` | `string` |
-| `authProvider` | `EthereumAuthProvider` |
 
 #### Returns
 
 `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+
+___
+
+### initDID
+
+▸ `Static` **initDID**(`didKey`, `cacao`): `Promise`<`DID`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `didKey` | `DID` |
+| `cacao` | `Cacao` |
+
+#### Returns
+
+`Promise`<`DID`\>
