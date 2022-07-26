@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-npm install @glazed/did-session
+npm install did-session
 ```
 
 ## License
