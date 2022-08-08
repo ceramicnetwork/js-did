@@ -7,7 +7,7 @@ import { EventEmitter } from 'events'
 import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
 import { Wallet as EthereumWallet } from '@ethersproject/wallet'
 import { fromString, toString } from 'uint8arrays'
-import { DIDSession } from '../src'
+import { DIDSession, createDIDKey, createDIDCacao } from '../src'
 import { jest } from '@jest/globals'
 import { Wallet } from '@ethersproject/wallet'
 import { SiweMessage, Cacao } from 'ceramic-cacao'
@@ -86,7 +86,6 @@ declare global {
 describe('did-session', () => {
   let authProvider: EthereumAuthProvider
   jest.setTimeout(20000)
-  const opts = { domain: 'myApp' }
   let model: Model
 
   beforeAll(async () => {
@@ -99,40 +98,22 @@ describe('did-session', () => {
   )
   const address = wallet.address
 
-  test('creates did-session', () => {
-    const session = new DIDSession({ authProvider })
-    expect(session.authProvider).toBe(authProvider)
-  })
-
-  test('did getter throws error when not authorized', () => {
-    const session = new DIDSession({ authProvider })
-    expect(() => session.getDID()).toThrow('DID not available, has not authorized')
-  })
-
-  test('did getter returns when authorized', async () => {
-    const session = new DIDSession({ authProvider })
-    const did = await session.authorize(opts)
-    expect(did).toBeTruthy()
-    expect(session.getDID()).toBeTruthy()
-  })
-
-  test('authorize, default wildcard', async () => {
-    const session = new DIDSession({ authProvider })
-    const did = await session.authorize(opts)
-    expect(did.capability.p.resources.includes(`ceramic://*`)).toBe(true)
-  })
-
   test('authorize, with streamid resources', async () => {
-    const session = new DIDSession({ authProvider })
     const streamId = `ceramic://z6MkhZCWzHtPFmpNupVPuHA6svtpKKY9RUpgf9uohnhFMNvj`
-    const did = await session.authorize({ resources: [streamId], domain: 'myApp' })
+    const session = await DIDSession.authorize(authProvider, {
+      resources: [streamId],
+      domain: 'myApp',
+    })
+    const did = session.did
     expect(did.capability.p.resources.includes(streamId)).toBe(true)
   })
 
   test('authorize and create/update streams', async () => {
-    const session = new DIDSession({ authProvider })
-    const did = await session.authorize(opts)
-    ceramic.did = did
+    const session = await DIDSession.authorize(authProvider, {
+      resources: [`ceramic://*`],
+      domain: 'myApp',
+    })
+    ceramic.did = session.did
     const doc = await TileDocument.create(
       ceramic,
       { foo: 'bar' },
@@ -149,11 +130,13 @@ describe('did-session', () => {
   })
 
   test('authorize and create/update streams from serialized session', async () => {
-    const session = new DIDSession({ authProvider })
-    await session.authorize(opts)
+    const session = await DIDSession.authorize(authProvider, {
+      resources: [`ceramic://*`],
+      domain: 'myApp',
+    })
     const sessionStr = session.serialize()
-    const session2 = await DIDSession.fromSession(sessionStr, authProvider)
-    ceramic.did = session2.getDID()
+    const session2 = await DIDSession.fromSession(sessionStr)
+    ceramic.did = session2.did
     const doc = await TileDocument.create(
       ceramic,
       { foo: 'bar' },
@@ -171,9 +154,11 @@ describe('did-session', () => {
 
   // Enable with next release
   test.skip('can create and update model instance stream', async () => {
-    const session = new DIDSession({ authProvider, resources: [model.id.toString()] })
-    const did = await session.authorize(opts)
-    ceramic.did = did
+    const session = await DIDSession.authorize(authProvider, {
+      resources: [model.id.toString()],
+      domain: 'myApp',
+    })
+    ceramic.did = session.did
 
     const doc = await ModelInstanceDocument.create(ceramic, CONTENT0, {
       model: model.id,
@@ -187,8 +172,10 @@ describe('did-session', () => {
   })
 
   test('isAuthorized/isExpired, with valid session and resources', async () => {
-    const session = new DIDSession({ authProvider, resources: testResources })
-    await session.authorize({ domain: 'myApp' })
+    const session = await DIDSession.authorize(authProvider, {
+      resources: testResources,
+      domain: 'myApp',
+    })
     // Any session authorized and valid, true
     expect(session.isAuthorized()).toBe(true)
     expect(session.isExpired).toBe(false)
@@ -196,6 +183,21 @@ describe('did-session', () => {
     expect(session.isAuthorized(testResources)).toBe(true)
     // Authorized for wildcard resource, false
     expect(session.isAuthorized([`ceramic://*`])).toBe(false)
+  })
+
+  test('pass expiresInSecs option for custom time, override default 1 day', async () => {
+    const oneWeek = 60 * 60 * 24 * 7
+    const session = await DIDSession.authorize(authProvider, {
+      resources: testResources,
+      domain: 'myApp',
+      expiresInSecs: oneWeek,
+    })
+    expect(session.expireInSecs > oneWeek - 5 && session.expireInSecs <= oneWeek).toBe(true)
+  })
+
+  test('throws if resources not given', async () => {
+    await expect(DIDSession.authorize(authProvider, {})).rejects.toThrow(/Required:/)
+    await expect(DIDSession.authorize(authProvider, { resources: []})).rejects.toThrow(/Required:/)
   })
 
   test('isAuthorized/isExpired, with expired session', async () => {
@@ -217,7 +219,11 @@ describe('did-session', () => {
     msg.signature = signature
     const cacao = Cacao.fromSiweMessage(msg)
 
-    const session = new DIDSession({ authProvider, cacao, keySeed: new Uint8Array(bytes32) })
+    const keySeed = new Uint8Array(bytes32)
+    const didKey = await createDIDKey(keySeed)
+    const did = await createDIDCacao(didKey, cacao)
+
+    const session = new DIDSession({ cacao, keySeed, did })
     expect(session.isExpired).toBe(true)
     expect(session.isAuthorized()).toBe(false)
   })
@@ -241,7 +247,11 @@ describe('did-session', () => {
     msg.signature = signature
     const cacao = Cacao.fromSiweMessage(msg)
 
-    const session = new DIDSession({ authProvider, cacao, keySeed: new Uint8Array(bytes32) })
+    const keySeed = new Uint8Array(bytes32)
+    const didKey = await createDIDKey(keySeed)
+    const did = await createDIDCacao(didKey, cacao)
+
+    const session = new DIDSession({ cacao, keySeed, did })
 
     // 5 sec buffer
     expect(session.expireInSecs).toBeGreaterThan(60 * 5 - 5)
@@ -267,7 +277,11 @@ describe('did-session', () => {
     msg.signature = signature
     const cacao = Cacao.fromSiweMessage(msg)
 
-    const session = new DIDSession({ authProvider, cacao, keySeed: new Uint8Array(bytes32) })
+    const keySeed = new Uint8Array(bytes32)
+    const didKey = await createDIDKey(keySeed)
+    const did = await createDIDCacao(didKey, cacao)
+
+    const session = new DIDSession({ cacao, keySeed, did })
 
     expect(session.expireInSecs).toEqual(0)
   })
@@ -290,16 +304,22 @@ describe('did-session', () => {
       msg.signature = signature
       const cacao = Cacao.fromSiweMessage(msg)
 
-      const session = new DIDSession({ authProvider, cacao, keySeed: new Uint8Array(bytes32) })
+      const keySeed = new Uint8Array(bytes32)
+      const didKey = await createDIDKey(keySeed)
+      const did = await createDIDCacao(didKey, cacao)
+
+      const session = new DIDSession({ cacao, keySeed, did })
       const sessionStr = session.serialize()
       expect(sessionStr).toMatchSnapshot()
     })
 
     test('roundtrip serialization, fromSession', async () => {
-      const session = new DIDSession({ authProvider })
-      await session.authorize(opts)
+      const session = await DIDSession.authorize(authProvider, {
+        resources: [`ceramic://*`],
+        domain: 'myApp',
+      })
       const sessionStr = session.serialize()
-      const session2 = await DIDSession.fromSession(sessionStr, authProvider)
+      const session2 = await DIDSession.fromSession(sessionStr)
       const sessionStr2 = session2.serialize()
       expect(sessionStr).toEqual(sessionStr2)
     })
