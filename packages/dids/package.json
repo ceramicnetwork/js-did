@@ -21,12 +21,11 @@
     "build:clean": "del dist",
     "build:js": "swc src -d ./dist --config-file ../../.swcrc",
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
-    "build": "yarn build:clean && yarn build:types && yarn build:js",
-    "docs": "./node_modules/.bin/typedoc ./src/index.ts --excludePrivate --name DID --includeVersion ; touch docs/.nojekyll",
-    "lint": "eslint src --fix",
-    "test": "yarn node --experimental-vm-modules $(yarn bin jest)",
-    "test:ci": "yarn test --ci --coverage",
-    "prepare": "yarn build",
+    "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
+    "lint": "eslint src test --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm run build",
     "prepublishOnly": "package-check"
   },
   "repository": {
@@ -54,21 +53,7 @@
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/preset-env": "^7.14.5",
-    "@babel/preset-typescript": "^7.14.5",
-    "@types/jest": "^27.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.9.1",
-    "@typescript-eslint/parser": "^5.9.1",
-    "babel-jest": "^27.4.6",
-    "eslint": "^8.6.0",
-    "eslint-config-3box": "^0.4.0",
-    "ethers": "^5.5.2",
-    "jest": "^27.4.7",
-    "prettier": "^2.5.1",
-    "typedoc": "^0.22.10",
-    "typescript": "^4.5.4",
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2"
+    "@stablelib/x25519": "^1.0.2",
+    "ethers": "^5.5.2"
   }
 }

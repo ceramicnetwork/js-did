@@ -1,4 +1,8 @@
-# Module: dids
+---
+id: "dids"
+title: "Module: dids"
+custom_edit_url: null
+---
 
 A simple library to interact with DIDs that conform to the DID-provider interface.
 

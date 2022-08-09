@@ -1,4 +1,8 @@
-# Class: DID
+---
+id: "dids.DID"
+title: "Class: DID"
+custom_edit_url: null
+---
 
 [dids](../modules/dids.md).DID
 

@@ -1,4 +1,8 @@
-# Module: did-session
+---
+id: "did_session"
+title: "Module: did-session"
+custom_edit_url: null
+---
 
 Manages user account and DID in web based environments.
 
