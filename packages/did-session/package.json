@@ -44,7 +44,7 @@
     "@ceramicnetwork/stream-tile": "^2.3.0",
     "@stablelib/random": "^1.0.1",
     "ceramic-cacao": "^1.1.1",
-    "dids": "^3.2.0",
+    "dids": "workspace:^3.2.0",
     "key-did-provider-ed25519": "^2.0.1",
     "key-did-resolver": "^2.0.6",
     "uint8arrays": "^3.0.0"

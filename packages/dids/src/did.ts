@@ -16,30 +16,30 @@ import {
   extractControllers,
 } from './utils.js'
 
-export interface AuthenticateOptions {
+export type AuthenticateOptions = {
   provider?: DIDProvider
   aud?: string
   paths?: Array<string>
 }
 
-export interface AuthenticateParams {
+export type AuthenticateParams = {
   nonce: string
   aud?: string
   paths?: Array<string>
 }
 
-export interface AuthenticateResponse extends AuthenticateParams {
+export type AuthenticateResponse = AuthenticateParams & {
   did: string
   exp: number
 }
 
-export interface CreateJWSOptions {
+export type CreateJWSOptions = {
   did?: string
   protected?: Record<string, any>
   linkedBlock?: string
 }
 
-export interface VerifyJWSOptions {
+export type VerifyJWSOptions = {
   /**
    * JS timestamp when the signature was allegedly made. `undefined` means _now_.
    */
@@ -66,32 +66,32 @@ export interface VerifyJWSOptions {
   revocationPhaseOutSecs?: number
 }
 
-export interface VerifyJWSResult {
+export type VerifyJWSResult = {
   kid: string
   payload?: Record<string, any>
   didResolutionResult: DIDResolutionResult
 }
 
-export interface CreateJWEOptions {
+export type CreateJWEOptions = {
   protectedHeader?: Record<string, any>
   aad?: Uint8Array
 }
 
-export interface DecryptJWEOptions {
+export type DecryptJWEOptions = {
   did?: string
 }
 
-export interface DecryptJWEResult {
+export type DecryptJWEResult = {
   cleartext: string // base64-encoded
 }
 
-export interface DagJWSResult {
+export type DagJWSResult = {
   jws: DagJWS
   linkedBlock: Uint8Array
   cacaoBlock?: Uint8Array
 }
 
-export interface DIDOptions {
+export type DIDOptions = {
   provider?: DIDProvider
   resolver?: Resolver | ResolverRegistry
   resolverOptions?: ResolverOptions
