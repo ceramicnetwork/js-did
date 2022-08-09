@@ -1,5 +1,5 @@
 {
-  "name": "dids",
+  "name": "dids-repository",
   "private": true,
   "packageManager": "pnpm@7.9.0",
   "scripts": {

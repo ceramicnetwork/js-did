@@ -14,7 +14,7 @@ Interact with DIDs.
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | [`DIDOptions`](../interfaces/dids.DIDOptions.md) |
+| `__namedParameters` | [`DIDOptions`](../modules/dids.md#didoptions) |
 
 ## Accessors
 
@@ -100,7 +100,7 @@ Authenticate the user.
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | [`AuthenticateOptions`](../interfaces/dids.AuthenticateOptions.md) |
+| `__namedParameters` | [`AuthenticateOptions`](../modules/dids.md#authenticateoptions) |
 
 #### Returns
 
@@ -120,7 +120,7 @@ Create an IPFS compatibe DagJWE encrypted to the given recipients.
 | :------ | :------ | :------ |
 | `cleartext` | `Record`<`string`, `any`\> | The cleartext to be encrypted, may include ipld links |
 | `recipients` | `string`[] | An array of DIDs |
-| `options` | [`CreateJWEOptions`](../interfaces/dids.CreateJWEOptions.md) | Optional parameters |
+| `options` | [`CreateJWEOptions`](../modules/dids.md#createjweoptions) | Optional parameters |
 
 #### Returns
 
@@ -130,7 +130,7 @@ ___
 
 ### createDagJWS
 
-▸ **createDagJWS**(`payload`, `options?`): `Promise`<[`DagJWSResult`](../interfaces/dids.DagJWSResult.md)\>
+▸ **createDagJWS**(`payload`, `options?`): `Promise`<[`DagJWSResult`](../modules/dids.md#dagjwsresult)\>
 
 Create an IPFS compatibe DagJWS encoded signature over the given payload.
 Will be signed by the currently authenticated DID.
@@ -140,11 +140,11 @@ Will be signed by the currently authenticated DID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `payload` | `Record`<`string`, `any`\> | The payload to sign, may include ipld links |
-| `options` | [`CreateJWSOptions`](../interfaces/dids.CreateJWSOptions.md) | Optional parameters |
+| `options` | [`CreateJWSOptions`](../modules/dids.md#createjwsoptions) | Optional parameters |
 
 #### Returns
 
-`Promise`<[`DagJWSResult`](../interfaces/dids.DagJWSResult.md)\>
+`Promise`<[`DagJWSResult`](../modules/dids.md#dagjwsresult)\>
 
 ___
 
@@ -160,7 +160,7 @@ Create a JWE encrypted to the given recipients.
 | :------ | :------ | :------ |
 | `cleartext` | `Uint8Array` | The cleartext to be encrypted |
 | `recipients` | `string`[] | An array of DIDs |
-| `options` | [`CreateJWEOptions`](../interfaces/dids.CreateJWEOptions.md) | Optional parameters |
+| `options` | [`CreateJWEOptions`](../modules/dids.md#createjweoptions) | Optional parameters |
 
 #### Returns
 
@@ -186,7 +186,7 @@ Will be signed by the currently authenticated DID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `payload` | `T` | The payload to sign |
-| `options` | [`CreateJWSOptions`](../interfaces/dids.CreateJWSOptions.md) | Optional parameters |
+| `options` | [`CreateJWSOptions`](../modules/dids.md#createjwsoptions) | Optional parameters |
 
 #### Returns
 
@@ -225,7 +225,7 @@ Try to decrypt the given JWE with the currently authenticated user.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `jwe` | `JWE` | The JWE to decrypt |
-| `options` | [`DecryptJWEOptions`](../interfaces/dids.DecryptJWEOptions.md) | Optional parameters |
+| `options` | [`DecryptJWEOptions`](../modules/dids.md#decryptjweoptions) | Optional parameters |
 
 #### Returns
 
@@ -291,7 +291,7 @@ ___
 
 ### verifyJWS
 
-▸ **verifyJWS**(`jws`, `options?`): `Promise`<[`VerifyJWSResult`](../interfaces/dids.VerifyJWSResult.md)\>
+▸ **verifyJWS**(`jws`, `options?`): `Promise`<[`VerifyJWSResult`](../modules/dids.md#verifyjwsresult)\>
 
 Verify a JWS. Uses the 'kid' in the header as the way to resolve
 the author public key.
@@ -301,11 +301,11 @@ the author public key.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `jws` | `string` \| [`DagJWS`](../modules/dids.md#dagjws) | The JWS to verify |
-| `options` | [`VerifyJWSOptions`](../interfaces/dids.VerifyJWSOptions.md) | Optional arguments for verification |
+| `options` | [`VerifyJWSOptions`](../modules/dids.md#verifyjwsoptions) | Optional arguments for verification |
 
 #### Returns
 
-`Promise`<[`VerifyJWSResult`](../interfaces/dids.VerifyJWSResult.md)\>
+`Promise`<[`VerifyJWSResult`](../modules/dids.md#verifyjwsresult)\>
 
 Information about the signed JWS
 
