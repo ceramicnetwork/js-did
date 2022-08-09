@@ -197,7 +197,7 @@ describe('did-session', () => {
 
   test('throws if resources not given', async () => {
     await expect(DIDSession.authorize(authProvider, {})).rejects.toThrow(/Required:/)
-    await expect(DIDSession.authorize(authProvider, { resources: []})).rejects.toThrow(/Required:/)
+    await expect(DIDSession.authorize(authProvider, { resources: [] })).rejects.toThrow(/Required:/)
   })
 
   test('isAuthorized/isExpired, with expired session', async () => {

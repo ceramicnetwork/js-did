@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 import { jest } from '@jest/globals'
 import { DIDResolutionResult, Resolver } from 'did-resolver'
-import { DID } from '../did.js'
-
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { DID } from '../src/did.js'
 
 global.Date.now = jest.fn(() => 1606236374000)
 

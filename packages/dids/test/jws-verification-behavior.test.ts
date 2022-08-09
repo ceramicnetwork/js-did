@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals'
-import { DID } from '../did.js'
+import { DID } from '../src/did.js'
 
 const VERSION_0_VANILLA = {
   didResolutionMetadata: {
