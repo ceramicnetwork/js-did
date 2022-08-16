@@ -1,0 +1,37 @@
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
+# Installation
+
+### CLI
+
+<Tabs
+  defaultValue="pnpm"
+  groupId="package-manager"
+  values={[
+    {label: 'pnpm', value: 'pnpm'},
+    {label: 'npm', value: 'npm'},
+    {label: 'Yarn', value: 'yarn'},
+  ]}>
+  <TabItem value="pnpm">
+
+```sh
+pnpm add -g did-session
+```
+
+  </TabItem>
+  <TabItem value="npm">
+
+```sh
+npm install --location=global did-session
+```
+
+  </TabItem>
+  <TabItem value="yarn">
+
+```sh
+yarn add -g did-session
+```
+
+  </TabItem>
+</Tabs>
