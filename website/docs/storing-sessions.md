@@ -13,6 +13,4 @@ const sessionString = session.serialize()
 
 // Later re initialize session
 const session2 = await DIDSession.fromSession(sessionString)
-const ceramic = new CeramicClient()
-ceramic.did = session2.did
 ```

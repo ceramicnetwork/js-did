@@ -27,7 +27,7 @@ const sidebars = {
       label: 'Guides',
       link: { type: 'generated-index' },
       items: [
-        'guides/typical-usage-pattern',
+        'guides/using-with-composedb-client',
         'guides/upgrading-from-glazed-did-session',
       ],
     },

@@ -11,13 +11,10 @@ const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
 const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
 
+// the resources param is a list of strings identifying resources you want to authorize for
 const session = await DIDSession.authorize(authProvider, { resources: [...]})
 
-// Uses DIDs in ceramic & glaze libraries, ie
-const ceramic = new CeramicClient()
-ceramic.did = session.did
-
-// pass ceramic instance where needed
+// use the session to verify that a given address is authorized
 
 ```
 
