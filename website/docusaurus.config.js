@@ -55,7 +55,7 @@ const config = {
       navbar: {
         title: 'DIDs',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Ceramic Logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -117,7 +117,7 @@ const config = {
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/ceramicnetwork/js-ceramic',
+                href: 'https://github.com/ceramicnetwork/js-did',
               },
             ],
           },
