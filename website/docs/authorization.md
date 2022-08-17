@@ -18,19 +18,3 @@ const session = await DIDSession.authorize(authProvider, { resources: [...]})
 // use the session to verify that a given address is authorized
 
 ```
-
-Additional helper functions are available to help you manage a session lifecycle and the user experience.
-
-```ts
-// Check if authorized or created from existing session string
-didsession.hasSession
-
-// Check if session expired
-didsession.isExpired
-
-// Get resources session is authorized for
-didsession.authorizations
-
-// Check number of seconds till expiration, may want to re auth user at a time before expiration
-didsession.expiresInSecs
-```
