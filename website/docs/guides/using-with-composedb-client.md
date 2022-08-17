@@ -51,10 +51,12 @@ if (session.isExpired) {
 
 A typical pattern is to store a serialized session in local storage and load on use if available.
 
-**Warning:** LocalStorage is used for illustrative purposes here and may not be best for your app, as
+:::caution Warning
+LocalStorage is used for illustrative purposes here and may not be best for your app, as
 there is a number of known issues with storing secret material in browser storage. The session string
 allows anyone with access to that string to make writes for that user for the time and resources that
 session is valid for. How that session string is stored and managed is the responsibility of the application.
+:::
 
 ```ts
 // An updated version of loadSession(...)
