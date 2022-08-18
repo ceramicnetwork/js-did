@@ -1,3 +1,3 @@
-# Welcome to DIDs
+# Welcome to `js-did`
 
-DIDs are composed of a set of packages to interact with and manage DIDs.
+`js-did` is a monorepo of packages that provide APIs to interact with and manage DIDs.
