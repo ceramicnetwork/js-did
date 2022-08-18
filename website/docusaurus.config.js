@@ -6,22 +6,17 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'DID',
-  tagline: 'Decentralized IDentifiers tools',
-  url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  title: 'DIDs',
+  tagline: 'Decentralized Identifiers tools',
+  url: 'https://ceramicnetwork.github.io',
+  baseUrl: '/js-did/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'ceramicnetwork', // Usually your GitHub org/user name.
-  projectName: 'js-did', // Usually your repo name.
+  organizationName: 'ceramicnetwork',
+  projectName: 'js-did',
 
-  // Even if you don't use internalization, you can use this field to set useful
-  // metadata like html lang. For example, if your site is Chinese, you may want
-  // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -58,20 +53,21 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'My Site',
+        title: 'DIDs',
         logo: {
-          alt: 'My Site Logo',
+          alt: 'Ceramic Logo',
           src: 'img/logo.svg',
         },
         items: [
           {
             type: 'doc',
-            docId: 'intro',
+            docId: 'introduction',
             position: 'left',
-            label: 'Tutorial',
+            label: 'Docs',
           },
           {
-            to: 'docs/api/modules/dids',
+            type: 'doc',
+            docId: 'api/modules/dids',
             activeBasePath: 'docs/api',
             position: 'left',
             label: 'API',
@@ -90,8 +86,8 @@ const config = {
             title: 'Docs',
             items: [
               {
-                label: 'Tutorial',
-                to: '/docs/intro',
+                label: 'Getting Started',
+                to: '/docs/installation',
               },
             ],
           },
@@ -99,16 +95,16 @@ const config = {
             title: 'Community',
             items: [
               {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                label: 'Forum',
+                href: 'https://forum.ceramic.network/',
               },
               {
                 label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                href: 'http://chat.ceramic.network/',
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/docusaurus',
+                href: 'https://twitter.com/ceramicnetwork',
               },
             ],
           },
@@ -116,17 +112,17 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'Ceramic documentation',
+                href: 'https://developers.ceramic.network',
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
+                href: 'https://github.com/ceramicnetwork/js-did',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} 3Box Labs.`,
       },
       prism: {
         theme: lightCodeTheme,
