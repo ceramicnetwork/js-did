@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 const config = {
   title: 'DIDs',
   tagline: 'Decentralized Identifiers tools',
-  url: 'https://ceramicnetwork.github.io',
-  baseUrl: '/js-did/',
+  url: 'https://did.js.org',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
