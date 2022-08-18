@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`atTime before DID available for v0 1`] = `"did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv"`;
-
-exports[`atTime ok before rotation 1`] = `"did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv"`;
-
-exports[`issuer includes signer as controller 1`] = `"did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv"`;
-
-exports[`issuer same as signer 1`] = `"did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv"`;
