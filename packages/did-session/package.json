@@ -4,7 +4,7 @@
   "description": "Manage user DIDs in a web environment",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
-  "homepage": "https://github.com/ceramicstudio/js-did#readme",
+  "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "keywords": [
     "ceramic",
     "auth",
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ceramicstudio/js-did",
+    "url": "https://github.com/ceramicnetwork/js-did",
     "directory": "packages/did-session"
   },
   "type": "module",
