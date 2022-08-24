@@ -6,6 +6,44 @@ import React, { useState } from 'react'
 function AuthorizationHandler() {
   const [session, setSession] = useState<DIDSession>()
 
+  const renderUnauthenticated = () => {
+    return (
+      <label>
+        There's no authorized session, click the 'Authenticate & Authorize' button
+      </label>
+    )
+  }
+
+  const renderAuthenticated = () => {
+    return (
+      <div>
+        <label> Authenticated DID: ${session!.did.id} </label>
+        <br/>
+        <label> Authorized for resources: ${session!.authorizations} </label>
+        <br/>
+        <a
+          className="App-link"
+          onClick={ () => {
+            window.alert(`Serialized Session: ${session!.serialize()}`)
+          }}
+        >
+          Serialize Session
+        </a>
+        <br/>
+        <a
+          className="App-link"
+          onClick={ async () => {
+            const serialized = session!.serialize()
+            const newFromSerialized = await DIDSession.fromSession(serialized)
+            window.alert(`Serialized Session: ${serialized}; New Copy from Serialized Session: ${newFromSerialized}`)
+          }}
+        >
+          Serialize and Create a Copy
+        </a>
+      </div>
+    )
+  }
+
   return (
     <div>
       <a
@@ -23,13 +61,7 @@ function AuthorizationHandler() {
       >
         Authenticate & Authorize
       </a>
-      <div>
-
-      </div>
-      { session === undefined || !session.isAuthorized() ?
-        `There's no authorized session, click the 'Authenticate & Authorize' button`
-        :
-        `${session.did.id} authorized for resources: ${session.authorizations}`
+      { session === undefined || !session.isAuthorized() ? renderUnauthenticated() : renderAuthenticated()
       }
     </div>
   )
