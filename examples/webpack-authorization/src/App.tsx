@@ -25,7 +25,7 @@ function App() {
             console.log('Session authorisation result', session)
           }}
         >
-          Authenticate
+          Authenticate & Authorize
         </a>
       </header>
     </div>
