@@ -53,7 +53,22 @@ function AuthorizationHandler() {
   }
 
   const loadSession = async(authProvider: EthereumAuthProvider, resources: Array<string>):Promise<DIDSession> => {
-    return await DIDSession.authorize(authProvider, { resources: resources})
+    let session
+    // get a serialized session from local storage
+    const sessionStr = localStorage.getItem('didsession')
+
+    if (sessionStr) {
+      session = await DIDSession.fromSession(sessionStr)
+    }
+
+    if (!session || (session.hasSession && session.isExpired)) {
+      session = await DIDSession.authorize(authProvider, { resources: resources})
+      // store the serialized session in local storage
+      localStorage.setItem('didsession', session.serialize())
+    }
+    
+
+    return session
   }
 
   const authenticate = async () => {
