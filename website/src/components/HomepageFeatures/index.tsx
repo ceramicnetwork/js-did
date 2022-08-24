@@ -10,29 +10,29 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Granular permissions',
+    title: 'User sessions',
     Svg: require('@site/static/img/undraw_security_re_a2rk.svg').default,
     description: (
       <>
-        Access data permissions directly from Web3 wallets
+        Sessions tied to existing wallet addresses of the user
       </>
     ),
   },
   {
-    title: 'Web2 user experience',
+    title: 'Granular permissions',
     Svg: require('@site/static/img/undraw_authentication_re_svpt.svg').default,
     description: (
       <>
-        Authenticate users and permission data with sessions
+        Secure data access control using object capabilities
       </>
     ),
   },
   {
-    title: 'Multi-account identity',
+    title: 'Multi-chain support',
     Svg: require('@site/static/img/undraw_duplicate_re_d39g.svg').default,
     description: (
       <>
-        Support complex key rotation
+        Accounts and wallets are not limited to Ethereum
       </>
     ),
   },
