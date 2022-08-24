@@ -3,10 +3,28 @@ import detectEthereumProvider from '@metamask/detect-provider'
 import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
 import { ComposeClient } from '@composedb/client'
 import { definition } from '../data/__generated__/definition.js'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 function AuthorizationHandler() {
   const [session, setSession] = useState<DIDSession>()
+
+  const sessionFromLocalStorage = async () => {
+    let session
+    // get a serialized session from local storage
+    const sessionStr = localStorage.getItem('didsession')
+
+    if (sessionStr) {
+      session = await DIDSession.fromSession(sessionStr)
+    }
+
+    return session
+  }
+
+  useEffect(() => {
+    sessionFromLocalStorage().then((session) => {
+      setSession(session)
+    })
+  }, []);
 
   const renderUnauthenticated = () => {
     return (
@@ -29,44 +47,18 @@ function AuthorizationHandler() {
         <br/>
         <label> session.expiresInSecs: {session!.expireInSecs} </label>
         <br/>
-        <a
-          className="App-link"
-          onClick={ () => {
-            window.alert(`Serialized Session: ${session!.serialize()}`)
-          }}
-        >
-          Serialize Session
-        </a>
-        <br/>
-        <a
-          className="App-link"
-          onClick={ async () => {
-            const serialized = session!.serialize()
-            const newFromSerialized = await DIDSession.fromSession(serialized)
-            window.alert(`Serialized Session: ${serialized}; New Copy from Serialized Session: ${newFromSerialized}`)
-          }}
-        >
-          Serialize and Create a Copy
-        </a>
       </div>
     )
   }
 
-  const loadSession = async(authProvider: EthereumAuthProvider, resources: Array<string>):Promise<DIDSession> => {
-    let session
-    // get a serialized session from local storage
-    const sessionStr = localStorage.getItem('didsession')
-
-    if (sessionStr) {
-      session = await DIDSession.fromSession(sessionStr)
-    }
+  const loadSession = async (authProvider: EthereumAuthProvider, resources: Array<string>):Promise<DIDSession> => {
+    let session = await sessionFromLocalStorage()
 
     if (!session || (session.hasSession && session.isExpired)) {
       session = await DIDSession.authorize(authProvider, { resources: resources})
       // store the serialized session in local storage
       localStorage.setItem('didsession', session.serialize())
     }
-    
 
     return session
   }
@@ -91,7 +83,7 @@ function AuthorizationHandler() {
       >
         Authenticate & Authorize
       </a>
-      { session === undefined || !session.isAuthorized() ? renderUnauthenticated() : renderAuthenticated()
+      { !session || (session.hasSession && session.isExpired) ? renderUnauthenticated() : renderAuthenticated()
       }
     </div>
   )
