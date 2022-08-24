@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { jest } from '@jest/globals'
-import { randomBytes } from '@stablelib/random'
-import { generateKeyPairFromSeed } from '@stablelib/x25519'
-import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
-import { decodeCleartext, encodePayload, prepareCleartext } from 'dag-jose-utils'
-import { decryptJWE, JWE, x25519Decrypter } from 'did-jwt'
-import { DIDDocument, ResolverRegistry } from 'did-resolver'
-import { Wallet } from 'ethers'
+import {jest} from '@jest/globals'
+import {randomBytes} from '@stablelib/random'
+import {generateKeyPairFromSeed} from '@stablelib/x25519'
+import {Cacao, CacaoBlock, SiweMessage} from 'ceramic-cacao'
+import {decodeCleartext, encodePayload, prepareCleartext} from 'dag-jose-utils'
+import {decryptJWE, JWE, x25519Decrypter} from 'did-jwt'
+import {DIDDocument, ResolverRegistry} from 'did-resolver'
+import {Wallet} from 'ethers'
 import * as u8a from 'uint8arrays'
-import type { DIDProvider } from '../src/types.js'
+import type {DIDProvider} from '../src/types.js'
 
 jest.unstable_mockModule('../src/random-string.util.js', () => {
   return {
@@ -348,6 +348,7 @@ describe('`createDagJWS method`', () => {
       nonce: '32891757',
       issuedAt: '2021-09-30T16:25:24.000Z',
       notBefore: '2021-09-30T16:25:24.000Z',
+      expirationTime: '2021-10-30T16:25:24.000Z',
       chainId: '1',
       resources: [
         'ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu',
@@ -355,8 +356,7 @@ describe('`createDagJWS method`', () => {
       ],
     })
 
-    const signature = await wallet.signMessage(siwe.toMessage())
-    siwe.signature = signature
+    siwe.signature = await wallet.signMessage(siwe.toMessage())
 
     const cacao = Cacao.fromSiweMessage(siwe)
     const cacaoBlock = await CacaoBlock.fromCacao(cacao)
@@ -374,13 +374,33 @@ describe('`createDagJWS method`', () => {
     expect(did.hasParent).toBe(true)
     expect(did.hasCapability).toBe(true)
 
-    expect(async () => {
-      await did.verifyJWS(res.jws, {
+    // Valid capability
+    await expect(
+      did.verifyJWS(res.jws, {
         issuer: `did:pkh:eip155:1:${wallet.address}`,
         capability: cacao,
         atTime: new Date('2021-10-30T16:25:24.000Z'),
       })
-    }).not.toThrowError()
+    ).resolves.not.toThrowError()
+
+    // Expired
+    await expect(
+      did.verifyJWS(res.jws, {
+        issuer: `did:pkh:eip155:1:${wallet.address}`,
+        capability: cacao,
+        atTime: new Date('2023-10-30T16:25:24.000Z'),
+      })
+    ).rejects.toThrowError()
+
+    // Valid: Expiration not checked
+    await expect(
+      did.verifyJWS(res.jws, {
+        issuer: `did:pkh:eip155:1:${wallet.address}`,
+        capability: cacao,
+        disableTimecheck: true,
+        atTime: new Date('2023-10-30T16:25:24.000Z'),
+      })
+    ).resolves.not.toThrowError()
 
     expect(res).toEqual({
       jws: {
@@ -466,8 +486,7 @@ describe('`createDagJWS method`', () => {
       ],
     })
 
-    const signature = await wallet.signMessage(siwe.toMessage())
-    siwe.signature = signature
+    siwe.signature = await wallet.signMessage(siwe.toMessage())
 
     const cacao = Cacao.fromSiweMessage(siwe)
     const did = new DID({ provider, resolver, capability: cacao })

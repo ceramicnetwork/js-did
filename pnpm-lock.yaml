@@ -56,7 +56,7 @@ importers:
       '@types/create-hash': ^1.2.2
       '@types/secp256k1': ^4.0.3
       ajv-formats: ^2.1.1
-      ceramic-cacao: ^1.1.1
+      ceramic-cacao: ^1.3.1
       dids: workspace:^3.2.0
       jest-environment-glazetemp: 0.3.0-rc.1
       key-did-provider-ed25519: ^2.0.1
@@ -66,7 +66,6 @@ importers:
       '@ceramicnetwork/blockchain-utils-linking': 2.0.8
       '@ceramicnetwork/stream-tile': 2.4.0
       '@stablelib/random': 1.0.1
-      ceramic-cacao: 1.1.1
       dids: link:../dids
       key-did-provider-ed25519: 2.0.1
       key-did-resolver: 2.0.6
@@ -81,13 +80,14 @@ importers:
       '@types/create-hash': 1.2.2
       '@types/secp256k1': 4.0.3
       ajv-formats: 2.1.1
+      ceramic-cacao: 1.3.1
       jest-environment-glazetemp: 0.3.0-rc.1
 
   packages/dids:
     specifiers:
       '@stablelib/random': ^1.0.1
       '@stablelib/x25519': ^1.0.2
-      ceramic-cacao: ^1.1.0
+      ceramic-cacao: ^1.3.1
       dag-jose-utils: ^2.0.0
       did-jwt: ^6.0.0
       did-resolver: ^3.1.5
@@ -97,7 +97,7 @@ importers:
       uint8arrays: ^3.0.0
     dependencies:
       '@stablelib/random': 1.0.1
-      ceramic-cacao: 1.1.1
+      ceramic-cacao: 1.3.1
       dag-jose-utils: 2.0.0
       did-jwt: 6.3.0
       did-resolver: 3.2.2
@@ -1617,7 +1617,7 @@ packages:
       '@stablelib/random': 1.0.1
       '@stablelib/sha256': 1.0.1
       caip: 1.1.0
-      ceramic-cacao: 1.1.1
+      ceramic-cacao: 1.3.1
       near-api-js: 0.44.2
       uint8arrays: 3.1.0
     transitivePeerDependencies:
@@ -1658,7 +1658,7 @@ packages:
       '@opentelemetry/semantic-conventions': 1.5.0
       '@stablelib/random': 1.0.1
       caip: 1.1.0
-      ceramic-cacao: 1.1.1
+      ceramic-cacao: 1.3.1
       cross-fetch: 3.1.5
       flat: 5.0.2
       jet-logger: 1.2.2
@@ -6026,14 +6026,16 @@ packages:
     resolution: {integrity: sha512-vlNK021QdI7PNeiUh/lKkC/mNHHfV0m/Ad5JoI0TYtlBnJAslM/JIkm/tGC88bkLIwO6OQ5uV6ztS6kVAtCDlg==}
     dev: false
 
-  /ceramic-cacao/1.1.1:
-    resolution: {integrity: sha512-p/IO5/EmUBhD0hbSpJaXTN8bKHYNZ8zDou3m2170wfbb+fJFf71kzWEsT/WV3JlWNBgkKEhwgbe9YGVOP2shoA==}
+  /ceramic-cacao/1.3.1:
+    resolution: {integrity: sha512-i4+5ZxUoxTHgq+DR15Zi67kSKc0mfq61sBP1FSyKv+Q6E1yvsl39ror/fEknjdyyjUNYTg3f0xG53EX4+kr8aQ==}
     dependencies:
       '@ethersproject/wallet': 5.6.2
       '@ipld/dag-cbor': 7.0.2
+      '@stablelib/ed25519': 1.0.2
       apg-js: 4.1.2
       caip: 1.1.0
       multiformats: 9.7.1
+      uint8arrays: 3.1.0
 
   /chalk/2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -6995,7 +6997,7 @@ packages:
     resolution: {integrity: sha512-p6PUUvlX/BYqnrX192KM0DW/h1dohbMohFSwSv7hxjHr7Sp26jAIu6M59f2HNJaSwE7k0lTqLz9tuDtE/QbWZA==}
     dependencies:
       '@stablelib/random': 1.0.1
-      ceramic-cacao: 1.1.1
+      ceramic-cacao: 1.3.1
       dag-jose-utils: 2.0.0
       did-jwt: 6.3.0
       did-resolver: 3.2.2
