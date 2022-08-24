@@ -1,0 +1,2 @@
+// This is an auto-generated file, do not edit manually
+export const definition = {"models":{"SimpleProfile":"kjzl6hvfrbw6ca7nidsnrv78x7r4xt0xki71nvwe4j5a3s9wgou8yu3aj8cz38e"},"objects":{"SimpleProfile":{"displayName":{"type":"string","required":true},"owner":{"type":"view","viewType":"documentAccount"},"version":{"type":"view","viewType":"documentVersion"}}},"enums":{},"accountData":{"simpleProfile":{"type":"node","name":"SimpleProfile"}}}
