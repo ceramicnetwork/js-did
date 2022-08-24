@@ -354,6 +354,7 @@ export class DID {
       signerDid === options.capability.p.aud
     ) {
       Cacao.verify(options.capability, {
+        disableExpirationCheck: options.disableTimecheck,
         atTime: options.atTime ? options.atTime : undefined,
         revocationPhaseOutSecs: options.revocationPhaseOutSecs,
       })
