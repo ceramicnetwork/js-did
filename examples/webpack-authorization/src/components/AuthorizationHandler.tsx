@@ -17,9 +17,15 @@ function AuthorizationHandler() {
   const renderAuthenticated = () => {
     return (
       <div>
-        <label> Authenticated DID: ${session!.did.id} </label>
+        <label> Authenticated DID: {session!.did.id} </label>
         <br/>
-        <label> Authorized for resources: ${session!.authorizations} </label>
+        <label> session.hasSession: {session!.hasSession ? 'true' : 'false'} </label>
+        <br/>
+        <label> session.isExpired: {session!.isExpired ? 'true' : 'false'} </label>
+        <br/>
+        <label> session.authorizations: {session!.authorizations} </label>
+        <br/>
+        <label> session.expiresInSecs: {session!.expireInSecs} </label>
         <br/>
         <a
           className="App-link"
@@ -53,9 +59,17 @@ function AuthorizationHandler() {
           const addresses = await (window.ethereum as any).request({ method: 'eth_requestAccounts' })
           const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
 
+          const oneWeek = 60 * 60 * 24 * 7
+
           // the resources param is a list of strings identifying resources you want to authorize for,
           // according to the verification protocol you use (e.g. for Ceramic Network Protocol, these are ceramic stream IDs)
-          const session = await DIDSession.authorize(authProvider, { resources: ['test-resource']})
+          const session = await DIDSession.authorize(
+            authProvider,
+            {
+              resources: ['test-resource'],
+              expiresInSecs: oneWeek,
+              domain: 'YourAppName'
+            })
           setSession(session)
         }}
       >
