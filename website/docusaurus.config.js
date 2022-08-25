@@ -52,6 +52,11 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        appId: 'RWEO3NY760',
+        apiKey: 'a1aeda8c15fbbf6b5cea420bf68e19eb',
+        indexName: 'did-js',
+      },
       navbar: {
         title: 'js-did',
         logo: {
