@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula')
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'js-did',
-  tagline: 'Decentralized Identifiers tools',
+  title: 'Decentralized Identifiers (DIDs)',
+  tagline: 'A Toolkit for Decentralized Identity',
   url: 'https://did.js.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -53,7 +53,7 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        title: 'js-did',
+        title: 'Decentralized Identifiers (DIDs)',
         logo: {
           alt: 'Ceramic Logo',
           src: 'img/logo.svg',
