@@ -1,3 +1,3 @@
-# Welcome to `js-did`
+# Welcome to Decentralized Identifiers
 
-`js-did` is a monorepo of packages that provide APIs to interact with and manage DIDs.
+A suite of tools and APIs to interact with and manage decentralized identifiers (DIDs).
