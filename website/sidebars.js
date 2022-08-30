@@ -25,7 +25,7 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Guides',
-      items: ['guides/using-with-composedb-client', 'guides/upgrading-from-glazed-did-session'],
+      items: ['guides/concepts-overview', 'guides/using-with-composedb-client', 'guides/upgrading-from-glazed-did-session'],
     },
   ],
   api: [
