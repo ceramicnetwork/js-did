@@ -1,4 +1,8 @@
-# Upgrading from `@glazed/did-session` to `did-session`
+---
+title: "Upgrading From @glazed/did-session"
+---
+
+# Upgrading From `@glazed/did-session` to `did-session`
 
 `authorize` changes to a static method which returns a did-session instance and `getDID()` becomes a `did` getter. For example:
 
