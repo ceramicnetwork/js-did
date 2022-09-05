@@ -14,10 +14,6 @@ A simple library to interact with DIDs that conform to the DID-provider interfac
 npm install dids
 ```
 
-## API
-
-[API documentation](https://ceramicnetwork.github.io/js-did/classes/did.html)
-
 ## Usage
 
 ### Authentication with the provider

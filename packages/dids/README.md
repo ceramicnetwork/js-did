@@ -10,7 +10,7 @@ npm install dids
 
 ## API
 
-[API documentation](https://ceramicnetwork.github.io/js-did/docs/api/modules/dids)
+[API documentation](https://did.js.org/docs/api/modules/dids)
 
 ## Usage
 
