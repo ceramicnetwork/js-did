@@ -253,7 +253,10 @@ export class DID {
    * @param payload             The payload to sign
    * @param options             Optional parameters
    */
-  async createJWS<T extends string | Record<string, any>>(payload: T, options: CreateJWSOptions = {}): Promise<DagJWS> {
+  async createJWS<T extends string | Record<string, any>>(
+    payload: T,
+    options: CreateJWSOptions = {}
+  ): Promise<DagJWS> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
     if (this._capability) {
