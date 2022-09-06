@@ -1,4 +1,4 @@
-# DID
+# DIDs
 
 A simple library to interact with DIDs that conform to the DID-provider interface.
 

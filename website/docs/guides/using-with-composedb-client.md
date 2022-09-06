@@ -1,4 +1,8 @@
-# Using With ComposeDB Client
+---
+title: "Using did-sessions With ComposeDB"
+---
+
+# Using `did-sessions` With ComposeDB
 
 [ComposeDB](https://composedb.js.org) is a set of TypeScript libraries and tools to interact with the [Dataverse](https://blog.ceramic.network/into-the-dataverse/) using the [Ceramic network](https://ceramic.network/).
 

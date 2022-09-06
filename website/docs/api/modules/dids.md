@@ -4,7 +4,7 @@ title: "Module: dids"
 custom_edit_url: null
 ---
 
-# DID
+# DIDs
 
 A simple library to interact with DIDs that conform to the DID-provider interface.
 

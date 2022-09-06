@@ -33,7 +33,7 @@ const sidebars = {
     {
       type: 'category',
       collapsed: false,
-      label: 'DID module',
+      label: 'DIDs module',
       items: [
         { type: 'doc', id: 'api/modules/dids', label: 'Overview' },
         { type: 'doc', id: 'api/classes/dids.DID', label: 'DID Class' },
