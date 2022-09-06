@@ -1,0 +1,67 @@
+{
+  "name": "key-did-provider-ed25519",
+  "version": "2.0.1",
+  "author": "Joel Thorstensson",
+  "license": "(Apache-2.0 OR MIT)",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.14"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
+    "lint": "eslint src test --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "package-check",
+    "size": "./node_modules/.bin/size-limit",
+    "analyze": "./node_modules/.bin/size-limit --why"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceramicnetwork/js-did.git"
+  },
+  "keywords": [
+    "DID",
+    "identity",
+    "did-provider",
+    "self-sovereign"
+  ],
+  "bugs": {
+    "url": "https://github.com/ceramicnetwork/js-did/issues"
+  },
+  "homepage": "https://github.com/ceramicnetwork/js-did#readme",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@babel/preset-typescript": "^7.16.0",
+    "@types/jest": "^27.0.3",
+    "babel-jest": "^27.4.4",
+    "dids": "^3.0.0",
+    "eslint": "^8.4.1",
+    "eslint-config-3box": "^0.4.0",
+    "husky": "^7.0.4",
+    "jest": "^27.4.4",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@stablelib/ed25519": "^1.0.2",
+    "did-jwt": "^6.0.0",
+    "fast-json-stable-stringify": "^2.1.0",
+    "rpc-utils": "^0.6.2",
+    "uint8arrays": "^3.0.0"
+  }
+}

@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Message Generation No optional field 1`] = `
+"service.org wants you to sign in with your Ethereum account:
+0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+
+I accept the ServiceOrg Terms of Service: https://service.org/tos
+
+URI: https://service.org/login
+Version: 1
+Chain ID: 1
+Nonce: 32891757
+Issued At: 2021-09-30T16:25:24.000Z"
+`;
+
+exports[`Message Generation Timestamp without microseconds 1`] = `
+"service.org wants you to sign in with your Ethereum account:
+0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+
+I accept the ServiceOrg Terms of Service: https://service.org/tos
+
+URI: https://service.org/login
+Version: 1
+Chain ID: 1
+Nonce: 32891757
+Issued At: 2021-09-30T16:25:24Z
+Resources:
+- ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu
+- https://example.com/my-web2-claim.json"
+`;
+
+exports[`Message Generation With optional fields 1`] = `
+"service.org wants you to sign in with your Ethereum account:
+0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2
+
+I accept the ServiceOrg Terms of Service: https://service.org/tos
+
+URI: https://service.org/login
+Version: 1
+Chain ID: 1
+Nonce: 32891757
+Issued At: 2021-09-30T16:25:24.000Z
+Resources:
+- ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu
+- https://example.com/my-web2-claim.json"
+`;
+
+exports[`Ocap Sign message using SiweMessage object 1`] = `
+"self.id wants you to sign in with your Ethereum account:
+0xBd9D9c7DC389715a89fC8149E4a5Be91336B2796
+
+Give this app access to your streams
+
+URI: did:pkh:eip155:1:0xBd9D9c7DC389715a89fC8149E4a5Be91336B2796
+Version: 0.1
+Chain ID: 1
+Nonce: 12345678
+Issued At: 2021-10-14T07:18:41.000Z
+Resources:
+- ceramic://bagcqcerakszw2vsovxznyp5gfnpdj4cqm2xiv76yd24wkjewhhykovorwo6a"
+`;
+
+exports[`Ocap Sign message using SiweMessage object 2`] = `"0x66e3a8d71a0c15bbec0afe1e6805cb2826375a6d160031364e3d780aecd9fd0630d48860c3a816b51ca108bc8d6545cb8ae900fa9f988cb3fce1de333d31a43d1b"`;
