@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import {jest} from '@jest/globals'
-import {randomBytes} from '@stablelib/random'
-import {generateKeyPairFromSeed} from '@stablelib/x25519'
-import {Cacao, CacaoBlock, SiweMessage} from 'ceramic-cacao'
-import {decodeCleartext, encodePayload, prepareCleartext} from 'dag-jose-utils'
-import {decryptJWE, JWE, x25519Decrypter} from 'did-jwt'
-import {DIDDocument, ResolverRegistry} from 'did-resolver'
-import {Wallet} from 'ethers'
+import { jest } from '@jest/globals'
+import { randomBytes } from '@stablelib/random'
+import { generateKeyPairFromSeed } from '@stablelib/x25519'
+import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
+import { decodeCleartext, encodePayload, prepareCleartext } from 'dag-jose-utils'
+import { decryptJWE, JWE, x25519Decrypter } from 'did-jwt'
+import { DIDDocument, ResolverRegistry } from 'did-resolver'
+import { Wallet } from 'ethers'
 import * as u8a from 'uint8arrays'
-import type {DIDProvider} from '../src/types.js'
+import type { DIDProvider } from '../src/types.js'
 
 jest.unstable_mockModule('../src/random-string.util.js', () => {
   return {

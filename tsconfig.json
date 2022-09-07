@@ -8,6 +8,8 @@
     "paths": {
       "dids": ["packages/dids/src"],
       "did-session": ["packages/did-session/src"],
+      "ceramic-cacao": ["packages/cacao/src"],
+      "key-did-provider-ed25519": ["packages/key-did-provider-ed25519/src"]
     }
   }
 }
