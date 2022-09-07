@@ -79,10 +79,10 @@ importers:
       '@types/create-hash': ^1.2.2
       '@types/secp256k1': ^4.0.3
       ajv-formats: ^2.1.1
-      ceramic-cacao: ^1.3.1
+      ceramic-cacao: workspace:^1.3.1
       dids: workspace:^3.2.0
       jest-environment-glazetemp: 0.3.0-rc.1
-      key-did-provider-ed25519: ^2.0.1
+      key-did-provider-ed25519: workspace:^2.0.1
       key-did-resolver: ^2.0.6
       uint8arrays: ^3.0.0
     dependencies:
@@ -110,7 +110,7 @@ importers:
     specifiers:
       '@stablelib/random': ^1.0.1
       '@stablelib/x25519': ^1.0.2
-      ceramic-cacao: ^1.3.1
+      ceramic-cacao: workspace:^1.3.1
       dag-jose-utils: ^2.0.0
       did-jwt: ^6.0.0
       did-resolver: ^3.1.5
