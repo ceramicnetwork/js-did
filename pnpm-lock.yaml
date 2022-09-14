@@ -131,6 +131,19 @@ importers:
       '@stablelib/x25519': 1.0.3
       ethers: 5.7.0
 
+  packages/ethereum:
+    specifiers:
+      '@ethersproject/wallet': ^5.7.0
+      caip: ^1.1.0
+      ceramic-cacao: workspace:^1.3.1
+      typescript: ^4.5.4
+    dependencies:
+      '@ethersproject/wallet': 5.7.0
+      caip: 1.1.0
+      ceramic-cacao: link:../cacao
+    devDependencies:
+      typescript: 4.8.2
+
   packages/key-did-provider-ed25519:
     specifiers:
       '@babel/core': ^7.16.0
@@ -168,6 +181,21 @@ importers:
       husky: 7.0.4
       jest: 27.5.1
       prettier: 2.7.1
+      typescript: 4.8.2
+
+  packages/solana:
+    specifiers:
+      '@stablelib/ed25519': ^1.0.3
+      caip: ^1.1.0
+      ceramic-cacao: workspace:^1.3.1
+      typescript: ^4.5.4
+      uint8arrays: ^3.1.0
+    dependencies:
+      '@stablelib/ed25519': 1.0.3
+      caip: 1.1.0
+      ceramic-cacao: link:../cacao
+      uint8arrays: 3.1.0
+    devDependencies:
       typescript: 4.8.2
 
   website:

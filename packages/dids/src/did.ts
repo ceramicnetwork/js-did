@@ -3,7 +3,7 @@ import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import { RPCClient } from 'rpc-utils'
 import { CID } from 'multiformats/cid'
-import { CacaoBlock, Cacao } from 'ceramic-cacao'
+import { CacaoBlock, Cacao, Verifiers } from 'ceramic-cacao'
 import type { DagJWS, DIDProvider, DIDProviderClient } from './types.js'
 import {
   fromDagJWS,
@@ -64,6 +64,11 @@ export type VerifyJWSOptions = {
    * Number of seconds that a revoked key stays valid for after it was revoked
    */
   revocationPhaseOutSecs?: number
+
+  /**
+   *  verifiers - object of supported verification methods to verify given cacao
+   */
+  verifiers?: Verifiers
 }
 
 export type VerifyJWSResult = {
@@ -356,10 +361,12 @@ export class DID {
       options.issuer === options.capability?.p.iss &&
       signerDid === options.capability.p.aud
     ) {
+      if (!options.verifiers) throw new Error('Registered verifiers needed for CACAO')
       Cacao.verify(options.capability, {
         disableExpirationCheck: options.disableTimecheck,
         atTime: options.atTime ? options.atTime : undefined,
         revocationPhaseOutSecs: options.revocationPhaseOutSecs,
+        verifiers: options.verifiers ?? {}
       })
     } else if (options.issuer && options.issuer !== signerDid) {
       const issuerUrl = didWithTime(options.issuer, options.atTime)
@@ -375,6 +382,7 @@ export class DID {
         Cacao.verify(options.capability, {
           atTime: options.atTime ? options.atTime : undefined,
           revocationPhaseOutSecs: options.revocationPhaseOutSecs,
+          verifiers: options.verifiers ?? {}
         })
       } else {
         const signerIsController = signerDid ? controllers.includes(signerDid) : false
