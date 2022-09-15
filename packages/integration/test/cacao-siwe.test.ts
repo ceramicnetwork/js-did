@@ -1,6 +1,6 @@
 import { Wallet } from '@ethersproject/wallet'
-import { Cacao, CacaoBlock } from '../src/cacao.js'
-import { SiweMessage } from '../src/siwx/siwe.js'
+import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
+import { getEIP191Verifier } from 'ethereum-cacao'
 import { DateTime } from 'luxon'
 
 const ISSUED_AT = DateTime.fromISO('2021-10-14T07:18:41Z').toUTC()
@@ -25,6 +25,8 @@ const SIWE_MESSAGE_PARAMS = {
   ],
 }
 
+const verifiers = {...getEIP191Verifier()}
+
 test('create and verify Cacao Block for Ethereum', async () => {
   const msg = new SiweMessage(SIWE_MESSAGE_PARAMS)
   msg.signature = await ETHEREUM_WALLET.signMessage(msg.signMessage())
@@ -33,7 +35,7 @@ test('create and verify Cacao Block for Ethereum', async () => {
   const block = await CacaoBlock.fromCacao(cacao)
   expect(block).toMatchSnapshot()
 
-  expect(() => Cacao.verify(cacao)).not.toThrow()
+  expect(() => Cacao.verify(cacao, { verifiers })).not.toThrow()
 })
 
 test('convert between Cacao and SiweMessage', () => {
@@ -58,6 +60,7 @@ test('ok after expiration if within phase out period', async () => {
       atTime: expiredTime.toJSDate(),
       revocationPhaseOutSecs: 20,
       clockSkewSecs: 0,
+      verifiers
     })
   ).not.toThrow()
 })
@@ -77,8 +80,9 @@ test('fail after expiration if after phase out period', async () => {
       atTime: expiredTime.toJSDate(),
       revocationPhaseOutSecs: 1,
       clockSkewSecs: 0,
+      verifiers
     })
-  ).toThrow(`CACAO has expired`)
+  ).rejects.toThrow(`CACAO has expired`)
 })
 
 test('ok before issued-at if within the clock skew', async () => {
@@ -88,7 +92,7 @@ test('ok before issued-at if within the clock skew', async () => {
 
   const cacao = Cacao.fromSiweMessage(msg)
   const beforeIssuedAt = ISSUED_AT.minus({ minute: 1 })
-  expect(() => Cacao.verify(cacao, { atTime: beforeIssuedAt.toJSDate() })).not.toThrow()
+  expect(() => Cacao.verify(cacao, { atTime: beforeIssuedAt.toJSDate(), verifiers })).not.toThrow()
 })
 
 test('ok after expiration if disableTimecheck option', async () => {
@@ -105,6 +109,7 @@ test('ok after expiration if disableTimecheck option', async () => {
       disableExpirationCheck: true,
       revocationPhaseOutSecs: 20,
       clockSkewSecs: 0,
+      verifiers
     })
   ).not.toThrow()
 })

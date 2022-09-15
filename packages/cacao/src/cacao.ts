@@ -45,6 +45,12 @@ export type Cacao = {
   s?: Signature
 }
 
+export type SignedCacao = {
+  h: Header
+  p: Payload
+  s: Signature
+}
+
 export type VerifyOptions = {
   /**
    * @param verifiers - object of supported verification methods to verify given cacao
@@ -170,8 +176,8 @@ export namespace Cacao {
     return block.value as Cacao
   }
 
-  export function verify(cacao: Cacao, opts: VerifyOptions = {}): void {
-    verifyAssert(cacao, opts)
+  export async function verify(cacao: Cacao, opts: VerifyOptions = {}): Promise<void> {
+    assertSigned(cacao, opts)
     const verify = opts.verifiers[cacao.s.t]
     if (!verify) throw new Error('Unsupported CACAO signature type, register the needed verifier')
     return verify(cacao, opts)
@@ -194,12 +200,11 @@ export namespace CacaoBlock {
   }
 }
 
-export function verifyAssert(cacao: Cacao, options: VerifyOptions) {
-  if (!cacao.s) {
+export function assertSigned(cacao: Cacao, options: VerifyOptions): asserts cacao is SignedCacao {
+  if (cacao.s === null || cacao.s === undefined) {
     throw new Error(`CACAO does not have a signature`)
   }
 }
-
 
 export function verifyTimeChecks(cacao: Cacao, options: VerifyOptions) {
   const atTime = options.atTime ? options.atTime.getTime() : Date.now()

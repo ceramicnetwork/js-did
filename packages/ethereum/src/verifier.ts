@@ -1,12 +1,12 @@
 
 import { verifyMessage } from '@ethersproject/wallet'
-import { SiweMessage,  asLegacyChainIdString, Cacao, VerifyOptions, verifyTimeChecks, verifyAssert, Verifiers } from 'ceramic-cacao'
+import { SiweMessage,  asLegacyChainIdString, Cacao, VerifyOptions, verifyTimeChecks, assertSigned, Verifiers } from 'ceramic-cacao'
 import { AccountId } from 'caip'
 
 export function getEIP191Verifier(): Verifiers {
 	return {
 		'eip191': async (cacao: Cacao, opts: VerifyOptions): Promise<void> => {
-      return verifyEIP191Signature(cacao, opts)
+      verifyEIP191Signature(cacao, opts)
 		}
 	}
 }
@@ -15,10 +15,8 @@ export function getEIP191Verifier(): Verifiers {
 export const LEGACY_CHAIN_ID_REORG_DATE = new Date('2022-09-20').valueOf()
 
 export function verifyEIP191Signature(cacao: Cacao, options: VerifyOptions) {
-  verifyAssert(cacao, options)
+  assertSigned(cacao, options)
   verifyTimeChecks(cacao, options)
-
-  if (!cacao.s) throw new Error('')
 
   const recoveredAddress = verifyMessage(
     SiweMessage.fromCacao(cacao).toMessage(),

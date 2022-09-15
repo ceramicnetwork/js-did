@@ -1,21 +1,19 @@
-import { SiwsMessage, Cacao, VerifyOptions, verifyTimeChecks, verifyAssert, Verifiers } from 'ceramic-cacao'
+import { SiwsMessage, Cacao, VerifyOptions, verifyTimeChecks, assertSigned, Verifiers } from 'ceramic-cacao'
 import { AccountId } from 'caip'
 import { verify } from '@stablelib/ed25519'
 import { fromString as u8aFromString } from 'uint8arrays/from-string'
 
 export function getSolanaVerifier(): Verifiers {
 	return {
-		'eip191': async (cacao: Cacao, opts: VerifyOptions): Promise<void> => {
-      return verifySolanaSignature(cacao, opts)
+		'solana:ed25519': async (cacao: Cacao, opts: VerifyOptions): Promise<void> => {
+      verifySolanaSignature(cacao, opts)
 		}
 	}
 }
 
 export function verifySolanaSignature(cacao: Cacao, options: VerifyOptions) {
-  verifyAssert(cacao, options)
+  assertSigned(cacao, options)
   verifyTimeChecks(cacao, options)
-
-  if (!cacao.s) throw new Error('')
 
   const msg = SiwsMessage.fromCacao(cacao)
   const sig = cacao.s.s

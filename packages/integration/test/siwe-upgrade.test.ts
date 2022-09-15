@@ -1,5 +1,6 @@
 import * as uint8arrays from 'uint8arrays'
-import { Cacao } from '../src/cacao.js'
+import { Cacao } from 'ceramic-cacao'
+import { getEIP191Verifier } from 'ethereum-cacao'
 import { DateTime } from 'luxon'
 
 // 2022-08-20T16:25:24.000Z
@@ -14,16 +15,18 @@ const LEGACY_CHAIN_ID_CACAO_IAT_AFTER_THRESHOLD = uint8arrays.fromString(
   'base64url'
 )
 
+const verifiers = {...getEIP191Verifier()}
+
 test('ok: verify legacy chainId cacao issued before threshold', async () => {
   const legacy = await Cacao.fromBlockBytes(LEGACY_CHAIN_ID_CACAO)
   const issuedAt = DateTime.fromISO(legacy.p.iat)
   // After issuedAt
   expect(() => {
-    Cacao.verify(legacy, { atTime: issuedAt.plus({ minute: 1 }).toJSDate() })
+    Cacao.verify(legacy, { atTime: issuedAt.plus({ minute: 1 }).toJSDate(), verifiers })
   }).not.toThrow()
   // A year from when issuedAt
   expect(() => {
-    Cacao.verify(legacy, { atTime: issuedAt.plus({ year: 1 }).toJSDate() })
+    Cacao.verify(legacy, { atTime: issuedAt.plus({ year: 1 }).toJSDate(), verifiers })
   }).not.toThrow()
 })
 
@@ -32,9 +35,10 @@ test('reject: verify legacy chainId cacao issued after threshold', async () => {
   const legacyAfterThreshold = await Cacao.fromBlockBytes(LEGACY_CHAIN_ID_CACAO_IAT_AFTER_THRESHOLD)
   const issuedAtAfterThreshold = DateTime.fromISO(legacyAfterThreshold.p.iat)
   const validatedAt = issuedAtAfterThreshold.plus({ minute: 1 })
-  await expect(async () => {
+  await expect(async () =>
     Cacao.verify(await Cacao.fromBlockBytes(LEGACY_CHAIN_ID_CACAO_IAT_AFTER_THRESHOLD), {
       atTime: validatedAt.toJSDate(),
+      verifiers
     })
-  }).rejects.toThrow(/Signature does not belong to issuer/)
+  ).rejects.toThrow(/Signature does not belong to issuer/)
 })
