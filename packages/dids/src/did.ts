@@ -4,6 +4,7 @@ import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils
 import { RPCClient } from 'rpc-utils'
 import { CID } from 'multiformats/cid'
 import { CacaoBlock, Cacao, Verifiers } from 'ceramic-cacao'
+import { getEIP191Verifier } from 'ethereum-cacao'
 import type { DagJWS, DIDProvider, DIDProviderClient } from './types.js'
 import {
   fromDagJWS,
@@ -15,6 +16,9 @@ import {
   didWithTime,
   extractControllers,
 } from './utils.js'
+
+// Eth Verifier default for CACAO
+const verifiers = {...getEIP191Verifier()}
 
 export type AuthenticateOptions = {
   provider?: DIDProvider
@@ -327,6 +331,7 @@ export class DID {
    * @returns                   Information about the signed JWS
    */
   async verifyJWS(jws: string | DagJWS, options: VerifyJWSOptions = {}): Promise<VerifyJWSResult> {
+    options = Object.assign( { verifiers }, options)
     if (typeof jws !== 'string') jws = fromDagJWS(jws)
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
@@ -362,7 +367,7 @@ export class DID {
       signerDid === options.capability.p.aud
     ) {
       if (!options.verifiers) throw new Error('Registered verifiers needed for CACAO')
-      Cacao.verify(options.capability, {
+      await Cacao.verify(options.capability, {
         disableExpirationCheck: options.disableTimecheck,
         atTime: options.atTime ? options.atTime : undefined,
         revocationPhaseOutSecs: options.revocationPhaseOutSecs,
@@ -379,7 +384,7 @@ export class DID {
         options.capability.p.aud === signerDid &&
         controllers.includes(options.capability.p.iss)
       ) {
-        Cacao.verify(options.capability, {
+        await Cacao.verify(options.capability, {
           atTime: options.atTime ? options.atTime : undefined,
           revocationPhaseOutSecs: options.revocationPhaseOutSecs,
           verifiers: options.verifiers ?? {}
