@@ -183,8 +183,7 @@ import { Ed25519Provider } from 'key-did-provider-ed25519'
 import KeyDidResolver from 'key-did-resolver'
 import { randomBytes } from '@stablelib/random'
 import { DID } from 'dids'
-import type { EthereumAuthProvider, CapabilityOpts } from '@ceramicnetwork/blockchain-utils-linking'
-import type { Cacao } from 'ceramic-cacao'
+import type { Cacao, AuthMethod } from 'ceramic-cacao'
 import * as u8a from 'uint8arrays'
 
 export type SessionParams = {
@@ -198,7 +197,14 @@ type SessionObj = {
   cacao: Cacao
 }
 
-interface AuthOpts extends CapabilityOpts {
+interface AuthOpts {
+  domain?: string
+  statement?: string
+  version?: string
+  nonce?: string
+  requestId?: string
+  expirationTime?: string
+  resources?: Array<string>
   expiresInSecs?: number
 }
 
@@ -256,7 +262,7 @@ export class DIDSession {
    * Request authorization for session
    */
   static async authorize(
-    authProvider: EthereumAuthProvider,
+    authMethod: AuthMethod,
     authOpts: AuthOpts = {}
   ): Promise<DIDSession> {
     if (!authOpts.resources || authOpts.resources.length === 0)
@@ -269,9 +275,8 @@ export class DIDSession {
       const exp = new Date(Date.now() + authOpts.expiresInSecs * 1000)
       authOpts.expirationTime = exp.toISOString()
     }
-
-    // Pass through opts resources instead, resource arg does not support anything but streamids at moment
-    const cacao = await authProvider.requestCapability(didKey.id, [], authOpts)
+    
+    const cacao = await authMethod(authOpts)
     const did = await createDIDCacao(didKey, cacao)
     return new DIDSession({ cacao, keySeed, did })
   }
@@ -321,7 +326,7 @@ export class DIDSession {
   get isExpired(): boolean {
     const expTime = this.#cacao.p.exp
     if (!expTime) return false
-    return Date.parse(expTime) < Date.now()
+    return Date.parse(expTime) < Date.now() 
   }
 
   /**

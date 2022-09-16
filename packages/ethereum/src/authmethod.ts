@@ -1,5 +1,5 @@
 
-import { Cacao, SiweMessage, Payload as AuthMethodOpts  } from 'ceramic-cacao'
+import { Cacao, SiweMessage, AuthMethod, AuthMethodOpts } from 'ceramic-cacao'
 import { randomString } from '@stablelib/random'
 import { AccountId } from 'caip'
 import { safeSend } from './utils.js'
@@ -7,7 +7,7 @@ import { safeSend } from './utils.js'
 const VERSION = '1'
 
 export namespace EthereumWebAuth {
-  export async function getAuthMethod(ethProvider: any, account: AccountId): Promise<(opts:AuthMethodOpts) => Promise<Cacao>> {
+  export async function getAuthMethod(ethProvider: any, account: AccountId): Promise<AuthMethod> {
 
     if (typeof window !== 'undefined') throw new Error('Web Auth method requires browser environment')
     const domain = (window as Window).location.hostname
@@ -20,7 +20,7 @@ export namespace EthereumWebAuth {
 }
 
 export namespace EthereumNodeAuth {
-  export async function getAuthMethod(ethProvider: any, account: AccountId, appName: string): Promise<(opts:AuthMethodOpts) => Promise<Cacao>> {
+  export async function getAuthMethod(ethProvider: any, account: AccountId, appName: string): Promise<AuthMethod> {
     const domain = appName
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
@@ -38,11 +38,11 @@ async function createCACAO  (opts: AuthMethodOpts, ethProvider: any, account: Ac
     domain: opts.domain,
     address: account.address,
     statement: opts.statement ?? 'Give this application access to some of your data on Ceramic',
-    uri: opts.aud,
+    uri: opts.uri,
     version: VERSION,
     nonce: opts.nonce ?? randomString(10),
     issuedAt: now.toISOString(),
-    expirationTime: opts.exp ?? oneDayLater.toISOString(),
+    expirationTime: opts.expirationTime ?? oneDayLater.toISOString(),
     chainId: account.chainId.reference,
     resources: opts.resources
   })

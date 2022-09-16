@@ -4,15 +4,16 @@
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
 import { EventEmitter } from 'events'
-import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
 import { Wallet as EthereumWallet } from '@ethersproject/wallet'
 import { fromString, toString } from 'uint8arrays'
 import { DIDSession, createDIDKey, createDIDCacao } from '../src'
 import { jest } from '@jest/globals'
 import { Wallet } from '@ethersproject/wallet'
-import { SiweMessage, Cacao } from 'ceramic-cacao'
+import { SiweMessage, Cacao, AuthMethod } from 'ceramic-cacao'
 import { Model, ModelAccountRelation, ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
+import { EthereumNodeAuth } from 'ethereum-cacao'
+import { AccountId } from 'caip'
 
 const getModelDef = (name: string): ModelDefinition => ({
   name: name,
@@ -63,10 +64,14 @@ class EthereumProvider extends EventEmitter {
   }
 }
 
-function createEthereumAuthProvider(mnemonic?: string): Promise<EthereumAuthProvider> {
+function createEthereumAuthMethod(mnemonic?: string): Promise<AuthMethod> {
   const wallet = mnemonic ? EthereumWallet.fromMnemonic(mnemonic) : EthereumWallet.createRandom()
   const provider = new EthereumProvider(wallet)
-  return Promise.resolve(new EthereumAuthProvider(provider, wallet.address))
+  const accountId = new AccountId({
+    address: wallet.address.toLowerCase(),
+    chainId: { namespace: "eip155", reference: "1" },
+  });
+  return Promise.resolve(EthereumNodeAuth.getAuthMethod(provider, accountId, 'testapp' ))
 }
 
 const bytes32 = [
@@ -84,12 +89,12 @@ declare global {
 }
 
 describe('did-session', () => {
-  let authProvider: EthereumAuthProvider
+  let authMethod: AuthMethod
   jest.setTimeout(20000)
   let model: Model
 
   beforeAll(async () => {
-    authProvider = await createEthereumAuthProvider()
+    authMethod = await createEthereumAuthMethod()
     model = await Model.create(ceramic, MODEL_DEFINITION)
   })
 
@@ -100,18 +105,16 @@ describe('did-session', () => {
 
   test('authorize, with streamid resources', async () => {
     const streamId = `ceramic://z6MkhZCWzHtPFmpNupVPuHA6svtpKKY9RUpgf9uohnhFMNvj`
-    const session = await DIDSession.authorize(authProvider, {
-      resources: [streamId],
-      domain: 'myApp',
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [streamId]
     })
     const did = session.did
     expect(did.capability.p.resources.includes(streamId)).toBe(true)
   })
 
   test('authorize and create/update streams', async () => {
-    const session = await DIDSession.authorize(authProvider, {
-      resources: [`ceramic://*`],
-      domain: 'myApp',
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [`ceramic://*`]
     })
     ceramic.did = session.did
     const doc = await TileDocument.create(
@@ -129,34 +132,32 @@ describe('did-session', () => {
     expect(doc.content).toEqual({ foo: 'boo' })
   })
 
-  test('authorize and create/update streams from serialized session', async () => {
-    const session = await DIDSession.authorize(authProvider, {
-      resources: [`ceramic://*`],
-      domain: 'myApp',
-    })
-    const sessionStr = session.serialize()
-    const session2 = await DIDSession.fromSession(sessionStr)
-    ceramic.did = session2.did
-    const doc = await TileDocument.create(
-      ceramic,
-      { foo: 'bar' },
-      {},
-      {
-        anchor: false,
-        publish: false,
-      }
-    )
-    expect(doc.content).toEqual({ foo: 'bar' })
+  // test('authorize and create/update streams from serialized session', async () => {
+  //   const session = await DIDSession.authorize(authMethod, {
+  //     resources: [`ceramic://*`]
+  //   })
+  //   const sessionStr = session.serialize()
+  //   const session2 = await DIDSession.fromSession(sessionStr)
+  //   ceramic.did = session2.did
+  //   const doc = await TileDocument.create(
+  //     ceramic,
+  //     { foo: 'bar' },
+  //     {},
+  //     {
+  //       anchor: false,
+  //       publish: false,
+  //     }
+  //   )
+  //   expect(doc.content).toEqual({ foo: 'bar' })
 
-    await doc.update({ foo: 'boo' })
-    expect(doc.content).toEqual({ foo: 'boo' })
-  })
+  //   await doc.update({ foo: 'boo' })
+  //   expect(doc.content).toEqual({ foo: 'boo' })
+  // })
 
   // Enable with next release
   test.skip('can create and update model instance stream', async () => {
-    const session = await DIDSession.authorize(authProvider, {
-      resources: [model.id.toString()],
-      domain: 'myApp',
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [model.id.toString()]
     })
     ceramic.did = session.did
 
@@ -172,9 +173,8 @@ describe('did-session', () => {
   })
 
   test('isAuthorized/isExpired, with valid session and resources', async () => {
-    const session = await DIDSession.authorize(authProvider, {
-      resources: testResources,
-      domain: 'myApp',
+    const session = await DIDSession.authorize(authMethod, {
+      resources: testResources
     })
     // Any session authorized and valid, true
     expect(session.isAuthorized()).toBe(true)
@@ -187,17 +187,16 @@ describe('did-session', () => {
 
   test('pass expiresInSecs option for custom time, override default 1 day', async () => {
     const oneWeek = 60 * 60 * 24 * 7
-    const session = await DIDSession.authorize(authProvider, {
+    const session = await DIDSession.authorize(authMethod, {
       resources: testResources,
-      domain: 'myApp',
       expiresInSecs: oneWeek,
     })
     expect(session.expireInSecs > oneWeek - 5 && session.expireInSecs <= oneWeek).toBe(true)
   })
 
   test('throws if resources not given', async () => {
-    await expect(DIDSession.authorize(authProvider, {})).rejects.toThrow(/Required:/)
-    await expect(DIDSession.authorize(authProvider, { resources: [] })).rejects.toThrow(/Required:/)
+    await expect(DIDSession.authorize(authMethod, {})).rejects.toThrow(/Required:/)
+    await expect(DIDSession.authorize(authMethod, { resources: [] })).rejects.toThrow(/Required:/)
   })
 
   test('isAuthorized/isExpired, with expired session', async () => {
@@ -314,9 +313,8 @@ describe('did-session', () => {
     })
 
     test('roundtrip serialization, fromSession', async () => {
-      const session = await DIDSession.authorize(authProvider, {
-        resources: [`ceramic://*`],
-        domain: 'myApp',
+      const session = await DIDSession.authorize(authMethod, {
+        resources: [`ceramic://*`]
       })
       const sessionStr = session.serialize()
       const session2 = await DIDSession.fromSession(sessionStr)
