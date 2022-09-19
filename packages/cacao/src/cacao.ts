@@ -1,16 +1,10 @@
 // @ts-nocheck
-import { verifyMessage } from '@ethersproject/wallet'
 import * as dagCbor from '@ipld/dag-cbor'
-import { verify } from '@stablelib/ed25519'
-import { AccountId } from 'caip'
 import * as multiformats from 'multiformats'
 import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2'
-import { fromString as u8aFromString } from 'uint8arrays/from-string'
 import { SiweMessage } from './siwx/siwe.js'
 import { SiwsMessage } from './siwx/siws.js'
-import { asLegacyChainIdString } from './siwx/siwx.js'
-import type { Payload, VerifyOptions } from './types.js'
 
 // 5 minute default clockskew
 const CLOCK_SKEW_DEFAULT_SEC = 5 * 60
@@ -22,7 +16,7 @@ export type CacaoBlock = {
   value: Cacao
   cid: multiformats.CID
   bytes: Uint8Array
-} 
+}
 
 export type Header = {
   t: 'eip4361' | 'caip122'
@@ -48,7 +42,7 @@ export type Verifiers = Record<string, CACAOVerifier>
 
 export type CACAOVerifier = (cacao: Cacao, opts: VerifyOptions) => Promise<void>
 
-export type AuthMethod = (opts:AuthMethodOpts) => Promise<Cacao>
+export type AuthMethod = (opts: AuthMethodOpts) => Promise<Cacao>
 
 export type Payload = {
   domain: string
@@ -104,18 +98,18 @@ export type AuthMethodOpts = {
   version?: string
   /**Randomized token used to prevent replay attacks, at least 8 alphanumeric
    * characters. */
-  nonce?: string 
+  nonce?: string
   /**ISO 8601 datetime string of the current time. */
   issuedAt?: string
   /**ISO 8601 datetime string that, if present, indicates when the signed
    * authentication message is no longer valid. */
-  expirationTime?: string 
+  expirationTime?: string
   /**ISO 8601 datetime string that, if present, indicates when the signed
    * authentication message will become valid. */
-  notBefore?: string 
+  notBefore?: string
   /**System-specific identifier that may be used to uniquely refer to the
    * sign-in request. */
-  requestId?: string 
+  requestId?: string
   /**EIP-155 Chain ID to which the session is bound, and the network where
    * Contract Accounts must be resolved. */
   chainId?: string
@@ -223,7 +217,7 @@ export namespace Cacao {
   }
 
   export async function verify(cacao: Cacao, opts: VerifyOptions = {}): Promise<void> {
-    assertSigned(cacao, opts)
+    assertSigned(cacao)
     const verify = opts.verifiers[cacao.s.t]
     if (!verify) throw new Error('Unsupported CACAO signature type, register the needed verifier')
     return verify(cacao, opts)
@@ -240,7 +234,7 @@ export namespace CacaoBlock {
   }
 }
 
-export function assertSigned(cacao: Cacao, options: VerifyOptions): asserts cacao is SignedCacao {
+export function assertSigned(cacao: Cacao): asserts cacao is SignedCacao {
   if (cacao.s === null || cacao.s === undefined) {
     throw new Error(`CACAO does not have a signature`)
   }

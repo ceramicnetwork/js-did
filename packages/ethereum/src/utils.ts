@@ -1,3 +1,6 @@
+/* eslint-disable  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument */
+// TODO types
+
 export function safeSend(provider: any, method: string, params?: Array<any>): Promise<any> {
   if (params == null) {
     params = []
@@ -6,7 +9,7 @@ export function safeSend(provider: any, method: string, params?: Array<any>): Pr
   if (provider.request) {
     return provider.request({ method, params }).then(
       (response: any) => response,
-      (error: any ) => {
+      (error: any) => {
         throw error
       }
     )
@@ -33,12 +36,12 @@ export function safeSend(provider: any, method: string, params?: Array<any>): Pr
     )
   }
 }
-  
+
 export function encodeRpcMessage(method: string, params?: any): any {
-    return {
-        jsonrpc: '2.0',
-        id: 1,
-        method,
-        params,
-    }
+  return {
+    jsonrpc: '2.0',
+    id: 1,
+    method,
+    params,
+  }
 }

@@ -44,23 +44,15 @@ importers:
 
   packages/cacao:
     specifiers:
-      '@ethersproject/wallet': ^5.5.0
       '@ipld/dag-cbor': ^7.0.1
-      '@stablelib/ed25519': ^1.0.2
       '@types/luxon': ^3.0.0
       apg-js: ^4.1.1
-      caip: ^1.0.0
       luxon: ^3.0.1
       multiformats: ^9.5.1
-      uint8arrays: ^3.0.0
     dependencies:
-      '@ethersproject/wallet': 5.7.0
       '@ipld/dag-cbor': 7.0.3
-      '@stablelib/ed25519': 1.0.3
       apg-js: 4.1.2
-      caip: 1.1.0
       multiformats: 9.8.1
-      uint8arrays: 3.1.0
     devDependencies:
       '@types/luxon': 3.0.1
       luxon: 3.0.3
@@ -69,9 +61,9 @@ importers:
     specifiers:
       '@ceramicnetwork/common': ^2.6.0
       '@ceramicnetwork/stream-model': ^0.5.0
-      '@ceramicnetwork/stream-model-instance': ^0.4.0
+      '@ceramicnetwork/stream-model-instance': ^0.4.1
       '@ceramicnetwork/stream-tile': ^2.4.0
-      '@ceramicnetwork/streamid': ^2.3.0
+      '@ceramicnetwork/streamid': ^2.3.3
       '@ethersproject/wallet': ^5.6.2
       '@jest/globals': ^28.1.3
       '@stablelib/random': ^1.0.1
@@ -96,8 +88,8 @@ importers:
     devDependencies:
       '@ceramicnetwork/common': 2.6.0
       '@ceramicnetwork/stream-model': 0.5.0
-      '@ceramicnetwork/stream-model-instance': 0.4.0
-      '@ceramicnetwork/streamid': 2.3.2
+      '@ceramicnetwork/stream-model-instance': 0.4.1
+      '@ceramicnetwork/streamid': 2.3.3
       '@ethersproject/wallet': 5.7.0
       '@jest/globals': 28.1.3
       '@types/create-hash': 1.2.2
@@ -138,11 +130,13 @@ importers:
   packages/ethereum:
     specifiers:
       '@ethersproject/wallet': ^5.7.0
+      '@stablelib/random': ^1.0.2
       caip: ^1.1.0
       ceramic-cacao: workspace:^1.3.1
       typescript: ^4.5.4
     dependencies:
       '@ethersproject/wallet': 5.7.0
+      '@stablelib/random': 1.0.2
       caip: 1.1.0
       ceramic-cacao: link:../cacao
     devDependencies:
@@ -1733,7 +1727,7 @@ packages:
       '@ceramicnetwork/stream-caip10-link-handler': 2.1.3
       '@ceramicnetwork/stream-model': 0.4.2
       '@ceramicnetwork/stream-model-handler': 0.4.2
-      '@ceramicnetwork/stream-model-instance': 0.4.0
+      '@ceramicnetwork/stream-model-instance': 0.4.1
       '@ceramicnetwork/stream-model-instance-handler': 0.5.0
       '@ceramicnetwork/stream-tile': 2.4.2
       '@ceramicnetwork/stream-tile-handler': 2.2.6
@@ -1857,7 +1851,7 @@ packages:
     resolution: {integrity: sha512-sup/XkYkyxycIlYpvmIM3McXICp0wb5cj7C1QQ44VQg32Z4lMRiClCrAan/k87WKqcJb2zbtS2yygQhnPMwVRw==}
     dependencies:
       '@ceramicnetwork/common': 2.6.0
-      '@ceramicnetwork/stream-model-instance': 0.4.0
+      '@ceramicnetwork/stream-model-instance': 0.4.1
       '@ceramicnetwork/streamid': 2.3.3
       ajv: 8.11.0
       ajv-formats: 2.1.1
@@ -1868,11 +1862,11 @@ packages:
       - encoding
     dev: true
 
-  /@ceramicnetwork/stream-model-instance/0.4.0:
-    resolution: {integrity: sha512-/7Lh8Mgb5olpD5hzwle2bNBfHJcdRweVhcT8yaGNGm/lBqFEaIU4wYSS6DC9a3wZO4bEhSfWepsfSZgydMdTbw==}
+  /@ceramicnetwork/stream-model-instance/0.4.1:
+    resolution: {integrity: sha512-OpoGjQC1MnnZu/dhX224LF17WbRQExjRORh1O30mpKI7LDkOhxGntrbMw4I2MRsuA6JnsNy05GBa9n8/0P/rng==}
     dependencies:
       '@ceramicnetwork/common': 2.6.0
-      '@ceramicnetwork/streamid': 2.3.2
+      '@ceramicnetwork/streamid': 2.3.3
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/random': 1.0.2
       fast-json-patch: 3.1.1
@@ -1931,7 +1925,7 @@ packages:
     resolution: {integrity: sha512-ZrHcl6P6PnheqywYu1DNQfHmEps511X7JJV8CuG+U616D1Pbu33ejzkm5RIGyKauUoFoHP0dZ351gRr2plGxFg==}
     dependencies:
       '@ceramicnetwork/common': 2.6.0
-      '@ceramicnetwork/streamid': 2.3.2
+      '@ceramicnetwork/streamid': 2.3.3
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/random': 1.0.2
       fast-json-patch: 3.1.1
@@ -1939,15 +1933,6 @@ packages:
       uint8arrays: 3.1.0
     transitivePeerDependencies:
       - encoding
-
-  /@ceramicnetwork/streamid/2.3.2:
-    resolution: {integrity: sha512-KwfFJ1FGzsCbToH2res0Y5R38Wr24KyoKxt5Y3YfBBxfE6BBE/mFgo7rXP/54/Ix2/rIvvoapfoGeZNh4BaIaw==}
-    dependencies:
-      '@ipld/dag-cbor': 7.0.3
-      multiformats: 9.8.1
-      typescript-memoize: 1.1.0
-      uint8arrays: 3.1.0
-      varint: 6.0.0
 
   /@ceramicnetwork/streamid/2.3.3:
     resolution: {integrity: sha512-YVxc7uGcb97IVQfBo3VHJ8l7ELN6a6Rb6cxKT9Ko7JutPerqBbyZUdsdahLIuNP2wBN8MHR8MpHh/iVbLe81IA==}

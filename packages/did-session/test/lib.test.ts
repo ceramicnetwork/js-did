@@ -69,9 +69,9 @@ function createEthereumAuthMethod(mnemonic?: string): Promise<AuthMethod> {
   const provider = new EthereumProvider(wallet)
   const accountId = new AccountId({
     address: wallet.address.toLowerCase(),
-    chainId: { namespace: "eip155", reference: "1" },
-  });
-  return Promise.resolve(EthereumNodeAuth.getAuthMethod(provider, accountId, 'testapp' ))
+    chainId: { namespace: 'eip155', reference: '1' },
+  })
+  return Promise.resolve(EthereumNodeAuth.getAuthMethod(provider, accountId, 'testapp'))
 }
 
 const bytes32 = [
@@ -106,7 +106,7 @@ describe('did-session', () => {
   test('authorize, with streamid resources', async () => {
     const streamId = `ceramic://z6MkhZCWzHtPFmpNupVPuHA6svtpKKY9RUpgf9uohnhFMNvj`
     const session = await DIDSession.authorize(authMethod, {
-      resources: [streamId]
+      resources: [streamId],
     })
     const did = session.did
     expect(did.capability.p.resources.includes(streamId)).toBe(true)
@@ -114,7 +114,7 @@ describe('did-session', () => {
 
   test('authorize and create/update streams', async () => {
     const session = await DIDSession.authorize(authMethod, {
-      resources: [`ceramic://*`]
+      resources: [`ceramic://*`],
     })
     ceramic.did = session.did
     const doc = await TileDocument.create(
@@ -134,7 +134,7 @@ describe('did-session', () => {
 
   test('authorize and create/update streams from serialized session', async () => {
     const session = await DIDSession.authorize(authMethod, {
-      resources: [`ceramic://*`]
+      resources: [`ceramic://*`],
     })
     const sessionStr = session.serialize()
     const session2 = await DIDSession.fromSession(sessionStr)
@@ -156,7 +156,7 @@ describe('did-session', () => {
 
   test('can create and update model instance stream', async () => {
     const session = await DIDSession.authorize(authMethod, {
-      resources: [`ceramic://*?model=${model.id.toString()}`]
+      resources: [`ceramic://*?model=${model.id.toString()}`],
     })
     ceramic.did = session.did
 
@@ -173,7 +173,7 @@ describe('did-session', () => {
 
   test('isAuthorized/isExpired, with valid session and resources', async () => {
     const session = await DIDSession.authorize(authMethod, {
-      resources: testResources
+      resources: testResources,
     })
     // Any session authorized and valid, true
     expect(session.isAuthorized()).toBe(true)
@@ -313,7 +313,7 @@ describe('did-session', () => {
 
     test('roundtrip serialization, fromSession', async () => {
       const session = await DIDSession.authorize(authMethod, {
-        resources: [`ceramic://*`]
+        resources: [`ceramic://*`],
       })
       const sessionStr = session.serialize()
       const session2 = await DIDSession.fromSession(sessionStr)

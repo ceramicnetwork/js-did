@@ -9,14 +9,17 @@ npm install --save ethereum-cacao
 
 ## Usage
 
-```js
+```ts
 // Auth Usage
-import * as EthereumWebAuth from 'ethereum-cacao'
+import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
 // ...
 
 const ethProvider = // import/get your web3 eth provider
-const account = await getAccount(ethProvider) // enable, address, chainid on ethProvider
-const authMethod = EthereumWebAuth.getAuthMethod(ethProvider, account)
+const addresses = await ethProvider.enable()
+const accountId = await getAccountId(ethProvider, addresses[0])
+const authMethod = EthereumWebAuth.getAuthMethod(provider, accountId)
+
+// ...
 
 const client = new ComposeClient({ceramic, definition})
 const resources = client.resources
@@ -26,6 +29,8 @@ client.setDID(session.did)
 
 
 // Verifier Usage
+import { Cacao } from 'ceramic-cacao'
+
 const verifiers = {
 	...EthereumWebAuth.getEIP191Verifier()
 }

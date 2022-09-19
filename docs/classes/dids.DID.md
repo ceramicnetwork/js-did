@@ -179,7 +179,7 @@ Will be signed by the currently authenticated DID.
 
 | Name | Type |
 | :------ | :------ |
-| `T` | `any` |
+| `T` | extends `string` \| `Record`<`string`, `any`\> |
 
 #### Parameters
 
