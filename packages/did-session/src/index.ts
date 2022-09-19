@@ -183,7 +183,7 @@ import { Ed25519Provider } from 'key-did-provider-ed25519'
 import KeyDidResolver from 'key-did-resolver'
 import { randomBytes } from '@stablelib/random'
 import { DID } from 'dids'
-import type { Cacao, AuthMethod } from 'ceramic-cacao'
+import type { Cacao, AuthMethod, AuthMethodOpts } from 'ceramic-cacao'
 import * as u8a from 'uint8arrays'
 
 export type SessionParams = {
@@ -268,12 +268,14 @@ export class DIDSession {
     if (!authOpts.resources || authOpts.resources.length === 0)
       throw new Error('Required: resource argument option when authorizing')
 
+    const authMethodOpts: AuthMethodOpts = authOpts
     const keySeed = randomBytes(32)
     const didKey = await createDIDKey(keySeed)
+    authMethodOpts.uri = didKey.id
 
     if (authOpts.expiresInSecs) {
       const exp = new Date(Date.now() + authOpts.expiresInSecs * 1000)
-      authOpts.expirationTime = exp.toISOString()
+      authMethodOpts.expirationTime = exp.toISOString()
     }
     
     const cacao = await authMethod(authOpts)

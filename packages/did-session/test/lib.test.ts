@@ -132,27 +132,27 @@ describe('did-session', () => {
     expect(doc.content).toEqual({ foo: 'boo' })
   })
 
-  // test('authorize and create/update streams from serialized session', async () => {
-  //   const session = await DIDSession.authorize(authMethod, {
-  //     resources: [`ceramic://*`]
-  //   })
-  //   const sessionStr = session.serialize()
-  //   const session2 = await DIDSession.fromSession(sessionStr)
-  //   ceramic.did = session2.did
-  //   const doc = await TileDocument.create(
-  //     ceramic,
-  //     { foo: 'bar' },
-  //     {},
-  //     {
-  //       anchor: false,
-  //       publish: false,
-  //     }
-  //   )
-  //   expect(doc.content).toEqual({ foo: 'bar' })
+  test('authorize and create/update streams from serialized session', async () => {
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [`ceramic://*`]
+    })
+    const sessionStr = session.serialize()
+    const session2 = await DIDSession.fromSession(sessionStr)
+    ceramic.did = session2.did
+    const doc = await TileDocument.create(
+      ceramic,
+      { foo: 'bar' },
+      {},
+      {
+        anchor: false,
+        publish: false,
+      }
+    )
+    expect(doc.content).toEqual({ foo: 'bar' })
 
-  //   await doc.update({ foo: 'boo' })
-  //   expect(doc.content).toEqual({ foo: 'boo' })
-  // })
+    await doc.update({ foo: 'boo' })
+    expect(doc.content).toEqual({ foo: 'boo' })
+  })
 
   // Enable with next release
   test.skip('can create and update model instance stream', async () => {
