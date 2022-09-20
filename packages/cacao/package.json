@@ -1,6 +1,6 @@
 {
-  "name": "ceramic-cacao",
-  "version": "1.4.0",
+  "name": "@didtools/cacao",
+  "version": "1.0.0",
   "description": "Typescript library for Ceramic OCAP",
   "author": "Haardik <hhaardik@uwaterloo.ca>",
   "license": "(Apache-2.0 OR MIT)",

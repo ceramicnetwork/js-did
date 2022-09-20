@@ -3,8 +3,8 @@ import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import { RPCClient } from 'rpc-utils'
 import { CID } from 'multiformats/cid'
-import { CacaoBlock, Cacao, Verifiers } from 'ceramic-cacao'
-import { getEIP191Verifier } from 'ethereum-cacao'
+import { CacaoBlock, Cacao, Verifiers } from '@didtools/cacao'
+import { getEIP191Verifier } from '@didtools/pkh-ethereum'
 import type { DagJWS, DIDProvider, DIDProviderClient } from './types.js'
 import {
   fromDagJWS,

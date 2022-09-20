@@ -31,7 +31,7 @@ const siweMessage2 = SiweMessage.fromCacao(cacao)
 
 ```typescript
 import { Wallet } from '@ethersproject/wallet'
-import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
+import { Cacao, CacaoBlock, SiweMessage } from '@didtools/cacao'
 
 const wallet = Wallet.createRandom()
 const address = wallet.address
@@ -67,7 +67,7 @@ import { DID } from "dids"
 import * as KeyDidResolver from "key-did-resolver";
 import { TileDocument } from "@ceramicnetwork/stream-tile";
 import { CeramicClient } from "@ceramicnetwork/http-client";
-import type { Cacao } from "ceramic-cacao"
+import type { Cacao } from "@didtools/cacao"
 
 // Create the EthereumAuthProvider
 const web3Provider = new Web3Provider(...) // connect to a provider

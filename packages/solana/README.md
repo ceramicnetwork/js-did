@@ -4,14 +4,14 @@
 ## Installation
 
 ```
-npm install --save solana -cacao
+npm install --save @didtools/pkh-solana
 ```
 
 ## Usage
 
 ```js
 // Auth Usage
-import * as SolanaWebAuth from 'solana-cacao'
+import * as SolanaWebAuth from '@didtools/pkh-solana'
 // ...
 // TODO for solana
 // const ethProvider = // import/get your web3 eth provider

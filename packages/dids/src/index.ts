@@ -15,7 +15,7 @@
  *
  * ```js
  * import { DID } from 'dids'
- * import Ed25519Provider from 'key-did-provider-ed25519'
+ * import { Ed25519Provider } from 'key-did-provider-ed25519'
  * import KeyResolver from 'key-did-resolver'
  *
  * const seed = // 32 bytes of entropy, Uint8Array
@@ -114,9 +114,9 @@
  *
  * ```js
  * import { DID } from 'dids'
- * import Ed25519Provider from 'key-did-provider-ed25519'
+ * import { Ed25519Provider } from 'key-did-provider-ed25519'
  * import KeyResolver from 'key-did-resolver'
- * import { Cacao, SiweMessage } from 'ceramic-cacao'
+ * import { Cacao, SiweMessage } from '@didtools/cacao'
  *
  * const seed = // 32 bytes of entropy, Uint8Array
  * const provider = new Ed25519Provider(seed)

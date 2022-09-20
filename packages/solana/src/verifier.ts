@@ -5,7 +5,7 @@ import {
   verifyTimeChecks,
   assertSigned,
   Verifiers,
-} from 'ceramic-cacao'
+} from '@didtools/cacao'
 import { AccountId } from 'caip'
 import { verify } from '@stablelib/ed25519'
 import { fromString as u8aFromString } from 'uint8arrays/from-string'

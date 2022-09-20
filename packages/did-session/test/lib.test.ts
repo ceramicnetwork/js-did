@@ -9,10 +9,10 @@ import { fromString, toString } from 'uint8arrays'
 import { DIDSession, createDIDKey, createDIDCacao } from '../src'
 import { jest } from '@jest/globals'
 import { Wallet } from '@ethersproject/wallet'
-import { SiweMessage, Cacao, AuthMethod } from 'ceramic-cacao'
+import { SiweMessage, Cacao, AuthMethod } from '@didtools/cacao'
 import { Model, ModelAccountRelation, ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
-import { EthereumNodeAuth } from 'ethereum-cacao'
+import { EthereumNodeAuth } from '@didtools/pkh-ethereum'
 import { AccountId } from 'caip'
 
 const getModelDef = (name: string): ModelDefinition => ({

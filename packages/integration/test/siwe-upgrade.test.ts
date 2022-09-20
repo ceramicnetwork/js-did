@@ -1,6 +1,6 @@
 import * as uint8arrays from 'uint8arrays'
-import { Cacao } from 'ceramic-cacao'
-import { getEIP191Verifier } from 'ethereum-cacao'
+import { Cacao } from '@didtools/cacao'
+import { getEIP191Verifier } from '@didtools/pkh-ethereum'
 import { DateTime } from 'luxon'
 
 // 2022-08-20T16:25:24.000Z

@@ -1,6 +1,6 @@
 import { Wallet } from '@ethersproject/wallet'
-import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
-import { getEIP191Verifier } from 'ethereum-cacao'
+import { Cacao, CacaoBlock, SiweMessage } from '@didtools/cacao'
+import { getEIP191Verifier } from '@didtools/pkh-ethereum'
 import { DateTime } from 'luxon'
 
 const ISSUED_AT = DateTime.fromISO('2021-10-14T07:18:41Z').toUTC()

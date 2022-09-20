@@ -1,4 +1,4 @@
-// import { Cacao, Payload as AuthMethodOpts  } from 'ceramic-cacao'
+// import { Cacao, Payload as AuthMethodOpts  } from '@didtools/cacao'
 // import { randomString } from '@stablelib/random'
 // import { AccountId } from 'caip'
 // import { safeSend } from './utils.js'

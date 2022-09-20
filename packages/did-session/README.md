@@ -20,7 +20,7 @@ Authorize and use DIDs where needed. Import the AuthMethod you need, Ethereum ac
 
 ```ts
 import { DIDSession } from 'did-session'
-import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
@@ -114,8 +114,8 @@ session is valid for. How that session string is stored and managed is the respo
 
 ```ts
 import { DIDSession } from 'did-session'
-import type { AuthMethod } from 'ceramic-cacao'
-import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+import type { AuthMethod } from '@didtools/cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
@@ -172,7 +172,7 @@ const did = await session.authorize()
 
 // Now did-session@1.0.0
 ...
-import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()

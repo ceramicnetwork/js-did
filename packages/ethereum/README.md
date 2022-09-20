@@ -4,14 +4,14 @@
 ## Installation
 
 ```
-npm install --save ethereum-cacao
+npm install --save @didtools/pkh-ethereum
 ```
 
 ## Usage
 
 ```ts
 // Auth Usage
-import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 // ...
 
 const ethProvider = // import/get your web3 eth provider
@@ -29,7 +29,7 @@ client.setDID(session.did)
 
 
 // Verifier Usage
-import { Cacao } from 'ceramic-cacao'
+import { Cacao } from '@didtools/cacao'
 
 const verifiers = {
 	...EthereumWebAuth.getEIP191Verifier()

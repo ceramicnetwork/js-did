@@ -16,11 +16,11 @@ npm install did-session
 
 ## Usage
 
-Authorize and use DIDs where needed. Import the AuthMethod you need, Ethereum accounts used here for example. 
+Authorize and use DIDs where needed. Import the AuthMethod you need, Ethereum accounts used here for example.
 
 ```ts
 import { DIDSession } from 'did-session'
-import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
@@ -115,8 +115,8 @@ session is valid for. How that session string is stored and managed is the respo
 
 ```ts
 import { DIDSession } from 'did-session'
-import type { AuthMethod } from 'ceramic-cacao'
-import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+import type { AuthMethod } from '@didtools/cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
@@ -179,9 +179,9 @@ const session = await DIDSession.authorize(authMethod, { resources: [`ceramic://
 const did = session.did
 ```
 
-## Upgrading from `did-session@0.x.x` to `did-session@1.x.x` 
+## Upgrading from `did-session@0.x.x` to `did-session@1.x.x`
 
-AuthProviders change to AuthMethod interfaces. Similarly you can import the auth libraries you need. How you configure and manage 
+AuthProviders change to AuthMethod interfaces. Similarly you can import the auth libraries you need. How you configure and manage
 these AuthMethods may differ, but each will return an AuthMethod function to be used with did-session.
 
 ```ts
@@ -197,7 +197,7 @@ const did = await session.authorize()
 
 // Now did-session@1.0.0
 ...
-import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()

@@ -19,7 +19,7 @@
  *
  * ```ts
  * import { DIDSession } from 'did-session'
- * import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+ * import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  *
  * const ethProvider = // import/get your web3 eth provider
  * const addresses = await ethProvider.enable()
@@ -114,8 +114,8 @@
  *
  * ```ts
  * import { DIDSession } from 'did-session'
- * import type { AuthMethod } from 'ceramic-cacao'
- * import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+ * import type { AuthMethod } from '@didtools/cacao'
+ * import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  *
  * const ethProvider = // import/get your web3 eth provider
  * const addresses = await ethProvider.enable()
@@ -196,7 +196,7 @@
  *
  * // Now did-session@1.0.0
  * ...
- * import { EthereumWebAuth, getAccountId } from 'ethereum-cacao'
+ * import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  *
  * const ethProvider = // import/get your web3 eth provider
  * const addresses = await ethProvider.enable()
@@ -213,7 +213,7 @@ import { Ed25519Provider } from 'key-did-provider-ed25519'
 import KeyDidResolver from 'key-did-resolver'
 import { randomBytes } from '@stablelib/random'
 import { DID } from 'dids'
-import type { Cacao, AuthMethod, AuthMethodOpts } from 'ceramic-cacao'
+import type { Cacao, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 import * as u8a from 'uint8arrays'
 
 export type SessionParams = {

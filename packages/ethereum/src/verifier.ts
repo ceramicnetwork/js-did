@@ -7,7 +7,7 @@ import {
   verifyTimeChecks,
   assertSigned,
   Verifiers,
-} from 'ceramic-cacao'
+} from '@didtools/cacao'
 import { AccountId } from 'caip'
 
 export function getEIP191Verifier(): Verifiers {

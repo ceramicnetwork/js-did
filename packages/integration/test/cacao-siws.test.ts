@@ -1,8 +1,8 @@
 import { extractPublicKeyFromSecretKey, sign } from '@stablelib/ed25519'
 import { fromString } from 'uint8arrays/from-string'
 import { toString } from 'uint8arrays/to-string'
-import { Cacao, CacaoBlock, SiwsMessage } from 'ceramic-cacao'
-import { getSolanaVerifier } from 'solana-cacao'
+import { Cacao, CacaoBlock, SiwsMessage } from '@didtools/cacao'
+import { getSolanaVerifier } from '@didtools/pkh-solana'
 import { DateTime } from 'luxon'
 
 const ISSUED_AT = DateTime.fromISO('2021-10-14T07:18:41Z').toUTC()

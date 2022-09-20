@@ -1,4 +1,4 @@
-import { SiweMessage, SignatureType } from 'ceramic-cacao'
+import { SiweMessage, SignatureType } from '@didtools/cacao'
 import { Wallet } from '@ethersproject/wallet'
 
 const SIWE_MESSAGE_PARAMS = {
