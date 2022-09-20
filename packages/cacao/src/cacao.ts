@@ -38,9 +38,9 @@ export type SignedCacao = {
   s: Signature
 }
 
-export type Verifiers = Record<string, CACAOVerifier>
+export type Verifiers = Record<string, CacaoVerifier>
 
-export type CACAOVerifier = (cacao: Cacao, opts: VerifyOptions) => Promise<void>
+export type CacaoVerifier = (cacao: Cacao, opts: VerifyOptions) => Promise<void>
 
 export type AuthMethod = (opts: AuthMethodOpts) => Promise<Cacao>
 
