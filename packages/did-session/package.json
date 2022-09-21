@@ -34,7 +34,7 @@
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
     "lint": "eslint src test --fix",
-    "test": "CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB=true node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test": "CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=true node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm run build",
     "prepublishOnly": "package-check"
@@ -60,6 +60,8 @@
     "@didtools/cacao": "workspace:^1.0.0",
     "caip": "^1.1.0",
     "@didtools/pkh-ethereum": "workspace:^0.0.2",
+    "@didtools/pkh-solana": "workspace:^0.0.1",
+    "@stablelib/ed25519": "^1.0.3",
     "jest-environment-glazetemp": "0.3.0-rc.1"
   },
   "jest": {

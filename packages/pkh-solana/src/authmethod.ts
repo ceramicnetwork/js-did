@@ -31,6 +31,22 @@ export namespace SolanaWebAuth {
   }
 }
 
+export namespace SolanaNodeAuth {
+  // eslint-disable-next-line @typescript-eslint/require-await
+  export async function getAuthMethod(
+    ethProvider: any,
+    account: AccountId,
+    appName: string
+  ): Promise<AuthMethod> {
+    const domain = appName
+
+    return async (opts: AuthMethodOpts): Promise<Cacao> => {
+      opts.domain = domain
+      return createCACAO(opts, ethProvider, account)
+    }
+  }
+}
+
 export type SupportedProvider = {
   signMessage: (message: Uint8Array, type: string) => Promise<Uint8Array>
 }
