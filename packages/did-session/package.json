@@ -34,7 +34,7 @@
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
     "lint": "eslint src test --fix",
-    "test": "CERAMIC_ENABLE_EXPERIMENTAL_INDEXING=true node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test": "CERAMIC_ENABLE_EXPERIMENTAL_COMPOSE_DB=true node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm run build",
     "prepublishOnly": "package-check"
