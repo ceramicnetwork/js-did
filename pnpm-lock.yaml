@@ -47,11 +47,13 @@ importers:
       '@ipld/dag-cbor': ^7.0.1
       '@types/luxon': ^3.0.0
       apg-js: ^4.1.1
+      caip: ^1.1.0
       luxon: ^3.0.1
       multiformats: ^9.5.1
     dependencies:
       '@ipld/dag-cbor': 7.0.3
       apg-js: 4.1.2
+      caip: 1.1.0
       multiformats: 9.8.1
     devDependencies:
       '@types/luxon': 3.0.1
@@ -213,12 +215,14 @@ importers:
     specifiers:
       '@didtools/cacao': workspace:^1.0.0
       '@stablelib/ed25519': ^1.0.3
+      '@stablelib/random': ^1.0.2
       caip: ^1.1.0
       typescript: ^4.5.4
       uint8arrays: ^3.1.0
     dependencies:
       '@didtools/cacao': link:../cacao
       '@stablelib/ed25519': 1.0.3
+      '@stablelib/random': 1.0.2
       caip: 1.1.0
       uint8arrays: 3.1.0
     devDependencies:
