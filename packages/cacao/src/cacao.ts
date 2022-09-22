@@ -1,15 +1,10 @@
 // @ts-nocheck
-import { verifyMessage } from '@ethersproject/wallet'
 import * as dagCbor from '@ipld/dag-cbor'
-import { verify } from '@stablelib/ed25519'
-import { AccountId } from 'caip'
 import * as multiformats from 'multiformats'
 import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2'
-import { fromString as u8aFromString } from 'uint8arrays/from-string'
 import { SiweMessage } from './siwx/siwe.js'
 import { SiwsMessage } from './siwx/siws.js'
-import { asLegacyChainIdString } from './siwx/siwx.js'
 
 // 5 minute default clockskew
 const CLOCK_SKEW_DEFAULT_SEC = 5 * 60
@@ -17,9 +12,37 @@ const CLOCK_SKEW_DEFAULT_SEC = 5 * 60
 // CACAOs issued after that day must be of new format
 export const LEGACY_CHAIN_ID_REORG_DATE = new Date('2022-09-20').valueOf()
 
+export type CacaoBlock = {
+  value: Cacao
+  cid: multiformats.CID
+  bytes: Uint8Array
+}
+
 export type Header = {
   t: 'eip4361' | 'caip122'
 }
+
+export type Signature = {
+  t: 'eip191' | 'eip1271' | 'solana:ed25519'
+  s: string
+}
+export type Cacao = {
+  h: Header
+  p: Payload
+  s?: Signature
+}
+
+export type SignedCacao = {
+  h: Header
+  p: Payload
+  s: Signature
+}
+
+export type Verifiers = Record<string, CacaoVerifier>
+
+export type CacaoVerifier = (cacao: Cacao, opts: VerifyOptions) => Promise<void>
+
+export type AuthMethod = (opts: AuthMethodOpts) => Promise<Cacao>
 
 export type Payload = {
   domain: string
@@ -35,17 +58,11 @@ export type Payload = {
   resources?: Array<string>
 }
 
-export type Signature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519'
-  s: string
-}
-export type Cacao = {
-  h: Header
-  p: Payload
-  s?: Signature
-}
-
 export type VerifyOptions = {
+  /**
+   * @param verifiers - object of supported verification methods to verify given cacao
+   */
+  verifiers: Verifiers
   /**
    * @param atTime - the point in time the capability is being verified for
    */
@@ -63,6 +80,43 @@ export type VerifyOptions = {
    * @param disableExpirationCheck - Do not verify expiration time
    */
   disableExpirationCheck?: boolean
+}
+
+export type AuthMethodOpts = {
+  /**RFC 4501 dns authority that is requesting the signing. */
+  domain?: string
+  /**Ethereum address performing the signing conformant to capitalization
+   * encoded checksum specified in EIP-55 where applicable. */
+  address?: string
+  /**Human-readable ASCII assertion that the user will sign, and it must not
+   * contain `\n`. */
+  statement?: string
+  /**RFC 3986 URI referring to the resource that is the subject of the signing
+   *  (as in the __subject__ of a claim). */
+  uri?: string
+  /**Current version of the message. */
+  version?: string
+  /**Randomized token used to prevent replay attacks, at least 8 alphanumeric
+   * characters. */
+  nonce?: string
+  /**ISO 8601 datetime string of the current time. */
+  issuedAt?: string
+  /**ISO 8601 datetime string that, if present, indicates when the signed
+   * authentication message is no longer valid. */
+  expirationTime?: string
+  /**ISO 8601 datetime string that, if present, indicates when the signed
+   * authentication message will become valid. */
+  notBefore?: string
+  /**System-specific identifier that may be used to uniquely refer to the
+   * sign-in request. */
+  requestId?: string
+  /**EIP-155 Chain ID to which the session is bound, and the network where
+   * Contract Accounts must be resolved. */
+  chainId?: string
+  /**List of information or references to information the user wishes to have
+   * resolved as part of authentication by the relying party. They are
+   * expressed as RFC 3986 URIs separated by `\n- `. */
+  resources?: Array<string>
 }
 
 export namespace Cacao {
@@ -162,93 +216,12 @@ export namespace Cacao {
     return block.value as Cacao
   }
 
-  export function verify(cacao: Cacao, options: VerifyOptions = {}): void {
-    if (cacao.s?.t === 'eip191') {
-      return verifyEIP191Signature(cacao, options)
-    } else if (cacao.s?.t === 'solana:ed25519') {
-      return verifySolanaSignature(cacao, options)
-    }
-    throw new Error('Unsupported CACAO signature type')
+  export async function verify(cacao: Cacao, opts: VerifyOptions = {}): Promise<void> {
+    assertSigned(cacao)
+    const verify = opts.verifiers[cacao.s.t]
+    if (!verify) throw new Error('Unsupported CACAO signature type, register the needed verifier')
+    return verify(cacao, opts)
   }
-
-  export function verifyEIP191Signature(cacao: Cacao, options: VerifyOptions) {
-    if (!cacao.s) {
-      throw new Error(`CACAO does not have a signature`)
-    }
-
-    const atTime = options.atTime ? options.atTime.getTime() : Date.now()
-    const clockSkew = (options.clockSkewSecs ?? CLOCK_SKEW_DEFAULT_SEC) * 1000
-
-    if (
-      Date.parse(cacao.p.iat) > atTime + clockSkew ||
-      Date.parse(cacao.p.nbf) > atTime + clockSkew
-    ) {
-      throw new Error(`CACAO is not valid yet`)
-    }
-
-    const phaseOutMS = options.revocationPhaseOutSecs ? options.revocationPhaseOutSecs * 1000 : 0
-
-    if (
-      !options.disableExpirationCheck &&
-      Date.parse(cacao.p.exp) + phaseOutMS + clockSkew < atTime
-    ) {
-      throw new Error(`CACAO has expired`)
-    }
-
-    const recoveredAddress = verifyMessage(
-      SiweMessage.fromCacao(cacao).toMessage(),
-      cacao.s.s
-    ).toLowerCase()
-    const recoveredAddresses = [recoveredAddress]
-
-    if (Date.parse(cacao.p.iat) <= LEGACY_CHAIN_ID_REORG_DATE) {
-      const legacyChainIdRecoveredAddress = verifyMessage(
-        asLegacyChainIdString(SiweMessage.fromCacao(cacao), 'Ethereum'),
-        cacao.s.s
-      ).toLowerCase()
-      recoveredAddresses.push(legacyChainIdRecoveredAddress)
-    }
-
-    const issuerAddress = AccountId.parse(cacao.p.iss.replace('did:pkh:', '')).address.toLowerCase()
-    if (!recoveredAddresses.includes(issuerAddress)) {
-      throw new Error(`Signature does not belong to issuer`)
-    }
-  }
-}
-
-export function verifySolanaSignature(cacao: Cacao, options: VerifyOptions) {
-  if (!cacao.s) {
-    throw new Error(`CACAO does not have a signature`)
-  }
-  const atTime = options.atTime ? options.atTime.getTime() : Date.now()
-
-  if (Date.parse(cacao.p.iat) > atTime || Date.parse(cacao.p.nbf) > atTime) {
-    throw new Error(`CACAO is not valid yet`)
-  }
-
-  const phaseOutMS = options.revocationPhaseOutSecs ? options.revocationPhaseOutSecs * 1000 : 0
-
-  if (!options.disableExpirationCheck && Date.parse(cacao.p.exp) + phaseOutMS < atTime) {
-    throw new Error(`CACAO has expired`)
-  }
-
-  const msg = SiwsMessage.fromCacao(cacao)
-  const sig = cacao.s.s
-
-  const messageU8 = msg.signMessage()
-  const sigU8 = u8aFromString(sig, 'base58btc')
-  const issAddress = AccountId.parse(cacao.p.iss.replace('did:pkh:', '')).address
-  const pubKeyU8 = u8aFromString(issAddress, 'base58btc')
-
-  if (!verify(pubKeyU8, messageU8, sigU8)) {
-    throw new Error(`Signature does not belong to issuer`)
-  }
-}
-
-export type CacaoBlock = {
-  value: Cacao
-  cid: multiformats.CID
-  bytes: Uint8Array
 }
 
 export namespace CacaoBlock {
@@ -258,5 +231,32 @@ export namespace CacaoBlock {
       codec: dagCbor,
       hasher: hasher,
     })
+  }
+}
+
+export function assertSigned(cacao: Cacao): asserts cacao is SignedCacao {
+  if (cacao.s === null || cacao.s === undefined) {
+    throw new Error(`CACAO does not have a signature`)
+  }
+}
+
+export function verifyTimeChecks(cacao: Cacao, options: VerifyOptions) {
+  const atTime = options.atTime ? options.atTime.getTime() : Date.now()
+  const clockSkew = (options.clockSkewSecs ?? CLOCK_SKEW_DEFAULT_SEC) * 1000
+
+  if (
+    Date.parse(cacao.p.iat) > atTime + clockSkew ||
+    Date.parse(cacao.p.nbf) > atTime + clockSkew
+  ) {
+    throw new Error(`CACAO is not valid yet`)
+  }
+
+  const phaseOutMS = options.revocationPhaseOutSecs ? options.revocationPhaseOutSecs * 1000 : 0
+
+  if (
+    !options.disableExpirationCheck &&
+    Date.parse(cacao.p.exp) + phaseOutMS + clockSkew < atTime
+  ) {
+    throw new Error(`CACAO has expired`)
   }
 }

@@ -3,7 +3,7 @@
 import { jest } from '@jest/globals'
 import { randomBytes } from '@stablelib/random'
 import { generateKeyPairFromSeed } from '@stablelib/x25519'
-import { Cacao, CacaoBlock, SiweMessage } from 'ceramic-cacao'
+import { Cacao, CacaoBlock, SiweMessage } from '@didtools/cacao'
 import { decodeCleartext, encodePayload, prepareCleartext } from 'dag-jose-utils'
 import { decryptJWE, JWE, x25519Decrypter } from 'did-jwt'
 import { DIDDocument, ResolverRegistry } from 'did-resolver'

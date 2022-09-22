@@ -136,7 +136,7 @@ ___
 
 ### authorize
 
-▸ `Static` **authorize**(`authProvider`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+▸ `Static` **authorize**(`authMethod`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
 
 Request authorization for session
 
@@ -144,7 +144,7 @@ Request authorization for session
 
 | Name | Type |
 | :------ | :------ |
-| `authProvider` | `EthereumAuthProvider` |
+| `authMethod` | `AuthMethod` |
 | `authOpts` | `AuthOpts` |
 
 #### Returns

@@ -1,3 +1,4 @@
+/* eslint-disable  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 // @ts-nocheck
 import type { Cacao } from '../cacao.js'
 import { ParsedMessage as ABNFParsedMessage } from '../abnf.js'

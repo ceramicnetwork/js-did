@@ -3,7 +3,8 @@ import { createJWE, JWE, verifyJWS, resolveX25519Encrypters } from 'did-jwt'
 import { encodePayload, prepareCleartext, decodeCleartext } from 'dag-jose-utils'
 import { RPCClient } from 'rpc-utils'
 import { CID } from 'multiformats/cid'
-import { CacaoBlock, Cacao } from 'ceramic-cacao'
+import { CacaoBlock, Cacao, Verifiers } from '@didtools/cacao'
+import { getEIP191Verifier } from '@didtools/pkh-ethereum'
 import type { DagJWS, DIDProvider, DIDProviderClient } from './types.js'
 import {
   fromDagJWS,
@@ -15,6 +16,9 @@ import {
   didWithTime,
   extractControllers,
 } from './utils.js'
+
+// Eth Verifier default for CACAO
+const verifiers = { ...getEIP191Verifier() }
 
 export type AuthenticateOptions = {
   provider?: DIDProvider
@@ -64,6 +68,11 @@ export type VerifyJWSOptions = {
    * Number of seconds that a revoked key stays valid for after it was revoked
    */
   revocationPhaseOutSecs?: number
+
+  /**
+   *  verifiers - object of supported verification methods to verify given cacao
+   */
+  verifiers?: Verifiers
 }
 
 export type VerifyJWSResult = {
@@ -322,6 +331,7 @@ export class DID {
    * @returns                   Information about the signed JWS
    */
   async verifyJWS(jws: string | DagJWS, options: VerifyJWSOptions = {}): Promise<VerifyJWSResult> {
+    options = Object.assign({ verifiers }, options)
     if (typeof jws !== 'string') jws = fromDagJWS(jws)
     const kid = base64urlToJSON(jws.split('.')[0]).kid as string
     if (!kid) throw new Error('No "kid" found in jws')
@@ -356,10 +366,12 @@ export class DID {
       options.issuer === options.capability?.p.iss &&
       signerDid === options.capability.p.aud
     ) {
-      Cacao.verify(options.capability, {
+      if (!options.verifiers) throw new Error('Registered verifiers needed for CACAO')
+      await Cacao.verify(options.capability, {
         disableExpirationCheck: options.disableTimecheck,
         atTime: options.atTime ? options.atTime : undefined,
         revocationPhaseOutSecs: options.revocationPhaseOutSecs,
+        verifiers: options.verifiers ?? {},
       })
     } else if (options.issuer && options.issuer !== signerDid) {
       const issuerUrl = didWithTime(options.issuer, options.atTime)
@@ -372,9 +384,10 @@ export class DID {
         options.capability.p.aud === signerDid &&
         controllers.includes(options.capability.p.iss)
       ) {
-        Cacao.verify(options.capability, {
+        await Cacao.verify(options.capability, {
           atTime: options.atTime ? options.atTime : undefined,
           revocationPhaseOutSecs: options.revocationPhaseOutSecs,
+          verifiers: options.verifiers ?? {},
         })
       } else {
         const signerIsController = signerDid ? controllers.includes(signerDid) : false
