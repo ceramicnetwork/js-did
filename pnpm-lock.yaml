@@ -91,7 +91,7 @@ importers:
       '@ceramicnetwork/stream-model-instance': 0.4.2
       '@ceramicnetwork/streamid': 2.3.4
       '@didtools/cacao': link:../cacao
-      '@didtools/pkh-ethereum': link:../ethereum
+      '@didtools/pkh-ethereum': link:../pkh-ethereum
       '@ethersproject/wallet': 5.7.0
       '@jest/globals': 28.1.3
       '@types/create-hash': 1.2.2
@@ -115,7 +115,7 @@ importers:
       uint8arrays: ^3.0.0
     dependencies:
       '@didtools/cacao': link:../cacao
-      '@didtools/pkh-ethereum': link:../ethereum
+      '@didtools/pkh-ethereum': link:../pkh-ethereum
       '@stablelib/random': 1.0.2
       dag-jose-utils: 2.0.0
       did-jwt: 6.8.0
@@ -126,21 +126,6 @@ importers:
     devDependencies:
       '@stablelib/x25519': 1.0.3
       ethers: 5.7.0
-
-  packages/ethereum:
-    specifiers:
-      '@didtools/cacao': workspace:^1.0.0
-      '@ethersproject/wallet': ^5.7.0
-      '@stablelib/random': ^1.0.2
-      caip: ^1.1.0
-      typescript: ^4.5.4
-    dependencies:
-      '@didtools/cacao': link:../cacao
-      '@ethersproject/wallet': 5.7.0
-      '@stablelib/random': 1.0.2
-      caip: 1.1.0
-    devDependencies:
-      typescript: 4.8.2
 
   packages/integration:
     specifiers:
@@ -158,8 +143,8 @@ importers:
       uint8arrays: ^3.0.0
     devDependencies:
       '@didtools/cacao': link:../cacao
-      '@didtools/pkh-ethereum': link:../ethereum
-      '@didtools/pkh-solana': link:../solana
+      '@didtools/pkh-ethereum': link:../pkh-ethereum
+      '@didtools/pkh-solana': link:../pkh-solana
       '@ethersproject/wallet': 5.7.0
       '@ipld/dag-cbor': 7.0.3
       '@stablelib/ed25519': 1.0.3
@@ -209,7 +194,22 @@ importers:
       prettier: 2.7.1
       typescript: 4.8.2
 
-  packages/solana:
+  packages/pkh-ethereum:
+    specifiers:
+      '@didtools/cacao': workspace:^1.0.0
+      '@ethersproject/wallet': ^5.7.0
+      '@stablelib/random': ^1.0.2
+      caip: ^1.1.0
+      typescript: ^4.5.4
+    dependencies:
+      '@didtools/cacao': link:../cacao
+      '@ethersproject/wallet': 5.7.0
+      '@stablelib/random': 1.0.2
+      caip: 1.1.0
+    devDependencies:
+      typescript: 4.8.2
+
+  packages/pkh-solana:
     specifiers:
       '@didtools/cacao': workspace:^1.0.0
       '@stablelib/ed25519': ^1.0.3
