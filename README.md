@@ -17,10 +17,13 @@ This monorepo uses [pnpm](https://pnpm.io/), make sure to install it first if yo
 
 ## Packages
 
-| Name                                                              | Description                                                                                               | Version                                                                      |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [`dids`](./packages/dids)                                         | [Interact with DIDs](https://developers.ceramic.network/reference/core-clients/did-jsonrpc/)                         | ![npm version](https://img.shields.io/npm/v/dids.svg)                        |
-| [`did-session`](./packages/did-session)                             | [Manages user DID in web based environments](https://developers.ceramic.network/reference/accounts/did-session/)   | ![npm version](https://img.shields.io/npm/v/did-session.svg)                 |
+| Name                                            | Description                                                                                               | Version                                                                      |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [`dids`](./packages/dids)                       | [Interact with DIDs](https://developers.ceramic.network/reference/core-clients/did-jsonrpc/)                         | ![npm version](https://img.shields.io/npm/v/dids.svg)             |
+| [`did-session`](./packages/did-session)         | [Manages user DID in web based environments](https://developers.ceramic.network/reference/accounts/did-session/)   | ![npm version](https://img.shields.io/npm/v/did-session.svg)        |
+| [`@didtools/cacao`](./packages/cacao)           | Chain-Agnostic Object Capabilities                       | ![npm version](https://img.shields.io/npm/v/@didtools/cacao.svg)             |
+| [`@didtools/pkh-ethereum`](./packages/pkh-ethereum) | DID PKH Ethereum                                     | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-ethereum.svg)        |
+| [`@didtools/pkh-solana`](./packages/pkh-solana)     | DID PKH Solana                                       | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-solana.svg)             |
 
 ## License
 
