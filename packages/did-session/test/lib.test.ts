@@ -336,8 +336,8 @@ function createSolanaAuthMethod(key?: Uint8Array): Promise<AuthMethod> {
   const address = toString(extractPublicKeyFromSecretKey(walletKey), 'base58btc')
 
   const solProvider = {
-    signMessage: (data: Uint8Array): Promise<Uint8Array> => {
-      return Promise.resolve(sign(walletKey, data))
+    signMessage: (data: Uint8Array): Promise<{ signature: Uint8Array }> => {
+      return Promise.resolve({ signature: sign(walletKey, data) })
     },
   }
 

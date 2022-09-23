@@ -20,7 +20,7 @@ type SolanaNetwork = 'mainnet' | 'testnet' | 'devnet'
 export namespace SolanaWebAuth {
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(solProvider: any, account: AccountId): Promise<AuthMethod> {
-    if (typeof window !== 'undefined')
+    if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')
     const domain = (window as Window).location.hostname
 
@@ -48,7 +48,7 @@ export namespace SolanaNodeAuth {
 }
 
 export type SupportedProvider = {
-  signMessage: (message: Uint8Array, type: string) => Promise<Uint8Array>
+  signMessage: (message: Uint8Array, type: string) => Promise<{ signature: Uint8Array }>
 }
 
 export type SupportedConnection = {
@@ -75,8 +75,8 @@ export function assertSupportedConnection(
 
 async function sign(solProvider: any, message: Uint8Array) {
   assertSupportedProvider(solProvider)
-  const rawSignature = await solProvider.signMessage(message, 'utf8')
-  return toString(rawSignature, 'base58btc')
+  const { signature } = await solProvider.signMessage(message, 'utf8')
+  return toString(signature, 'base58btc')
 }
 
 async function createCACAO(
