@@ -25,9 +25,9 @@ import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
 const accountId = await getAccountId(ethProvider, addresses[0])
-const authMethod = EthereumWebAuth.getAuthMethod(provider, accountId)
+const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
-const session = await DIDSession.authorize(authProvider, { resources: [...]})
+const session = await DIDSession.authorize(authMethod, { resources: [...]})
 
 // Uses DIDs in ceramic & glaze libraries, ie
 const ceramic = new CeramicClient()
@@ -121,7 +121,7 @@ import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
 const accountId = await getAccountId(ethProvider, addresses[0])
-const authMethod = EthereumWebAuth.getAuthMethod(provider, accountId)
+const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 
 const loadSession = async(authMethod: AuthMethod):Promise<DIDSession> => {
   const sessionStr = localStorage.getItem('didsession')
@@ -132,7 +132,7 @@ const loadSession = async(authMethod: AuthMethod):Promise<DIDSession> => {
   }
 
   if (!session || (session.hasSession && session.isExpired)) {
-    session = await DIDSession.authorize(authProvider, { resources: [...]})
+    session = await DIDSession.authorize(authMethod, { resources: [...]})
     localStorage.setItem('didsession', session.serialize())
   }
 
@@ -148,7 +148,7 @@ ceramic.did = session.did
 
 // before ceramic writes, check if session is still valid, if expired, create new
 if (session.isExpired) {
-  const session = loadSession(authProvider)
+  const session = loadSession(authMethod)
   ceramic.did = session.did
 }
 
@@ -202,7 +202,7 @@ import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
 const accountId = await getAccountId(ethProvider, addresses[0])
-const authMethod = EthereumWebAuth.getAuthMethod(provider, accountId)
+const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 const session = await DIDSession.authorize(authMethod, { resources: [...]})
 const did = session.did
 ```
