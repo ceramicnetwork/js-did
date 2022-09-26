@@ -1,0 +1,17 @@
+type Profile @createModel(accountRelation: SINGLE, description: "User profile info") {
+  name: String! @string(maxLength: 50)
+}
+
+enum NoteStatus {
+  DEFAULT
+  IMPORTANT
+  ARCHIVE
+}
+
+type Note @createModel(accountRelation: LIST, description: "Simple text note") {
+  author: DID! @documentAccount
+  version: CommitID! @documentVersion
+  status: NoteStatus
+  title: String! @string(minLength: 10, maxLength: 100)
+  text: String! @string(maxLength: 2000)
+}
