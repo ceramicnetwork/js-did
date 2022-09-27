@@ -5,16 +5,16 @@ are supported with the EthereumAuthProvider. Additional accounts will be support
 
 ```ts
 import { DIDSession } from 'did-session'
-import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
-const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
+const accountId = await getAccountId(ethProvider, addresses[0])
+const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
-// the resources param is a list of strings identifying resources you want to authorize for,
-// according to the verification protocol you use (e.g. for Ceramic Network Protocol, these are ceramic stream IDs)
-const session = await DIDSession.authorize(authProvider, { resources: [...]})
+const session = await DIDSession.authorize(authMethod, { resources: [...]})
 
-// use the session to verify that a given address is authorized
-
+// Uses DIDs in ceramic & glaze libraries, ie
+const ceramic = new CeramicClient()
+ceramic.did = session.did
 ```

@@ -5,7 +5,7 @@ for 1 day by default.
 
 ```ts
 // Create session as above, store for later
-const session = await DIDSession.authorize(authProvider, { resources: [...]})
+const session = await DIDSession.authorize(authMethod, { resources: [...]})
 const sessionString = session.serialize()
 
 // write/save session string where you want (ie localstorage)

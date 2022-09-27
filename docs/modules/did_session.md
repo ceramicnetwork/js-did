@@ -1,6 +1,6 @@
 # Module: did-session
 
-Manages user account and DID in web based environments.
+Manages user account DIDs in web based environments.
 
 ## Purpose
 
@@ -73,7 +73,7 @@ didsession.expiresInSecs
 ## Configuration
 
 The resources your app needs to write access to must be passed during authorization. Resources are an array
-of Model Stream Ids or Streams Ids. Typically you * will just pass resources from `@composedb` libraries as
+of Model Stream Ids or Streams Ids. Typically you will just pass resources from `@composedb` libraries as
 you will already manage your Composites and Models there. For example:
 
 ```ts
