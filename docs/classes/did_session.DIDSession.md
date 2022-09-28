@@ -5,7 +5,7 @@
 DID Session
 
 ```sh
-import { DIDSession } from '@glazed/did-session'
+import { DIDSession } from 'did-session'
 ```
 
 ## Constructors

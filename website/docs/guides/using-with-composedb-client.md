@@ -17,14 +17,16 @@ stream IDs from your runtime composite definition:
 
 ```ts
 import { DIDSession } from 'did-session'
-import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
+import type { AuthMethod } from '@didtools/cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
-const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
+const accountId = await getAccountId(ethProvider, addresses[0])
+const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 
-const loadSession = async(authProvider: EthereumAuthProvider, resources: Array<string>):Promise<DIDSession> => {
-  return await DIDSession.authorize(authProvider, { resources: resources})
+const loadSession = async(authMethod: AuthMethod, resources: Array<string>):Promise<DIDSession> => {
+  return DIDSession.authorize(authProvider, { resources })
 }
 
 const session = await loadSession(authProvider, compose.resources)
@@ -60,22 +62,19 @@ session is valid for. How that session string is stored and managed is the respo
 
 ```ts
 // An updated version of loadSession(...)
-const loadSession = async(authProvider: EthereumAuthProvider, resources: Array<string>):Promise<DIDSession> => {
-  let session
-  // get a serialized session from local storage
+const loadSession = async(authMethod: AuthMethod, resources: Array<string>):Promise<DIDSession> => {
   const sessionStr = localStorage.getItem('didsession')
+  let session
 
   if (sessionStr) {
     session = await DIDSession.fromSession(sessionStr)
   }
 
   if (!session || (session.hasSession && session.isExpired)) {
-    session = await DIDSession.authorize(authProvider, { resources: resources})
-    // store the serialized session in local storage
+    session = await DIDSession.authorize(authMethod, { resources })
     localStorage.setItem('didsession', session.serialize())
   }
 
   return session
 }
 ```
-

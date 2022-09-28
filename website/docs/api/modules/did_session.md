@@ -4,7 +4,7 @@ title: "Module: did-session"
 custom_edit_url: null
 ---
 
-Manages user account and DID in web based environments.
+Manages user account DIDs in web based environments.
 
 ## Purpose
 
@@ -20,18 +20,18 @@ npm install did-session
 
 ## Usage
 
-Authorize and use DIDs where needed. At the moment, only Ethereum accounts
-are supported with the EthereumAuthProvider. Additional accounts will be supported in the future.
+Authorize and use DIDs where needed. Import the AuthMethod you need, Ethereum accounts used here for example.
 
 ```ts
 import { DIDSession } from 'did-session'
-import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
-const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
+const accountId = await getAccountId(ethProvider, addresses[0])
+const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
-const session = await DIDSession.authorize(authProvider, { resources: [...]})
+const session = await DIDSession.authorize(authMethod, { resources: [...]})
 
 // Uses DIDs in ceramic & glaze libraries, ie
 const ceramic = new CeramicClient()
@@ -46,7 +46,7 @@ for 1 day by default.
 
 ```ts
 // Create session as above, store for later
-const session = await DIDSession.authorize(authProvider, { resources: [...]})
+const session = await DIDSession.authorize(authMethod, { resources: [...]})
 const sessionString = session.serialize()
 
 // write/save session string where you want (ie localstorage)
@@ -77,7 +77,7 @@ didsession.expiresInSecs
 ## Configuration
 
 The resources your app needs to write access to must be passed during authorization. Resources are an array
-of Model Stream Ids or Streams Ids. Typically you * will just pass resources from `@composedb` libraries as
+of Model Stream Ids or Streams Ids. Typically you will just pass resources from `@composedb` libraries as
 you will already manage your Composites and Models there. For example:
 
 ```ts
@@ -87,7 +87,7 @@ import { ComposeClient } from '@composedb/client'
 
 const client = new ComposeClient({ceramic, definition})
 const resources = client.resources
-const session = await DIDSession.authorize(authProvider, { resources })
+const session = await DIDSession.authorize(authMethod, { resources })
 client.setDID(session.did)
 ```
 
@@ -96,7 +96,7 @@ indicate how many seconds from the current time you want this session to expire.
 
 ```ts
 const oneWeek = 60 * 60 * 24 * 7
-const session = await DIDSession.authorize(authProvider, { resources: [...], expiresInSecs: oneWeek })
+const session = await DIDSession.authorize(authMethod, { resources: [...], expiresInSecs: oneWeek })
 ```
 
 A domain/app name is used when making requests, by default in a browser based environment the library will use
@@ -104,7 +104,7 @@ the domain name of your app. If you are using the library in a non web based env
 the `domain` option otherwise an error will thrown.
 
 ```ts
-const session = await DIDSession.authorize(authProvider, { resources: [...], domain: 'YourAppName' })
+const session = await DIDSession.authorize(authMethod, { resources: [...], domain: 'YourAppName' })
 ```
 
 ## Typical usage pattern
@@ -119,13 +119,15 @@ session is valid for. How that session string is stored and managed is the respo
 
 ```ts
 import { DIDSession } from 'did-session'
-import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
+import type { AuthMethod } from '@didtools/cacao'
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
 const addresses = await ethProvider.enable()
-const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
+const accountId = await getAccountId(ethProvider, addresses[0])
+const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 
-const loadSession = async(authProvider: EthereumAuthProvider):Promise<DIDSession> => {
+const loadSession = async(authMethod: AuthMethod):Promise<DIDSession> => {
   const sessionStr = localStorage.getItem('didsession')
   let session
 
@@ -134,14 +136,14 @@ const loadSession = async(authProvider: EthereumAuthProvider):Promise<DIDSession
   }
 
   if (!session || (session.hasSession && session.isExpired)) {
-    session = await DIDSession.authorize(authProvider, { resources: [...]})
+    session = await DIDSession.authorize(authMethod, { resources: [...]})
     localStorage.setItem('didsession', session.serialize())
   }
 
   return session
 }
 
-const session = await loadSession(authProvider)
+const session = await loadSession(authMethod)
 const ceramic = new CeramicClient()
 ceramic.did = session.did
 
@@ -150,7 +152,7 @@ ceramic.did = session.did
 
 // before ceramic writes, check if session is still valid, if expired, create new
 if (session.isExpired) {
-  const session = loadSession(authProvider)
+  const session = loadSession(authMethod)
   ceramic.did = session.did
 }
 
@@ -167,7 +169,7 @@ const session = new DIDSession({ authProvider })
 const did = await session.authorize()
 
 // Now did-session
-const session = await DIDSession.authorize(authProvider, { resources: [...]})
+const session = await DIDSession.authorize(authMethod, { resources: [...]})
 const did = session.did
 ```
 
@@ -177,7 +179,35 @@ it is best to switch over when possible, as the wildcard option may be * depreca
 composites/models you should request the minimum needed resources instead.
 
 ```ts
-const session = await DIDSession.authorize(authProvider, { resources: [`ceramic://*`]})
+const session = await DIDSession.authorize(authMethod, { resources: [`ceramic://*`]})
+const did = session.did
+```
+
+## Upgrading from `did-session@0.x.x` to `did-session@1.x.x`
+
+AuthProviders change to AuthMethod interfaces. Similarly you can import the auth libraries you need. How you configure and manage
+these AuthMethods may differ, but each will return an AuthMethod function to be used with did-session.
+
+```ts
+// Before with v0.x.x
+...
+import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
+
+const ethProvider = // import/get your web3 eth provider
+const addresses = await ethProvider.enable()
+const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
+const session = new DIDSession({ authProvider })
+const did = await session.authorize()
+
+// Now did-session@1.0.0
+...
+import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
+
+const ethProvider = // import/get your web3 eth provider
+const addresses = await ethProvider.enable()
+const accountId = await getAccountId(ethProvider, addresses[0])
+const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
+const session = await DIDSession.authorize(authMethod, { resources: [...]})
 const did = session.did
 ```
 
