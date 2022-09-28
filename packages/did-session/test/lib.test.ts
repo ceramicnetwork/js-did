@@ -154,7 +154,7 @@ describe('did-session', () => {
     expect(doc.content).toEqual({ foo: 'boo' })
   })
 
-  test('can create and update model instance stream', async () => {
+  test.skip('can create and update model instance stream', async () => {
     const session = await DIDSession.authorize(authMethod, {
       resources: [`ceramic://*?model=${model.id.toString()}`],
     })

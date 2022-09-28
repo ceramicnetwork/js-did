@@ -59,7 +59,7 @@
     "ajv-formats": "^2.1.1",
     "@didtools/cacao": "workspace:^1.0.0",
     "caip": "^1.1.0",
-    "@didtools/pkh-ethereum": "workspace:^0.0.1",
+    "@didtools/pkh-ethereum": "workspace:^0.0.2",
     "jest-environment-glazetemp": "0.3.0-rc.1"
   },
   "jest": {
