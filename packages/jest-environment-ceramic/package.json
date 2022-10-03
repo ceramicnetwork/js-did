@@ -1,0 +1,29 @@
+{
+  "name": "jest-environment-ceramic",
+  "version": "0.16.0",
+  "description": "Ceramic environment for Jest",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://github.com/ceramicstudio/js-glaze#readme",
+  "keywords": [
+    "jest",
+    "ceramic"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ceramicstudio/js-glaze",
+    "directory": "packages/jest-environment-ceramic"
+  },
+  "type": "module",
+  "main": "index.js",
+  "files": [],
+  "scripts": {
+    "lint": "eslint index.js --fix"
+  },
+  "dependencies": {
+    "@ceramicnetwork/core": "^2.11.0-rc.1",
+    "ipfs-core": "^0.14.3",
+    "jest-environment-node": "^28.0.2",
+    "tmp-promise": "^3.0.3"
+  }
+}

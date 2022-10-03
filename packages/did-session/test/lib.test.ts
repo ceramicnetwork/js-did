@@ -1,5 +1,5 @@
 /**
- * @jest-environment glazetemp
+ * @jest-environment ceramic
  */
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
@@ -10,16 +10,19 @@ import { DIDSession, createDIDKey, createDIDCacao } from '../src'
 import { jest } from '@jest/globals'
 import { Wallet } from '@ethersproject/wallet'
 import { SiweMessage, Cacao, AuthMethod } from '@didtools/cacao'
-import { Model, ModelAccountRelation, ModelDefinition } from '@ceramicnetwork/stream-model'
+import { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { EthereumNodeAuth } from '@didtools/pkh-ethereum'
 import { SolanaNodeAuth, getAccountIdByNetwork } from '@didtools/pkh-solana'
 import { AccountId } from 'caip'
 import { sign, extractPublicKeyFromSecretKey } from '@stablelib/ed25519'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
+import { DID } from 'dids'
+import { getResolver } from 'key-did-resolver'
 
 const getModelDef = (name: string): ModelDefinition => ({
   name: name,
-  accountRelation: ModelAccountRelation.LIST,
+  accountRelation: { type: 'list' },
   schema: {
     $schema: 'https://json-schema.org/draft/2020-12/schema',
     type: 'object',
@@ -96,6 +99,12 @@ describe('did-session', () => {
   let model: Model
 
   beforeAll(async () => {
+    const seed = new Uint8Array(32)
+    const did = new DID({
+      resolver: getResolver(),
+      provider: new Ed25519Provider(seed),
+    })
+    ceramic.did = did
     authMethod = await createEthereumAuthMethod()
     model = await Model.create(ceramic, MODEL_DEFINITION)
   })
@@ -156,7 +165,7 @@ describe('did-session', () => {
     expect(doc.content).toEqual({ foo: 'boo' })
   })
 
-  test.skip('can create and update model instance stream', async () => {
+  test('can create and update model instance stream', async () => {
     const session = await DIDSession.authorize(authMethod, {
       resources: [`ceramic://*?model=${model.id.toString()}`],
     })
@@ -346,12 +355,18 @@ function createSolanaAuthMethod(key?: Uint8Array): Promise<AuthMethod> {
   return SolanaNodeAuth.getAuthMethod(solProvider, accountId, 'testapp')
 }
 
-describe.skip('did-session Solana Authmethod', () => {
+describe('did-session Solana Authmethod', () => {
   let authMethod: AuthMethod
   jest.setTimeout(20000)
   let model: Model
 
   beforeAll(async () => {
+    const seed = new Uint8Array(32)
+    const did = new DID({
+      resolver: getResolver(),
+      provider: new Ed25519Provider(seed),
+    })
+    ceramic.did = did
     authMethod = await createSolanaAuthMethod()
     model = await Model.create(ceramic, MODEL_DEFINITION)
   })
