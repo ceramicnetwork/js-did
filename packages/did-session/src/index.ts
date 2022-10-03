@@ -25,7 +25,7 @@
  * const addresses = await ethProvider.enable()
  * const accountId = await getAccountId(ethProvider, addresses[0])
  * const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
- * 
+ *
  * const session = await DIDSession.authorize(authMethod, { resources: [...]})
  *
  * // Uses DIDs in ceramic & glaze libraries, ie

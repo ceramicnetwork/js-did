@@ -13,7 +13,9 @@ import { SiweMessage, Cacao, AuthMethod } from '@didtools/cacao'
 import { Model, ModelAccountRelation, ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { EthereumNodeAuth } from '@didtools/pkh-ethereum'
+import { SolanaNodeAuth, getAccountIdByNetwork } from '@didtools/pkh-solana'
 import { AccountId } from 'caip'
+import { sign, extractPublicKeyFromSecretKey } from '@stablelib/ed25519'
 
 const getModelDef = (name: string): ModelDefinition => ({
   name: name,
@@ -320,5 +322,105 @@ describe('did-session', () => {
       const sessionStr2 = session2.serialize()
       expect(sessionStr).toEqual(sessionStr2)
     })
+  })
+})
+
+const solanaSecretKey = fromString(
+  '92e08e39aee87d53fe263913bf9df6615c1c909860a1d3ad57bd0e6e2e507161ecbf1e2d9da80d3ae09de54ce71cbff723e291e7a4b133ce10993be5edfaca50',
+  'hex'
+)
+
+function createSolanaAuthMethod(key?: Uint8Array): Promise<AuthMethod> {
+  const walletKey = key ?? solanaSecretKey
+
+  const address = toString(extractPublicKeyFromSecretKey(walletKey), 'base58btc')
+
+  const solProvider = {
+    signMessage: (data: Uint8Array): Promise<{ signature: Uint8Array }> => {
+      return Promise.resolve({ signature: sign(walletKey, data) })
+    },
+  }
+
+  const accountId = getAccountIdByNetwork('mainnet', address)
+
+  return SolanaNodeAuth.getAuthMethod(solProvider, accountId, 'testapp')
+}
+
+describe.skip('did-session Solana Authmethod', () => {
+  let authMethod: AuthMethod
+  jest.setTimeout(20000)
+  let model: Model
+
+  beforeAll(async () => {
+    authMethod = await createSolanaAuthMethod()
+    model = await Model.create(ceramic, MODEL_DEFINITION)
+  })
+
+  test('authorize, with streamid resources', async () => {
+    const streamId = `ceramic://z6MkhZCWzHtPFmpNupVPuHA6svtpKKY9RUpgf9uohnhFMNvj`
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [streamId],
+    })
+    const did = session.did
+    expect(did.capability.p.resources.includes(streamId)).toBe(true)
+  })
+
+  test('authorize and create/update streams', async () => {
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [`ceramic://*`],
+    })
+    ceramic.did = session.did
+    const doc = await TileDocument.create(
+      ceramic,
+      { foo: 'bar' },
+      {},
+      {
+        anchor: false,
+        publish: false,
+      }
+    )
+    expect(doc.content).toEqual({ foo: 'bar' })
+
+    await doc.update({ foo: 'boo' })
+    expect(doc.content).toEqual({ foo: 'boo' })
+  })
+
+  test('authorize and create/update streams from serialized session', async () => {
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [`ceramic://*`],
+    })
+    const sessionStr = session.serialize()
+    const session2 = await DIDSession.fromSession(sessionStr)
+    ceramic.did = session2.did
+    const doc = await TileDocument.create(
+      ceramic,
+      { foo: 'bar' },
+      {},
+      {
+        anchor: false,
+        publish: false,
+      }
+    )
+    expect(doc.content).toEqual({ foo: 'bar' })
+
+    await doc.update({ foo: 'boo' })
+    expect(doc.content).toEqual({ foo: 'boo' })
+  })
+
+  test('can create and update model instance stream', async () => {
+    const session = await DIDSession.authorize(authMethod, {
+      resources: [`ceramic://*?model=${model.id.toString()}`],
+    })
+    ceramic.did = session.did
+
+    const doc = await ModelInstanceDocument.create(ceramic, CONTENT0, {
+      model: model.id,
+    })
+
+    expect(doc.content).toEqual(CONTENT0)
+    expect(doc.metadata.model.toString()).toEqual(model.id.toString())
+
+    await doc.replace(CONTENT1)
+    expect(doc.content).toEqual(CONTENT1)
   })
 })
