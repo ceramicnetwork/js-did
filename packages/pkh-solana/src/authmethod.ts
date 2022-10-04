@@ -52,7 +52,7 @@ export type SupportedProvider = {
 }
 
 export type SupportedConnection = {
-  request: (req: any) => Promise<string>
+  getGenesisHash: () => Promise<string>
 }
 
 export function assertSupportedProvider(
@@ -68,8 +68,8 @@ export function assertSupportedConnection(
   solConnection: any
 ): asserts solConnection is SupportedConnection {
   const c = solConnection as SupportedConnection
-  if (c.request === null || c.request === undefined) {
-    throw new Error(`Unsupported provider; provider must implement signMessage`)
+  if (c.getGenesisHash === null || c.getGenesisHash === undefined) {
+    throw new Error(`Unsupported provider; provider must implement getGenesisHash`)
   }
 }
 
@@ -108,9 +108,7 @@ async function createCACAO(
 
 export async function requestChainId(solConnection: any): Promise<string> {
   assertSupportedConnection(solConnection)
-  const genesisHash = await solConnection.request({
-    method: 'getGenesisHash',
-  })
+  const genesisHash = await solConnection.getGenesisHash()
   return genesisHash.slice(0, 32)
 }
 
