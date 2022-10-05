@@ -1,11 +1,29 @@
 # Configuration
 
 When creating a DID session, you need to pass an array of string identifiers for resources you want to authorize
-for. These identifiers should be specific to the verification protocol you use, for example, for Ceramic Network Protocol,
-they are ceramic stream IDs.
+for. In the context of the Ceramic Network, resources are an array of Model Stream Ids or Streams Ids. Typically
+you will just pass resources from the `@composedb` libraries as you will already manage your Composites and Models 
+there. For example:
 
 ```ts
-const session = await DIDSession.authorize(authMethod, { resources: [...]})
+import { ComposeClient } from '@composedb/client'
+
+//... Reference above and `@composedb` docs for additional configuration here
+
+const client = new ComposeClient({ceramic, definition})
+const resources = client.resources
+const session = await DIDSession.authorize(authMethod, { resources })
+client.setDID(session.did)
+```
+
+If you are still using `@glazed` libraries and tile document streams you will typically pass a wildcard resource, 
+this all allows 'access all'. While not ideal, there is technical limits in `@glazed` libraries and tile document
+streams that make it difficult to offer more granular permission access to sets of stream. Authorization was mostly 
+designed with model document streams and `@composedb` libraries in mind. Wildcard resource may not be supported in
+the future.
+
+```ts
+const session = await DIDSession.authorize(authMethod, { resources: [`ceramic://*`]})
 ```
 
 By default a session will expire in 1 day. You can change this time by passing the `expiresInSecs` option to
@@ -15,28 +33,3 @@ indicate how many seconds from the current time you want this session to expire.
 const oneWeek = 60 * 60 * 24 * 7
 const session = await DIDSession.authorize(authMethod, { resources: [...], expiresInSecs: oneWeek })
 ```
-
-A domain/app name is used when making requests, by default in a browser based environment the library will use
-the domain name of your app. If you are using the library in a non web based environment you will need to pass
-the `domain` option otherwise an error will thrown.
-
-```ts
-const session = await DIDSession.authorize(authMethod, { resources: [...], domain: 'YourAppName' })
-```
-
-Additional helper functions are available to help you manage a session lifecycle and the user experience.
-
-```ts
-// Check if authorized or created from existing session string
-didsession.hasSession
-
-// Check if session expired
-didsession.isExpired
-
-// Get resources session is authorized for
-didsession.authorizations
-
-// Check number of seconds till expiration, may want to re auth user at a time before expiration
-didsession.expiresInSecs
-```
-

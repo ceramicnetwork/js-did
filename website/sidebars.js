@@ -19,13 +19,13 @@ const sidebars = {
       type: 'category',
       collapsed: false,
       label: 'Getting Started',
-      items: ['installation', 'authorization', 'storing-sessions', 'configuration'],
+      items: ['installation', 'authorization', 'managing-sessions', 'configuration'],
     },
     {
       type: 'category',
       collapsed: false,
       label: 'Guides',
-      items: ['guides/concepts-overview', 'guides/using-with-composedb-client', 'guides/upgrading-from-glazed-did-session'],
+      items: ['guides/concepts-overview', 'guides/using-with-composedb-client', 'guides/upgrading-did-session'],
     },
   ],
   api: [
