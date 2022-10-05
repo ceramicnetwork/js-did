@@ -47,6 +47,8 @@ const sidebars = {
         { type: 'doc', id: 'api/classes/did_session.DIDSession', label: 'DIDSession Class' },
       ],
     },
+    { type: 'doc', id: 'api/modules/pkh_ethereum', label: '@didtools/pkh-ethereum' },
+    { type: 'doc', id: 'api/modules/pkh_solana', label: '@didtools/pkh-solana' },
   ],
 };
 
