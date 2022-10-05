@@ -3,7 +3,8 @@
   "include": [
     "./packages/did-session/src", 
     "./packages/dids/src",
-    "./packages/pkh-ethereum/src/index.ts"
+    "./packages/pkh-ethereum/src",
+    "./packages/pkh-solana/src"
   ],
   "compilerOptions": {
     "jsx": "preserve",
@@ -17,7 +18,8 @@
     "entryPoints": [
       "./packages/did-session/src/index.ts", 
       "./packages/dids/src/index.ts",
-      "./packages/pkh-ethereum/src/index.ts"
+      "./packages/pkh-ethereum/src/index.ts",
+      "./packages/pkh-solana/src/index.ts"
     ],
     "disableSources": true,
     "excludeExternals": true,

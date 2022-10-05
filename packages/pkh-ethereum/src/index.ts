@@ -88,7 +88,7 @@
  * 
  * ```ts
  * import { Cacao } from '@didtools/cacao'
- * import { verifyEIP191Signature } from '@didtools/pkh-ethereum'
+ * import { getEIP191Verifier } from '@didtools/pkh-ethereum'
  * import { DID } from 'dids'
  * 
  * const verifiers = {

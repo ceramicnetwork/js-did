@@ -1,3 +1,5 @@
+# Module: pkh-solana
+
 # Solana AuthMethod and Verifier
 Implements support to authenticate, authorize and verify with Solana accounts as a did:pkh with SIWS(X) and CACAO. 
 Primarly used with `did-session` and `@didtools/cacao`. 
@@ -108,6 +110,190 @@ const dids = //configured dids instance
 await dids.verifyJWS(jws, { capability, verifiers, ...opts})
 ```
 
-## License
+## Namespaces
 
-Apache-2.0 OR MIT
+- [SolanaNodeAuth](pkh_solana.SolanaNodeAuth.md)
+- [SolanaWebAuth](pkh_solana.SolanaWebAuth.md)
+
+## Type Aliases
+
+### SupportedConnection
+
+Ƭ **SupportedConnection**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `getGenesisHash` | () => `Promise`<`string`\> |
+
+___
+
+### SupportedProvider
+
+Ƭ **SupportedProvider**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `signMessage` | (`message`: `Uint8Array`, `type`: `string`) => `Promise`<{ `signature`: `Uint8Array`  }\> |
+
+## Variables
+
+### CHAIN\_NAMESPACE
+
+• `Const` **CHAIN\_NAMESPACE**: ``"solana"``
+
+___
+
+### SOLANA\_DEVNET\_CHAIN\_REF
+
+• `Const` **SOLANA\_DEVNET\_CHAIN\_REF**: ``"EtWTRABZaYq6iMfeYKouRu166VU2xqa1"``
+
+___
+
+### SOLANA\_MAINNET\_CHAIN\_REF
+
+• `Const` **SOLANA\_MAINNET\_CHAIN\_REF**: ``"5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"``
+
+___
+
+### SOLANA\_TESTNET\_CHAIN\_REF
+
+• `Const` **SOLANA\_TESTNET\_CHAIN\_REF**: ``"4uhcVJyU9pJkvQyS88uRDiswHXSCkY3z"``
+
+___
+
+### VERSION
+
+• `Const` **VERSION**: ``"1"``
+
+___
+
+### chainIdMap
+
+• `Const` **chainIdMap**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `devnet` | `string` |
+| `mainnet` | `string` |
+| `testnet` | `string` |
+
+## Functions
+
+### assertSupportedConnection
+
+▸ **assertSupportedConnection**(`solConnection`): asserts solConnection is SupportedConnection
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `solConnection` | `any` |
+
+#### Returns
+
+asserts solConnection is SupportedConnection
+
+___
+
+### assertSupportedProvider
+
+▸ **assertSupportedProvider**(`solProvider`): asserts solProvider is SupportedProvider
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `solProvider` | `any` |
+
+#### Returns
+
+asserts solProvider is SupportedProvider
+
+___
+
+### getAccountId
+
+▸ **getAccountId**(`solConnection`, `address`): `Promise`<`AccountId`\>
+
+Helper function to get an accountId (CAIP10) for an Solana account by Solana Connection interface, Connection must implement 'getGenesisHash()'
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `solConnection` | `any` |
+| `address` | `string` |
+
+#### Returns
+
+`Promise`<`AccountId`\>
+
+___
+
+### getAccountIdByNetwork
+
+▸ **getAccountIdByNetwork**(`network`, `address`): `AccountId`
+
+Helper function to get an accountId (CAIP10) for an Solana account by network string 'mainet' | 'testnet' | 'devenet'
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `network` | `SolanaNetwork` |
+| `address` | `string` |
+
+#### Returns
+
+`AccountId`
+
+___
+
+### getSolanaVerifier
+
+▸ **getSolanaVerifier**(): `Verifiers`
+
+Get a configured CACAO SolanaVerifier map for Solana accounts
+
+#### Returns
+
+`Verifiers`
+
+___
+
+### requestChainId
+
+▸ **requestChainId**(`solConnection`): `Promise`<`string`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `solConnection` | `any` |
+
+#### Returns
+
+`Promise`<`string`\>
+
+___
+
+### verifySolanaSignature
+
+▸ **verifySolanaSignature**(`cacao`, `options`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `cacao` | `Cacao` |
+| `options` | `VerifyOptions` |
+
+#### Returns
+
+`void`
