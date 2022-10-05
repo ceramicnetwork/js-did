@@ -1,4 +1,6 @@
-## Ethereum AuthMethod and Verifier
+# Module: pkh-ethereum
+
+# Ethereum AuthMethod and Verifier
 Implements support to authenticate, authorize and verify with Ethereum accounts as a did:pkh with SIWE(X) and CACAO. 
 Primarly used with `did-session` and `@didtools/cacao`. 
 
@@ -101,6 +103,112 @@ const dids = //configured dids instance
 await dids.verifyJWS(jws, { capability, verifiers, ...opts})
 ```
 
-## License
+## Namespaces
 
-Apache-2.0 OR MIT
+- [EthereumNodeAuth](pkh_ethereum.EthereumNodeAuth.md)
+- [EthereumWebAuth](pkh_ethereum.EthereumWebAuth.md)
+
+## Variables
+
+### CHAIN\_NAMESPACE
+
+• `Const` **CHAIN\_NAMESPACE**: ``"eip155"``
+
+CAIP2 for ethereum, used in CAIP10 (acountId)
+
+___
+
+### LEGACY\_CHAIN\_ID\_REORG\_DATE
+
+• `Const` **LEGACY\_CHAIN\_ID\_REORG\_DATE**: `number`
+
+___
+
+### VERSION
+
+• `Const` **VERSION**: ``"1"``
+
+SIWX Version
+
+## Functions
+
+### encodeRpcMessage
+
+▸ **encodeRpcMessage**(`method`, `params?`): `any`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `method` | `string` |
+| `params?` | `any` |
+
+#### Returns
+
+`any`
+
+___
+
+### getAccountId
+
+▸ **getAccountId**(`ethProvider`, `address`): `Promise`<`AccountId`\>
+
+Helper function to get an accountId (CAIP10) for an Ethereum account, uses ethProvider to get chainId/network
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `ethProvider` | `any` |
+| `address` | `string` |
+
+#### Returns
+
+`Promise`<`AccountId`\>
+
+___
+
+### getEIP191Verifier
+
+▸ **getEIP191Verifier**(): `Verifiers`
+
+Get a configured CACAO EIP191Verifier map for Ethereum EOA accounts
+
+#### Returns
+
+`Verifiers`
+
+___
+
+### safeSend
+
+▸ **safeSend**(`provider`, `method`, `params?`): `Promise`<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `provider` | `any` |
+| `method` | `string` |
+| `params?` | `any`[] |
+
+#### Returns
+
+`Promise`<`any`\>
+
+___
+
+### verifyEIP191Signature
+
+▸ **verifyEIP191Signature**(`cacao`, `options`): `void`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `cacao` | `Cacao` |
+| `options` | `VerifyOptions` |
+
+#### Returns
+
+`void`

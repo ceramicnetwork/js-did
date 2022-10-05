@@ -10,6 +10,9 @@ import {
 } from '@didtools/cacao'
 import { AccountId } from 'caip'
 
+/**
+ *  Get a configured CACAO EIP191Verifier map for Ethereum EOA accounts
+ */
 export function getEIP191Verifier(): Verifiers {
   return {
     // eslint-disable-next-line @typescript-eslint/require-await

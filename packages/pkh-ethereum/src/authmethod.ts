@@ -3,11 +3,19 @@ import { randomString } from '@stablelib/random'
 import { AccountId } from 'caip'
 import { safeSend } from './utils.js'
 
+/**
+ * SIWX Version
+ */
 export const VERSION = '1'
-
+/**
+ * CAIP2 for ethereum, used in CAIP10 (acountId)
+ */
 export const CHAIN_NAMESPACE = 'eip155'
 
 export namespace EthereumWebAuth {
+ /**
+  * Get a configured authMethod for an Ethereum account in a web based environment
+  */
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(ethProvider: any, account: AccountId): Promise<AuthMethod> {
     if (typeof window === 'undefined')
@@ -22,6 +30,9 @@ export namespace EthereumWebAuth {
 }
 
 export namespace EthereumNodeAuth {
+  /**
+   * Get a configured authMethod for an Ethereum account in a Node based environment
+   */
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(
     ethProvider: any,
@@ -70,6 +81,9 @@ async function requestChainId(provider: any): Promise<number> {
   return parseInt(chainIdHex, 16)
 }
 
+/**
+ * Helper function to get an accountId (CAIP10) for an Ethereum account, uses ethProvider to get chainId/network
+ */
 export async function getAccountId(ethProvider: any, address: string): Promise<AccountId> {
   const ethChainId = await requestChainId(ethProvider)
   const chainId = `${CHAIN_NAMESPACE}:${ethChainId}`

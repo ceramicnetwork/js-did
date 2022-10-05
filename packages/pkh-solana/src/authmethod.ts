@@ -18,6 +18,9 @@ export const chainIdMap = {
 type SolanaNetwork = 'mainnet' | 'testnet' | 'devnet'
 
 export namespace SolanaWebAuth {
+  /**
+   * Get a configured authMethod for a Solana account in a web based environment
+   */
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(solProvider: any, account: AccountId): Promise<AuthMethod> {
     if (typeof window === 'undefined')
@@ -32,6 +35,9 @@ export namespace SolanaWebAuth {
 }
 
 export namespace SolanaNodeAuth {
+  /**
+   * Get a configured authMethod for a Solana account in a node based environment
+   */
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(
     ethProvider: any,
@@ -112,12 +118,18 @@ export async function requestChainId(solConnection: any): Promise<string> {
   return genesisHash.slice(0, 32)
 }
 
+/**
+ * Helper function to get an accountId (CAIP10) for an Solana account by Solana Connection interface, Connection must implement 'getGenesisHash()'
+ */
 export async function getAccountId(solConnection: any, address: string): Promise<AccountId> {
   const solChainId = await requestChainId(solConnection)
   const chainId = `${CHAIN_NAMESPACE}:${solChainId}`
   return new AccountId({ address, chainId })
 }
 
+/**
+ * Helper function to get an accountId (CAIP10) for an Solana account by network string 'mainet' | 'testnet' | 'devenet'
+ */
 export function getAccountIdByNetwork(network: SolanaNetwork, address: string): AccountId {
   const chainId = `${CHAIN_NAMESPACE}:${chainIdMap[network]}`
   return new AccountId({ address, chainId })
