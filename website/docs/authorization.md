@@ -1,7 +1,9 @@
 # Authorization
 
-Authorize and use DIDs where needed. At the moment, only Ethereum accounts
-are supported with the EthereumAuthProvider. Additional accounts will be supported in the future.
+Authorize and use DIDs where needed. At the moment, only Ethereum and Solana accounts
+are supported. Reference the chain/network specific libraries for more info on how to
+use each. Ethereum is used as an example below. Additional accounts will be supported 
+in the future. 
 
 ```ts
 import { DIDSession } from 'did-session'

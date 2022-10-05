@@ -26,10 +26,10 @@ const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 
 const loadSession = async(authMethod: AuthMethod, resources: Array<string>):Promise<DIDSession> => {
-  return DIDSession.authorize(authProvider, { resources })
+  return DIDSession.authorize(authMethod, { resources })
 }
 
-const session = await loadSession(authProvider, compose.resources)
+const session = await loadSession(authMethod, compose.resources)
 ```
 
 Next, you can assign the authorized did from your session to your client. 
@@ -44,7 +44,7 @@ Before you start making mutations with the client instance, you should make sure
 ```ts
 // before compose mutations, check if session is still valid, if expired, create new
 if (session.isExpired) {
-  const session = loadSession(authProvider)
+  const session = loadSession(authMethod)
   compose.setDID(session.did)
 }
 
