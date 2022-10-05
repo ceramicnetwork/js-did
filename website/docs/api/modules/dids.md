@@ -439,6 +439,7 @@ ___
 | `disableTimecheck?` | `boolean` | If true, timestamp checking is disabled. |
 | `issuer?` | `string` | DID that issued the signature. |
 | `revocationPhaseOutSecs?` | `number` | Number of seconds that a revoked key stays valid for after it was revoked |
+| `verifiers?` | `Verifiers` | verifiers - object of supported verification methods to verify given cacao |
 
 ___
 
