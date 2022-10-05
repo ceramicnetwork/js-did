@@ -1,6 +1,10 @@
 {
   "extends": "./tsconfig.build.json",
-  "include": ["./packages/did-session/src", "./packages/dids/src"],
+  "include": [
+    "./packages/did-session/src", 
+    "./packages/dids/src",
+    "./packages/pkh-ethereum/src/index.ts"
+  ],
   "compilerOptions": {
     "jsx": "preserve",
     "lib": ["DOM", "ES2020"],
@@ -10,7 +14,11 @@
     "name": "DIDs API",
     "readme": "none",
     "entryDocument": "index.md",
-    "entryPoints": ["./packages/did-session/src/index.ts", "./packages/dids/src/index.ts"],
+    "entryPoints": [
+      "./packages/did-session/src/index.ts", 
+      "./packages/dids/src/index.ts",
+      "./packages/pkh-ethereum/src/index.ts"
+    ],
     "disableSources": true,
     "excludeExternals": true,
     "excludeInternal": true,
