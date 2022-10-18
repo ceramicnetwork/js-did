@@ -87,7 +87,7 @@ importers:
       '@stablelib/random': 1.0.2
       dids: link:../dids
       key-did-provider-ed25519: link:../key-did-provider-ed25519
-      key-did-resolver: 2.1.2
+      key-did-resolver: link:../key-did-resolver
       uint8arrays: 3.1.0
     devDependencies:
       '@ceramicnetwork/common': 2.7.0
@@ -211,6 +211,25 @@ importers:
       jest: 27.5.1
       prettier: 2.7.1
       typescript: 4.8.2
+
+  packages/key-did-resolver:
+    specifiers:
+      '@stablelib/ed25519': ^1.0.2
+      '@types/varint': ^6.0.0
+      bigint-mod-arith: ^3.1.0
+      did-resolver: ^3.1.5
+      multiformats: ^9.5.2
+      uint8arrays: ^3.0.0
+      varint: ^6.0.0
+    dependencies:
+      '@stablelib/ed25519': 1.0.3
+      bigint-mod-arith: 3.1.0
+      multiformats: 9.8.1
+      uint8arrays: 3.1.0
+      varint: 6.0.0
+    devDependencies:
+      '@types/varint': 6.0.0
+      did-resolver: 3.2.2
 
   packages/pkh-did-resolver:
     specifiers:
@@ -5090,6 +5109,12 @@ packages:
   /@types/unist/2.0.6:
     resolution: {integrity: sha512-PBjIUxZHOuj0R15/xuwJYjFi+KZdNFrehocChv4g5hu6aFroHue8m0lBP0POdK2nKzbw0cgV1mws8+V/JAcEkQ==}
     dev: false
+
+  /@types/varint/6.0.0:
+    resolution: {integrity: sha512-2jBazyxGl4644tvu3VAez8UA/AtrcEetT9HOeAbqZ/vAcRVL/ZDFQjSS7rkWusU5cyONQVUz+nwwrNZdMva4ow==}
+    dependencies:
+      '@types/node': 18.7.15
+    dev: true
 
   /@types/ws/8.5.3:
     resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
@@ -11576,16 +11601,6 @@ packages:
     resolution: {integrity: sha512-Fac7iINEovXIWU20GPnOMLUbjctiS+cnmyjC4zAUgvs3XPf1vo9akfCHkigftSic/jiKqKl+KA3a/vFcJbHyCg==}
     dependencies:
       randombytes: 2.1.0
-    dev: false
-
-  /key-did-resolver/2.1.2:
-    resolution: {integrity: sha512-K0Bv2nwOKc+7fjqy9R2m8m/ADdz7NEybIAIX/67WgPHVQWlN3Na2yMHcQE1HDu8nUy0NZ/nWNfYa7iHikPtnug==}
-    dependencies:
-      '@stablelib/ed25519': 1.0.3
-      bigint-mod-arith: 3.1.0
-      multiformats: 9.8.1
-      uint8arrays: 3.1.0
-      varint: 6.0.0
     dev: false
 
   /keyv/3.1.0:
