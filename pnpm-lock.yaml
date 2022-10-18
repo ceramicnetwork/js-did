@@ -212,6 +212,15 @@ importers:
       prettier: 2.7.1
       typescript: 4.8.2
 
+  packages/pkh-did-resolver:
+    specifiers:
+      caip: ~1.1.0
+      did-resolver: ^3.1.5
+    dependencies:
+      caip: 1.1.0
+    devDependencies:
+      did-resolver: 3.2.2
+
   packages/pkh-ethereum:
     specifiers:
       '@didtools/cacao': workspace:^1.0.0
