@@ -9,20 +9,19 @@
     "key"
   ],
   "author": "Janko Simonovic <simonovic86@gmail.com>",
-  "homepage": "",
   "license": "(Apache-2.0 OR MIT)",
-  "directories": {
-    "lib": "./lib"
-  },
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
   "type": "module",
+  "main": "dist/index.js", 
+  "types": "dist/index.d.ts",
   "exports": {
-    ".": "./lib/index.js"
+    ".": "./dist/index.js"
   },
   "files": [
-    "lib"
+    "dist"
   ],
+  "engines": {
+    "node": ">=14.14"
+  },
   "sideEffects": false,
   "scripts": {
     "build:clean": "del dist",
@@ -47,6 +46,5 @@
   "devDependencies": {
     "@types/varint": "^6.0.0",
     "did-resolver": "^3.1.5"
-  },
-  "gitHead": "c58eb9659f5fdd976aca2db6465619c20ba30ff9"
+  }
 }
