@@ -2,7 +2,7 @@
 
 The standard use of [SIWX](https://github.com/ChainAgnostic/CAIPs/pull/122), [CACAO](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-74.md) and [DID:PKH](https://github.com/w3c-ccg/did-pkh/blob/main/did-pkh-method-draft.md) allows anyone to implement support for another blockchain or account type to authenticate and authorize writes to the Ceramic Network. Additionally a few standard interfaces enables you to implement an auth and verification library that allows anyone to use it with [`did-session`](https://github.com/ceramicnetwork/js-did/tree/main/packages/did-session), the primary library to use DID based accounts with Ceramic. There is just a few steps you have to take, outlined below.
 
-### Standards Support 
+### CASA Standards Support 
 
 First make sure your blockchain has the necessary standards specification in the [Chain Agnostic Standards Alliance (CASA)](https://github.com/ChainAgnostic/CASA). CASA creates blockchain agnostic standards which support interoperability and facilitate communication between blockchain protocols, software and companies. Standards are submitted as [Chain Agnostic Improvement Proposals (CAIPs)](https://github.com/ChainAgnostic/CAIPs). Support in Ceramic requires a spec for the following CAIPs in the CASA namespace for your chain.  
 
@@ -12,7 +12,11 @@ First make sure your blockchain has the necessary standards specification in the
 
 3) CAIP122 - [Sign in With X (SIWx)](https://github.com/ChainAgnostic/CAIPs/blob/master/CAIPs/caip-122.md)
 
-The CASA namespaces can be found [here](https://github.com/ChainAgnostic/namespaces). If your blockchain already exists and has the prior 3 CAIPs, then you can move on to the next steps. If not, then you can define these specs yourself by following the instructions in the namespace readme and opening a PR. You can look at other blockchain namespaces for how to format and specify your specs and reference your own ecosystem standards for some if they exist already. You can reach out to the Ceramic team for reviews and help if needed. 
+The CASA namespaces can be found [here](https://github.com/ChainAgnostic/namespaces). If your blockchain already exists and has the prior 3 CAIPs, then you can move on to the next steps. If not, then you can define these specs yourself by following the instructions in the namespace readme and opening a PR. You can look at other blockchain namespaces for how to format and specify your specs and reference your own ecosystem standards for some if they exist already. You can reach out to the 3Box Labs team for reviews and help if needed. 
+
+### DID:PKH Standards Support 
+
+With accounts defined through CAIP10 you can now add standards support in DID:PKH for your blockchain. To add support simply add a test vector in the [did-pkh repo](https://github.com/w3c-ccg/did-pkh) that shows what a DID document resolution would look like for an example DID:PKH account for your blockchain. Reference other test vectors for examples and open a PR once ready.
 
 ### CACAO Support 
 
@@ -22,7 +26,7 @@ To add support, first implement a SIWX class specific to your blockchain, based 
 
 Lastly in `src/cacao.ts` implement a `fromSiw(name)Message` function for your blockchain which translates a given SIWX message to a CACAO. Again reference both SIWS and SIWE for example implementations. 
 
-Once added, open a PR. You can reach out the Ceramic team for reviews and help if needed. 
+Once added, open a PR. You can reach out to the 3Box Labs team for reviews and help if needed. 
 
 ### DID-Session and Ceramic Support 
 
@@ -44,7 +48,7 @@ export type Verifiers = Record<string, CacaoVerifier>
 export type CacaoVerifier = (cacao: Cacao, opts: VerifyOptions) => Promise<void>
 ```
 
-To add support you create a `@didtools/pkh-(namespace)` package in the [`js-did` monorepo](https://github.com/ceramicnetwork/js-did). Use the existing `@didtools/pkh-ethereum` and `@didtools/pkh-solana` libraries as a template to implement similar naming, functionality, documentation and testing. But primarly the library should export a `Verifier` and a function or class the gives the developer a configured `AuthMethod`. Once ready open a PR. You can reach out to the Ceramic team for reviews and help if needed. 
+To add support you create a `@didtools/pkh-(namespace)` package in the [`js-did` monorepo](https://github.com/ceramicnetwork/js-did). Use the existing `@didtools/pkh-ethereum` and `@didtools/pkh-solana` libraries as a template to implement similar naming, functionality, documentation and testing. But primarly the library should export a `Verifier` and a function or class the gives the developer a configured `AuthMethod`. Once ready open a PR. You can reach out to the 3Box Labs team for reviews and help if needed. 
 
 ### Ready, Set, Go
 
