@@ -1,0 +1,55 @@
+{
+  "name": "key-did-resolver",
+  "version": "2.3.0",
+  "description": "Ceramic did:key method resolver",
+  "keywords": [
+    "ceramic",
+    "did:key",
+    "did",
+    "key"
+  ],
+  "author": "Janko Simonovic <simonovic86@gmail.com>",
+  "contributors": [
+    "Janko Simonovic <simonovic86@gmail.com>",
+    "Brent Shambaugh <brent.shambaugh@gmail.com>"
+  ],
+  "license": "(Apache-2.0 OR MIT)",
+  "type": "module",
+  "main": "dist/index.js", 
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.14"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
+    "lint": "eslint src --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "package-check",
+    "size": "./node_modules/.bin/size-limit",
+    "analyze": "./node_modules/.bin/size-limit --why"
+  },
+  "dependencies": {
+    "@stablelib/ed25519": "^1.0.2",
+    "bigint-mod-arith": "^3.1.0",
+    "multiformats": "^9.5.2",
+    "nist-weierstrauss": "^1.3.0",
+    "uint8arrays": "^3.0.0",
+    "varint": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/varint": "^6.0.0",
+    "did-resolver": "^3.1.5"
+  }
+}
