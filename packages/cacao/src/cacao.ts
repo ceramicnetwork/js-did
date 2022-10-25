@@ -5,6 +5,7 @@ import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2'
 import { SiweMessage } from './siwx/siwe.js'
 import { SiwsMessage } from './siwx/siws.js'
+import { SiwTezosMessage } from './siwx/siwTezos.js'
 
 // 5 minute default clockskew
 const CLOCK_SKEW_DEFAULT_SEC = 5 * 60
@@ -23,7 +24,7 @@ export type Header = {
 }
 
 export type Signature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519'
+  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519'
   s: string
 }
 export type Cacao = {
@@ -206,6 +207,51 @@ export namespace Cacao {
 
     if (siwsMessage.resources) {
       cacao.p.resources = siwsMessage.resources
+    }
+
+    return cacao
+  }
+
+  export function fromSiwTezosMessage(siwTezosMessage: SiwTezosMessage): Cacao {
+    const cacao: Cacao = {
+      h: {
+        t: 'caip122',
+      },
+      p: {
+        domain: siwTezosMessage.domain,
+        iat: siwTezosMessage.issuedAt,
+        iss: `did:pkh:tezos:${siwTezosMessage.chainId}:${siwTezosMessage.address}`,
+        aud: siwTezosMessage.uri,
+        version: siwTezosMessage.version,
+        nonce: siwTezosMessage.nonce,
+      },
+    }
+
+    if (siwTezosMessage.signature) {
+      cacao.s = {
+        t: 'tezos:ed25519',
+        s: siwTezosMessage.signature,
+      }
+    }
+
+    if (siwTezosMessage.notBefore) {
+      cacao.p.nbf = siwTezosMessage.notBefore
+    }
+
+    if (siwTezosMessage.expirationTime) {
+      cacao.p.exp = siwTezosMessage.expirationTime
+    }
+
+    if (siwTezosMessage.statement) {
+      cacao.p.statement = siwTezosMessage.statement
+    }
+
+    if (siwTezosMessage.requestId) {
+      cacao.p.requestId = siwTezosMessage.requestId
+    }
+
+    if (siwTezosMessage.resources) {
+      cacao.p.resources = siwTezosMessage.resources
     }
 
     return cacao
