@@ -13,9 +13,9 @@ export const VERSION = '1'
 export const CHAIN_NAMESPACE = 'eip155'
 
 export namespace EthereumWebAuth {
- /**
-  * Get a configured authMethod for an Ethereum account in a web based environment
-  */
+  /**
+   * Get a configured authMethod for an Ethereum account in a web based environment
+   */
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(ethProvider: any, account: AccountId): Promise<AuthMethod> {
     if (typeof window === 'undefined')
