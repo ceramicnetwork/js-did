@@ -4,7 +4,10 @@
   "private": true,
   "dependencies": {
     "@ceramicnetwork/blockchain-utils-linking": "^2.0.10",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@metamask/detect-provider": "^1.2.0",
+    "@mui/material": "^5.10.11",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
