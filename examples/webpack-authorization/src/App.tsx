@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import AuthorizationHandler from './components/AuthorizationHandler'
+import DIDSessionDemoHandler from './components/DIDSessionDemoHandler'
+import DIDSessionInfo from './components/DIDSessionInfo'
+import { createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material'
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#ff4f00',
+    },
+  },
+})
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <div style={{ flex:'1', backgroundColor:'#ff4f00', width:'16px'}}></div>
-        <div style={ { lineHeight:'0.8', textAlign:'left', paddingLeft:'6px'} }>
-          <span style={ {fontSize:'100px!important',fontWeight: 'bold'} }>CACAOs</span>
-          <br/>
-          <span style={ {color: '#ff4f00'}}>and</span>
-          <br/>
-          <span>DIDSession</span>
+      <ThemeProvider theme={theme}>
+        <header className="App-header">
+          <p>
+            CACAOs <span style={ {color: '#ff4f00'} } >and</span> DIDSession
+          </p>
+        </header>
+        <div className="App-content">
+          <DIDSessionInfo/>
+          <DIDSessionDemoHandler/>
         </div>
-      </header>
-      <div className="App-UI">
-        <AuthorizationHandler/>
-      </div>
+      </ThemeProvider>
     </div>
   );
 }
