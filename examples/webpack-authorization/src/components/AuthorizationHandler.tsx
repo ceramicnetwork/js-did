@@ -26,7 +26,9 @@ function AuthorizationHandler() {
   const render = () => {
     return (
       <div>
-        { session === undefined || !session.isAuthorized() ? renderUnauthenticated() : renderAuthenticated() }
+        <div>
+          { session === undefined || !session.isAuthorized() ? renderUnauthenticated() : renderAuthenticated() }
+        </div>
       </div>
     )
   }
