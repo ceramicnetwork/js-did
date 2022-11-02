@@ -5,7 +5,7 @@
 First, you should start with creating your instance of `ComposeClient` from `@composedb/client` package, passing it the
 url to the ceramic node you want to use and the runtime composite definition of the composite you want to use in your App.
 
-```ts
+```js
 import { ComposeClient } from '@composedb/client'
 import { definition } from './__generated__/definition.js'
 
@@ -15,13 +15,13 @@ const compose = new ComposeClient({ ceramic: 'http://localhost:7007', definition
 Next, you can create a DID Session, passing it the resources from your client instance. The resources are a list of model
 stream IDs from your runtime composite definition:
 
-```ts
+```js
 import { DIDSession } from 'did-session'
 import type { AuthMethod } from '@didtools/cacao'
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
-const addresses = await (ethProvider as any).request({ method: 'eth_requestAccounts' })
+const addresses = await ethProvider).request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 
@@ -34,14 +34,14 @@ const session = await loadSession(authMethod, compose.resources)
 
 Next, you can assign the authorized did from your session to your client. 
 
-```ts
+```js
 compose.setDID(session.did)
 
 // use the compose instance to make queries in ComposeDB graph
 ```
 
 Before you start making mutations with the client instance, you should make sure that the session is not expired
-```ts
+```js
 // before compose mutations, check if session is still valid, if expired, create new
 if (session.isExpired) {
   const session = loadSession(authMethod)
@@ -60,7 +60,7 @@ allows anyone with access to that string to make writes for that user for the ti
 session is valid for. How that session string is stored and managed is the responsibility of the application.
 :::
 
-```ts
+```js
 // An updated version of loadSession(...)
 const loadSession = async(authMethod: AuthMethod, resources: Array<string>):Promise<DIDSession> => {
   const sessionStr = localStorage.getItem('didsession')

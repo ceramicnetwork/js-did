@@ -3,7 +3,7 @@
 You can serialize a session to store for later and then re-initialize. Currently sessions are valid
 for 1 day by default.
 
-```ts
+```js
 // Create session as above, store for later
 const session = await DIDSession.authorize(authMethod, { resources: [...]})
 const sessionString = session.serialize()
@@ -17,7 +17,7 @@ const session2 = await DIDSession.fromSession(sessionString)
 
 Additional helper functions are available to help you manage a session lifecycle and the user experience.
 
-```ts
+```js
 // Check if authorized or created from existing session string
 didsession.hasSession
 

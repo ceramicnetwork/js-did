@@ -13,13 +13,13 @@
  *
  * To Auth in web based env, use any injected web3 provider that implements the standard interface with `EthereumWebAuth`.
  *
- * ```ts
+ * ```js
  * // Web Auth Usage
  * import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  * // ...
  *
  * const ethProvider = // import/get your web3 eth provider
- * const addresses = await (ethProvider as any).request({ method: 'eth_requestAccounts' })
+ * const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
  * const accountId = await getAccountId(ethProvider, addresses[0])
  *
  * const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
@@ -28,13 +28,13 @@
  * To Auth in a Node based env, use any standard web3 provider interface with `EthereumNodeAuth`
  *
  *
- * ```ts
+ * ```js
  * // Node Auth Usage
  * import { EthereumNodeAuth, getAccountId } from '@didtools/pkh-ethereum'
  * // ...
  *
  * const ethProvider = // import/get your web3 eth provider
- * const addresses = await (ethProvider as any).request({ method: 'eth_requestAccounts' })
+ * const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
  * const accountId = await getAccountId(ethProvider, addresses[0])
  * const appName = 'MyNodeApp'
  *
@@ -43,7 +43,7 @@
  *
  * To use with did-session and reference did-session docs for more details.
  *
- * ```ts
+ * ```js
  * const client = new ComposeClient({ceramic, definition})
  * const resources = client.resources
  *
@@ -57,7 +57,7 @@
  * CAIP10 standard. The helper method `getAccountID` is provided, but you can also create an AccountID
  * using the CAIP library directly.
  *
- * ```ts
+ * ```js
  * import { AccountId } from 'caip'
  * import { getAccountId } from '@didtools/pkh-ethereum'
  *
@@ -74,7 +74,7 @@
  * The `EthereumNodeAuth` additionally consumes an application name. The 'EthereumWebAuth' method uses your
  * application domain name by default.
  *
- * ```ts
+ * ```js
  * import { EthereumNodeAuth  } from '@didtools/pkh-ethereum'
 
  * const appName = 'MyNodeApp'
@@ -86,7 +86,7 @@
  * Verifiers are needed to verify different did:pkh signed payloads using CACAO. Libraries that need them will
  * consume a verifiers map allowing your to register the verifiers you want to support.
  *
- * ```ts
+ * ```js
  * import { Cacao } from '@didtools/cacao'
  * import { getEIP191Verifier } from '@didtools/pkh-ethereum'
  * import { DID } from 'dids'
