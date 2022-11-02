@@ -8,10 +8,6 @@ A simple library to interact with DIDs that conform to the DID-provider interfac
 npm install dids
 ```
 
-## API
-
-[API documentation](https://did.js.org/docs/api/modules/dids)
-
 ## Usage
 
 ### Authentication with the provider
@@ -19,7 +15,7 @@ npm install dids
 ```js
 import { DID } from 'dids'
 import { Ed25519Provider } from 'key-did-provider-ed25519'
-import KeyResolver from 'key-did-resolver'
+import * as KeyResolver from 'key-did-resolver'
 
 const seed = // 32 bytes of entropy, Uint8Array
 const provider = new Ed25519Provider(seed)
@@ -49,7 +45,7 @@ const { jws, linkedBlock } = await did.createDagJWS(payload)
 const jwsCid = await ipfs.dag.put(jws, { storeCodec: 'dag-jose', hashAlg: 'sha2-256' })
 
 // put the payload into the ipfs dag
-const block = await ipfs.block.put(linkedBlock, { cid: jws.link })
+const block = await ipfs.block.put(linkedBlock, { format: 'dag-cbor' })
 
 // get the value of the payload using the payload cid
 console.log((await ipfs.dag.get(jws.link)).value)
@@ -117,7 +113,7 @@ Using CACAO OCAPs to create a Key DID that can sign on behalf of a PKH DID.
 
 ```js
 import { DID } from 'dids'
-import Ed25519Provider from 'key-did-provider-ed25519'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
 import KeyResolver from 'key-did-resolver'
 import { Cacao, SiweMessage } from '@didtools/cacao'
 
@@ -137,7 +133,9 @@ const didWithCap2 = new DID({provider, resolver: KeyResolver.getResolver(), capa
 
 ## Security Considerations
 
-Ceramic allows for keys attached to DIDs to continue making updates to streams after revocation for a certain grace period. This is done to avoid incorrectly rejecting valid signatures as being performed with a revoked key when in fact the key was valid at the time of the signature. This can happen due to the implementation details of how Ceramic determines when a DID issues a signature as well as how Ceramic determines when an authentication key for a DID is revoked. Since we cannot trust the system clock time on the client's machine when performing a signature or key revocation, Ceramic periodically "anchors" updates on a blockchain to get a timestamp before which we know the write must have happened. Consider the following scenario:
+### Usage in anchored event streams or log based data structures
+
+There is an option to allow keys attached to DIDs to continue making updates to streams after revocation for a certain grace period. This is done to avoid incorrectly rejecting valid signatures as being performed with a revoked key when in fact the key was valid at the time of the signature. This can happen due to the implementation details of how a protocol determines when a DID issues a signature as well as how a protocol determines when an authentication key for a DID is revoked. Since we cannot trust the system clock time on the client's machine when performing a signature or key revocation, periodic "anchor" updates are made on a blockchain to get a timestamp before which we know the write must have happened. Consider the following scenario:
 
 1. Commit for an update is made to Node A
 2. Node B's key revocation commit is anchored before node A's update
@@ -151,6 +149,12 @@ While this approach helps solve the problem of incorrectly rejecting valid updat
 
 The `revocationPhaseOutSecs` value, therefore, should be set with this consideration in mind to a reasonable value. It either allows for a better UX for the owner and allows for a small window of attack for an attacker, or it does not allow for an attack window but can potentially mark certain commits as invalid due to latency in commits occuring.
 
-## License
+## Additional Usage Notes
 
-MIT
+See the [dids developer site](https://did.js.org/) for more details about how to use this package.
+
+## Contributing
+We are happy to accept small and large contributions.
+
+## License
+Apache-2.0 OR MIT

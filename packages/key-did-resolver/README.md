@@ -189,4 +189,6 @@ See the [dids developer site](https://did.js.org/) for more details about how to
 
 ## Contributing
 We are happy to accept small and large contributions.
+
 ## License
+Apache-2.0 OR MIT
