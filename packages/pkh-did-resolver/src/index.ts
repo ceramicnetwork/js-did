@@ -1,13 +1,10 @@
 /**
  * # PKH DID method resolver
  *
- * This package contains did:pkh method resolver implementation. Please refer to the [specification](https://github.com/spruceid/ssi/blob/main/did-pkh/did-pkh-method-draft.md) for details about how this DID method works.
+ * This package contains did:pkh method resolver implementation. Please refer to the [specification](https://github.com/w3c-ccg/did-pkh/blob/main/did-pkh-method-draft.md) for details about how this DID method works.
  *
  * ## Usage
  * This package is used as a plugin to the [`did-resolver`](https://github.com/decentralized-identity/did-resolver) library, which is the primary interface for resolving DIDs.
- *
- * See the [ceramic developer site](https://developers.ceramic.network/) for more details about how to use this package.
- *
  *
  * ### Installation
  * ```
