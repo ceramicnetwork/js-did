@@ -22,7 +22,7 @@
  * import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  *
  * const ethProvider = // import/get your web3 eth provider
- * const addresses = await ethProvider.enable()
+ * const addresses = await (ethProvider as any).request({ method: 'eth_requestAccounts' })
  * const accountId = await getAccountId(ethProvider, addresses[0])
  * const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
  *
@@ -118,7 +118,7 @@
  * import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  *
  * const ethProvider = // import/get your web3 eth provider
- * const addresses = await ethProvider.enable()
+ * const addresses = await (ethProvider as any).request({ method: 'eth_requestAccounts' })
  * const accountId = await getAccountId(ethProvider, addresses[0])
  * const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
  *
@@ -189,7 +189,7 @@
  * import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
  *
  * const ethProvider = // import/get your web3 eth provider
- * const addresses = await ethProvider.enable()
+ * const addresses = await (ethProvider as any).request({ method: 'eth_requestAccounts' })
  * const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
  * const session = new DIDSession({ authProvider })
  * const did = await session.authorize()
@@ -199,7 +199,7 @@
  * import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  *
  * const ethProvider = // import/get your web3 eth provider
- * const addresses = await ethProvider.enable()
+ * const addresses = await (ethProvider as any).request({ method: 'eth_requestAccounts' })
  * const accountId = await getAccountId(ethProvider, addresses[0])
  * const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
  * const session = await DIDSession.authorize(authMethod, { resources: [...]})
