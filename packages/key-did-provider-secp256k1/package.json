@@ -1,6 +1,6 @@
 {
-  "name": "key-did-provider-ed25519",
-  "version": "2.0.1",
+  "name": "key-did-provider-secp256k1",
+  "version": "0.1.0",
   "author": "Joel Thorstensson",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -44,12 +44,13 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@stablelib/random": "^1.0.2"
+   "@stablelib/random": "^1.0.2"
   },
   "dependencies": {
-    "dids": "^3.4.0",
-    "@stablelib/ed25519": "^1.0.2",
+    "@types/elliptic": "^6.4.14",
     "did-jwt": "^6.0.0",
+    "dids": "^3.4.0",
+    "elliptic": "^6.5.4",
     "fast-json-stable-stringify": "^2.1.0",
     "rpc-utils": "^0.6.2",
     "uint8arrays": "^3.0.0"
