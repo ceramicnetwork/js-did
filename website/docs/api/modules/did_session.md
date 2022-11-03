@@ -22,12 +22,12 @@ npm install did-session
 
 Authorize and use DIDs where needed. Import the AuthMethod you need, Ethereum accounts used here for example.
 
-```ts
+```js
 import { DIDSession } from 'did-session'
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider.enable()
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
@@ -44,7 +44,7 @@ ceramic.did = session.did
 You can serialize a session to store for later and then re-initialize. Currently sessions are valid
 for 1 day by default.
 
-```ts
+```js
 // Create session as above, store for later
 const session = await DIDSession.authorize(authMethod, { resources: [...]})
 const sessionString = session.serialize()
@@ -60,7 +60,7 @@ ceramic.did = session2.did
 
 Additional helper functions are available to help you manage a session lifecycle and the user experience.
 
-```ts
+```ss
 // Check if authorized or created from existing session string
 didsession.hasSession
 
@@ -80,7 +80,7 @@ The resources your app needs to write access to must be passed during authorizat
 of Model Stream Ids or Streams Ids. Typically you will just pass resources from `@composedb` libraries as
 you will already manage your Composites and Models there. For example:
 
-```ts
+```js
 import { ComposeClient } from '@composedb/client'
 
 //... Reference above and `@composedb` docs for additional configuration here
@@ -94,7 +94,7 @@ client.setDID(session.did)
 By default a session will expire in 1 day. You can change this time by passing the `expiresInSecs` option to
 indicate how many seconds from the current time you want this session to expire.
 
-```ts
+```js
 const oneWeek = 60 * 60 * 24 * 7
 const session = await DIDSession.authorize(authMethod, { resources: [...], expiresInSecs: oneWeek })
 ```
@@ -103,7 +103,7 @@ A domain/app name is used when making requests, by default in a browser based en
 the domain name of your app. If you are using the library in a non web based environment you will need to pass
 the `domain` option otherwise an error will thrown.
 
-```ts
+```js
 const session = await DIDSession.authorize(authMethod, { resources: [...], domain: 'YourAppName' })
 ```
 
@@ -117,17 +117,17 @@ there is a number of known issues with storing secret material in browser storag
 allows anyone with access to that string to make writes for that user for the time and resources that
 session is valid for. How that session string is stored and managed is the responsibility of the application.
 
-```ts
+```js
 import { DIDSession } from 'did-session'
 import type { AuthMethod } from '@didtools/cacao'
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider.enable()
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 
-const loadSession = async(authMethod: AuthMethod):Promise<DIDSession> => {
+const loadSession = async (authMethod) => {
   const sessionStr = localStorage.getItem('didsession')
   let session
 
@@ -163,7 +163,7 @@ if (session.isExpired) {
 
 `authorize` changes to a static method which returns a did-session instance and `getDID()` becomes a `did` getter. For example:
 
-```ts
+```js
 // Before @glazed/did-session
 const session = new DIDSession({ authProvider })
 const did = await session.authorize()
@@ -178,7 +178,7 @@ wildcard by passing the following * below. Wildcard is typically only used with 
 it is best to switch over when possible, as the wildcard option may be * deprecated in the future. When using with
 composites/models you should request the minimum needed resources instead.
 
-```ts
+```js
 const session = await DIDSession.authorize(authMethod, { resources: [`ceramic://*`]})
 const did = session.did
 ```
@@ -188,13 +188,13 @@ const did = session.did
 AuthProviders change to AuthMethod interfaces. Similarly you can import the auth libraries you need. How you configure and manage
 these AuthMethods may differ, but each will return an AuthMethod function to be used with did-session.
 
-```ts
+```js
 // Before with v0.x.x
 ...
 import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
 
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider.enable()
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
 const session = new DIDSession({ authProvider })
 const did = await session.authorize()
@@ -204,7 +204,7 @@ const did = await session.authorize()
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider.enable()
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 const session = await DIDSession.authorize(authMethod, { resources: [...]})

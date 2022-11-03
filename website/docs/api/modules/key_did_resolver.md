@@ -154,17 +154,17 @@ The code for other curves is similar. Changing the did:key string is sufficient.
 const doc = await didResolver.resolve('did:key:z6MktvqCyLxTsXUH1tUZncNdVeEZ7hNh7npPRbUU27GTrYb8')
 ```
 
-#### code snippet for P-256 
+#### code snippet for P-256
 ```
 const doc = await didResolver.resolve('did:key:zDnaeUKTWUXc1HDpGfKbEK31nKLN19yX5aunFd7VK1CUMeyJu')
 ```
 
-#### code snippet for P-384 
+#### code snippet for P-384
 ```
 const doc = await didResolver.resolve('did:key:z82LkvCwHNreneWpsgPEbV3gu1C6NFJEBg4srfJ5gdxEsMGRJUz2sG9FE42shbn2xkZJh54')
 ```
 
-#### code snippet for P-521 
+#### code snippet for P-521
 ```
 const doc = await didResolver.resolve('did:key:z2J9gcGhudjgwsDLv4qJVM6DysnsjWRS6ggtCsSYpV9TGxd9WGoE1EkPxdvPcqEs7eLsQA985AGXPuqttPP7WJ5Qdiz27U3t')
 ```
@@ -172,7 +172,7 @@ Note: All P-*** curves are compressed
 
 The verification method results are slightly different. Here is a sampling:
 
-#### did document verificationMethod for ed25519: 
+#### did document verificationMethod for ed25519:
 ```
 [
   {
@@ -184,7 +184,7 @@ The verification method results are slightly different. Here is a sampling:
 ]
 ```
 
-#### did document verificationMethod for P-256: 
+#### did document verificationMethod for P-256:
 ```
 [
   {
@@ -245,7 +245,7 @@ SEC 2: Recommended Elliptic Curve Domain Parameters
 Certicom Research
 Contact: Daniel R. L. Brown (dbrown@certicom.com)
 January 27, 2010
-Version 2.0 ], http://www.secg.org/sec2-v2.pdf 
+Version 2.0 ], http://www.secg.org/sec2-v2.pdf
 
 [FIPS PUB 186-4 ,FEDERAL INFORMATION PROCESSING STANDARDS
 PUBLICATION, Digital Signature Standard (DSS)], https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf
