@@ -7,13 +7,13 @@ title: "Upgrading DID Session"
 AuthProviders change to AuthMethod interfaces. Similarly you can import the auth libraries you need. How you configure and manage 
 these AuthMethods may differ, but each will return an AuthMethod function to be used with did-session.
 
-```ts
+```js
 // Before with v0.x.x
 //...
 import { EthereumAuthProvider } from '@ceramicnetwork/blockchain-utils-linking'
  
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider.enable()
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const authProvider = new EthereumAuthProvider(ethProvider, addresses[0])
 const session = new DIDSession({ authProvider })
 const did = await session.authorize()
@@ -23,7 +23,7 @@ const did = await session.authorize()
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
  
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider.enable()
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethProvider, accountId)
 const session = await DIDSession.authorize(authMethod, { resources: [...]})
@@ -34,7 +34,7 @@ const did = session.did
 
 `authorize` changes to a static method which returns a did-session instance and `getDID()` becomes a `did` getter. For example:
 
-```ts
+```js
 // Before @glazed/did-session
 const session = new DIDSession({ authProvider })
 const did = await session.authorize()
@@ -49,7 +49,7 @@ wildcard by passing the following * below. Wildcard is typically only used with 
 it is best to switch over when possible, as the wildcard option may be * deprecated in the future. When using with
 composites/models you should request the minimum needed resources instead.
 
-```ts
+```js
 const session = await DIDSession.authorize(authProvider, { resources: [`ceramic://*`]})
 const did = session.did
 ```

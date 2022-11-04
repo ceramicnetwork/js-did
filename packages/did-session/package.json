@@ -44,7 +44,7 @@
     "@stablelib/random": "^1.0.1",
     "dids": "workspace:^3.2.0",
     "key-did-provider-ed25519": "workspace:^2.0.1",
-    "key-did-resolver": "^2.0.6",
+    "key-did-resolver": "workspace:^2.1.2",
     "uint8arrays": "^3.0.0"
   },
   "devDependencies": {
@@ -62,8 +62,7 @@
     "@didtools/pkh-ethereum": "workspace:^0.0.2",
     "@didtools/pkh-solana": "workspace:^0.0.3",
     "@stablelib/ed25519": "^1.0.3",
-    "jest-environment-ceramic": "workspace:^0.16.0",
-    "key-did-resolver": "^2.1.2"
+    "jest-environment-ceramic": "workspace:^0.16.0"
   },
   "jest": {
     "extensionsToTreatAsEsm": [

@@ -6,12 +6,12 @@ use each. Additional accounts will be supported in the future.
 
 Authorize with an Ethereum account using [@didtools/pkh-ethereum](./api/modules/pkh_ethereum.md):
 
-```ts
+```js
 import { DIDSession } from 'did-session'
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider.enable()
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
@@ -20,7 +20,7 @@ const session = await DIDSession.authorize(authMethod, { resources: [...]})
 
 Authorize with a Solana account using [@didtools/pkh-solana](./api/modules/pkh_solana.md):
 
-```ts
+```js
 import { DIDSession } from 'did-session'
 import { SolanaWebAuth, getAccountIdByNetwork } from '@didtools/pkh-solana'
 
@@ -34,7 +34,7 @@ const session = await DIDSession.authorize(authMethod, { resources: [...]})
 
 With your session, use DIDs in composedb, ceramic & glaze libraries:
 
-```ts
+```js
 const ceramic = new CeramicClient()
 ceramic.did = session.did
 ```

@@ -1,0 +1,46 @@
+{
+  "name": "pkh-did-resolver",
+  "version": "1.2.0",
+  "description": "did:pkh method resolver",
+  "keywords": [
+    "ceramic",
+    "did:pkh",
+    "did",
+    "pkh"
+  ],
+  "author": "Joel Thorstensson <oed@3box.io>",
+  "homepage": "https://3boxlabs.com",
+  "license": "(Apache-2.0 OR MIT)",
+  "type": "module",
+  "main": "dist/index.js", 
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.14"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
+    "lint": "eslint src --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "package-check",
+    "size": "./node_modules/.bin/size-limit",
+    "analyze": "./node_modules/.bin/size-limit --why"
+  },
+  "dependencies": {
+    "caip": "~1.1.0"
+  },
+  "devDependencies": {
+    "did-resolver": "^3.1.5"
+  }
+}

@@ -24,6 +24,8 @@ This monorepo uses [pnpm](https://pnpm.io/), make sure to install it first if yo
 | [`@didtools/cacao`](./packages/cacao)           | Chain-Agnostic Object Capabilities                       | ![npm version](https://img.shields.io/npm/v/@didtools/cacao.svg)             |
 | [`@didtools/pkh-ethereum`](./packages/pkh-ethereum) | DID PKH Ethereum                                     | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-ethereum.svg)        |
 | [`@didtools/pkh-solana`](./packages/pkh-solana)     | DID PKH Solana                                       | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-solana.svg)             |
+| [`key-did-resolver`](./packages/key-did-resolver)   | DID Key Resolver                                   | ![npm version](https://img.shields.io/npm/v/key-did-resolver.svg)        |
+| [`pkh-did-resolver`](./packages/pkh-did-resolver)   | DID PKH Resolver                                   | ![npm version](https://img.shields.io/npm/v/pkh-did-resolver.svg)        |
 
 ## License
 
