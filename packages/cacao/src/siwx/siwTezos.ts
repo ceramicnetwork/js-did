@@ -1,5 +1,5 @@
 import { SignatureType, SiwxMessage } from './siwx.js'
-import { Buffer } from 'buffer'
+import * as uint8arrays from 'uint8arrays'
 
 export class SiwTezosMessage extends SiwxMessage {
   toMessage(): string {
@@ -10,12 +10,12 @@ export class SiwTezosMessage extends SiwxMessage {
     let message: string
     switch (this.type) {
       case SignatureType.PERSONAL_SIGNATURE: {
-        message = encodeTezosPayload(this.toMessage())
+        message = encodePayload(this.toMessage())
         break
       }
 
       default: {
-        message = encodeTezosPayload(this.toMessage())
+        message = encodePayload(this.toMessage())
         break
       }
     }
@@ -24,8 +24,11 @@ export class SiwTezosMessage extends SiwxMessage {
   }
 }
 
-function encodeTezosPayload(message: string): string {
-  const bytes = Buffer.from(message, 'utf8').toString('hex')
-  const lenBytes = `0000${bytes.length}`.slice(-4)
-  return '0501' + lenBytes + bytes
+function encodePayload(message: string): string {
+  const michelinePrefix = '05'
+  const stringPrefix = '01'
+  const len = ('0000000' + message.length.toString(16)).slice(-8)
+
+  const text = uint8arrays.toString(uint8arrays.fromString(message, 'utf-8'), 'hex')
+  return michelinePrefix + stringPrefix + len + text
 }
