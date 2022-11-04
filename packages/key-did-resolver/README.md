@@ -13,7 +13,7 @@ This code includes support for the curves Ed25519, Secp256k1, Secp256r1 (P-256),
 [https://github.com/w3c-ccg/did-method-key/tree/main/test-vectors](https://github.com/w3c-ccg/did-method-key/tree/main/test-vectors)
 
 This code has been tested with the following `did:key`[^1] providers:
-|  Curve              | Repositry                                                      |
+|  Curve              | Repository                                                      |
 | ------------------- | -------------------------------------------------------------- |
 | Ed25519             | https://github.com/ceramicnetwork/js-did/tree/main/packages/key-did-provider-ed25519     |
 | Secp256k1           | https://github.com/ceramicnetwork/key-did-provider-secp256k1   |
