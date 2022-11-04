@@ -18,7 +18,7 @@ This code has been tested with the following `did:key`[^1] providers:
 | Ed25519             | https://github.com/ceramicnetwork/js-did/tree/main/packages/key-did-provider-ed25519     |
 | Secp256k1           | https://github.com/ceramicnetwork/key-did-provider-secp256k1   |
 | P-256, P-384, P-521 | https://github.com/bshambaugh/did-key-creator (public key to did:key only)   |
-| P-256               | https://github.com/bshambaugh/key-did-provider-p256 (EIP-2844 RPC, JWE not yet implemented)         |
+| P-256               | https://github.com/bshambaugh/key-did-provider-p256 ([EIP-2844 RPC](https://eips.ethereum.org/EIPS/eip-2844), JWE not yet implemented)         |
 
 Compressed[^2] forms of P-256, P-384, and P-521 are preferred. [^3]
 
