@@ -182,7 +182,7 @@ Version 2.0 ], http://www.secg.org/sec2-v2.pdf
 PUBLICATION, Digital Signature Standard (DSS)], https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf
 
 [Compact representation of an elliptic curve point, Network Working Group, A.J. Jivsov, March 15, 2014],
-https://tools.ietf.org/id/draft-jivsov-ecc-compact-05.html
+https://datatracker.ietf.org/doc/html/draft-jivsov-ecc-compact-05
 
 ## Additional Usage Notes
 
