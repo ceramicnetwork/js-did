@@ -13,11 +13,12 @@ This code includes support for the curves Ed25519, Secp256k1, Secp256r1 (P-256),
 [https://github.com/w3c-ccg/did-method-key/tree/main/test-vectors](https://github.com/w3c-ccg/did-method-key/tree/main/test-vectors)
 
 This code has been tested with the following `did:key`[^1] providers:
-|  Curve              | Repositry                                                      |
+|  Curve              | Repository                                                      |
 | ------------------- | -------------------------------------------------------------- |
-| Ed25519             | https://github.com/ceramicnetwork/js-did/tree/main/packages/key-did-provider-ed25519     |
-| Secp256k1           | https://github.com/ceramicnetwork/key-did-provider-secp256k1   |
-| P-256, P-384, P-521 | https://github.com/bshambaugh/did-key-creator                  |
+| Ed25519             | https://github.com/ceramicnetwork/js-did/tree/main/packages/key-did-provider-ed25519  ([EIP-2844 RPC](https://eips.ethereum.org/EIPS/eip-2844))   |
+| Secp256k1           | https://github.com/ceramicnetwork/js-did/tree/main/packages/key-did-provider-secp256k1 (JWE not supported)  |
+| P-256, P-384, P-521 | https://github.com/bshambaugh/did-key-creator (public key to did:key only)   |
+| P-256               | https://github.com/bshambaugh/key-did-provider-p256 ([EIP-2844 RPC](https://eips.ethereum.org/EIPS/eip-2844), JWE not yet implemented)         |
 
 Compressed[^2] forms of P-256, P-384, and P-521 are preferred. [^3]
 
@@ -181,7 +182,7 @@ Version 2.0 ], http://www.secg.org/sec2-v2.pdf
 PUBLICATION, Digital Signature Standard (DSS)], https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.186-4.pdf
 
 [Compact representation of an elliptic curve point, Network Working Group, A.J. Jivsov, March 15, 2014],
-https://tools.ietf.org/id/draft-jivsov-ecc-compact-05.html
+https://datatracker.ietf.org/doc/html/draft-jivsov-ecc-compact-05
 
 ## Additional Usage Notes
 
