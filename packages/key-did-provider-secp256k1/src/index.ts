@@ -5,13 +5,13 @@
  * ## Installation
  *
  * ```
- * npm install --save key-did-provider-secp256k1
+ * npm install --save @didtools/key-secp256k1
  * ```
  *
  * ## Usage
  *
  * ```js
- * import { Secp256k1Provider } from 'key-did-provider-secp256k1'
+ * import { Secp256k1Provider } from '@didtools/key-secp256k1'
  * import KeyResolver from 'key-did-resolver'
  * import { DID } from 'dids'
  *
@@ -30,7 +30,7 @@
  * await did.verifyJWS(jws)
  * ```
  *
- * @module key-did-provider-secp256k1
+ * @module @didtools/key-secp256k1
  */
 
 import { createJWS, ES256KSigner } from 'did-jwt'

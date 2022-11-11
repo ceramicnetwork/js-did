@@ -4,13 +4,13 @@ This is a DID Provider which implements [EIP2844](https://eips.ethereum.org/EIPS
 ## Installation
 
 ```
-npm install --save key-did-provider-secp256k1
+npm install --save @didtools/key-secp256k1
 ```
 
 ## Usage
 
 ```js
-import { Secp256k1Provider } from 'key-did-provider-secp256k1'
+import { Secp256k1Provider } from '@didtools/key-secp256k1'
 import KeyResolver from 'key-did-resolver'
 import { DID } from 'dids'
 

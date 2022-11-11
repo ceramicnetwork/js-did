@@ -12,7 +12,7 @@ const b64urlToObj = (s: string): Record<string, any> =>
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   JSON.parse(u8a.toString(u8a.fromString(s, 'base64url')))
 
-describe('key-did-provider-secp256k1', () => {
+describe('@didtools/key-secp256k1', () => {
   let provider: Secp256k1Provider
   let did: string
   let secretKey: Uint8Array

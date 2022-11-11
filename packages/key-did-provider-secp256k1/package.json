@@ -1,5 +1,5 @@
 {
-  "name": "key-did-provider-secp256k1",
+  "name": "@didtools/key-secp256k1", 
   "version": "0.1.0",
   "author": "Joel Thorstensson",
   "license": "(Apache-2.0 OR MIT)",
