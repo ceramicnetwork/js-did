@@ -91,7 +91,7 @@ async function createCACAO(
   account: AccountId
 ): Promise<Cacao> {
   const now = new Date()
-  const oneDayLater = new Date(now.getTime() + 24 * 60 * 60 * 1000)
+  const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
 
   const siwsMessage = new SiwsMessage({
     domain: opts.domain,
@@ -101,7 +101,7 @@ async function createCACAO(
     version: VERSION,
     nonce: opts.nonce ?? randomString(10),
     issuedAt: now.toISOString(),
-    expirationTime: opts.expirationTime ?? oneDayLater.toISOString(),
+    expirationTime: opts.expirationTime ?? oneWeekLater.toISOString(),
     chainId: account.chainId.reference,
     resources: opts.resources,
   })
