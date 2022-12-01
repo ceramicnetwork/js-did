@@ -59,8 +59,8 @@
     "ajv-formats": "^2.1.1",
     "@didtools/cacao": "workspace:^1.0.0",
     "caip": "^1.1.0",
-    "@didtools/pkh-ethereum": "workspace:^0.0.2",
-    "@didtools/pkh-solana": "workspace:^0.0.3",
+    "@didtools/pkh-ethereum": "workspace:^0.0.3",
+    "@didtools/pkh-solana": "workspace:^0.0.4",
     "@stablelib/ed25519": "^1.0.3",
     "jest-environment-ceramic": "workspace:^0.16.0"
   },

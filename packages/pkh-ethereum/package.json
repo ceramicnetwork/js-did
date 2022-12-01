@@ -1,6 +1,6 @@
 {
   "name": "@didtools/pkh-ethereum",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",

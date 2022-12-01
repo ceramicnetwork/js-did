@@ -45,8 +45,8 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
     "@didtools/cacao": "workspace:^1.0.0",
-    "@didtools/pkh-ethereum": "workspace:^0.0.2",
-    "@didtools/pkh-solana": "workspace:^0.0.3",
+    "@didtools/pkh-ethereum": "workspace:^0.0.3",
+    "@didtools/pkh-solana": "workspace:^0.0.4",
     "@ethersproject/wallet": "^5.5.0",
     "@ipld/dag-cbor": "^7.0.1",
     "@stablelib/ed25519": "^1.0.2",

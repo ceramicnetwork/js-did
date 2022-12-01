@@ -48,7 +48,7 @@
     "dag-jose-utils": "^2.0.0",
     "did-jwt": "^6.0.0",
     "did-resolver": "^3.1.5",
-    "@didtools/pkh-ethereum": "workspace:^0.0.2",
+    "@didtools/pkh-ethereum": "workspace:^0.0.3",
     "multiformats": "^9.4.10",
     "rpc-utils": "^0.6.1",
     "uint8arrays": "^3.0.0"
