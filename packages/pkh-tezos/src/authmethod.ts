@@ -8,14 +8,18 @@ export const CHAIN_NAMESPACE = 'tezos'
 
 export namespace TezosWebAuth {
   // eslint-disable-next-line @typescript-eslint/require-await
-  export async function getAuthMethod(tzProvider: any, account: AccountId): Promise<AuthMethod> {
+  export async function getAuthMethod(
+    tzProvider: any,
+    account: AccountId,
+    publicKey: string
+  ): Promise<AuthMethod> {
     if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')
     const domain = (window as Window).location.hostname
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, tzProvider, account)
+      return createCACAO(opts, tzProvider, account, publicKey)
     }
   }
 }
@@ -46,7 +50,8 @@ async function sign(tzProvider: any, message: string) {
 async function createCACAO(
   opts: AuthMethodOpts,
   tzProvider: any,
-  account: AccountId
+  account: AccountId,
+  publicKey: string
 ): Promise<Cacao> {
   const now = new Date()
   const oneDayLater = new Date(now.getTime() + 24 * 60 * 60 * 1000)
@@ -66,7 +71,7 @@ async function createCACAO(
 
   const signData = siwTezosMessage.signMessage()
   const signature = await sign(tzProvider, signData)
-  siwTezosMessage.signature = signature
+  siwTezosMessage.signature = signature + publicKey
   return Cacao.fromSiwTezosMessage(siwTezosMessage)
 }
 
