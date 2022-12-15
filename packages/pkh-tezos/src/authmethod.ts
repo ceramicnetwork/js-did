@@ -3,8 +3,16 @@ import { randomString } from '@stablelib/random'
 import { Cacao, SiwTezosMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 
 export const TEZOS_MAINNET_CHAIN_REF = 'NetXdQprcVkpaWU' // Solana mainnet beta
+export const TEZOS_DEVNET_CHAIN_REF = 'NetXm8tYqnMWky1' // Solana mainnet beta
 export const VERSION = '1'
 export const CHAIN_NAMESPACE = 'tezos'
+
+export const chainIdMap = {
+  mainnet: TEZOS_MAINNET_CHAIN_REF,
+  devnet: TEZOS_DEVNET_CHAIN_REF,
+}
+
+type TezosNetwork = 'mainnet' | 'devnet'
 
 export namespace TezosWebAuth {
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -75,14 +83,17 @@ async function createCACAO(
   return Cacao.fromSiwTezosMessage(siwTezosMessage)
 }
 
-export async function getAccountId(tzProvider: any, address: string): Promise<AccountId> {
-  const tezosChainId = await requestChainId(tzProvider)
+export function requestChainId(network: TezosNetwork): string {
+  return chainIdMap[network]
+}
+
+export function getAccountId(network: TezosNetwork, address: string): AccountId {
+  const tezosChainId = requestChainId(network)
   const chainId = `${CHAIN_NAMESPACE}:${tezosChainId}`
   return new AccountId({ address, chainId })
 }
 
-// eslint-disable-next-line @typescript-eslint/require-await
-export async function requestChainId(_tzProvider: any): Promise<string> {
-  // TODO: add testnets
-  return TEZOS_MAINNET_CHAIN_REF
+export function getAccountIdByNetwork(network: TezosNetwork, address: string): AccountId {
+  const chainId = `${CHAIN_NAMESPACE}:${requestChainId(network)}`
+  return new AccountId({ address, chainId })
 }
