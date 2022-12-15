@@ -24,16 +24,16 @@ if (!activeAccount) {
 }
 const address = await activeAccount.address
 const accountId = await getAccountId(tzProvider, address)
-const authMethod = await TezosWebAuth.getAuthMethod(tzProvider, accountId)
+const authMethod = await TezosWebAuth.getAuthMethod(tzProvider, accountId, publicKey)
 ```
 
-To Auth in a Node based env, use any standard web3 provider interface with `TezosNodeAuth`
+<!-- To Auth in a Node based env, use any standard web3 provider interface with `TezosNodeAuth`
 
 ```ts
 const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://*'] })
-```
+``` -->
 
-```js
+<!-- ```js
 // Node Auth Usage
 import { TezosNodeAuth, getAccountId } from '@didtools/pkh-tezos'
 // ...
@@ -45,8 +45,8 @@ if (!activeAccount) {
 }
 const address = await activeAccount.address
 const accountId = await getAccountId(tzProvider, address)
-const authMethod = await TezosNodeAuth.getAuthMethod(tzProvider, accountId)
-```
+const authMethod = await TezosNodeAuth.getAuthMethod(tzProvider, accountId, publicKey)
+``` -->
 
 To use with did-session and reference did-session docs for more details.
 
@@ -56,22 +56,32 @@ const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://
 
 ## Configuration
 
-AuthMethod creators consume a standard Tezos provider and an AccountId. The helper method `getAccountID` is provided.
+AuthMethod creators consume a standard Tezos provider and an AccountId. AccountID follows the 
+CAIP10 standard. The helper methods `getAccountIdByNetwork` and `getAccountId` are provided, but you can also create an AccountID
+using the CAIP library directly. 
 
-```ts
-import { getAccountId } from '@didtools/pkh-tezos'
+```js
+import { AccountId } from 'caip'
+import { getAccountIdByNetwork, getAccountId } from '@didtools/pkh-tezos'
 
-const accountId = await getAccountId(tzProvider, address)
+// Using network string
+const accountId = getAccountIdByNetwork('mainnet', address)
+
+// With CAIP
+const ethMainnetChainId = 'NetXdQprcVkpaWU'
+const chainNameSpace = 'tezos'
+const chainId = `${chainNameSpace}:${ethMainnetChainId}`
+const accountIdCAIP = new AccountId({ address, chainId })
 ```
 
-The `TezosNodeAuth` additionally consumes an application name. The 'TezosWebAuth' method uses your 
+<!-- The `TezosNodeAuth` additionally consumes an application name. The 'TezosWebAuth' method uses your 
 application domain name by default.
 
 ```ts
 import { TezosNodeAuth } from '@didtools/pkh-tezos'
 
 const authMethod = await TezosNodeAuth.getAuthMethod(tzProvider, accountId)
-```
+``` -->
 
 ## Verifier Usage
 
