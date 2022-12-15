@@ -2,8 +2,8 @@ import { AccountId } from 'caip'
 import { randomString } from '@stablelib/random'
 import { Cacao, SiwTezosMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 
-export const TEZOS_MAINNET_CHAIN_REF = 'NetXdQprcVkpaWU' // Solana mainnet beta
-export const TEZOS_DEVNET_CHAIN_REF = 'NetXm8tYqnMWky1' // Solana mainnet beta
+export const TEZOS_MAINNET_CHAIN_REF = 'NetXdQprcVkpaWU' // Tezos mainnet beta
+export const TEZOS_DEVNET_CHAIN_REF = 'NetXm8tYqnMWky1' // Tezos devnet beta
 export const VERSION = '1'
 export const CHAIN_NAMESPACE = 'tezos'
 
