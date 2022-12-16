@@ -68,9 +68,9 @@ import { getAccountIdByNetwork, getAccountId } from '@didtools/pkh-tezos'
 const accountId = getAccountIdByNetwork('mainnet', address)
 
 // With CAIP
-const ethMainnetChainId = 'NetXdQprcVkpaWU'
+const tezosMainnetChainId = 'NetXdQprcVkpaWU'
 const chainNameSpace = 'tezos'
-const chainId = `${chainNameSpace}:${ethMainnetChainId}`
+const chainId = `${chainNameSpace}:${tezosMainnetChainId}`
 const accountIdCAIP = new AccountId({ address, chainId })
 ```
 
