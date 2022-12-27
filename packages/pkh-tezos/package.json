@@ -1,8 +1,6 @@
 {
-  "name": "@didtools/cacao",
-  "version": "1.0.0",
-  "description": "Typescript library for Ceramic OCAP",
-  "author": "Haardik <hhaardik@uwaterloo.ca>",
+  "name": "@didtools/pkh-tezos",
+  "version": "0.0.1",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
   "main": "dist/index.js",
@@ -22,11 +20,13 @@
     "build:js": "swc src -d ./dist --config-file ../../.swcrc",
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
-    "lint": "eslint src test --fix",
+    "lint": "eslint src --fix",
     "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
     "test:ci": "pnpm run test --ci --coverage",
     "prepare": "pnpm run build",
-    "prepublishOnly": "package-check"
+    "prepublishOnly": "package-check",
+    "size": "./node_modules/.bin/size-limit",
+    "analyze": "./node_modules/.bin/size-limit --why"
   },
   "repository": {
     "type": "git",
@@ -35,23 +35,20 @@
   "keywords": [
     "DID",
     "identity",
-    "OCAP",
-    "capabilities"
+    "did-provider",
+    "self-sovereign"
   ],
   "bugs": {
     "url": "https://github.com/ceramicnetwork/js-did/issues"
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
-  "dependencies": {
-    "@ipld/dag-cbor": "^7.0.1",
-    "apg-js": "^4.1.1",
-    "caip": "^1.1.0",
-    "multiformats": "^9.5.1",
-    "uint8arrays": "^4.0.2"
-  },
   "devDependencies": {
-    "@types/luxon": "^3.0.0",
-    "@types/node": "^18.11.7",
-    "luxon": "^3.0.1"
+    "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@didtools/cacao": "workspace:^1.0.0",
+    "@stablelib/random": "^1.0.2",
+    "@taquito/utils": "^14.0.0",
+    "caip": "^1.1.0"
   }
 }

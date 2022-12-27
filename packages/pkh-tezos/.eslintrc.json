@@ -1,0 +1,13 @@
+{
+  "extends": ["3box", "3box/jest", "3box/typescript"],
+  "parserOptions": {
+    "project": ["tsconfig.lint.json"]
+  },
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off"
+  }
+}
