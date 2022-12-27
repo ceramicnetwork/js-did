@@ -50,7 +50,7 @@
     "@stablelib/ed25519": "^1.0.3",
     "@stablelib/random":"^1.0.2",
     "caip": "^1.1.0",
-    "@didtools/cacao": "workspace:^1.0.0",
+    "@didtools/cacao": "workspace:^1.1.0",
     "uint8arrays": "^3.1.0"
   }
 }
