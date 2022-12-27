@@ -15,6 +15,7 @@ export const chainIdMap = {
 type TezosNetwork = 'mainnet' | 'devnet'
 
 export namespace TezosWebAuth {
+  // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(tzProvider: any, account: AccountId): Promise<AuthMethod> {
     if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')

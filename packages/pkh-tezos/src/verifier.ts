@@ -13,12 +13,12 @@ export function getTezosVerifier(): Verifiers {
   return {
     // eslint-disable-next-line @typescript-eslint/require-await
     'tezos:ed25519': async (cacao: Cacao, opts: VerifyOptions): Promise<void> => {
-      await verifyTezosSignature(cacao, opts)
+      verifyTezosSignature(cacao, opts)
     },
   }
 }
 
-export async function verifyTezosSignature(cacao: Cacao, options: VerifyOptions) {
+export function verifyTezosSignature(cacao: Cacao, options: VerifyOptions) {
   assertSigned(cacao)
   verifyTimeChecks(cacao, options)
 
