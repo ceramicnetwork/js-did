@@ -1,4 +1,4 @@
-# Module: key-did-provider-secp256k1
+# Module: @didtools/key-secp256k1
 
 # secp256k1 Key Did Provider
 This is a DID Provider which implements [EIP2844](https://eips.ethereum.org/EIPS/eip-2844) for `did:key:` using secp256k1.
@@ -6,13 +6,13 @@ This is a DID Provider which implements [EIP2844](https://eips.ethereum.org/EIPS
 ## Installation
 
 ```
-npm install --save key-did-provider-secp256k1
+npm install --save @didtools/key-secp256k1
 ```
 
 ## Usage
 
 ```js
-import { Secp256k1Provider } from 'key-did-provider-secp256k1'
+import { Secp256k1Provider } from '@didtools/key-secp256k1'
 import KeyResolver from 'key-did-resolver'
 import { DID } from 'dids'
 
@@ -33,7 +33,7 @@ await did.verifyJWS(jws)
 
 ## Classes
 
-- [Secp256k1Provider](../classes/key_did_provider_secp256k1.Secp256k1Provider.md)
+- [Secp256k1Provider](../classes/didtools_key_secp256k1.Secp256k1Provider.md)
 
 ## Functions
 

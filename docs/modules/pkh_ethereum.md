@@ -1,8 +1,8 @@
 # Module: pkh-ethereum
 
 # Ethereum AuthMethod and Verifier
-Implements support to authenticate, authorize and verify with Ethereum accounts as a did:pkh with SIWE(X) and CACAO. 
-Primarly used with `did-session` and `@didtools/cacao`. 
+Implements support to authenticate, authorize and verify with Ethereum accounts as a did:pkh with SIWE(X) and CACAO.
+Primarly used with `did-session` and `@didtools/cacao`.
 
 ## Installation
 
@@ -53,9 +53,9 @@ client.setDID(session.did)
 
 ## Configuration
 
-AuthMethod creators consume a standard Ethereum provider and an AccountId. AccountID follows the 
+AuthMethod creators consume a standard Ethereum provider and an AccountId. AccountID follows the
 CAIP10 standard. The helper method `getAccountID` is provided, but you can also create an AccountID
-using the CAIP library directly. 
+using the CAIP library directly.
 
 ```js
 import { AccountId } from 'caip'
@@ -71,7 +71,7 @@ const accountIdCAIP = new AccountId({ address, chainId })
 // accountId = accountIdCAIP
 ```
 
-The `EthereumNodeAuth` additionally consumes an application name. The 'EthereumWebAuth' method uses your 
+The `EthereumNodeAuth` additionally consumes an application name. The 'EthereumWebAuth' method uses your
 application domain name by default.
 
 ```js
@@ -84,7 +84,7 @@ const authMethod = EthereumNodeAuth.getAuthMethod(ethProvider, accountId, appNam
 ## Verifier Usage
 
 Verifiers are needed to verify different did:pkh signed payloads using CACAO. Libraries that need them will
-consume a verifiers map allowing your to register the verifiers you want to support. 
+consume a verifiers map allowing your to register the verifiers you want to support.
 
 ```js
 import { Cacao } from '@didtools/cacao'

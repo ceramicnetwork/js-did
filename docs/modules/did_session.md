@@ -23,7 +23,7 @@ import { DIDSession } from 'did-session'
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
 const ethProvider = // import/get your web3 eth provider
-const addresses = await ethProvider).request({ method: 'eth_requestAccounts' })
+const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
@@ -56,7 +56,7 @@ ceramic.did = session2.did
 
 Additional helper functions are available to help you manage a session lifecycle and the user experience.
 
-```js
+```ss
 // Check if authorized or created from existing session string
 didsession.hasSession
 

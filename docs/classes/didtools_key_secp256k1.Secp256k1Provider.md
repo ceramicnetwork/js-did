@@ -1,6 +1,6 @@
 # Class: Secp256k1Provider
 
-[key-did-provider-secp256k1](../modules/key_did_provider_secp256k1.md).Secp256k1Provider
+[@didtools/key-secp256k1](../modules/didtools_key_secp256k1.md).Secp256k1Provider
 
 ## Implements
 

@@ -1,8 +1,8 @@
 # Module: pkh-solana
 
 # Solana AuthMethod and Verifier
-Implements support to authenticate, authorize and verify with Solana accounts as a did:pkh with SIWS(X) and CACAO. 
-Primarly used with `did-session` and `@didtools/cacao`. 
+Implements support to authenticate, authorize and verify with Solana accounts as a did:pkh with SIWS(X) and CACAO.
+Primarly used with `did-session` and `@didtools/cacao`.
 
 ## Installation
 
@@ -53,9 +53,9 @@ client.setDID(session.did)
 
 ## Configuration
 
-AuthMethod creators consume a standard Solana provider and an AccountId. AccountID follows the 
+AuthMethod creators consume a standard Solana provider and an AccountId. AccountID follows the
 CAIP10 standard. The helper methods `getAccountIdByNetwork` and `getAccountId` are provided, but you can also create an AccountID
-using the CAIP library directly. 
+using the CAIP library directly.
 
 ```js
 import { AccountId } from 'caip'
@@ -78,7 +78,7 @@ const accountIdByConnection = await getAccountIdSolana(connection, address)
 // accountId = accountIdCAIP = accountIdByConnection
 ```
 
-The `SolanaNodeAuth` additionally consumes an application name. The 'SolanaWebAuth' method uses your 
+The `SolanaNodeAuth` additionally consumes an application name. The 'SolanaWebAuth' method uses your
 application domain name by default.
 
 ```js
@@ -91,7 +91,7 @@ const authMethod = SolanaNodeAuth.getAuthMethod(solProvider, accountId, appName)
 ## Verifier Usage
 
 Verifiers are needed to verify different did:pkh signed payloads using CACAO. Libraries that need them will
-consume a verifiers map allowing your to register the verifiers you want to support. 
+consume a verifiers map allowing your to register the verifiers you want to support.
 
 ```js
 import { Cacao } from '@didtools/cacao'
