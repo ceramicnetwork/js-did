@@ -12,6 +12,16 @@ export const VERSION = '1'
  */
 export const CHAIN_NAMESPACE = 'eip155'
 
+function toAccountId (didOrAccount: string | AccountId): AccountId {
+  if (typeof didOrAccount === 'string') {
+    if (!didOrAccount.startsWith(`did:pkh:${CHAIN_NAMESPACE}`)) {
+      throw new Error(`Invalid DID string: ${didOrAccount}`)
+    }
+    return new AccountId(didOrAccount.slice(8))
+  }
+  return didOrAccount as AccountId
+}
+
 export namespace EthereumWebAuth {
   /**
    * Get a configured authMethod for an Ethereum account in a web based environment
@@ -21,16 +31,10 @@ export namespace EthereumWebAuth {
     if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')
     const domain = (window as Window).location.hostname
-    if (typeof account === 'string') {
-      if (!account.startsWith(`did:pkh:${CHAIN_NAMESPACE}`)) {
-        throw new Error(`invalid DID string: ${account}`)
-      }
-      account = new AccountId(account.slice(8))
-    }
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, ethProvider, account)
+      return createCACAO(opts, ethProvider, toAccountId(account))
     }
   }
 }
@@ -49,7 +53,7 @@ export namespace EthereumNodeAuth {
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, ethProvider, account)
+      return createCACAO(opts, ethProvider, toAccountId(account))
     }
   }
 }

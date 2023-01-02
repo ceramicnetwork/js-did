@@ -14,6 +14,16 @@ export const chainIdMap = {
 
 type TezosNetwork = 'mainnet' | 'devnet'
 
+function toAccountId (didOrAccount: string | AccountId): AccountId {
+  if (typeof didOrAccount === 'string') {
+    if (!didOrAccount.startsWith(`did:pkh:${CHAIN_NAMESPACE}`)) {
+      throw new Error(`Invalid DID string: ${didOrAccount}`)
+    }
+    return new AccountId(didOrAccount.slice(8))
+  }
+  return didOrAccount as AccountId
+}
+
 export namespace TezosWebAuth {
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(tzProvider: any, account: AccountId): Promise<AuthMethod> {
@@ -23,7 +33,7 @@ export namespace TezosWebAuth {
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, tzProvider, account)
+      return createCACAO(opts, tzProvider, toAccountId(account))
     }
   }
 }
