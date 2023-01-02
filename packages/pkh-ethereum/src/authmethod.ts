@@ -17,10 +17,16 @@ export namespace EthereumWebAuth {
    * Get a configured authMethod for an Ethereum account in a web based environment
    */
   // eslint-disable-next-line @typescript-eslint/require-await
-  export async function getAuthMethod(ethProvider: any, account: AccountId): Promise<AuthMethod> {
+  export async function getAuthMethod(ethProvider: any, account: AccountId | string): Promise<AuthMethod> {
     if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')
     const domain = (window as Window).location.hostname
+    if (typeof account === 'string') {
+      if (!account.startsWith(`did:pkh:${CHAIN_NAMESPACE}`)) {
+        throw new Error(`invalid DID string: ${account}`)
+      }
+      account = AccountId.parse(account.slice(8))
+    }
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
