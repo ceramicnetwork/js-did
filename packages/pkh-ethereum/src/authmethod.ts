@@ -25,7 +25,7 @@ export namespace EthereumWebAuth {
       if (!account.startsWith(`did:pkh:${CHAIN_NAMESPACE}`)) {
         throw new Error(`invalid DID string: ${account}`)
       }
-      account = AccountId.parse(account.slice(8))
+      account = new AccountId(account.slice(8))
     }
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
