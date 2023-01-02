@@ -112,6 +112,10 @@ export async function getAccountId(tzProvider: any, address: string): Promise<Ac
   return new AccountId({ address, chainId })
 }
 
+export async function getDID(tzProvider: any, address: string): Promise<string> {
+  return `did:pkh:${getAccountId(tzProvider, address).toString()}`
+}
+
 export function getAccountIdByNetwork(network: TezosNetwork, address: string): AccountId {
   const chainId = `${CHAIN_NAMESPACE}:${chainIdMap[network]}`
   return new AccountId({ address, chainId })

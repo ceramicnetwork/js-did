@@ -99,3 +99,10 @@ export async function getAccountId(ethProvider: any, address: string): Promise<A
   const chainId = `${CHAIN_NAMESPACE}:${ethChainId}`
   return new AccountId({ address, chainId })
 }
+
+/**
+ * Helper function to get a PKH DID for an Ethereum account, uses ethProvider to get chainId/network
+ */
+export async function getDID(ethProvider: any, address: string): Promise<string> {
+  return `did:pkh:${getAccountId(ethProvider, address).toString()}`
+}
