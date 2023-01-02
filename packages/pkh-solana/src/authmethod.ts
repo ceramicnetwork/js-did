@@ -158,6 +158,6 @@ export function getAccountIdByNetwork(network: SolanaNetwork, address: string): 
 /**
  * Helper function to get a DID for an Solana account by network string 'mainet' | 'testnet' | 'devenet'
  */
-export function getDIDByNetwork(network: SolanaNetwork, address: string): Promise<string> {
+export function getDIDByNetwork(network: SolanaNetwork, address: string): string {
   return `did:pkh:${getAccountIdByNetwork(network, address).toString()}`
 }
