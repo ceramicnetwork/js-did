@@ -28,6 +28,15 @@ This monorepo uses [pnpm](https://pnpm.io/), make sure to install it first if yo
 | [`key-did-resolver`](./packages/key-did-resolver)   | DID Key Resolver                                   | ![npm version](https://img.shields.io/npm/v/key-did-resolver.svg)        |
 | [`pkh-did-resolver`](./packages/pkh-did-resolver)   | DID PKH Resolver                                   | ![npm version](https://img.shields.io/npm/v/pkh-did-resolver.svg)        |
 
+
+
+## Releasing & Contributing
+
+We are happy to accept small and large contributions, feel free to make a suggestion or submit a pull request.
+
+Check out the [Development](./DEVELOPMENT.md) section to learn more and for the current release process. 
+
+
 ## License
 
 Dual licensed under [MIT](LICENSE-MIT) and [Apache 2](LICENSE-APACHE)
