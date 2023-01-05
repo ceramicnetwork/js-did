@@ -39,7 +39,7 @@ Before creating any releases, make sure you have an npm account (you can sign up
 
 Releases are currently done manually and not by any CI. CI will only publish documentation on release. Process may be further formalized in the future. To make a release:
 
-1) First create a release branch 
+1) First create a release branch from the lastest main branch.
 ```
 git checkout -b release/any-name
 ```
@@ -52,11 +52,11 @@ pnpm install
 git commit -m 'pkh-solana@0.0.3, did-session@1.0.0' 
 ```
 4) Push and open PR, request review and make sure all github checks pass before merging. 
-5) Once merged, pull main branch locally, make sure it is up to date and all latest dependencies are installed.
+5) Once merged, pull main branch locally, make sure it is up to date and all latest dependencies from the lock file are installed.
 ```
 git checkout main
 git pull 
-pnpm install
+pnpm install --frozen-lockfile
 ```
 6) Now publish each package you want to release, cd into package folder and publish. Repeat for each package. The publish command will build the package and run some checks before publishing to NPM. 
 ```
