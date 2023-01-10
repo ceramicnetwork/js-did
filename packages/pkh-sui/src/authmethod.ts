@@ -3,6 +3,9 @@ import { randomString } from '@stablelib/random'
 import { Cacao, SiwSuiMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 
 export const SUI_MAINNET_CHAIN_REF = 'mainnet' // TBD when CAIP-2 is finalized
+export const SUI_DEVNET_CHAIN_REF = 'devnet';
+export const SUI_TESTNET_CHAIN_REF = 'testnet';
+export const SUI_LOCALNET_CHAIN_REF = 'localnet';
 export const VERSION = '1'
 export const CHAIN_NAMESPACE = 'sui'
 
@@ -31,7 +34,7 @@ export function assertSupportedProvider(suiProvider: any): asserts suiProvider i
   }
 }
 
-async function sign(suiProvider: any, message: string) {
+async function sign(suiProvider: any, message: Uint8Array) {
   assertSupportedProvider(suiProvider)
   const { signature } = await suiProvider.signMessage(message)
   return signature
