@@ -1,6 +1,7 @@
 import { AccountId } from 'caip'
 import { randomString } from '@stablelib/random'
 import { Cacao, SiwStacksMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
+import { createUnsecuredToken } from 'jsontokens'
 
 export const VERSION = '1'
 export const CHAIN_NAMESPACE = 'stacks'
@@ -52,7 +53,8 @@ export function assertSupportedProvider(
 
 async function sign(stacksProvider: any, message: string) {
   assertSupportedProvider(stacksProvider)
-  const { signature } = await stacksProvider.signatureRequest(message)
+  const token = createUnsecuredToken({ message })
+  const { signature } = await stacksProvider.signatureRequest(token)
   return signature
 }
 

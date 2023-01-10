@@ -284,11 +284,13 @@ importers:
       '@didtools/cacao': workspace:^1.1.0
       '@stablelib/random': ^1.0.2
       caip: ^1.1.0
+      jsontokens: ^4.0.1
       typescript: ^4.5.4
     dependencies:
       '@didtools/cacao': link:../cacao
       '@stablelib/random': 1.0.2
       caip: 1.1.0
+      jsontokens: 4.0.1
     devDependencies:
       typescript: 4.8.4
 
@@ -3829,6 +3831,10 @@ packages:
 
   /@noble/ed25519/1.7.1:
     resolution: {integrity: sha512-Rk4SkJFaXZiznFyC/t77Q0NKS4FL7TLJJsVG2V2oiEq3kJVeTdxysEe/yRWSpnWMe808XRDJ+VFh5pt/FN5plw==}
+    dev: false
+
+  /@noble/hashes/1.1.5:
+    resolution: {integrity: sha512-LTMZiiLc+V4v1Yi16TD6aX2gmtKszNye0pQgbaLqkvhIqP7nVsSaJsWloGQjJfJ8offaoP5GtX3yY5swbcJxxQ==}
     dev: false
 
   /@noble/secp256k1/1.7.0:
@@ -10834,6 +10840,14 @@ packages:
       universalify: 2.0.0
     optionalDependencies:
       graceful-fs: 4.2.10
+    dev: false
+
+  /jsontokens/4.0.1:
+    resolution: {integrity: sha512-+MO415LEN6M+3FGsRz4wU20g7N2JA+2j9d9+pGaNJHviG4L8N0qzavGyENw6fJqsq9CcrHOIL6iWX5yeTZ86+Q==}
+    dependencies:
+      '@noble/hashes': 1.1.5
+      '@noble/secp256k1': 1.7.0
+      base64-js: 1.5.1
     dev: false
 
   /jsprim/1.4.2:
