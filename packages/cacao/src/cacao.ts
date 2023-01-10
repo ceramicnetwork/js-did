@@ -5,6 +5,7 @@ import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2'
 import { SiweMessage } from './siwx/siwe.js'
 import { SiwsMessage } from './siwx/siws.js'
+import { SiwSuiMessage } from './siwx/siwSui.js'
 import { SiwTezosMessage } from './siwx/siwTezos.js'
 
 // 5 minute default clockskew
@@ -24,7 +25,7 @@ export type Header = {
 }
 
 export type Signature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519'
+  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'sui:ed25519'
   s: string
 }
 export type Cacao = {
@@ -207,6 +208,51 @@ export namespace Cacao {
 
     if (siwsMessage.resources) {
       cacao.p.resources = siwsMessage.resources
+    }
+
+    return cacao
+  }
+
+  export function fromSiwSuiMessage(siwSuiMessage: SiwSuiMessage): Cacao {
+    const cacao: Cacao = {
+      h: {
+        t: 'caip122',
+      },
+      p: {
+        domain: siwSuiMessage.domain,
+        iat: siwSuiMessage.issuedAt,
+        iss: `did:pkh:sui:${siwSuiMessage.chainId}:${siwSuiMessage.address}`,
+        aud: siwSuiMessage.uri,
+        version: siwSuiMessage.version,
+        nonce: siwSuiMessage.nonce,
+      },
+    }
+
+    if (siwSuiMessage.signature) {
+      cacao.s = {
+        t: 'sui:ed25519',
+        s: siwSuiMessage.signature,
+      }
+    }
+
+    if (siwSuiMessage.notBefore) {
+      cacao.p.nbf = siwSuiMessage.notBefore
+    }
+
+    if (siwSuiMessage.expirationTime) {
+      cacao.p.exp = siwSuiMessage.expirationTime
+    }
+
+    if (siwSuiMessage.statement) {
+      cacao.p.statement = siwSuiMessage.statement
+    }
+
+    if (siwSuiMessage.requestId) {
+      cacao.p.requestId = siwSuiMessage.requestId
+    }
+
+    if (siwSuiMessage.resources) {
+      cacao.p.resources = siwSuiMessage.resources
     }
 
     return cacao
