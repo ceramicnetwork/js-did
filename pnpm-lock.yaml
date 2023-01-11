@@ -283,6 +283,7 @@ importers:
     specifiers:
       '@didtools/cacao': workspace:^1.1.0
       '@stablelib/random': ^1.0.2
+      '@stacks/common': ^6.0.0
       '@stacks/encryption': ^6.1.0
       '@stacks/transactions': ^6.1.0
       caip: ^1.1.0
@@ -291,6 +292,7 @@ importers:
     dependencies:
       '@didtools/cacao': link:../cacao
       '@stablelib/random': 1.0.2
+      '@stacks/common': 6.0.0
       '@stacks/encryption': 6.1.0
       '@stacks/transactions': 6.1.0
       caip: 1.1.0

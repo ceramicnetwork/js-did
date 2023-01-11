@@ -13,7 +13,7 @@ import {
   createMessageSignature,
   getAddressFromPublicKey,
 } from '@stacks/transactions'
-import { bytesToHex } from './utils.js'
+import { bytesToHex } from '@stacks/common'
 
 export function getStacksVerifier(): Verifiers {
   return {
