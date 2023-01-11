@@ -39,7 +39,6 @@ export function verifyStacksSignature(cacao: Cacao, options: VerifyOptions) {
   const recoveredAddress = getAddressFromPublicKey(recoveredPublicKey)
 
   const issuerAddress = AccountId.parse(cacao.p.iss.replace('did:pkh:', '')).address
-  console.log({ msg, recoveredPublicKey, issuerAddress, recoveredAddress })
   if (issuerAddress !== recoveredAddress) {
     throw new Error(`address does not belong to publicKey`)
   }
