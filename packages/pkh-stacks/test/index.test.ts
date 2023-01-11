@@ -1,4 +1,4 @@
-describe('Solana Cacao Auth Verify', () => {
+describe('Stacks Cacao Auth Verify', () => {
   test.skip('Verify', () => {
 
   })
