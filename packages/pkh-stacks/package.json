@@ -48,6 +48,8 @@
   "dependencies": {
     "@didtools/cacao": "workspace:^1.1.0",
     "@stablelib/random": "^1.0.2",
+    "@stacks/encryption": "^6.1.0",
+    "@stacks/transactions": "^6.1.0",
     "caip": "^1.1.0",
     "jsontokens": "^4.0.1"
   }
