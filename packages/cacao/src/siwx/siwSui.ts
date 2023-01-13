@@ -1,7 +1,7 @@
 import { SignatureType, SiwxMessage } from './siwx.js'
 
 
-export class SiwsSuiMessage extends SiwxMessage {
+export class SiwSuiMessage extends SiwxMessage {
   toMessage(): string {
     return super.toMessage('Sui')
   }

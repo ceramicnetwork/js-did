@@ -1,5 +1,6 @@
 import { AccountId } from 'caip'
 import { randomString } from '@stablelib/random'
+import { toString } from 'uint8arrays/to-string'
 import { Cacao, SiwSuiMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 
 export const SUI_MAINNET_CHAIN_REF = 'mainnet' // TBD when CAIP-2 is finalized
@@ -37,7 +38,7 @@ export function assertSupportedProvider(suiProvider: any): asserts suiProvider i
 async function sign(suiProvider: any, message: Uint8Array) {
   assertSupportedProvider(suiProvider)
   const { signature } = await suiProvider.signMessage(message)
-  return signature
+  return toString(signature, 'base64')
 }
 
 async function createCACAO(

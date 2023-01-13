@@ -103,5 +103,5 @@
  * @module pkh-sui
  */
 
-import * from './authmethod.js'
-import * from './verifier.js'
+export * from './authmethod.js'
+export * from './verifier.js'
