@@ -9,7 +9,8 @@
     "./packages/key-did-provider-ed25519/src",
     "./packages/key-did-provider-secp256k1/src",
     "./packages/key-did-resolver/src",
-    "./packages/pkh-did-resolver/src"
+    "./packages/pkh-did-resolver/src",
+    "./packages/recaps/src"
   ],
   "compilerOptions": {
     "jsx": "preserve",
@@ -29,7 +30,8 @@
       "./packages/key-did-provider-ed25519/src/index.ts",
       "./packages/key-did-provider-secp256k1/src/index.ts",
       "./packages/key-did-resolver/src/index.ts",
-      "./packages/pkh-did-resolver/src/index.ts"
+      "./packages/pkh-did-resolver/src/index.ts",
+      "./packages/recaps/src/index.ts"
     ],
     "disableSources": true,
     "excludeExternals": true,
