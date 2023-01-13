@@ -22,34 +22,9 @@ const suiProvider = // import/get your Solana provider (ie: window.phantom.solan
 const address = await suiProvider.connect().address
 const accountId = getAccountIdByNetwork('mainnet', address.publicKey.toString())
 
-const authMethod = await SolanaWebAuth.getAuthMethod(solProvider, accountId)
+const authMethod = await SuiWebAuth.getAuthMethod(suiProvider, accountId)
 ```
 
-To Auth in a Node based env, use any standard Solana provider interface with `SolanaNodeAuth`
-
-
-```js
-// Node Auth Usage
-import { SolanaNodeAuth, getAccountIdByNetwork } from '@didtools/pkh-solana'
-// ...
-
-const solProvider = // import/get your Solana provider (ie: window.phantom.solana)
-const address = await solProvider.connect()
-const accountId = getAccountIdByNetwork('mainnet', address.publicKey.toString())
-const appName = 'MyNodeApp'
-
-const authMethod = await SuiWebAuth.getAuthMethod(suiProvider, accountId, appName)
-```
-
-To use with did-session and reference did-session docs for more details.
-
-```js
-const client = new ComposeClient({ceramic, definition})
-const resources = client.resources
-
-const session = await DIDSession.authorize(authMethod, { resources })
-client.setDID(session.did)
-```
 
 ## Configuration
 

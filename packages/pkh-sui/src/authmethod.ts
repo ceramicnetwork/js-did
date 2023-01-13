@@ -6,9 +6,17 @@ import { Cacao, SiwSuiMessage, AuthMethod, AuthMethodOpts } from '@didtools/caca
 export const SUI_MAINNET_CHAIN_REF = 'mainnet' // TBD when CAIP-2 is finalized
 export const SUI_DEVNET_CHAIN_REF = 'devnet';
 export const SUI_TESTNET_CHAIN_REF = 'testnet';
-export const SUI_LOCALNET_CHAIN_REF = 'localnet';
 export const VERSION = '1'
 export const CHAIN_NAMESPACE = 'sui'
+
+
+export const chainIdMap = {
+  mainnet: SUI_MAINNET_CHAIN_REF,
+  testnet: SUI_TESTNET_CHAIN_REF,
+  devnet: SUI_DEVNET_CHAIN_REF,
+}
+
+type SuiNetwork = 'mainnet' | 'testnet' | 'devnet'
 
 export namespace SuiWebAuth {
   // eslint-disable-next-line @typescript-eslint/require-await
@@ -78,4 +86,12 @@ export async function getAccountId(suiProvider: any, address: string): Promise<A
 export async function requestChainId(_suiProvider: any): Promise<string> {
   // TODO: add testnets
   return SUI_MAINNET_CHAIN_REF
+}
+
+/**
+ * Helper function to get an accountId (CAIP10) for an Sui account by network string 'mainet' | 'testnet' | 'devenet'
+ */
+export function getAccountIdByNetwork(network: SuiNetwork, address: string): AccountId {
+  const chainId = `${CHAIN_NAMESPACE}:${chainIdMap[network]}`
+  return new AccountId({ address, chainId })
 }
