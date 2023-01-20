@@ -86,18 +86,6 @@ async function createCACAO(
 }
 
 /**
- * Helper function to get an accountId (CAIP10) for an Stacks account by Stacks Provider interface, Connection must implement 'TODO()'
- */
-// TODO remove ts-ignore
-// @ts-ignore
-export async function getAccountId(stacksProvider: any, address: string): Promise<AccountId> {
-  // TODO hardcoded for now, update once https://github.com/hirosystems/stacks-wallet-web/issues/2991 is resolved
-  const stacksChainId = chainIdMap['mainnet']
-  const chainId = `${CHAIN_NAMESPACE}:${stacksChainId}`
-  return new AccountId({ address, chainId })
-}
-
-/**
  * Helper function to get an accountId (CAIP10) for an Stacks account by network string 'mainet' | 'testnet'
  */
 export function getAccountIdByNetwork(network: StacksNetwork, address: string): AccountId {
