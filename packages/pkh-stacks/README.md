@@ -15,7 +15,7 @@ To Auth in web based env, use any injected web3 provider that implements the sta
 
 ```ts
 // Web Auth Usage
-import { StacksWebAuth, getAccountId, verifyStacksSignature } from '@didtools/pkh-stacks'
+import { StacksWebAuth, getAccountIdByNetwork, verifyStacksSignature } from '@didtools/pkh-stacks'
 import { AppConfig, UserSession } from '@stacks/connect'
 
 // ...
@@ -26,7 +26,7 @@ const userSession = new UserSession({ appConfig })
 const userData = userSession.loadUserData()
 const address = user.profile.stxAddress.mainnet
 
-const accountId = await getAccountId(stacksProvider, address)
+const accountId = await getAccountIdByNetwork('mainnet', address)
 const authMethod = await StacksWebAuth.getAuthMethod(stacksProvider, accountId, publicKey)
 ```
 
@@ -38,11 +38,11 @@ const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://
 
 ## Configuration
 
-AuthMethod creators consume a standard Stacks provider and an AccountId. AccountID follows the CAIP10 standard. The helper methods `getAccountIdByNetwork` and `getAccountId` are provided, but you can also create an AccountID using the CAIP library directly.
+AuthMethod creators consume a standard Stacks provider and an AccountId. AccountID follows the CAIP10 standard. The helper method `getAccountIdByNetwork` id provided, but you can also create an AccountID using the CAIP library directly.
 
 ```js
 import { AccountId } from 'caip'
-import { getAccountIdByNetwork, getAccountId } from '@didtools/pkh-stacks'
+import { getAccountIdByNetwork } from '@didtools/pkh-stacks'
 // Using network string
 const accountId = getAccountIdByNetwork('mainnet', address)
 // With CAIP
