@@ -33,7 +33,12 @@ export namespace SuiWebAuth {
 }
 
 export type SupportedProvider = {
-    signMessage: (message: Uint8Array) => Promise<{ signature: Uint8Array }>
+  signMessage: (input: {message: Uint8Array}) => Promise<ExpSignMessageOutput>;
+}
+
+export type ExpSignMessageOutput = {
+  signature: Uint8Array;
+  signedMessage: Uint8Array;
 }
 
 export function assertSupportedProvider(suiProvider: any): asserts suiProvider is SupportedProvider {
@@ -45,7 +50,7 @@ export function assertSupportedProvider(suiProvider: any): asserts suiProvider i
 
 async function sign(suiProvider: any, message: Uint8Array) {
   assertSupportedProvider(suiProvider)
-  const { signature } = await suiProvider.signMessage(message)
+  const { signature } = await suiProvider.signMessage({message: message})
   return toString(signature, 'base64')
 }
 
