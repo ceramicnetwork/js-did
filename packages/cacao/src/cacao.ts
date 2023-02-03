@@ -6,6 +6,7 @@ import { sha256 as hasher } from 'multiformats/hashes/sha2'
 import { SiweMessage } from './siwx/siwe.js'
 import { SiwsMessage } from './siwx/siws.js'
 import { SiwTezosMessage } from './siwx/siwTezos.js'
+import { SiwStacksMessage } from './siwx/siwStacks'
 
 // 5 minute default clockskew
 const CLOCK_SKEW_DEFAULT_SEC = 5 * 60
@@ -24,7 +25,7 @@ export type Header = {
 }
 
 export type Signature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519'
+  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1'
   s: string
 }
 export type Cacao = {
@@ -252,6 +253,51 @@ export namespace Cacao {
 
     if (siwTezosMessage.resources) {
       cacao.p.resources = siwTezosMessage.resources
+    }
+
+    return cacao
+  }
+
+  export function fromSiwStacksMessage(siwStacksMessage: SiwStacksMessage): Cacao {
+    const cacao: Cacao = {
+      h: {
+        t: 'caip122',
+      },
+      p: {
+        domain: siwStacksMessage.domain,
+        iat: siwStacksMessage.issuedAt,
+        iss: `did:pkh:stacks:${siwStacksMessage.chainId}:${siwStacksMessage.address}`,
+        aud: siwStacksMessage.uri,
+        version: siwStacksMessage.version,
+        nonce: siwStacksMessage.nonce,
+      },
+    }
+
+    if (siwStacksMessage.signature) {
+      cacao.s = {
+        t: 'stacks:secp256k1',
+        s: siwStacksMessage.signature,
+      }
+    }
+
+    if (siwStacksMessage.notBefore) {
+      cacao.p.nbf = siwStacksMessage.notBefore
+    }
+
+    if (siwStacksMessage.expirationTime) {
+      cacao.p.exp = siwStacksMessage.expirationTime
+    }
+
+    if (siwStacksMessage.statement) {
+      cacao.p.statement = siwStacksMessage.statement
+    }
+
+    if (siwStacksMessage.requestId) {
+      cacao.p.requestId = siwStacksMessage.requestId
+    }
+
+    if (siwStacksMessage.resources) {
+      cacao.p.resources = siwStacksMessage.resources
     }
 
     return cacao
