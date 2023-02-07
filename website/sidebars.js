@@ -50,6 +50,7 @@ const sidebars = {
     { type: 'doc', id: 'api/modules/pkh_ethereum', label: 'DID:PKH Ethereum' },
     { type: 'doc', id: 'api/modules/pkh_solana', label: 'DID:PKH Solana' },
     { type: 'doc', id: 'api/modules/pkh_tezos', label: 'DID:PKH Tezos' },
+    { type: 'doc', id: 'api/modules/pkh_stacks', label: 'DID:PKH Stacks' },
     { type: 'doc', id: 'api/modules/key_did_provider_ed25519', label: 'DID:KEY ED25519' },
     { type: 'doc', id: 'api/modules/key_did_resolver', label: 'DID:KEY Resolver' },
     { type: 'doc', id: 'api/modules/pkh_did_resolver', label: 'DID:PKH Resolver' }
