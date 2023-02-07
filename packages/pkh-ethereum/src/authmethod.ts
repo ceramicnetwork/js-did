@@ -1,7 +1,7 @@
 import { Cacao, SiweMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 import { randomString } from '@stablelib/random'
 import { AccountId } from 'caip'
-import { safeSend } from './utils.js'
+import { safeSend, normalizeAccountId } from './utils.js'
 
 /**
  * SIWX Version
@@ -55,22 +55,23 @@ async function createCACAO(
 ): Promise<Cacao> {
   const now = new Date()
   const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
+  const normAccount = normalizeAccountId(account)
 
   const siweMessage = new SiweMessage({
     domain: opts.domain,
-    address: account.address,
+    address: normAccount.address,
     statement: opts.statement ?? 'Give this application access to some of your data on Ceramic',
     uri: opts.uri,
     version: VERSION,
     nonce: opts.nonce ?? randomString(10),
     issuedAt: now.toISOString(),
     expirationTime: opts.expirationTime ?? oneWeekLater.toISOString(),
-    chainId: account.chainId.reference,
+    chainId: normAccount.chainId.reference,
     resources: opts.resources,
   })
   const signature = await safeSend(ethProvider, 'personal_sign', [
     siweMessage.signMessage(),
-    account.address,
+    normAccount.address,
   ])
   siweMessage.signature = signature
   return Cacao.fromSiweMessage(siweMessage)
@@ -87,5 +88,6 @@ async function requestChainId(provider: any): Promise<number> {
 export async function getAccountId(ethProvider: any, address: string): Promise<AccountId> {
   const ethChainId = await requestChainId(ethProvider)
   const chainId = `${CHAIN_NAMESPACE}:${ethChainId}`
-  return new AccountId({ address, chainId })
+  return new AccountId({ address: address.toLowerCase(), chainId })
 }
+

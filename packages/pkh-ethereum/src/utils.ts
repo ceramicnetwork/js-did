@@ -1,5 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument */
 // TODO types
+import { AccountId } from 'caip'
 
 export function safeSend(provider: any, method: string, params?: Array<any>): Promise<any> {
   if (params == null) {
@@ -44,4 +45,11 @@ export function encodeRpcMessage(method: string, params?: any): any {
     method,
     params,
   }
+}
+
+export function normalizeAccountId(input: AccountId): AccountId {
+  return new AccountId({
+    address: input.address.toLowerCase(),
+    chainId: input.chainId,
+  })
 }
