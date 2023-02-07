@@ -10,5 +10,5 @@
 - [pkh-did-resolver](modules/pkh_did_resolver.md)
 - [pkh-ethereum](modules/pkh_ethereum.md)
 - [pkh-solana](modules/pkh_solana.md)
-- [pkh-stacks/src](modules/pkh_stacks_src.md)
+- [pkh-stacks](modules/pkh_stacks.md)
 - [pkh-tezos](modules/pkh_tezos.md)

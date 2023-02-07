@@ -1,6 +1,6 @@
 # Interface: SignatureData
 
-[pkh-stacks/src](../modules/pkh_stacks_src.md).SignatureData
+[pkh-stacks](../modules/pkh_stacks.md).SignatureData
 
 ## Properties
 

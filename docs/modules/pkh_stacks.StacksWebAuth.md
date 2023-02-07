@@ -1,6 +1,6 @@
 # Namespace: StacksWebAuth
 
-[pkh-stacks/src](pkh_stacks_src.md).StacksWebAuth
+[pkh-stacks](pkh_stacks.md).StacksWebAuth
 
 ## Functions
 
