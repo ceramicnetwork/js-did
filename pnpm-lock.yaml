@@ -70,7 +70,7 @@ importers:
       '@ceramicnetwork/stream-model-instance': ^0.4.2
       '@ceramicnetwork/stream-tile': ^2.4.4
       '@ceramicnetwork/streamid': ^2.3.4
-      '@didtools/cacao': workspace:^1.1.0
+      '@didtools/cacao': workspace:^1.2.0
       '@didtools/pkh-ethereum': workspace:^0.0.3
       '@didtools/pkh-solana': workspace:^0.0.4
       '@ethersproject/wallet': ^5.6.2
@@ -112,7 +112,7 @@ importers:
 
   packages/dids:
     specifiers:
-      '@didtools/cacao': workspace:^1.1.0
+      '@didtools/cacao': workspace:^1.2.0
       '@didtools/pkh-ethereum': workspace:^0.0.3
       '@stablelib/random': ^1.0.1
       '@stablelib/x25519': ^1.0.2
@@ -139,7 +139,7 @@ importers:
 
   packages/integration:
     specifiers:
-      '@didtools/cacao': workspace:^1.1.0
+      '@didtools/cacao': workspace:^1.2.0
       '@didtools/pkh-ethereum': workspace:^0.0.3
       '@didtools/pkh-solana': workspace:^0.0.4
       '@ethersproject/wallet': ^5.5.0
@@ -249,7 +249,7 @@ importers:
 
   packages/pkh-ethereum:
     specifiers:
-      '@didtools/cacao': workspace:^1.1.0
+      '@didtools/cacao': workspace:^1.2.0
       '@ethersproject/wallet': ^5.7.0
       '@stablelib/random': ^1.0.2
       caip: ^1.1.0
@@ -264,7 +264,7 @@ importers:
 
   packages/pkh-solana:
     specifiers:
-      '@didtools/cacao': workspace:^1.1.0
+      '@didtools/cacao': workspace:^1.2.0
       '@stablelib/ed25519': ^1.0.3
       '@stablelib/random': ^1.0.2
       caip: ^1.1.0
@@ -281,7 +281,7 @@ importers:
 
   packages/pkh-stacks:
     specifiers:
-      '@didtools/cacao': workspace:^1.1.0
+      '@didtools/cacao': workspace:^1.2.0
       '@stablelib/random': ^1.0.2
       '@stacks/common': ^6.0.0
       '@stacks/encryption': ^6.1.0
@@ -302,7 +302,7 @@ importers:
 
   packages/pkh-tezos:
     specifiers:
-      '@didtools/cacao': workspace:^1.1.0
+      '@didtools/cacao': workspace:^1.2.0
       '@stablelib/random': ^1.0.2
       '@taquito/utils': ^14.0.0
       caip: ^1.1.0
@@ -13675,6 +13675,12 @@ packages:
   /react-dev-utils/12.0.1_qqxisngxjbp7lstdk7boexbu3e:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
+    peerDependencies:
+      typescript: '>=2.7'
+      webpack: '>=4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
       address: 1.2.1
@@ -13705,9 +13711,7 @@ packages:
     transitivePeerDependencies:
       - eslint
       - supports-color
-      - typescript
       - vue-template-compiler
-      - webpack
     dev: false
 
   /react-dom/17.0.2_react@17.0.2:
