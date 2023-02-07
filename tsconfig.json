@@ -14,7 +14,8 @@
       "@didtools/pkh-ethereum": ["packages/pkh-ethereum/src"],
       "@didtools/pkh-solana": ["packages/pkh-solana/src"],
       "pkh-did-resolver": ["packages/pkh-did-resolver/src"],
-      "key-did-resolver": ["packages/key-did-resolver/src"]
+      "key-did-resolver": ["packages/key-did-resolver/src"],
+      "@didtools/recaps": ["packages/recaps/src"]
     }
   }
 }
