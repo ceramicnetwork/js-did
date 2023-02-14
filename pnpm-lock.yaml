@@ -116,7 +116,7 @@ importers:
       '@didtools/pkh-ethereum': workspace:^0.0.3
       '@stablelib/random': ^1.0.1
       '@stablelib/x25519': ^1.0.2
-      dag-jose-utils: ^2.0.0
+      dag-jose-utils: ^3.0.0-alpha.0
       did-jwt: ^6.0.0
       did-resolver: ^3.1.5
       ethers: ^5.5.2
@@ -127,7 +127,7 @@ importers:
       '@didtools/cacao': link:../cacao
       '@didtools/pkh-ethereum': link:../pkh-ethereum
       '@stablelib/random': 1.0.2
-      dag-jose-utils: 2.0.0
+      dag-jose-utils: 3.0.0-alpha.0
       did-jwt: 6.9.0
       did-resolver: 3.2.2
       multiformats: 11.0.1
@@ -7111,6 +7111,13 @@ packages:
     dependencies:
       '@ipld/dag-cbor': 7.0.3
       multiformats: 9.9.0
+    dev: false
+
+  /dag-jose-utils/3.0.0-alpha.0:
+    resolution: {integrity: sha512-BgJtbSxWVg1SQ2NWI1R3+4PpagFr7TB1iB3epQXtbLevnsT2NRIQTvAY5KPaFwwb+OPnxutbPXlRXuI3FhgYxQ==}
+    dependencies:
+      '@ipld/dag-cbor': 7.0.3
+      multiformats: 11.0.1
     dev: false
 
   /dag-jose/1.0.0:
