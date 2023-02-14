@@ -120,7 +120,7 @@ importers:
       did-jwt: ^6.0.0
       did-resolver: ^3.1.5
       ethers: ^5.5.2
-      multiformats: ^9.4.10
+      multiformats: ^11.0.1
       rpc-utils: ^0.6.1
       uint8arrays: ^3.0.0
     dependencies:
@@ -130,7 +130,7 @@ importers:
       dag-jose-utils: 2.0.0
       did-jwt: 6.9.0
       did-resolver: 3.2.2
-      multiformats: 9.9.0
+      multiformats: 11.0.1
       rpc-utils: 0.6.2
       uint8arrays: 3.1.1
     devDependencies:
@@ -12148,6 +12148,11 @@ packages:
 
   /multiformats/10.0.2:
     resolution: {integrity: sha512-nJEHLFOYhO4L+aNApHhCnWqa31FyqAHv9Q77AhmwU3KsM2f1j7tuJpCk5ByZ33smzycNCpSG5klNIejIyfFx2A==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+    dev: false
+
+  /multiformats/11.0.1:
+    resolution: {integrity: sha512-atWruyH34YiknSdL5yeIir00EDlJRpHzELYQxG7Iy29eCyL+VrZHpPrX5yqlik3jnuqpLpRKVZ0SGVb9UzKaSA==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dev: false
 
