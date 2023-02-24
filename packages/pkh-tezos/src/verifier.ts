@@ -17,7 +17,8 @@ const TZ1Prefix = new Uint8Array([6, 161, 159])
 const TZ1Length = 20
 const EDPKPrefix = new Uint8Array([13, 15, 37, 217])
 const EDSIGPrefix = new Uint8Array([9, 245, 205, 134, 18])
-const BASE58CHECKSUMLENGTH = 4
+const SIGPrefix =  new Uint8Array([4, 130, 43])
+const Base58CheckSumLength = 4
 
 export function getTezosVerifier(): Verifiers {
   return {
@@ -53,7 +54,7 @@ function verifyEdSignature(
 //bs58btc decoding, bs58check - checksum
 function b58cdecode(enc: string, prefixArg: Uint8Array): Uint8Array {
   const u8akey = u8a.fromString(enc, 'base58btc')
-  return u8akey.slice(prefixArg.length, u8akey.length - BASE58CHECKSUMLENGTH)
+  return u8akey.slice(prefixArg.length, u8akey.length - Base58CheckSumLength)
 }
 
 //bs58check encoding, bs58btc + checksum
@@ -81,7 +82,7 @@ export function verifySignature(payload: string, publicKey: string, signature: s
     throw new Error('Tezos Signature type not supported, only type tezos:ed25519')
 
   const decodedPublicKey = b58cdecode(publicKey, EDPKPrefix)
-  const decodedSig = b58cdecode(signature, EDSIGPrefix)
+  const decodedSig = b58cdecode(signature, sigPrefix === 'edsig' ? EDSIGPrefix :  SIGPrefix )
   const bytesHash = hash(u8a.fromString(payload, 'base16'), 32)
   return verifyEdSignature(decodedSig, bytesHash, decodedPublicKey)
 }
