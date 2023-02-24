@@ -303,15 +303,19 @@ importers:
   packages/pkh-tezos:
     specifiers:
       '@didtools/cacao': workspace:^2.0.0
+      '@stablelib/blake2b': ^1.0.1
+      '@stablelib/ed25519': ^1.0.3
       '@stablelib/random': ^1.0.2
-      '@taquito/utils': ^15.1.0
       caip: ^1.1.0
       typescript: ^4.9.5
+      uint8arrays: ^4.0.3
     dependencies:
       '@didtools/cacao': link:../cacao
+      '@stablelib/blake2b': 1.0.1
+      '@stablelib/ed25519': 1.0.3
       '@stablelib/random': 1.0.2
-      '@taquito/utils': 15.1.0
       caip: 1.1.0
+      uint8arrays: 4.0.3
     devDependencies:
       typescript: 4.9.5
 
@@ -5841,21 +5845,6 @@ packages:
       buffer: 6.0.3
       elliptic: 6.5.4
       typedarray-to-buffer: 4.0.0
-
-  /@taquito/utils/15.1.0:
-    resolution: {integrity: sha512-lqVThoFMmOKPg9jyREr4A63cpeckf5esCwOyOAW3sm+yCxD9s5khnBPtH8s52cRVnChFdwk/eqmADka9gat5hw==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      '@stablelib/blake2b': 1.0.1
-      '@stablelib/ed25519': 1.0.3
-      '@types/bs58check': 2.1.0
-      bignumber.js: 9.1.1
-      blakejs: 1.2.1
-      bs58check: 2.1.2
-      buffer: 6.0.3
-      elliptic: 6.5.4
-      typedarray-to-buffer: 4.0.0
-    dev: false
 
   /@tendermint/belt/0.3.0:
     resolution: {integrity: sha512-3ZIsrbh9HLGM8cFyptK5iBeWou30srDiBjY8cVXFkz8aqPprt0OT7T9JqiqoG570x1pB0xiKwDDBxtQ120Gxug==}
