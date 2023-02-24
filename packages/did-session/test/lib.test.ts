@@ -21,6 +21,7 @@ import { DID } from 'dids'
 import { getResolver } from 'key-did-resolver'
 
 const getModelDef = (name: string): ModelDefinition => ({
+  version: Model.VERSION,
   name: name,
   accountRelation: { type: 'list' },
   schema: {

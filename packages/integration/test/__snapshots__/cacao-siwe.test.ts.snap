@@ -554,64 +554,27 @@ Block {
     57,
     49,
   ],
-  "cid": Object {
-    "code": 113,
-    "hash": Uint8Array [
-      18,
-      32,
-      32,
-      130,
-      251,
-      89,
-      255,
-      170,
-      141,
-      31,
-      230,
-      131,
-      54,
-      64,
-      251,
-      129,
-      9,
-      215,
-      112,
-      221,
-      247,
-      194,
-      177,
-      36,
-      178,
-      7,
-      221,
-      103,
-      239,
-      157,
-      85,
-      31,
-      0,
-      203,
-    ],
-    "version": 1,
+  "cid": {
+    "/": "bafyreibaql5vt75krup6nazwid5yccoxodo7pqvreszapxlh56ovkhyazm",
   },
-  "value": Object {
-    "h": Object {
+  "value": {
+    "h": {
       "t": "eip4361",
     },
-    "p": Object {
+    "p": {
       "aud": "did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8",
       "domain": "service.org",
       "iat": "2021-10-14T07:18:41.000Z",
       "iss": "did:pkh:eip155:1:0xBd9D9c7DC389715a89fC8149E4a5Be91336B2796",
       "nonce": "32891757",
-      "resources": Array [
+      "resources": [
         "ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu",
         "https://example.com/my-web2-claim.json",
       ],
       "statement": "I accept the ServiceOrg Terms of Service: https://service.org/tos",
       "version": "1",
     },
-    "s": Object {
+    "s": {
       "s": "0xed60ce36a2c6205f7a161d452a14519e48fa7329cb6c9dd1fca92f69a474c98a3ec498fe7efb1e4db16bbaca4a0e0f7c9725566af017edc6492996cc94f7ceff1b",
       "t": "eip191",
     },

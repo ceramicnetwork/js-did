@@ -15,7 +15,7 @@ This code includes support for the curves Ed25519, Secp256k1, Secp256r1 (P-256),
 This code has been tested with the following `did:key`[^1] providers:
 |  Curve              | Repositry                                                      |
 | ------------------- | -------------------------------------------------------------- |
-| Ed25519             | https://github.com/ceramicnetwork/key-did-provider-ed25519     |
+| Ed25519             | https://github.com/ceramicnetwork/js-did/tree/main/packages/key-did-provider-ed25519     |
 | Secp256k1           | https://github.com/ceramicnetwork/key-did-provider-secp256k1   |
 | P-256, P-384, P-521 | https://github.com/bshambaugh/did-key-creator                  |
 
@@ -29,22 +29,12 @@ Compressed[^2] forms of P-256, P-384, and P-521 are preferred. [^3]
 raw keys (just the x,y bytes with no prefix) was kept for the P-256 and P-384 curves.
 
 ### Code
-Using [@ceramicnetwork/core](https://developers.ceramic.network/reference/typescript/modules/_ceramicnetwork_core.html) with secp256k1 did-key:
+Using with secp256k1 did-key:
 ```
-import KeyDIDResolver from 'key-did-resolver'
+import * as KeyDidResolver from 'key-did-resolver'
 import {Resolver} from 'did-resolver'
-import {Ceramic} from '@ceramicnetwork/core'
-import * as IPFS from 'ipfs-core'
-import dagJose from 'dag-jose'
-import {convert} from 'blockcodec-to-ipld-format'
 
-const ipfs = await IPFS.create({
-    ipld: { formats: [dagJose] },
-})
-
-const config = {}
-const ceramic = await Ceramic.create(ipfs, config)
-const keyDidResolver = KeyDIDResolver.getResolver(ceramic)
+const keyDidResolver = KeyDIDResolver.getResolver()
 console.log(keyDidResolver)
 const didResolver = new Resolver(keyDidResolver)
 const doc = await didResolver.resolve('did:key:z6MktvqCyLxTsXUH1tUZncNdVeEZ7hNh7npPRbUU27GTrYb8')
@@ -53,69 +43,9 @@ console.log(doc)
 console.log(doc.didDocument.verificationMethod)
 ```
 
-Using [@ceramicnetwork/http-client](https://developers.ceramic.network/reference/typescript/modules/_ceramicnetwork_http_client.html) with secp256k1 did-key:
-```
-// Usage from cloned GitHub Repository:
-// import * as keyDIDResolver from '../js-ceramic/packages/key-did-resolver/lib/index.js';
-import KeyDIDResolver from 'key-did-resolver'
-import {Resolver} from 'did-resolver'
-
-import { CeramicClient } from '@ceramicnetwork/http-client'
-const API_URL = "https://ceramic-clay.3boxlabs.com" // or your ceramic endpoint
-const ceramic = new CeramicClient(API_URL)
-
-const keyDidResolver = KeyDIDResolver.getResolver(ceramic)
-const didResolver = new Resolver(keyDidResolver)
-const doc = await didResolver.resolve('did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme')
-
-console.log(doc)
-console.log(doc.didDocument.verificationMethod)
-```
-
 ### Output
-Using [@ceramicnetwork/core](https://developers.ceramic.network/reference/typescript/modules/_ceramicnetwork_core.html) with secp256k1 did-key:
+Using with secp256k1 did-key:
 ```
-{
-  didResolutionMetadata: { contentType: 'application/did+json' },
-  didDocument: {
-    id: 'did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme',
-    verificationMethod: [ [Object] ],
-    authentication: [
-      'did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme#zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme'
-    ],
-    assertionMethod: [
-      'did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme#zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme'
-    ],
-    capabilityDelegation: [
-      'did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme#zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme'
-    ],
-    capabilityInvocation: [
-      'did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme#zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme'
-    ]
-  },
-  didDocumentMetadata: {}
-}
-[
-  {
-    id: 'did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme#zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme',
-    type: 'Secp256k1VerificationKey2018',
-    controller: 'did:key:zQ3shokFTS3brHcDQrn82RUDfCZESWL1ZdCEJwekUDPQiYBme',
-    publicKeyBase58: '23o6Sau8NxxzXcgSc3PLcNxrzrZpbLeBn1izfv3jbKhuv'
-  }
-]
-
-```
-Using [@ceramicnetwork/http-client](https://developers.ceramic.network/reference/typescript/modules/_ceramicnetwork_http_client.html) with secp256k1 did-key:
-```
-Swarm listening on /ip4/127.0.0.1/tcp/4011/p2p/QmYGmd8VoQ1sZ82diHEzhbPxfrjrxryLMnJem4UaNnEf8K
-Swarm listening on /ip4/10.0.0.5/tcp/4011/p2p/QmYGmd8VoQ1sZ82diHEzhbPxfrjrxryLMnJem4UaNnEf8K
-Swarm listening on /ip4/127.0.0.1/tcp/4012/ws/p2p/QmYGmd8VoQ1sZ82diHEzhbPxfrjrxryLMnJem4UaNnEf8K
-Swarm listening on /ip4/10.0.0.5/tcp/4012/ws/p2p/QmYGmd8VoQ1sZ82diHEzhbPxfrjrxryLMnJem4UaNnEf8K
-Connecting to ceramic network 'inmemory' using pubsub topic '/ceramic/inmemory-2974851949'
-Peer discovery is not supported for ceramic network: inmemory. This node may fail to load documents from other nodes on the network.
-This node with peerId QmYGmd8VoQ1sZ82diHEzhbPxfrjrxryLMnJem4UaNnEf8K is not included in the peer list for Ceramic network inmemory. It will not be discoverable by other nodes in the network, and so data created against this node will not be available to the rest of the network.
-Connected to anchor service '<inmemory>' with supported anchor chains ['inmemory:12345']
-{ key: [AsyncFunction: key] }
 {
   didResolutionMetadata: { contentType: 'application/did+json' },
   didDocument: {

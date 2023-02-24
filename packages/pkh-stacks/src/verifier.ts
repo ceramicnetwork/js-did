@@ -29,7 +29,7 @@ export function verifyStacksSignature(cacao: Cacao, options: VerifyOptions) {
   verifyTimeChecks(cacao, options)
 
   const msg = SiwStacksMessage.fromCacao(cacao)
-  let signature = cacao.s.s
+  const signature = cacao.s.s
   const message = msg.signMessage()
 
   const recoveredPublicKey = publicKeyFromSignatureRsv(

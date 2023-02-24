@@ -15,18 +15,18 @@ export default class CeramicEnvironment extends NodeEnvironment {
         Addresses: {
           Swarm: [],
         },
-        Pubsub: {
-          // default "gossipsub" uses CJS and fails to import
-          Router: 'floodsub',
-        },
       },
       profiles: ['test'],
       repo: path.join(this.tmpFolder.path, 'ipfs'),
       silent: true,
     })
+    const stateStoreDirectory = path.join(this.tmpFolder.path, 'ceramic')
     this.global.ceramic = await Ceramic.create(this.global.ipfs, {
       anchorOnRequest: false,
-      stateStoreDirectory: path.join(this.tmpFolder.path, 'ceramic'),
+      stateStoreDirectory,
+      indexing: {
+        db: `sqlite://${stateStoreDirectory}/indexing.sqlite`,
+      },
     })
   }
 
