@@ -9,6 +9,7 @@ import {
 import { AccountId } from 'caip'
 import * as u8a from 'uint8arrays'
 import { hash } from '@stablelib/blake2b'
+import { hash as sha256 } from '@stablelib/sha256'
 import { verify } from '@stablelib/ed25519'
 
 // ED
@@ -16,6 +17,7 @@ const TZ1Prefix = new Uint8Array([6, 161, 159])
 const TZ1Length = 20
 const EDPKPrefix = new Uint8Array([13, 15, 37, 217])
 const EDSIGPrefix = new Uint8Array([9, 245, 205, 134, 18])
+const BASE58CHECKSUMLENGTH = 4
 
 export function getTezosVerifier(): Verifiers {
   return {
@@ -48,15 +50,27 @@ function verifyEdSignature(
   }
 }
 
+//bs58btc decoding, bs58check - checksum
 function b58cdecode(enc: string, prefixArg: Uint8Array): Uint8Array {
-  return u8a.fromString(enc, 'base58btc').slice(prefixArg.length)
+  const u8akey = u8a.fromString(enc, 'base58btc')
+  return u8akey.slice(prefixArg.length, u8akey.length - BASE58CHECKSUMLENGTH)
 }
 
+//bs58check encoding, bs58btc + checksum
 function b58cencode(value: Uint8Array, prefix: Uint8Array) {
   const n = new Uint8Array(prefix.length + value.length)
   n.set(prefix)
   n.set(value, prefix.length)
-  return u8a.toString(n, 'base58btc')
+  const checksum = getCheckSum(n)
+  const nc =  new Uint8Array(n.length + 4)
+  nc.set(n)
+  nc.set(checksum, prefix.length + value.length)  
+  return u8a.toString(nc, 'base58btc')
+}
+
+function getCheckSum(u8a: Uint8Array): Uint8Array {
+  const hashed = sha256(sha256(u8a))
+  return hashed.slice(0,4)
 }
 
 export function verifySignature(payload: string, publicKey: string, signature: string): boolean {
