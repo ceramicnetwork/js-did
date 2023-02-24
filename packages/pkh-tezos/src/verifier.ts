@@ -11,7 +11,7 @@ import * as u8a from 'uint8arrays'
 import { hash } from '@stablelib/blake2b'
 import { verify } from '@stablelib/ed25519'
 
-// EDPK
+// ED
 const TZ1Prefix = new Uint8Array([6, 161, 159])
 const TZ1Length = 20
 const EDPKPrefix = new Uint8Array([13, 15, 37, 217])
@@ -63,7 +63,7 @@ export function verifySignature(payload: string, publicKey: string, signature: s
   const pkPrefix = publicKey.substring(0, 4)
   const sigPrefix = signature.startsWith('sig') ? signature.substr(0, 3) : signature.substr(0, 5)
 
-  if (pkPrefix !== 'edpk' || sigPrefix !== 'edsk')
+  if (pkPrefix !== 'edpk' || !(sigPrefix === 'edsig' || sigPrefix === 'sig'))
     throw new Error('Tezos Signature type not supported, only type tezos:ed25519')
 
   const decodedPublicKey = b58cdecode(publicKey, EDPKPrefix)

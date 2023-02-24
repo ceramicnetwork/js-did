@@ -24,7 +24,7 @@ if (!activeAccount) {
 }
 const address = await activeAccount.address
 const accountId = await getAccountId(tzProvider, address)
-const authMethod = await TezosWebAuth.getAuthMethod(tzProvider, accountId, publicKey)
+const authMethod = await TezosWebAuth.getAuthMethod(tzProvider, accountId)
 ```
 
 <!-- To Auth in a Node based env, use any standard web3 provider interface with `TezosNodeAuth`
