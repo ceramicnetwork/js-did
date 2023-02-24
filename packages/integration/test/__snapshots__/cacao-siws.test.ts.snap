@@ -519,64 +519,27 @@ Block {
     49,
     57,
   ],
-  "cid": Object {
-    "code": 113,
-    "hash": Uint8Array [
-      18,
-      32,
-      134,
-      156,
-      89,
-      50,
-      0,
-      205,
-      20,
-      139,
-      179,
-      35,
-      130,
-      149,
-      165,
-      183,
-      186,
-      84,
-      135,
-      170,
-      250,
-      175,
-      58,
-      146,
-      94,
-      19,
-      235,
-      84,
-      187,
-      151,
-      148,
-      127,
-      150,
-      244,
-    ],
-    "version": 1,
+  "cid": {
+    "/": "bafyreiegtrmteagncsf3gi4csws3posuq6vpvlz2sjpbh22uxolzi74w6q",
   },
-  "value": Object {
-    "h": Object {
+  "value": {
+    "h": {
       "t": "caip122",
     },
-    "p": Object {
+    "p": {
       "aud": "did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8",
       "domain": "service.org",
       "iat": "2021-09-30T16:25:24.000Z",
       "iss": "did:pkh:solana:1:GwAF45zjfyGzUbd3i3hXxzGeuchzEZXwpRYHZM5912F1",
       "nonce": "32891757",
-      "resources": Array [
+      "resources": [
         "ipfs://Qme7ss3ARVgxv6rXqVPiikMJ8u2NLgmgszg13pYrDKEoiu",
         "https://example.com/my-web2-claim.json",
       ],
       "statement": "I accept the ServiceOrg Terms of Service: https://service.org/tos",
       "version": "1",
     },
-    "s": Object {
+    "s": {
       "s": "4KMPZjpScv6cKp4L1qeUcwqaYL2YVamiQrK5dEyTEbJ8QVrqptHQFD3vcTnNKiHENkorsyoxaFGyocHKYSngGaj",
       "t": "solana:ed25519",
     },

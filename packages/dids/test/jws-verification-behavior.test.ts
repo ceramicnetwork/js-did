@@ -292,7 +292,7 @@ describe('issuer', () => {
     const issuer = COMPOSITE_ISSUER_EMPTY.didDocument.id
     const { kid } = await did.verifyJWS(jwsV0, { issuer: issuer })
     expect(kid).toMatchSnapshot()
-    expect(fauxResolve).toBeCalledWith(issuer)
+    expect(fauxResolve).toHaveBeenCalledWith(issuer)
   })
   test('does not include signer as controller', async () => {
     const issuer = COMPOSITE_ISSUER_EMPTY.didDocument.id

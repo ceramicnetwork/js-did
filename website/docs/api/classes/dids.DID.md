@@ -12,13 +12,13 @@ Interact with DIDs.
 
 ### constructor
 
-• **new DID**(`__namedParameters?`)
+• **new DID**(`«destructured»?`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | [`DIDOptions`](../modules/dids.md#didoptions) |
+| `«destructured»` | [`DIDOptions`](../modules/dids.md#didoptions) |
 
 ## Accessors
 
@@ -96,7 +96,7 @@ Get parent DID, parent DID is the capability issuer
 
 ### authenticate
 
-▸ **authenticate**(`__namedParameters?`): `Promise`<`string`\>
+▸ **authenticate**(`«destructured»?`): `Promise`<`string`\>
 
 Authenticate the user.
 
@@ -104,7 +104,7 @@ Authenticate the user.
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | [`AuthenticateOptions`](../modules/dids.md#authenticateoptions) |
+| `«destructured»` | [`AuthenticateOptions`](../modules/dids.md#authenticateoptions) |
 
 #### Returns
 

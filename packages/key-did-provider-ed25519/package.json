@@ -1,6 +1,6 @@
 {
   "name": "key-did-provider-ed25519",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "author": "Joel Thorstensson",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -47,11 +47,11 @@
     "@stablelib/random": "^1.0.2"
   },
   "dependencies": {
-    "dids": "^3.4.0",
     "@stablelib/ed25519": "^1.0.2",
-    "did-jwt": "^6.0.0",
+    "did-jwt": "^6.11.1",
+    "dids": "workspace:^4.0.0",
     "fast-json-stable-stringify": "^2.1.0",
     "rpc-utils": "^0.6.2",
-    "uint8arrays": "^3.0.0"
+    "uint8arrays": "^4.0.3"
   }
 }

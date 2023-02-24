@@ -381,7 +381,7 @@ describe('`createDagJWS method`', () => {
         capability: cacao,
         atTime: new Date('2021-10-30T16:25:24.000Z'),
       })
-    ).resolves.not.toThrowError()
+    ).resolves.not.toThrow()
 
     // Expired
     await expect(
@@ -390,7 +390,7 @@ describe('`createDagJWS method`', () => {
         capability: cacao,
         atTime: new Date('2023-10-30T16:25:24.000Z'),
       })
-    ).rejects.toThrowError()
+    ).rejects.toThrow()
 
     // Valid: Expiration not checked
     await expect(
@@ -400,7 +400,7 @@ describe('`createDagJWS method`', () => {
         disableTimecheck: true,
         atTime: new Date('2023-10-30T16:25:24.000Z'),
       })
-    ).resolves.not.toThrowError()
+    ).resolves.not.toThrow()
 
     expect(res).toEqual({
       jws: {
@@ -496,8 +496,8 @@ describe('`createDagJWS method`', () => {
       foo: Buffer.from('foo'),
     }
 
-    await expect(did.createDagJWS(data)).rejects.toThrowError(/Capability is expired/)
-    await expect(did.createJWS(data)).rejects.toThrowError(/Capability is expired/)
+    await expect(did.createDagJWS(data)).rejects.toThrow(/Capability is expired/)
+    await expect(did.createJWS(data)).rejects.toThrow(/Capability is expired/)
   })
 
   test('creates a DagJWS correctly', async () => {

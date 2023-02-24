@@ -1,6 +1,6 @@
 {
-  "name": "@didtools/key-secp256k1", 
-  "version": "0.1.0",
+  "name": "@didtools/key-secp256k1",
+  "version": "0.2.0",
   "author": "Joel Thorstensson",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -44,15 +44,15 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-   "@stablelib/random": "^1.0.2"
+    "@stablelib/random": "^1.0.2"
   },
   "dependencies": {
     "@types/elliptic": "^6.4.14",
-    "did-jwt": "^6.0.0",
-    "dids": "^3.4.0",
+    "did-jwt": "^6.11.1",
+    "dids": "workspace:^4.0.0",
     "elliptic": "^6.5.4",
     "fast-json-stable-stringify": "^2.1.0",
     "rpc-utils": "^0.6.2",
-    "uint8arrays": "^3.0.0"
+    "uint8arrays": "^4.0.3"
   }
 }
