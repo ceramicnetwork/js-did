@@ -4,7 +4,7 @@
   "description": "Ceramic environment for Jest",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
-  "homepage": "https://github.com/ceramicstudio/js-did",
+  "homepage": "https://github.com/ceramicnetwork/js-did",
   "keywords": [
     "jest",
     "ceramic"
