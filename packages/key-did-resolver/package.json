@@ -8,6 +8,10 @@
     "did",
     "key"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceramicnetwork/js-did.git"
+  },
   "author": "Janko Simonovic <simonovic86@gmail.com>",
   "contributors": [
     "Janko Simonovic <simonovic86@gmail.com>",
