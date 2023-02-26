@@ -303,16 +303,28 @@ importers:
   packages/pkh-tezos:
     specifiers:
       '@didtools/cacao': workspace:^2.0.0
+      '@stablelib/blake2b': ^1.0.1
+      '@stablelib/ed25519': ^1.0.3
       '@stablelib/random': ^1.0.2
+      '@stablelib/sha256': ^1.0.1
+      '@taquito/signer': ^15.1.0
+      '@taquito/taquito': ^15.1.0
       '@taquito/utils': ^15.1.0
       caip: ^1.1.0
       typescript: ^4.9.5
+      uint8arrays: ^4.0.3
     dependencies:
       '@didtools/cacao': link:../cacao
+      '@stablelib/blake2b': 1.0.1
+      '@stablelib/ed25519': 1.0.3
       '@stablelib/random': 1.0.2
-      '@taquito/utils': 15.1.0
+      '@stablelib/sha256': 1.0.1
       caip: 1.1.0
+      uint8arrays: 4.0.3
     devDependencies:
+      '@taquito/signer': 15.1.0
+      '@taquito/taquito': 15.1.0
+      '@taquito/utils': 15.1.0
       typescript: 4.9.5
 
   website:
@@ -5374,7 +5386,6 @@ packages:
 
   /@stablelib/constant-time/1.0.1:
     resolution: {integrity: sha512-tNOs3uD0vSJcK6z1fvef4Y+buN7DXhzHDPqRLSXUel1UfqMB1PWNsnnAezrKfEwTLpN0cGH2p9NNjs6IqeD0eg==}
-    dev: false
 
   /@stablelib/ed25519/1.0.3:
     resolution: {integrity: sha512-puIMWaX9QlRsbhxfDc5i+mNPMY+0TmQEskunY1rZEBPi1acBCVQAhnsk/1Hk50DGPtVsZtAWQg4NHGlVaO9Hqg==}
@@ -5400,7 +5411,6 @@ packages:
       '@stablelib/constant-time': 1.0.1
       '@stablelib/hash': 1.0.1
       '@stablelib/wipe': 1.0.1
-    dev: false
 
   /@stablelib/int/1.0.1:
     resolution: {integrity: sha512-byr69X/sDtDiIjIV6m4roLVWnNNlRGzsvxw+agj8CIEazqWGOQp2dTYgQhtyVXV9wpO6WyXRQUzLV/JRNumT2w==}
@@ -5410,18 +5420,44 @@ packages:
     dependencies:
       '@stablelib/bytes': 1.0.1
 
+  /@stablelib/nacl/1.0.4:
+    resolution: {integrity: sha512-PJ2U/MrkXSKUM8C4qFs87WeCNxri7KQwR8Cdwm9q2sweGuAtTvOJGuW0F3N+zn+ySLPJA98SYWSSpogMJ1gCmw==}
+    dependencies:
+      '@stablelib/poly1305': 1.0.1
+      '@stablelib/random': 1.0.2
+      '@stablelib/wipe': 1.0.1
+      '@stablelib/x25519': 1.0.3
+      '@stablelib/xsalsa20': 1.0.2
+    dev: true
+
+  /@stablelib/pbkdf2/1.0.1:
+    resolution: {integrity: sha512-d5jwK6jW1DkMyzqY8D1Io+fRXcsUVr95lk5LKX9ghaUdAITTc1ZL0bff+R0IrwSixbHluxhnivG7vDw59AZ/Nw==}
+    dependencies:
+      '@stablelib/binary': 1.0.1
+      '@stablelib/hash': 1.0.1
+      '@stablelib/hmac': 1.0.1
+      '@stablelib/wipe': 1.0.1
+    dev: true
+
   /@stablelib/poly1305/1.0.1:
     resolution: {integrity: sha512-1HlG3oTSuQDOhSnLwJRKeTRSAdFNVB/1djy2ZbS35rBSJ/PFqx9cf9qatinWghC2UbfOYD8AcrtbUQl8WoxabA==}
     dependencies:
       '@stablelib/constant-time': 1.0.1
       '@stablelib/wipe': 1.0.1
-    dev: false
 
   /@stablelib/random/1.0.2:
     resolution: {integrity: sha512-rIsE83Xpb7clHPVRlBj8qNe5L8ISQOzjghYQm/dZ7VaM2KHYwMW5adjQjrzTZCchFnNCNhkwtnOBa9HTMJCI8w==}
     dependencies:
       '@stablelib/binary': 1.0.1
       '@stablelib/wipe': 1.0.1
+
+  /@stablelib/salsa20/1.0.2:
+    resolution: {integrity: sha512-nfjKzw0KTKrrKBasEP+j7UP4I8Xudom8lVZIBCp0kQNARXq72IlSic0oabg2FC1NU68L4RdHrNJDd8bFwrphYA==}
+    dependencies:
+      '@stablelib/binary': 1.0.1
+      '@stablelib/constant-time': 1.0.1
+      '@stablelib/wipe': 1.0.1
+    dev: true
 
   /@stablelib/sha256/1.0.1:
     resolution: {integrity: sha512-GIIH3e6KH+91FqGV42Kcj71Uefd/QEe7Dy42sBTeqppXV95ggCcxLTk39bEr+lZfJmp+ghsR07J++ORkRELsBQ==}
@@ -5465,6 +5501,14 @@ packages:
       '@stablelib/wipe': 1.0.1
       '@stablelib/xchacha20': 1.0.1
     dev: false
+
+  /@stablelib/xsalsa20/1.0.2:
+    resolution: {integrity: sha512-7XdBGbcNgBShmuhDXv1G1WPVCkjZdkb1oPMzSidO7Fve0MHntH6TjFkj5bfLI+aRE+61weO076vYpP/jmaAYog==}
+    dependencies:
+      '@stablelib/binary': 1.0.1
+      '@stablelib/salsa20': 1.0.2
+      '@stablelib/wipe': 1.0.1
+    dev: true
 
   /@stacks/common/6.0.0:
     resolution: {integrity: sha512-tETwccvbYvaZ7u3ZucWNMOIPN97r6IPeZXKIFhLc1KSVaWSGEPTtZcwVp+Rz3mu2XgI2pg37SUrOWXSL7OOkDw==}
@@ -5814,6 +5858,90 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
+  /@taquito/http-utils/15.1.0:
+    resolution: {integrity: sha512-Uug5hN0XvMlFFN+rxSMW+Y9Z8pw5uqHRDZC83eLOBSijbpMo+ScG/2nKkC8MUUrqLaLeHru1HD4kT5DHc1fI+A==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@vespaiach/axios-fetch-adapter': github.com/ecadlabs/axios-fetch-adapter/05cf8ba547aae387933939850231e8abaf323efe_axios@0.26.1
+      axios: 0.26.1
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@taquito/local-forging/15.1.0:
+    resolution: {integrity: sha512-ib/2RqtxQQC9SjyTB9T5OSc5yUx9GUSdMOA4dmtiiFcN2+AG+aw7ixn6Hjt9Td8ZIOPt9H6HkyTypKrX7+cENw==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@taquito/utils': 15.1.0
+      bignumber.js: 9.1.1
+    dev: true
+
+  /@taquito/michel-codec/15.1.0:
+    resolution: {integrity: sha512-wKucIhs7vhaq5H+YSF2f6Qu9+g+QiEL6MPc5ROpxBrXJTeKSwBOEIpfqcKfkfMuecJyHZJW3glNfkpAVTCgkxg==}
+    engines: {node: '>=6.0.0'}
+    dev: true
+
+  /@taquito/michelson-encoder/15.1.0:
+    resolution: {integrity: sha512-uQMEu3g+8WcYb5ZV6+XGvoWJhKoNxU0F2RqodLJB7UxQ1rI/OMa+VlxSLMt4niIxpKXqnO9j4tD7Y4mPC3ufaA==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@taquito/rpc': 15.1.0
+      '@taquito/utils': 15.1.0
+      bignumber.js: 9.1.1
+      fast-json-stable-stringify: 2.1.0
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@taquito/rpc/15.1.0:
+    resolution: {integrity: sha512-OeQA8QwT+s6IUmLaF5yeWruPYzWi/DVCA3kl+AaQ8IFfCMzmAW/MszbbNkJSzHpY2p4jPBwdRNxg3qeJdL482A==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@taquito/http-utils': 15.1.0
+      '@taquito/utils': 15.1.0
+      bignumber.js: 9.1.1
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@taquito/signer/15.1.0:
+    resolution: {integrity: sha512-VP7hS8cYQ6cMerVkbD5X3AqpoIXvh72xNuv3++R4reEjdl+E3VWs1CZZGnJj6yzlFV21SrdGKSILx8Rl3Ql4DA==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      '@stablelib/blake2b': 1.0.1
+      '@stablelib/ed25519': 1.0.3
+      '@stablelib/hmac': 1.0.1
+      '@stablelib/nacl': 1.0.4
+      '@stablelib/pbkdf2': 1.0.1
+      '@stablelib/sha512': 1.0.1
+      '@taquito/taquito': 15.1.0
+      '@taquito/utils': 15.1.0
+      '@types/bn.js': 5.1.1
+      bip39: 3.0.4
+      elliptic: 6.5.4
+      pbkdf2: 3.1.2
+      typedarray-to-buffer: 4.0.0
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
+  /@taquito/taquito/15.1.0:
+    resolution: {integrity: sha512-2AXWeNoXsmMOSkJVXtXjOlJkS+hKXITaSybMA6nJuS1YWY4e7iAr678Y6UgVEHRJxeGohX4R4Ww12Ymr3Sfedg==}
+    engines: {node: '>=6.0.0'}
+    requiresBuild: true
+    dependencies:
+      '@taquito/http-utils': 15.1.0
+      '@taquito/local-forging': 15.1.0
+      '@taquito/michel-codec': 15.1.0
+      '@taquito/michelson-encoder': 15.1.0
+      '@taquito/rpc': 15.1.0
+      '@taquito/utils': 15.1.0
+      bignumber.js: 9.1.1
+      rxjs: 6.6.7
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   /@taquito/utils/11.2.0:
     resolution: {integrity: sha512-I5LoD5fG9S2Yo4CNpW4u3vF9lUJG1PxkGLi6ntvvH49SBXwo9HJ/n/v04aoE9V7ncA0a7LUm6ucnROagIc2QQQ==}
     engines: {node: '>=6.0.0'}
@@ -5855,7 +5983,7 @@ packages:
       buffer: 6.0.3
       elliptic: 6.5.4
       typedarray-to-buffer: 4.0.0
-    dev: false
+    dev: true
 
   /@tendermint/belt/0.3.0:
     resolution: {integrity: sha512-3ZIsrbh9HLGM8cFyptK5iBeWou30srDiBjY8cVXFkz8aqPprt0OT7T9JqiqoG570x1pB0xiKwDDBxtQ120Gxug==}
@@ -5940,7 +6068,6 @@ packages:
     resolution: {integrity: sha512-qNrYbZqMx0uJAfKnKclPh+dTwK33KfLHYqtyODwd5HnXOjnkhc4qgn3BrK6RWyGZm5+sIFE7Q7Vz6QQtJB7w7g==}
     dependencies:
       '@types/node': 18.14.1
-    dev: false
 
   /@types/body-parser/1.19.2:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
@@ -6128,7 +6255,6 @@ packages:
 
   /@types/node/11.11.6:
     resolution: {integrity: sha512-Exw4yUWMBXM3X+8oqzJNRqZSwUAaS4+7NdvHqQuFi/d+synz++xmX3QIf+BFqneW8N31R8Ky+sikfZUXq07ggQ==}
-    dev: false
 
   /@types/node/17.0.45:
     resolution: {integrity: sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw==}
@@ -6995,6 +7121,14 @@ packages:
       - debug
     dev: false
 
+  /axios/0.26.1:
+    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
+    dependencies:
+      follow-redirects: 1.15.2
+    transitivePeerDependencies:
+      - debug
+    dev: true
+
   /babel-jest/29.4.3_@babel+core@7.21.0:
     resolution: {integrity: sha512-o45Wyn32svZE+LnMVWv/Z4x0SwtLbh4FyGcYtR20kIWd+rdrDZ9Fzq8Ml3MYLD+mZvEdzCjZsCnYZ2jpJyQ+Nw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -7285,7 +7419,6 @@ packages:
       create-hash: 1.2.0
       pbkdf2: 3.1.2
       randombytes: 2.1.0
-    dev: false
 
   /bl/5.1.0:
     resolution: {integrity: sha512-tv1ZJHLfTDnXE6tMHv73YgSJaWR2AFuPwMntBe7XL/GBFHnT0CLnsHMogfk5+GzCDC5ZWarSCYaIGATZt9dNsQ==}
@@ -8150,7 +8283,6 @@ packages:
       ripemd160: 2.0.2
       safe-buffer: 5.2.1
       sha.js: 2.4.11
-    dev: false
 
   /cron-parser/4.7.1:
     resolution: {integrity: sha512-WguFaoQ0hQ61SgsCZLHUcNbAvlK0lypKXu62ARguefYmjzaOXIVRNrAmyXzabTwUn4sQvQLkk6bjH+ipGfw8bA==}
@@ -9818,7 +9950,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dev: false
 
   /fork-ts-checker-webpack-plugin/6.5.2_hhrrucqyg4eysmfpujvov2ym5u:
     resolution: {integrity: sha512-m5cUmF30xkZ7h4tWUgTAcEaKmUW7tfyUyTqNNOz7OxWJ0v1VWKTcOvH8FWHUwSjlW/356Ijc9vi3XfcPstpQKA==}
@@ -14011,7 +14142,6 @@ packages:
       ripemd160: 2.0.2
       safe-buffer: 5.2.1
       sha.js: 2.4.11
-    dev: false
 
   /peek-readable/5.0.0:
     resolution: {integrity: sha512-YtCKvLUOvwtMGmrniQPdO7MwPjgkFBtFIrmfSbYmYuq3tKDV/mcfAhBth1+C3ru7uXIZasc/pHnb+YDYNkkj4A==}
@@ -15454,6 +15584,13 @@ packages:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
     dependencies:
       queue-microtask: 1.2.3
+
+  /rxjs/6.6.7:
+    resolution: {integrity: sha512-hTdwr+7yYNIT5n4AMYp85KA6yw2Va0FLa3Rguvbpa4W3I5xynaBZo41cM3XM+4Q6fRMj3sBYIR1VAmZMXYJvRQ==}
+    engines: {npm: '>=2.0.0'}
+    dependencies:
+      tslib: 1.14.1
+    dev: true
 
   /rxjs/7.8.0:
     resolution: {integrity: sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==}
@@ -17502,3 +17639,14 @@ packages:
   /zwitch/1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: false
+
+  github.com/ecadlabs/axios-fetch-adapter/05cf8ba547aae387933939850231e8abaf323efe_axios@0.26.1:
+    resolution: {tarball: https://codeload.github.com/ecadlabs/axios-fetch-adapter/tar.gz/05cf8ba547aae387933939850231e8abaf323efe}
+    id: github.com/ecadlabs/axios-fetch-adapter/05cf8ba547aae387933939850231e8abaf323efe
+    name: '@vespaiach/axios-fetch-adapter'
+    version: 0.3.1
+    peerDependencies:
+      axios: '>=0.26.0'
+    dependencies:
+      axios: 0.26.1
+    dev: true
