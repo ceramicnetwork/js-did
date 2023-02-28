@@ -17,19 +17,32 @@ export const chainIdMap = {
 
 type SolanaNetwork = 'mainnet' | 'testnet' | 'devnet'
 
+function toAccountId(didOrAccount: string | AccountId): AccountId {
+  if (typeof didOrAccount === 'string') {
+    if (!didOrAccount.startsWith(`did:pkh:${CHAIN_NAMESPACE}`)) {
+      throw new Error(`Invalid DID string: ${didOrAccount}`)
+    }
+    return new AccountId(didOrAccount.slice(8))
+  }
+  return didOrAccount
+}
+
 export namespace SolanaWebAuth {
   /**
    * Get a configured authMethod for a Solana account in a web based environment
    */
   // eslint-disable-next-line @typescript-eslint/require-await
-  export async function getAuthMethod(solProvider: any, account: AccountId): Promise<AuthMethod> {
+  export async function getAuthMethod(
+    solProvider: any,
+    account: AccountId | string
+  ): Promise<AuthMethod> {
     if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')
     const domain = (window as Window).location.hostname
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, solProvider, account)
+      return createCACAO(opts, solProvider, toAccountId(account))
     }
   }
 }
@@ -41,14 +54,14 @@ export namespace SolanaNodeAuth {
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(
     ethProvider: any,
-    account: AccountId,
+    account: AccountId | string,
     appName: string
   ): Promise<AuthMethod> {
     const domain = appName
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, ethProvider, account)
+      return createCACAO(opts, ethProvider, toAccountId(account))
     }
   }
 }
@@ -128,9 +141,23 @@ export async function getAccountId(solConnection: any, address: string): Promise
 }
 
 /**
+ * Helper function to get a DID for an Solana account by Solana Connection interface, Connection must implement 'getGenesisHash()'
+ */
+export async function getDID(solConnection: any, address: string): Promise<string> {
+  return `did:pkh:${(await getAccountId(solConnection, address)).toString()}`
+}
+
+/**
  * Helper function to get an accountId (CAIP10) for an Solana account by network string 'mainet' | 'testnet' | 'devenet'
  */
 export function getAccountIdByNetwork(network: SolanaNetwork, address: string): AccountId {
   const chainId = `${CHAIN_NAMESPACE}:${chainIdMap[network]}`
   return new AccountId({ address, chainId })
+}
+
+/**
+ * Helper function to get a DID for an Solana account by network string 'mainet' | 'testnet' | 'devenet'
+ */
+export function getDIDByNetwork(network: SolanaNetwork, address: string): string {
+  return `did:pkh:${getAccountIdByNetwork(network, address).toString()}`
 }

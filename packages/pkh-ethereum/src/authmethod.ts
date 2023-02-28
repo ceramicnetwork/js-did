@@ -12,19 +12,32 @@ export const VERSION = '1'
  */
 export const CHAIN_NAMESPACE = 'eip155'
 
+function toAccountId(didOrAccount: string | AccountId): AccountId {
+  if (typeof didOrAccount === 'string') {
+    if (!didOrAccount.startsWith(`did:pkh:${CHAIN_NAMESPACE}`)) {
+      throw new Error(`Invalid DID string: ${didOrAccount}`)
+    }
+    return new AccountId(didOrAccount.slice(8))
+  }
+  return didOrAccount
+}
+
 export namespace EthereumWebAuth {
   /**
    * Get a configured authMethod for an Ethereum account in a web based environment
    */
   // eslint-disable-next-line @typescript-eslint/require-await
-  export async function getAuthMethod(ethProvider: any, account: AccountId): Promise<AuthMethod> {
+  export async function getAuthMethod(
+    ethProvider: any,
+    account: AccountId | string
+  ): Promise<AuthMethod> {
     if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')
     const domain = (window as Window).location.hostname
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, ethProvider, account)
+      return createCACAO(opts, ethProvider, toAccountId(account))
     }
   }
 }
@@ -43,7 +56,7 @@ export namespace EthereumNodeAuth {
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = domain
-      return createCACAO(opts, ethProvider, account)
+      return createCACAO(opts, ethProvider, toAccountId(account))
     }
   }
 }
@@ -88,4 +101,11 @@ export async function getAccountId(ethProvider: any, address: string): Promise<A
   const ethChainId = await requestChainId(ethProvider)
   const chainId = `${CHAIN_NAMESPACE}:${ethChainId}`
   return new AccountId({ address, chainId })
+}
+
+/**
+ * Helper function to get a PKH DID for an Ethereum account, uses ethProvider to get chainId/network
+ */
+export async function getDID(ethProvider: any, address: string): Promise<string> {
+  return `did:pkh:${(await getAccountId(ethProvider, address)).toString()}`
 }
