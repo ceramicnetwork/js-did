@@ -68,16 +68,30 @@ async function createCACAO(
     chainId: account.chainId.reference,
     resources: opts.resources,
   })
-  const signature = await safeSend(ethProvider, 'personal_sign', [
-    siweMessage.signMessage(),
-    account.address,
-  ])
-  siweMessage.signature = signature
-  return Cacao.fromSiweMessage(siweMessage)
-}
+
+  let payload = {
+      method: 'personal_sign',
+      params: [
+          siweMessage.signMessage(),
+          account.address,
+      ],
+  }
+
+  let signature = 'rpcProvider' in ethProvider ? await ethProvider.sendAsync(payload) : await safeSend(ethProvider, payload.method, payload.params);
+
+    siweMessage.signature = signature
+    return Cacao.fromSiweMessage(siweMessage)
+  }
 
 async function requestChainId(provider: any): Promise<number> {
-  const chainIdHex = (await safeSend(provider, 'eth_chainId', [])) as string
+
+  let payload = {
+      method: 'eth_chainId',
+      params: [],
+  };
+  
+  let chainIdHex = 'rpcProvider' in provider ? await provider.sendAsync(payload) : await safeSend(provider, payload.method, payload.params);
+
   return parseInt(chainIdHex, 16)
 }
 
