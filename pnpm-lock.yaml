@@ -71,7 +71,7 @@ importers:
       '@ceramicnetwork/stream-tile': ^2.16.0
       '@ceramicnetwork/streamid': ^2.12.0
       '@didtools/cacao': workspace:^2.0.0
-      '@didtools/pkh-ethereum': workspace:^0.1.0
+      '@didtools/pkh-ethereum': workspace:^0.2.0
       '@didtools/pkh-solana': workspace:^0.1.0
       '@ethersproject/wallet': ^5.6.2
       '@jest/globals': ^29.4.3
@@ -113,7 +113,7 @@ importers:
   packages/dids:
     specifiers:
       '@didtools/cacao': workspace:^2.0.0
-      '@didtools/pkh-ethereum': workspace:^0.1.0
+      '@didtools/pkh-ethereum': workspace:^0.2.0
       '@stablelib/random': ^1.0.1
       '@stablelib/x25519': ^1.0.2
       dag-jose-utils: ^3.0.0
@@ -140,7 +140,7 @@ importers:
   packages/integration:
     specifiers:
       '@didtools/cacao': workspace:^2.0.0
-      '@didtools/pkh-ethereum': workspace:^0.1.0
+      '@didtools/pkh-ethereum': workspace:^0.2.0
       '@didtools/pkh-solana': workspace:^0.1.0
       '@ethersproject/wallet': ^5.5.0
       '@ipld/dag-cbor': ^9.0.0
