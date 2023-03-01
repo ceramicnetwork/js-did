@@ -2,6 +2,7 @@ import { Cacao, SiweMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 import { randomString } from '@stablelib/random'
 import { AccountId } from 'caip'
 import { safeSend, normalizeAccountId } from './utils.js'
+import * as u8a from 'uint8arrays'
 
 /**
  * SIWX Version
@@ -11,6 +12,10 @@ export const VERSION = '1'
  * CAIP2 for ethereum, used in CAIP10 (acountId)
  */
 export const CHAIN_NAMESPACE = 'eip155'
+
+function encodeHexStr(str: string): string {
+  return `0x${u8a.toString(u8a.fromString(str, 'utf8'), 'base16')}`
+}
 
 export namespace EthereumWebAuth {
   /**
@@ -70,7 +75,7 @@ async function createCACAO(
     resources: opts.resources,
   })
   const signature = await safeSend(ethProvider, 'personal_sign', [
-    siweMessage.signMessage(),
+    encodeHexStr(siweMessage.signMessage()),
     normAccount.address,
   ])
   siweMessage.signature = signature
