@@ -254,11 +254,13 @@ importers:
       '@stablelib/random': ^1.0.2
       caip: ^1.1.0
       typescript: ^4.9.5
+      uint8arrays: ^4.0.3
     dependencies:
       '@didtools/cacao': link:../cacao
       '@ethersproject/wallet': 5.7.0
       '@stablelib/random': 1.0.2
       caip: 1.1.0
+      uint8arrays: 4.0.3
     devDependencies:
       typescript: 4.9.5
 

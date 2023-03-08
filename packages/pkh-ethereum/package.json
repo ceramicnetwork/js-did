@@ -50,6 +50,7 @@
     "@didtools/cacao": "workspace:^2.0.0",
     "@ethersproject/wallet": "^5.7.0",
     "@stablelib/random": "^1.0.2",
-    "caip": "^1.1.0"
+    "caip": "^1.1.0",
+    "uint8arrays": "^4.0.3"
   }
 }
