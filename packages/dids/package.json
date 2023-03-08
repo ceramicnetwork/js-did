@@ -44,7 +44,7 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
     "@didtools/cacao": "workspace:^2.0.0",
-    "@didtools/pkh-ethereum": "workspace:^0.2.0",
+    "@didtools/pkh-ethereum": "workspace:^0.3.0",
     "@stablelib/random": "^1.0.1",
     "dag-jose-utils": "^3.0.0",
     "did-jwt": "^6.11.1",
