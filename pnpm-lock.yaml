@@ -238,6 +238,17 @@ importers:
       '@types/varint': 6.0.1
       did-resolver: 4.0.1
 
+  packages/multidid:
+    specifiers:
+      '@stablelib/random': ^1.0.2
+      multiformats: ^11.0.2
+      uint8arrays: ^4.0.3
+    dependencies:
+      multiformats: 11.0.2
+      uint8arrays: 4.0.3
+    devDependencies:
+      '@stablelib/random': 1.0.2
+
   packages/pkh-did-resolver:
     specifiers:
       caip: ~1.1.0
@@ -13438,6 +13449,11 @@ packages:
   /multiformats/11.0.1:
     resolution: {integrity: sha512-atWruyH34YiknSdL5yeIir00EDlJRpHzELYQxG7Iy29eCyL+VrZHpPrX5yqlik3jnuqpLpRKVZ0SGVb9UzKaSA==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+
+  /multiformats/11.0.2:
+    resolution: {integrity: sha512-b5mYMkOkARIuVZCpvijFj9a6m5wMVLC7cf/jIPd5D/ARDOfLC5+IFkbgDXQgcU2goIsTD/O9NY4DI/Mt4OGvlg==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+    dev: false
 
   /multiformats/9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}
