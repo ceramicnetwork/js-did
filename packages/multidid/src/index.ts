@@ -77,7 +77,12 @@ const KEY_METHOD_CODES_LENGTH: Record<number, number> = {
 
 // TODO
 // Could makes sense to add general did codec interface
-// did:* encoding should be used explicitly? or fail when trying
+
+type InspectObject = {
+  methodCode: number
+  methodIdBytes: Uint8Array
+  urlBytes: Uint8Array
+}
 
 export class Multidid {
   private mdBytes: Uint8Array | null
@@ -92,38 +97,7 @@ export class Multidid {
     this.mdBytes = null
   }
 
-  /**
-   * Decoded a multidid from its binary representation
-   */
-  static decode(bytes: Uint8Array): Multidid {
-    const [, didCodeLen] = varint.decode(bytes, 0)
-    const [methodCode, methodCodeLen] = varint.decode(bytes, didCodeLen)
-    const methodIdOffset = didCodeLen + methodCodeLen
-
-    let methodIdLen
-    if (methodCode === ALL_METHOD_CODE) {
-      methodIdLen = 0
-    } else if (methodCode === PKH_METHOD_CODE) {
-      throw new Error('TODO')
-    } else {
-      methodIdLen = KEY_METHOD_CODES_LENGTH[methodCode]
-    }
-    if (!methodIdLen && methodIdLen !== 0) throw new Error('Not matching did method code found')
-
-    const methodId = alloc(methodIdLen)
-    methodId.set(bytes.slice(methodIdOffset, methodIdOffset + methodIdLen))
-    const urlLenOffset = methodIdOffset + methodIdLen
-    const [urlLen, urlLenLen] = varint.decode(bytes, urlLenOffset)
-    const urlBytesOffset = urlLenOffset + urlLenLen
-    const url = alloc(urlLen)
-    url.set(bytes.slice(urlBytesOffset, urlBytesOffset + urlLen))
-    return new Multidid(methodCode, methodId, url)
-  }
-
-  /**
-   * Encode multidid to bytes
-   */
-  encode(): Uint8Array {
+  private encode(): Uint8Array {
     const methodCodeOffset = varint.encodingLength(MULTIDID_CODEC)
     const methodIdOffset = methodCodeOffset + varint.encodingLength(this.code)
 
@@ -154,17 +128,53 @@ export class Multidid {
   }
 
   /**
-   * Encode multidid as string, defaults to base58btc, multibase prefix string
+   * Decoded a multidid from its binary representation
    */
-  toString(base: SupportedBase = 'base58btc'): string {
-    const encoder = base === 'base58btc' ? base58btc : base16
-    return encoder.encode(this.bytes)
+  static fromBytes(bytes: Uint8Array): Multidid {
+    const [, didCodeLen] = varint.decode(bytes, 0)
+    const [methodCode, methodCodeLen] = varint.decode(bytes, didCodeLen)
+    const methodIdOffset = didCodeLen + methodCodeLen
+
+    let methodIdLen
+    if (methodCode === ALL_METHOD_CODE) {
+      methodIdLen = 0
+    } else if (methodCode === PKH_METHOD_CODE) {
+      throw new Error('TODO')
+    } else {
+      methodIdLen = KEY_METHOD_CODES_LENGTH[methodCode]
+    }
+    if (!methodIdLen && methodIdLen !== 0) throw new Error('Not matching did method code found')
+
+    const methodId = alloc(methodIdLen)
+    methodId.set(bytes.slice(methodIdOffset, methodIdOffset + methodIdLen))
+    const urlLenOffset = methodIdOffset + methodIdLen
+    const [urlLen, urlLenLen] = varint.decode(bytes, urlLenOffset)
+    const urlBytesOffset = urlLenOffset + urlLenLen
+    const url = alloc(urlLen)
+    url.set(bytes.slice(urlBytesOffset, urlBytesOffset + urlLen))
+    return new Multidid(methodCode, methodId, url)
   }
 
   /**
-   * Decode multidid string into instance, expect multibase prefix string
+   * Encode multidid to bytes
    */
-  static fromString(multidid: string): Multidid {
+  toBytes(): Uint8Array {
+    if (!this.mdBytes) this.mdBytes = this.encode()
+    return this.mdBytes
+  }
+
+  /**
+   * Encode multidid as multibase string, defaults to base58btc, multibase prefix string
+   */
+  toMultibase(base: SupportedBase = 'base58btc'): string {
+    const encoder = base === 'base58btc' ? base58btc : base16
+    return encoder.encode(this.toBytes())
+  }
+
+  /**
+   * Decode multibase multidid string into instance, expects multibase prefix 
+   */
+  static fromMultibase(multidid: string): Multidid {
     let bytes
     switch (multidid.slice(0, 1)) {
       case base58btc.prefix: {
@@ -179,13 +189,13 @@ export class Multidid {
         throw new Error('Multibase encoding not found, base58btc and base16 supported')
       }
     }
-    return this.decode(bytes)
+    return this.fromBytes(bytes)
   }
 
   /**
    * Decode multidid instance from a did string
    */
-  static fromDIDString(did: string): Multidid {
+  static fromString(did: string): Multidid {
     const [, method, suffix] = did.split(':')
     const [id, url] = suffix.split(/(?=[#?/])(.*)/)
     switch (method) {
@@ -209,7 +219,7 @@ export class Multidid {
   /**
    * DID string from multidid
    */
-  toDIDString(): string {
+  toString(): string {
     if (this.code === ALL_METHOD_CODE) {
       return `did:${u8a.toString(this.url, 'utf8')}`
     } else if (this.code === PKH_METHOD_CODE) {
@@ -224,32 +234,15 @@ export class Multidid {
       throw new Error('Unable to convert to did string, no matching method')
     }
   }
-  /**
-   * Get the multidid method code
-   */
-  get methodCode() {
-    return this.code
-  }
 
   /**
-   * Get the multidid method id bytes
+   * Get the multidid by parts, res.methodCode, res.methodIdBytes, res.urlBytes
    */
-  get methodIdBytes() {
-    return this.id
-  }
-
-  /**
-   * Get the multidid url portion bytes
-   */
-  get urlBytes() {
-    return this.url
-  }
-
-  /**
-   * Get the multidid bytes
-   */
-  get bytes() {
-    if (!this.mdBytes) this.mdBytes = this.encode()
-    return this.mdBytes
+  inspect(): InspectObject {
+    return {
+      methodCode: this.code,
+      methodIdBytes: this.id,
+      urlBytes: this.url
+    }
   }
 }
