@@ -49,34 +49,40 @@ import { varint } from 'multiformats'
 import { base58btc } from 'multiformats/bases/base58'
 import { base16 } from 'multiformats/bases/base16'
 
-type SupportedBase = 'base16' | 'base58btc'
+/**
+ * Multicodec Codes https://github.com/multiformats/multicodec/blob/master/table.csv
+ */
+const MULTIDID_CODEC = 0xd1d        // did
+const ANY_METHOD_CODE = 0x55        // raw
+const PKH_METHOD_CODE = 0xca        // Chain Agnostic
+const SECP256K1_CODE = 0xe7         // secp256k1-pub
+const BLS12_381_G2_CODE = 0xeb      // bls12_381-g2-pub
+const X25519_CODE = 0xec            // x25519-pub
+const ED25519_CODE = 0xed           // ed25519-pub
+const P256_CODE = 0x1200            // p256-pub
+const P384_CODE = 0x1201            // p384-pub
+const P521_CODE = 0x1202            // p521-pub
+const RSA_CODE = 0x1205             // rsa-pub
 
-const MULTIDID_CODEC = 3357
-const ALL_METHOD_CODE = 85
-const PKH_METHOD_CODE = 202
-
+/**
+ * did:key length table 
+ */
 const KEY_METHOD_CODES_LENGTH: Record<number, number> = {
-  // 0xe7
-  231: 33,
-  // 0xeb
-  235: 96,
-  //0xec
-  236: 32,
-  //0xed
-  237: 32,
-  //0x1200
-  4608: 33,
-  //0x1201
-  4609: 49,
-  //0x1202
-  4610: 67,
-  //0x1205
-  // TODO RSA key length
-  // 4613: 270 or 256
+  [SECP256K1_CODE]: 33,
+  [BLS12_381_G2_CODE]: 96,
+  [X25519_CODE]: 32,
+  [ED25519_CODE]: 32,
+  [P256_CODE]: 33,
+  [P384_CODE]: 49,
+  [P521_CODE]: 67,
+  // TODO RSA key length or 256
+  [RSA_CODE]: 270 
 }
 
 // TODO
 // Could makes sense to add general did codec interface
+
+type SupportedBase = 'base16' | 'base58btc'
 
 type InspectObject = {
   methodCode: number
@@ -102,7 +108,7 @@ export class Multidid {
     const methodIdOffset = methodCodeOffset + varint.encodingLength(this.code)
 
     let methodIdLen
-    if (this.code === ALL_METHOD_CODE) {
+    if (this.code === ANY_METHOD_CODE) {
       methodIdLen = 0
     } else if (this.code === PKH_METHOD_CODE) {
       throw new Error('TODO')
@@ -136,7 +142,7 @@ export class Multidid {
     const methodIdOffset = didCodeLen + methodCodeLen
 
     let methodIdLen
-    if (methodCode === ALL_METHOD_CODE) {
+    if (methodCode === ANY_METHOD_CODE) {
       methodIdLen = 0
     } else if (methodCode === PKH_METHOD_CODE) {
       throw new Error('TODO')
@@ -211,7 +217,7 @@ export class Multidid {
       }
       default: {
         const urlBytes = u8a.fromString(`${method}:${suffix}`, 'utf8')
-        return new Multidid(ALL_METHOD_CODE, alloc(0), urlBytes)
+        return new Multidid(ANY_METHOD_CODE, alloc(0), urlBytes)
       }
     }
   }
@@ -220,7 +226,7 @@ export class Multidid {
    * DID string from multidid
    */
   toString(): string {
-    if (this.code === ALL_METHOD_CODE) {
+    if (this.code === ANY_METHOD_CODE) {
       return `did:${u8a.toString(this.url, 'utf8')}`
     } else if (this.code === PKH_METHOD_CODE) {
       throw new Error('TODO')
