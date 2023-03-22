@@ -67,20 +67,43 @@ const RSA_CODE = 0x1205             // rsa-pub
 /**
  * did:key length table 
  */
-const KEY_METHOD_CODES_LENGTH: Record<number, number> = {
+const KEY_METHOD_CODES_LENGTH: Record<number, number | null> = {
   [SECP256K1_CODE]: 33,
   [BLS12_381_G2_CODE]: 96,
   [X25519_CODE]: 32,
   [ED25519_CODE]: 32,
   [P256_CODE]: 33,
   [P384_CODE]: 49,
-  [P521_CODE]: 67,
-  // TODO RSA key length or 256
-  [RSA_CODE]: 270 
+  [P521_CODE]: 67
 }
 
-// TODO
-// Could makes sense to add general did codec interface
+// 2048-bit modulus, public exponent 65537
+const RSA_270_PREFIX = new Uint8Array([48, 130, 1, 10, 2, 130, 1, 1, 0])
+const RSA_270 = 270
+// 4096-bit modulus, public exponent 65537
+const RSA_526_PREFIX = new Uint8Array([48, 130, 2, 10, 2, 130, 2, 1, 0])
+const RSA_526 = 526
+const keyPrefixByteLen = 9 
+
+const RSACodeLen = (keyPrefix: Uint8Array): number => {
+  if (u8a.equals(keyPrefix, RSA_270_PREFIX)) return RSA_270
+  if (u8a.equals(keyPrefix, RSA_526_PREFIX)) return RSA_526
+  throw new Error("Not a valid RSA did:key")
+}
+
+const keyMethodCodeLen = (code: number, key: Uint8Array): number => {
+  let methodIdLen = KEY_METHOD_CODES_LENGTH[code]
+  if (!methodIdLen) {
+    if (code !== RSA_CODE) throw new Error('did:key type not found')
+    methodIdLen = RSACodeLen(key)
+  }
+
+  return methodIdLen
+}
+
+const isKeyMethodCode = (code: number): boolean => {
+  return Object.keys(KEY_METHOD_CODES_LENGTH).includes(code.toString()) || code === RSA_CODE
+}
 
 type SupportedBase = 'base16' | 'base58btc'
 
@@ -113,7 +136,7 @@ export class Multidid {
     } else if (this.code === PKH_METHOD_CODE) {
       throw new Error('TODO')
     } else {
-      methodIdLen = KEY_METHOD_CODES_LENGTH[this.code]
+      methodIdLen = keyMethodCodeLen(this.code, this.id.slice(0,keyPrefixByteLen))
     }
 
     if (!methodIdLen && methodIdLen !== 0) throw new Error('Not matching did method code found')
@@ -147,7 +170,8 @@ export class Multidid {
     } else if (methodCode === PKH_METHOD_CODE) {
       throw new Error('TODO')
     } else {
-      methodIdLen = KEY_METHOD_CODES_LENGTH[methodCode]
+      const prefix = bytes.slice(methodIdOffset, methodIdOffset + keyPrefixByteLen)
+      methodIdLen = keyMethodCodeLen(methodCode, prefix)
     }
     if (!methodIdLen && methodIdLen !== 0) throw new Error('Not matching did method code found')
 
@@ -230,9 +254,11 @@ export class Multidid {
       return `did:${u8a.toString(this.url, 'utf8')}`
     } else if (this.code === PKH_METHOD_CODE) {
       throw new Error('TODO')
-    } else if (Object.keys(KEY_METHOD_CODES_LENGTH).includes(this.code.toString())) {
+    } else if (isKeyMethodCode(this.code)) {
       const methodIdOffset = varint.encodingLength(this.code)
-      const key = alloc(KEY_METHOD_CODES_LENGTH[this.code] + methodIdOffset)
+      const prefix = this.id.slice(0, keyPrefixByteLen)
+      const methodIdLen = keyMethodCodeLen(this.code, prefix)
+      const key = alloc(methodIdLen + methodIdOffset)
       varint.encodeTo(this.code, key, 0)
       key.set(this.id, methodIdOffset)
       return `did:key:${base58btc.encode(key)}${u8a.toString(this.url, 'utf8')}`
