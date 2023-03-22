@@ -19,24 +19,24 @@
  * const didString = "did:key:z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp#z6MkiTBz1ymuepAQ4HEHYSF1H8quG5GLVVQR3djdX3mDooWp"
  *
  * // Multidid instance from did string
- * const multidid = Multidid.fromDIDString(didString)
+ * const multidid = Multidid.fromString(didString)
  *
  * // Encode to bytes
- * multidid.encode()
+ * multidid.toBytes()
  *
  * // Decode from bytes to multidid instance
- * Multidid.decode(bytes)
+ * Multidid.fromBytes(bytes)
  *
  * // Encode as base16 string
- * const mdStr = multidid.toString('base16')
+ * const mdStr = multidid.toMultibase('base16')
  * console.log(mdStr)
  * // f9d1aed013b6a27bcceb6a42d62a3a8d02a6f0d73653215771de243a63ac048a18b59da29307a364d6b6954427a31796d75657041513448454859534631483871754735474c5656515233646a6458336d446f6f5770
  *
  * // Multidid instance from base encoded string
- * Multidid.fromString(mdStr)
+ * Multidid.fromMultibase(mdStr)
  *
  * // DID string from multidid
- * multidid.toDidString()
+ * multidid.toString()
  *
  * ```
  *
@@ -52,20 +52,20 @@ import { base16 } from 'multiformats/bases/base16'
 /**
  * Multicodec Codes https://github.com/multiformats/multicodec/blob/master/table.csv
  */
-const MULTIDID_CODEC = 0xd1d        // did
-const ANY_METHOD_CODE = 0x55        // raw
-const PKH_METHOD_CODE = 0xca        // Chain Agnostic
-const SECP256K1_CODE = 0xe7         // secp256k1-pub
-const BLS12_381_G2_CODE = 0xeb      // bls12_381-g2-pub
-const X25519_CODE = 0xec            // x25519-pub
-const ED25519_CODE = 0xed           // ed25519-pub
-const P256_CODE = 0x1200            // p256-pub
-const P384_CODE = 0x1201            // p384-pub
-const P521_CODE = 0x1202            // p521-pub
-const RSA_CODE = 0x1205             // rsa-pub
+const MULTIDID_CODEC = 0xd1d // did
+const ANY_METHOD_CODE = 0x55 // raw
+const PKH_METHOD_CODE = 0xca // Chain Agnostic
+const SECP256K1_CODE = 0xe7 // secp256k1-pub
+const BLS12_381_G2_CODE = 0xeb // bls12_381-g2-pub
+const X25519_CODE = 0xec // x25519-pub
+const ED25519_CODE = 0xed // ed25519-pub
+const P256_CODE = 0x1200 // p256-pub
+const P384_CODE = 0x1201 // p384-pub
+const P521_CODE = 0x1202 // p521-pub
+const RSA_CODE = 0x1205 // rsa-pub
 
 /**
- * did:key length table 
+ * did:key length table
  */
 const KEY_METHOD_CODES_LENGTH: Record<number, number | null> = {
   [SECP256K1_CODE]: 33,
@@ -74,7 +74,7 @@ const KEY_METHOD_CODES_LENGTH: Record<number, number | null> = {
   [ED25519_CODE]: 32,
   [P256_CODE]: 33,
   [P384_CODE]: 49,
-  [P521_CODE]: 67
+  [P521_CODE]: 67,
 }
 
 // 2048-bit modulus, public exponent 65537
@@ -83,12 +83,12 @@ const RSA_270 = 270
 // 4096-bit modulus, public exponent 65537
 const RSA_526_PREFIX = new Uint8Array([48, 130, 2, 10, 2, 130, 2, 1, 0])
 const RSA_526 = 526
-const keyPrefixByteLen = 9 
+const keyPrefixByteLen = 9
 
 const RSACodeLen = (keyPrefix: Uint8Array): number => {
   if (u8a.equals(keyPrefix, RSA_270_PREFIX)) return RSA_270
   if (u8a.equals(keyPrefix, RSA_526_PREFIX)) return RSA_526
-  throw new Error("Not a valid RSA did:key")
+  throw new Error('Not a valid RSA did:key')
 }
 
 const keyMethodCodeLen = (code: number, key: Uint8Array): number => {
@@ -136,7 +136,7 @@ export class Multidid {
     } else if (this.code === PKH_METHOD_CODE) {
       throw new Error('TODO')
     } else {
-      methodIdLen = keyMethodCodeLen(this.code, this.id.slice(0,keyPrefixByteLen))
+      methodIdLen = keyMethodCodeLen(this.code, this.id.slice(0, keyPrefixByteLen))
     }
 
     if (!methodIdLen && methodIdLen !== 0) throw new Error('Not matching did method code found')
@@ -202,7 +202,7 @@ export class Multidid {
   }
 
   /**
-   * Decode multibase multidid string into instance, expects multibase prefix 
+   * Decode multibase multidid string into instance, expects multibase prefix
    */
   static fromMultibase(multidid: string): Multidid {
     let bytes
@@ -274,7 +274,7 @@ export class Multidid {
     return {
       methodCode: this.code,
       methodIdBytes: this.id,
-      urlBytes: this.url
+      urlBytes: this.url,
     }
   }
 }
