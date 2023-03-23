@@ -11,6 +11,7 @@
       "@didtools/cacao": ["packages/cacao/src"],
       "key-did-provider-ed25519": ["packages/key-did-provider-ed25519/src"],
       "key-did-provider-secp256k1": ["packages/key-did-provider-secp256k1/src"],
+      "@didtools/multidid": ["packages/multidid/src"],
       "@didtools/pkh-ethereum": ["packages/pkh-ethereum/src"],
       "@didtools/pkh-solana": ["packages/pkh-solana/src"],
       "pkh-did-resolver": ["packages/pkh-did-resolver/src"],
