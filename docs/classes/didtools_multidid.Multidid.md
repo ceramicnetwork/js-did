@@ -16,59 +16,23 @@
 | `id` | `Uint8Array` | DID method id |
 | `url` | `Uint8Array` | DID Method url portion |
 
-## Accessors
-
-### bytes
-
-• `get` **bytes**(): `Uint8Array`
-
-Get the multidid bytes
-
-#### Returns
-
-`Uint8Array`
-
-___
-
-### methodCode
-
-• `get` **methodCode**(): `number`
-
-Get the multidid method code
-
-#### Returns
-
-`number`
-
-___
-
-### methodIdBytes
-
-• `get` **methodIdBytes**(): `Uint8Array`
-
-Get the multidid method id bytes
-
-#### Returns
-
-`Uint8Array`
-
-___
-
-### urlBytes
-
-• `get` **urlBytes**(): `Uint8Array`
-
-Get the multidid url portion bytes
-
-#### Returns
-
-`Uint8Array`
-
 ## Methods
 
-### encode
+### inspect
 
-▸ **encode**(): `Uint8Array`
+▸ **inspect**(): `InspectObject`
+
+Get the multidid by parts, res.methodCode, res.methodIdBytes, res.urlBytes
+
+#### Returns
+
+`InspectObject`
+
+___
+
+### toBytes
+
+▸ **toBytes**(): `Uint8Array`
 
 Encode multidid to bytes
 
@@ -78,23 +42,11 @@ Encode multidid to bytes
 
 ___
 
-### toDIDString
+### toMultibase
 
-▸ **toDIDString**(): `string`
+▸ **toMultibase**(`base?`): `string`
 
-DID string from multidid
-
-#### Returns
-
-`string`
-
-___
-
-### toString
-
-▸ **toString**(`base?`): `string`
-
-Encode multidid as string, defaults to base58btc, multibase prefix string
+Encode multidid as multibase string, defaults to base58btc, multibase prefix string
 
 #### Parameters
 
@@ -108,9 +60,21 @@ Encode multidid as string, defaults to base58btc, multibase prefix string
 
 ___
 
-### decode
+### toString
 
-▸ `Static` **decode**(`bytes`): [`Multidid`](didtools_multidid.Multidid.md)
+▸ **toString**(): `string`
+
+DID string from multidid
+
+#### Returns
+
+`string`
+
+___
+
+### fromBytes
+
+▸ `Static` **fromBytes**(`bytes`): [`Multidid`](didtools_multidid.Multidid.md)
 
 Decoded a multidid from its binary representation
 
@@ -126,17 +90,17 @@ Decoded a multidid from its binary representation
 
 ___
 
-### fromDIDString
+### fromMultibase
 
-▸ `Static` **fromDIDString**(`did`): [`Multidid`](didtools_multidid.Multidid.md)
+▸ `Static` **fromMultibase**(`multidid`): [`Multidid`](didtools_multidid.Multidid.md)
 
-Decode multidid instance from a did string
+Decode multibase multidid string into instance, expects multibase prefix
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `did` | `string` |
+| `multidid` | `string` |
 
 #### Returns
 
@@ -146,15 +110,15 @@ ___
 
 ### fromString
 
-▸ `Static` **fromString**(`multidid`): [`Multidid`](didtools_multidid.Multidid.md)
+▸ `Static` **fromString**(`did`): [`Multidid`](didtools_multidid.Multidid.md)
 
-Decode multidid string into instance, expect multibase prefix string
+Decode multidid instance from a did string
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `multidid` | `string` |
+| `did` | `string` |
 
 #### Returns
 
