@@ -1,39 +1,39 @@
 import { test } from 'uvu'
 import * as assert from 'uvu/assert'
 import * as fs from 'fs'
-import * as t from 'codeco'
+import { sparse, string, optional, type, literal, record, union, decode, type TypeOf } from 'codeco'
 import { SiwxMessage } from '../siwx-message.js'
 
-const Fields = t.sparse({
-  domain: t.string,
-  address: t.string,
-  uri: t.string,
-  version: t.string,
-  chainId: t.string,
-  nonce: t.string,
-  issuedAt: t.string,
-  network: t.string,
-  statement: t.optional(t.string),
+const Fields = sparse({
+  domain: string,
+  address: string,
+  uri: string,
+  version: string,
+  chainId: string,
+  nonce: string,
+  issuedAt: string,
+  network: string,
+  statement: optional(string),
 })
 
-const ValidEntry = t.type({
-  message: t.string,
-  status: t.literal('valid'),
+const ValidEntry = type({
+  message: string,
+  status: literal('valid'),
   fields: Fields,
 })
 
-const InvalidEntry = t.type({
-  message: t.string,
-  status: t.literal('invalid'),
+const InvalidEntry = type({
+  message: string,
+  status: literal('invalid'),
 })
 
-const ChainVector = t.record(t.string, t.union([ValidEntry, InvalidEntry]))
-type ChainVector = t.TypeOf<typeof ChainVector>
+const ChainVector = record(string, union([ValidEntry, InvalidEntry]))
+type ChainVector = TypeOf<typeof ChainVector>
 
 function readVector(filename: URL): ChainVector {
   const contents = fs.readFileSync(filename, 'utf8')
   const parsed = JSON.parse(contents)
-  return t.decode(ChainVector, parsed)
+  return decode(ChainVector, parsed)
 }
 
 const ethereumVectors = readVector(
