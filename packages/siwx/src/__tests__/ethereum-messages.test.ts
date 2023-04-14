@@ -1,6 +1,6 @@
 import { test } from 'uvu'
 import * as assert from 'uvu/assert'
-import * as fs from 'node:fs/promises'
+import * as fs from 'fs/promises'
 import * as t from 'codeco'
 import { SiwxMessage } from '../siwx-message.js'
 
