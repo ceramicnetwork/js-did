@@ -1,6 +1,6 @@
 import { test } from 'uvu'
 import * as assert from 'uvu/assert'
-import * as fs from 'fs'
+import { readFileSync } from 'fs'
 import { sparse, string, optional, type, literal, record, union, decode, type TypeOf } from 'codeco'
 import { SiwxMessage } from '../siwx-message.js'
 
@@ -31,7 +31,7 @@ const ChainVector = record(string, union([ValidEntry, InvalidEntry]))
 type ChainVector = TypeOf<typeof ChainVector>
 
 function readVector(filename: URL): ChainVector {
-  const contents = fs.readFileSync(filename, 'utf8')
+  const contents = readFileSync(filename, 'utf8')
   const parsed = JSON.parse(contents)
   return decode(ChainVector, parsed)
 }
