@@ -1,0 +1,61 @@
+{
+  "name": "@didtools/siwx",
+  "version": "0.0.1",
+  "description": "Typescript library for Sign-In With X",
+  "author": "Sergey Ukustov <sergey@ukstv.me>",
+  "license": "(Apache-2.0 OR MIT)",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.14"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
+    "lint": "eslint src test --fix",
+    "test": "./node_modules/.bin/tsm ./node_modules/uvu/bin.js . .+\\.test\\.ts",
+    "test:watch": "./node_modules/.bin/watchlist --eager src -- pnpm run test",
+    "test:ci": "pnpm run test",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "package-check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceramicnetwork/js-did.git"
+  },
+  "keywords": [
+    "DID",
+    "identity",
+    "OCAP",
+    "capabilities",
+    "SIWX",
+    "signin",
+    "authentication"
+  ],
+  "bugs": {
+    "url": "https://github.com/ceramicnetwork/js-did/issues"
+  },
+  "homepage": "https://github.com/ceramicnetwork/js-did#readme",
+  "dependencies": {
+    "codeco": "^1.0.1"
+  },
+  "devDependencies": {
+    "tsm": "^2.3.0",
+    "uvu": "^0.5.6",
+    "watchlist": "^0.3.1",
+    "ts-essentials": "^9.3.1"
+  }
+}
