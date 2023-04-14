@@ -53,6 +53,7 @@
     "codeco": "^1.0.1"
   },
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "tsm": "^2.3.0",
     "uvu": "^0.5.6",
     "watchlist": "^0.3.1",
