@@ -1,6 +1,6 @@
 import { test } from 'uvu'
 import * as assert from 'uvu/assert'
-import * as fs from 'fs/promises'
+import * as fs from 'fs'
 import * as t from 'codeco'
 import { SiwxMessage } from '../siwx-message.js'
 
@@ -30,13 +30,13 @@ const InvalidEntry = t.type({
 const ChainVector = t.record(t.string, t.union([ValidEntry, InvalidEntry]))
 type ChainVector = t.TypeOf<typeof ChainVector>
 
-async function readVector(filename: URL): Promise<ChainVector> {
-  const contents = await fs.readFile(filename, 'utf8')
+function readVector(filename: URL): ChainVector {
+  const contents = fs.readFileSync(filename, 'utf8')
   const parsed = JSON.parse(contents)
   return t.decode(ChainVector, parsed)
 }
 
-const ethereumVectors = await readVector(
+const ethereumVectors = readVector(
   new URL('../../data/vectors/ethereum-messages.json', import.meta.url)
 )
 
