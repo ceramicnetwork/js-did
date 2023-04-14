@@ -1,9 +1,9 @@
 export {
   SiwxMessage,
-  SiwxMessageFields,
   toString,
   fromString,
   fromStringSafe,
+  type SiwxMessageFields,
 } from './siwx-message.js'
 
 export type {
