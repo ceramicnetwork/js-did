@@ -1,4 +1,11 @@
-export { SiwxMessage, SiwxMessageFields, toString, fromString, fromStringSafe } from "./siwx-message.js";
+export {
+  SiwxMessage,
+  SiwxMessageFields,
+  toString,
+  fromString,
+  fromStringSafe,
+} from './siwx-message.js'
+
 export type {
   DomainString,
   NetworkString,
@@ -9,4 +16,6 @@ export type {
   ChainIdString,
   NonceString,
   DateTimeString,
-} from "./fields.js";
+} from './fields.js'
+
+export * from './signed-siwx-message.js'

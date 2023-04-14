@@ -142,5 +142,9 @@ export function toString(message: SiwxMessage): string {
  * If `field` is defined, return `fn(field)`.
  */
 function mapUndefined<T, R>(field: T | undefined, fn: (value: T) => R): R | undefined {
-  if (field !== undefined) return fn(field)
+  if (field !== undefined) {
+    return fn(field)
+  } else {
+    return undefined
+  }
 }
