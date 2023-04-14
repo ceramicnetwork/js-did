@@ -61,12 +61,12 @@ importers:
 
   packages/cacao:
     dependencies:
+      '@didtools/siwx':
+        specifier: workspace:*
+        version: link:../siwx
       '@ipld/dag-cbor':
         specifier: ^9.0.0
         version: 9.0.0
-      apg-js:
-        specifier: ^4.1.3
-        version: 4.1.3
       caip:
         specifier: ^1.1.0
         version: 1.1.0
