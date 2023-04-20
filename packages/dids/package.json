@@ -47,7 +47,7 @@
     "@didtools/pkh-ethereum": "workspace:^0.3.0",
     "@stablelib/random": "^1.0.1",
     "dag-jose-utils": "^3.0.0",
-    "did-jwt": "^6.11.1",
+    "did-jwt": "^7.0.0",
     "did-resolver": "^4.0.1",
     "multiformats": "^11.0.1",
     "rpc-utils": "^0.6.1",

@@ -2,9 +2,7 @@ import * as u8a from 'uint8arrays'
 import { verifyJWS } from 'did-jwt'
 import { randomBytes } from '@stablelib/random'
 import type { GeneralJWS } from 'dids'
-import elliptic from 'elliptic'
-const EC = elliptic.ec
-const ec = new EC('secp256k1')
+import { secp256k1 } from '@noble/curves/secp256k1'
 
 import { encodeDIDFromPriv, encodeDIDFromPub, Secp256k1Provider } from '../src/index.js'
 
@@ -67,13 +65,13 @@ describe('@didtools/key-secp256k1', () => {
       method: 'did_createJWS',
       params: { payload, protected: prot, did },
     })
-    const pub = ec.keyFromPrivate(secretKey).getPublic(true, 'array')
+    const pub = secp256k1.getPublicKey(secretKey)
 
     const pubkey = {
       id: '',
       type: '',
       controller: '',
-      publicKeyBase64: u8a.toString(Uint8Array.from(pub), 'base64pad'),
+      publicKeyBase64: u8a.toString(pub, 'base64pad'),
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const gjws = res?.result?.jws as GeneralJWS

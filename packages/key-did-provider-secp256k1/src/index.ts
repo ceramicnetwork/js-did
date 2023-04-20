@@ -46,9 +46,7 @@ import stringify from 'fast-json-stable-stringify'
 import { RPCError, createHandler } from 'rpc-utils'
 import type { HandlerMethods, RPCRequest, RPCResponse, SendRequestFunc } from 'rpc-utils'
 import * as u8a from 'uint8arrays'
-import elliptic from 'elliptic'
-const EC = elliptic.ec
-const ec = new EC('secp256k1')
+import { secp256k1 } from '@noble/curves/secp256k1'
 
 function toStableObject(obj: Record<string, any>): Record<string, any> {
   return JSON.parse(stringify(obj)) as Record<string, any>
@@ -65,7 +63,7 @@ export function encodeDIDFromPub(publicKey: Uint8Array): string {
 }
 
 export function encodeDIDFromPriv(secretKey: Uint8Array): string {
-  const pubBytes = ec.keyFromPrivate(secretKey).getPublic(true, 'array')
+  const pubBytes = secp256k1.getPublicKey(secretKey)
   return encodeDIDFromPub(Uint8Array.from(pubBytes))
 }
 

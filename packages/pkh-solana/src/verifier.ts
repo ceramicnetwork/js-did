@@ -7,7 +7,7 @@ import {
   Verifiers,
 } from '@didtools/cacao'
 import { AccountId } from 'caip'
-import { verify } from '@stablelib/ed25519'
+import { ed25519 } from '@noble/curves/ed25519'
 import { fromString as u8aFromString } from 'uint8arrays/from-string'
 
 /**
@@ -33,8 +33,7 @@ export function verifySolanaSignature(cacao: Cacao, options: VerifyOptions) {
   const sigU8 = u8aFromString(sig, 'base58btc')
   const issAddress = AccountId.parse(cacao.p.iss.replace('did:pkh:', '')).address
   const pubKeyU8 = u8aFromString(issAddress, 'base58btc')
-
-  if (!verify(pubKeyU8, messageU8, sigU8)) {
+  if (!ed25519.verify(sigU8, messageU8, pubKeyU8)) {
     throw new Error(`Signature does not belong to issuer`)
   }
 }
