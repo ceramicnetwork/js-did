@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@types/elliptic": "^6.4.14",
-    "did-jwt": "^6.11.1",
+    "did-jwt": "^7.0.0",
     "dids": "workspace:^4.0.0",
     "elliptic": "^6.5.4",
     "fast-json-stable-stringify": "^2.1.0",
