@@ -1,6 +1,6 @@
 {
   "name": "did-session",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Manage user DIDs in a web environment",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
@@ -42,8 +42,8 @@
   "dependencies": {
     "@ceramicnetwork/stream-tile": "^2.16.0",
     "@stablelib/random": "^1.0.1",
-    "dids": "workspace:^4.0.0",
-    "key-did-provider-ed25519": "workspace:^3.0.0",
+    "dids": "workspace:^4.0.1",
+    "key-did-provider-ed25519": "workspace:^3.0.1",
     "key-did-resolver": "workspace:^3.0.0",
     "uint8arrays": "^4.0.3"
   },
@@ -54,7 +54,7 @@
     "@ceramicnetwork/streamid": "^2.12.0",
     "@didtools/cacao": "workspace:^2.0.0",
     "@didtools/pkh-ethereum": "workspace:^0.3.0",
-    "@didtools/pkh-solana": "workspace:^0.1.0",
+    "@didtools/pkh-solana": "workspace:^0.1.1",
     "@ethersproject/wallet": "^5.6.2",
     "@jest/globals": "^29.4.3",
     "@stablelib/ed25519": "^1.0.3",
