@@ -373,9 +373,9 @@ importers:
       '@didtools/cacao':
         specifier: workspace:^2.0.0
         version: link:../cacao
-      '@stablelib/ed25519':
-        specifier: ^1.0.3
-        version: 1.0.3
+      '@noble/curves':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@stablelib/random':
         specifier: ^1.0.2
         version: 1.0.2
