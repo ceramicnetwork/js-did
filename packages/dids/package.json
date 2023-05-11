@@ -49,9 +49,9 @@
     "@stablelib/random": "^1.0.1",
     "codeco": "^1.1.0",
     "dag-jose-utils": "^3.0.0",
-    "did-jwt": "^7.0.0",
-    "did-resolver": "^4.0.1",
-    "multiformats": "^11.0.1",
+    "did-jwt": "^7.1.0",
+    "did-resolver": "^4.1.0",
+    "multiformats": "^11.0.2",
     "rpc-utils": "^0.6.1",
     "uint8arrays": "^4.0.3"
   },

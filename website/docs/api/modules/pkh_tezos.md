@@ -203,6 +203,22 @@ ___
 
 ___
 
+### getPkhfromPk
+
+▸ **getPkhfromPk**(`publicKey`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `publicKey` | `string` |
+
+#### Returns
+
+`string`
+
+___
+
 ### getPublicKey
 
 ▸ **getPublicKey**(`tzProvider`): `Promise`<`string`\>
@@ -242,6 +258,24 @@ ___
 #### Returns
 
 `Promise`<`string`\>
+
+___
+
+### verifySignature
+
+▸ **verifySignature**(`payload`, `publicKey`, `signature`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `payload` | `string` |
+| `publicKey` | `string` |
+| `signature` | `string` |
+
+#### Returns
+
+`boolean`
 
 ___
 
