@@ -43,10 +43,10 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@taquito/signer": "^15.1.0",
-    "@taquito/taquito": "^15.1.0",
-    "@taquito/utils": "^15.1.0",
-    "typescript": "^4.9.5"
+    "@taquito/signer": "^16.1.2",
+    "@taquito/taquito": "^16.1.2",
+    "@taquito/utils": "^16.1.2",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@didtools/cacao": "workspace:^2.0.0",
