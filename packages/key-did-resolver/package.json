@@ -46,14 +46,14 @@
   },
   "dependencies": {
     "@stablelib/ed25519": "^1.0.2",
-    "bigint-mod-arith": "^3.1.0",
-    "multiformats": "^11.0.1",
+    "bigint-mod-arith": "^3.2.1",
+    "multiformats": "^11.0.2",
     "nist-weierstrauss": "^1.6.1",
     "uint8arrays": "^4.0.3",
     "varint": "^6.0.0"
   },
   "devDependencies": {
     "@types/varint": "^6.0.1",
-    "did-resolver": "^4.0.1"
+    "did-resolver": "^4.1.0"
   }
 }

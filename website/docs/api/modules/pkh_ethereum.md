@@ -184,6 +184,22 @@ Get a configured CACAO EIP191Verifier map for Ethereum EOA accounts
 
 ___
 
+### normalizeAccountId
+
+▸ **normalizeAccountId**(`input`): `AccountId`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | `AccountId` |
+
+#### Returns
+
+`AccountId`
+
+___
+
 ### safeSend
 
 ▸ **safeSend**(`provider`, `method`, `params?`): `Promise`<`any`\>

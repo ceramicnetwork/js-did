@@ -26,7 +26,7 @@ custom_edit_url: null
 
 ### \_handle
 
-• **\_handle**: `SendRequestFunc`<`DIDProviderMethods`, []\>
+• **\_handle**: `SendRequestFunc`<`DIDProviderMethods`\>
 
 ## Accessors
 
