@@ -1,6 +1,8 @@
-import type { CID } from 'multiformats/cid'
 import type { JWE } from 'did-jwt'
 import type { RPCClient, RPCConnection, RPCRequest, RPCResponse } from 'rpc-utils'
+import type { GeneralJWS } from '@didtools/codecs'
+
+export type { DagJWS, GeneralJWS, JWSSignature } from '@didtools/codecs'
 
 export type CreateJWSParams = {
   payload: string | Record<string, any>
@@ -18,22 +20,6 @@ export type AuthParams = {
   paths: Array<string>
   nonce: string
   aud?: string
-}
-
-export type JWSSignature = {
-  protected: string
-  signature: string
-}
-
-export type DagJWS = {
-  payload: string
-  signatures: Array<JWSSignature>
-  link?: CID
-}
-
-export type GeneralJWS = {
-  payload: string
-  signatures: Array<JWSSignature>
 }
 
 export type DIDProviderMethods = {

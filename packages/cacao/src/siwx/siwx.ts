@@ -1,6 +1,6 @@
 /* eslint-disable  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 // @ts-nocheck
-import type { Cacao } from '../cacao.js'
+import type { Cacao } from '@didtools/codecs'
 import { ParsedMessage as ABNFParsedMessage } from '../abnf.js'
 import { AccountId, ChainId } from 'caip'
 
