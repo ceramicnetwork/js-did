@@ -310,6 +310,8 @@ export namespace Cacao {
   }
 }
 
+export type Cacao = Cacao
+
 export namespace CacaoBlock {
   export function fromCacao(cacao: Cacao): Promise<CacaoBlock> {
     return Block.encode<Cacao, number, number>({
