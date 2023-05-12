@@ -36,13 +36,13 @@ ___
 
 ### capability
 
-• `get` **capability**(): `Cacao`
+• `get` **capability**(): `MapIn`<`RequiredProps`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` ; `eip4361`: ``null``  }\>  }\>\> ; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> ; `domain`: `TrivialCodec`<`string`\> ; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> ; `iss`: `TrivialCodec`<`string`\> ; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> ; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & { `item`: `TrivialCodec`<`string`\>  }\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\>  }\> ; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> ; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` ; `eip191`: ``null`` ; `solana:ed25519`: ``null`` ; `stacks:secp256k1`: ``null`` ; `tezos:ed25519`: ``null``  }\>  }\>\>\>  }\>, `$TypeOf`\> & `MapIn`<`OptionalProps`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` ; `eip4361`: ``null``  }\>  }\>\> ; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> ; `domain`: `TrivialCodec`<`string`\> ; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> ; `iss`: `TrivialCodec`<`string`\> ; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> ; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & { `item`: `TrivialCodec`<`string`\>  }\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\>  }\> ; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> ; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` ; `eip191`: ``null`` ; `solana:ed25519`: ``null`` ; `stacks:secp256k1`: ``null`` ; `tezos:ed25519`: ``null``  }\>  }\>\>\>  }\>, `$TypeOf`\>
 
 Get attached capability
 
 #### Returns
 
-`Cacao`
+`MapIn`<`RequiredProps`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` ; `eip4361`: ``null``  }\>  }\>\> ; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> ; `domain`: `TrivialCodec`<`string`\> ; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> ; `iss`: `TrivialCodec`<`string`\> ; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> ; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & { `item`: `TrivialCodec`<`string`\>  }\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\>  }\> ; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> ; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` ; `eip191`: ``null`` ; `solana:ed25519`: ``null`` ; `stacks:secp256k1`: ``null`` ; `tezos:ed25519`: ``null``  }\>  }\>\>\>  }\>, `$TypeOf`\> & `MapIn`<`OptionalProps`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` ; `eip4361`: ``null``  }\>  }\>\> ; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> ; `domain`: `TrivialCodec`<`string`\> ; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> ; `iss`: `TrivialCodec`<`string`\> ; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> ; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & { `item`: `TrivialCodec`<`string`\>  }\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\>  }\> ; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> ; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` ; `eip191`: ``null`` ; `solana:ed25519`: ``null`` ; `stacks:secp256k1`: ``null`` ; `tezos:ed25519`: ``null``  }\>  }\>\>\>  }\>, `$TypeOf`\>
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 ### createJWS
 
-▸ **createJWS**<`T`\>(`payload`, `options?`): `Promise`<[`DagJWS`](../modules/dids.md#dagjws)\>
+▸ **createJWS**<`T`\>(`payload`, `options?`): `Promise`<`MapIn`<`RequiredProps`<{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> ; `signatures`: `Codec`<{ `protected`: `string` ; `signature`: `string`  }[], { `protected`: `string` ; `signature`: `string`  }[], `unknown`\> & { `item`: `ExactCodec`<`TypeCodec`<{ `protected`: `TrivialCodec`<`string`\> ; `signature`: `TrivialCodec`<`string`\>  }\>\>  }  }\>, `$TypeOf`\> & `MapIn`<`OptionalProps`<{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> ; `signatures`: `Codec`<{ `protected`: `string` ; `signature`: `string`  }[], { `protected`: `string` ; `signature`: `string`  }[], `unknown`\> & { `item`: `ExactCodec`<`TypeCodec`<{ `protected`: `TrivialCodec`<`string`\> ; `signature`: `TrivialCodec`<`string`\>  }\>\>  }  }\>, `$TypeOf`\>\>
 
 Create a JWS encoded signature over the given payload.
 Will be signed by the currently authenticated DID.
@@ -194,7 +194,7 @@ Will be signed by the currently authenticated DID.
 
 #### Returns
 
-`Promise`<[`DagJWS`](../modules/dids.md#dagjws)\>
+`Promise`<`MapIn`<`RequiredProps`<{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> ; `signatures`: `Codec`<{ `protected`: `string` ; `signature`: `string`  }[], { `protected`: `string` ; `signature`: `string`  }[], `unknown`\> & { `item`: `ExactCodec`<`TypeCodec`<{ `protected`: `TrivialCodec`<`string`\> ; `signature`: `TrivialCodec`<`string`\>  }\>\>  }  }\>, `$TypeOf`\> & `MapIn`<`OptionalProps`<{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> ; `signatures`: `Codec`<{ `protected`: `string` ; `signature`: `string`  }[], { `protected`: `string` ; `signature`: `string`  }[], `unknown`\> & { `item`: `ExactCodec`<`TypeCodec`<{ `protected`: `TrivialCodec`<`string`\> ; `signature`: `TrivialCodec`<`string`\>  }\>\>  }  }\>, `$TypeOf`\>\>
 
 ___
 
@@ -304,7 +304,7 @@ the author public key.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `jws` | `string` \| [`DagJWS`](../modules/dids.md#dagjws) | The JWS to verify |
+| `jws` | `string` \| `MapIn`<`RequiredProps`<{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> ; `signatures`: `Codec`<{ `protected`: `string` ; `signature`: `string`  }[], { `protected`: `string` ; `signature`: `string`  }[], `unknown`\> & { `item`: `ExactCodec`<`TypeCodec`<{ `protected`: `TrivialCodec`<`string`\> ; `signature`: `TrivialCodec`<`string`\>  }\>\>  }  }\>, `$TypeOf`\> & `MapIn`<`OptionalProps`<{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> ; `signatures`: `Codec`<{ `protected`: `string` ; `signature`: `string`  }[], { `protected`: `string` ; `signature`: `string`  }[], `unknown`\> & { `item`: `ExactCodec`<`TypeCodec`<{ `protected`: `TrivialCodec`<`string`\> ; `signature`: `TrivialCodec`<`string`\>  }\>\>  }  }\>, `$TypeOf`\> | The JWS to verify |
 | `options` | [`VerifyJWSOptions`](../modules/dids.md#verifyjwsoptions) | Optional arguments for verification |
 
 #### Returns
@@ -325,7 +325,7 @@ Attach a capability to the DID instance
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cap` | `Cacao` | The capability to attach |
+| `cap` | `MapIn`<`RequiredProps`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` ; `eip4361`: ``null``  }\>  }\>\> ; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> ; `domain`: `TrivialCodec`<`string`\> ; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> ; `iss`: `TrivialCodec`<`string`\> ; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> ; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & { `item`: `TrivialCodec`<`string`\>  }\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\>  }\> ; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> ; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` ; `eip191`: ``null`` ; `solana:ed25519`: ``null`` ; `stacks:secp256k1`: ``null`` ; `tezos:ed25519`: ``null``  }\>  }\>\>\>  }\>, `$TypeOf`\> & `MapIn`<`OptionalProps`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` ; `eip4361`: ``null``  }\>  }\>\> ; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> ; `domain`: `TrivialCodec`<`string`\> ; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> ; `iss`: `TrivialCodec`<`string`\> ; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> ; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & { `item`: `TrivialCodec`<`string`\>  }\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\>  }\> ; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> ; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` ; `eip191`: ``null`` ; `solana:ed25519`: ``null`` ; `stacks:secp256k1`: ``null`` ; `tezos:ed25519`: ``null``  }\>  }\>\>\>  }\>, `$TypeOf`\> | The capability to attach |
 
 #### Returns
 

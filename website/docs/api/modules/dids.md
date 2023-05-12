@@ -293,13 +293,13 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `did_authenticate` | { `params`: [`AuthParams`](dids.md#authparams) ; `result`: [`GeneralJWS`](dids.md#generaljws)  } |
+| `did_authenticate` | { `params`: [`AuthParams`](dids.md#authparams) ; `result`: [`GeneralJWS`](dids.md#generaljws-1)  } |
 | `did_authenticate.params` | [`AuthParams`](dids.md#authparams) |
-| `did_authenticate.result` | [`GeneralJWS`](dids.md#generaljws) |
-| `did_createJWS` | { `params`: [`CreateJWSParams`](dids.md#createjwsparams) ; `result`: { `jws`: [`GeneralJWS`](dids.md#generaljws)  }  } |
+| `did_authenticate.result` | [`GeneralJWS`](dids.md#generaljws-1) |
+| `did_createJWS` | { `params`: [`CreateJWSParams`](dids.md#createjwsparams) ; `result`: { `jws`: [`GeneralJWS`](dids.md#generaljws-1)  }  } |
 | `did_createJWS.params` | [`CreateJWSParams`](dids.md#createjwsparams) |
-| `did_createJWS.result` | { `jws`: [`GeneralJWS`](dids.md#generaljws)  } |
-| `did_createJWS.result.jws` | [`GeneralJWS`](dids.md#generaljws) |
+| `did_createJWS.result` | { `jws`: [`GeneralJWS`](dids.md#generaljws-1)  } |
+| `did_createJWS.result.jws` | [`GeneralJWS`](dids.md#generaljws-1) |
 | `did_decryptJWE` | { `params`: [`DecryptJWEParams`](dids.md#decryptjweparams) ; `result`: { `cleartext`: `string`  }  } |
 | `did_decryptJWE.params` | [`DecryptJWEParams`](dids.md#decryptjweparams) |
 | `did_decryptJWE.result` | { `cleartext`: `string`  } |
@@ -339,15 +339,7 @@ ___
 
 ### DagJWS
 
-Ƭ **DagJWS**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `link?` | `CID` |
-| `payload` | `string` |
-| `signatures` | [`JWSSignature`](dids.md#jwssignature)[] |
+Ƭ **DagJWS**: `TypeOf`<typeof [`DagJWS`](dids.md#dagjws-1)\>
 
 ___
 
@@ -360,7 +352,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `cacaoBlock?` | `Uint8Array` |
-| `jws` | [`DagJWS`](dids.md#dagjws) |
+| `jws` | [`DagJWS`](dids.md#dagjws-1) |
 | `linkedBlock` | `Uint8Array` |
 
 ___
@@ -404,27 +396,13 @@ ___
 
 ### GeneralJWS
 
-Ƭ **GeneralJWS**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `payload` | `string` |
-| `signatures` | [`JWSSignature`](dids.md#jwssignature)[] |
+Ƭ **GeneralJWS**: `TypeOf`<typeof [`GeneralJWS`](dids.md#generaljws-1)\>
 
 ___
 
 ### JWSSignature
 
-Ƭ **JWSSignature**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `protected` | `string` |
-| `signature` | `string` |
+Ƭ **JWSSignature**: `TypeOf`<typeof [`JWSSignature`](dids.md#jwssignature-1)\>
 
 ___
 
@@ -456,3 +434,21 @@ ___
 | `didResolutionResult` | `DIDResolutionResult` |
 | `kid` | `string` |
 | `payload?` | `Record`<`string`, `any`\> |
+
+## Variables
+
+### DagJWS
+
+• `Const` **DagJWS**: `SparseCodec`
+
+___
+
+### GeneralJWS
+
+• `Const` **GeneralJWS**: `ExactCodec`
+
+___
+
+### JWSSignature
+
+• `Const` **JWSSignature**: `ExactCodec`

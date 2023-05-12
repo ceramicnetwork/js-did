@@ -9,6 +9,7 @@ custom_edit_url: null
 
 - [@didtools/key-secp256k1](modules/didtools_key_secp256k1.md)
 - [@didtools/multidid](modules/didtools_multidid.md)
+- [codecs](modules/codecs.md)
 - [did-session](modules/did_session.md)
 - [dids](modules/dids.md)
 - [key-did-provider-ed25519](modules/key_did_provider_ed25519.md)

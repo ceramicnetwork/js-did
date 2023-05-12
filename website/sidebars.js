@@ -53,7 +53,8 @@ const sidebars = {
     { type: 'doc', id: 'api/modules/pkh_stacks', label: 'DID:PKH Stacks' },
     { type: 'doc', id: 'api/modules/key_did_provider_ed25519', label: 'DID:KEY ED25519' },
     { type: 'doc', id: 'api/modules/key_did_resolver', label: 'DID:KEY Resolver' },
-    { type: 'doc', id: 'api/modules/pkh_did_resolver', label: 'DID:PKH Resolver' }
+    { type: 'doc', id: 'api/modules/pkh_did_resolver', label: 'DID:PKH Resolver' },
+    { type: 'doc', id: 'api/modules/codecs', label: 'Codecs' }
   ],
 };
 
