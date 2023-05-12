@@ -3,13 +3,7 @@ import * as dagCbor from '@ipld/dag-cbor'
 import * as multiformats from 'multiformats'
 import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2'
-import type {
-  Cacao,
-  CacaoHeader,
-  CacaoPayload,
-  CacaoSignature,
-  SignedCacao,
-} from '@didtools/codecs'
+import type { Cacao, SignedCacao } from '@didtools/codecs'
 import { SiweMessage } from './siwx/siwe.js'
 import { SiwsMessage } from './siwx/siws.js'
 import { SiwTezosMessage } from './siwx/siwTezos.js'

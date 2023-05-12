@@ -16,7 +16,7 @@ export const cid = new Type<CID, CID, unknown>(
   (input: unknown, context: Context) => {
     try {
       const cid = CID.asCID(input)
-      if (!cid) return context.failure(`Value ${cid} can not be accepted as CID`)
+      if (!cid) return context.failure(`Value ${String(input)} can not be accepted as CID`)
       return context.success(cid)
     } catch {
       return context.failure()
