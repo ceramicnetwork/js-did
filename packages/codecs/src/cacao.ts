@@ -1,7 +1,7 @@
-import { type TypeOf, array, keyof, optional, sparse, strict, string } from 'codeco'
+import { array, keyof, optional, sparse, strict, string } from 'codeco'
 
 export const CacaoHeader = strict({ t: keyof({ eip4361: null, caip122: null }) }, 'CacaoHeader')
-export type CacaoHeader = TypeOf<typeof CacaoHeader>
+export type CacaoHeader = { t: 'eip4361' | 'caip122' }
 
 export const CacaoPayload = sparse(
   {
@@ -19,7 +19,19 @@ export const CacaoPayload = sparse(
   },
   'CacaoPayload'
 )
-export type CacaoPayload = TypeOf<typeof CacaoPayload>
+export type CacaoPayload = {
+  domain: string
+  iss: string
+  aud: string
+  version: string
+  nonce: string
+  iat: string
+  nbf?: string
+  exp?: string
+  statement?: string
+  requestId?: string
+  resources?: Array<string>
+}
 
 export const CacaoSignature = strict(
   {
@@ -34,16 +46,27 @@ export const CacaoSignature = strict(
   },
   'CacaoSignature'
 )
-export type CacaoSignature = TypeOf<typeof CacaoSignature>
+export type CacaoSignature = {
+  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1'
+  s: string
+}
 
 export const Cacao = sparse(
   { h: CacaoHeader, p: CacaoPayload, s: optional(CacaoSignature) },
   'Cacao'
 )
-export type Cacao = TypeOf<typeof Cacao>
+export type Cacao = {
+  h: CacaoHeader
+  p: CacaoPayload
+  s?: CacaoSignature
+}
 
 export const SignedCacao = strict(
   { h: CacaoHeader, p: CacaoPayload, s: CacaoSignature },
   'SignedCacao'
 )
-export type SignedCacao = TypeOf<typeof SignedCacao>
+export type SignedCacao = {
+  h: CacaoHeader
+  p: CacaoPayload
+  s: CacaoSignature
+}

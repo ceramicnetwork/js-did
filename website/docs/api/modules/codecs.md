@@ -43,25 +43,62 @@ const decoded = decode(uint8ArrayAsBase64, encoded)
 
 ### Cacao
 
-Ƭ **Cacao**: `TypeOf`<typeof [`Cacao`](codecs.md#cacao-1)\>
+Ƭ **Cacao**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `h` | [`CacaoHeader`](codecs.md#cacaoheader-1) |
+| `p` | [`CacaoPayload`](codecs.md#cacaopayload-1) |
+| `s?` | [`CacaoSignature`](codecs.md#cacaosignature-1) |
 
 ___
 
 ### CacaoHeader
 
-Ƭ **CacaoHeader**: `TypeOf`<typeof [`CacaoHeader`](codecs.md#cacaoheader-1)\>
+Ƭ **CacaoHeader**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `t` | ``"eip4361"`` \| ``"caip122"`` |
 
 ___
 
 ### CacaoPayload
 
-Ƭ **CacaoPayload**: `TypeOf`<typeof [`CacaoPayload`](codecs.md#cacaopayload-1)\>
+Ƭ **CacaoPayload**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `aud` | `string` |
+| `domain` | `string` |
+| `exp?` | `string` |
+| `iat` | `string` |
+| `iss` | `string` |
+| `nbf?` | `string` |
+| `nonce` | `string` |
+| `requestId?` | `string` |
+| `resources?` | `string`[] |
+| `statement?` | `string` |
+| `version` | `string` |
 
 ___
 
 ### CacaoSignature
 
-Ƭ **CacaoSignature**: `TypeOf`<typeof [`CacaoSignature`](codecs.md#cacaosignature-1)\>
+Ƭ **CacaoSignature**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `s` | `string` |
+| `t` | ``"eip191"`` \| ``"eip1271"`` \| ``"solana:ed25519"`` \| ``"tezos:ed25519"`` \| ``"stacks:secp256k1"`` |
 
 ___
 
@@ -73,25 +110,55 @@ ___
 
 ### DagJWS
 
-Ƭ **DagJWS**: `TypeOf`<typeof [`DagJWS`](codecs.md#dagjws-1)\>
+Ƭ **DagJWS**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `link?` | `CID` |
+| `payload` | `string` |
+| `signatures` | [`JWSSignature`](codecs.md#jwssignature-1)[] |
 
 ___
 
 ### GeneralJWS
 
-Ƭ **GeneralJWS**: `TypeOf`<typeof [`GeneralJWS`](codecs.md#generaljws-1)\>
+Ƭ **GeneralJWS**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `payload` | `string` |
+| `signatures` | [`JWSSignature`](codecs.md#jwssignature-1)[] |
 
 ___
 
 ### JWSSignature
 
-Ƭ **JWSSignature**: `TypeOf`<typeof [`JWSSignature`](codecs.md#jwssignature-1)\>
+Ƭ **JWSSignature**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `protected` | `string` |
+| `signature` | `string` |
 
 ___
 
 ### SignedCacao
 
-Ƭ **SignedCacao**: `TypeOf`<typeof [`SignedCacao`](codecs.md#signedcacao-1)\>
+Ƭ **SignedCacao**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `h` | [`CacaoHeader`](codecs.md#cacaoheader-1) |
+| `p` | [`CacaoPayload`](codecs.md#cacaopayload-1) |
+| `s` | [`CacaoSignature`](codecs.md#cacaosignature-1) |
 
 ## Variables
 

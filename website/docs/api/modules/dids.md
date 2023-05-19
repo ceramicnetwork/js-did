@@ -339,7 +339,15 @@ ___
 
 ### DagJWS
 
-Ƭ **DagJWS**: `TypeOf`<typeof [`DagJWS`](dids.md#dagjws-1)\>
+Ƭ **DagJWS**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `link?` | `CID` |
+| `payload` | `string` |
+| `signatures` | [`JWSSignature`](dids.md#jwssignature-1)[] |
 
 ___
 
@@ -396,13 +404,27 @@ ___
 
 ### GeneralJWS
 
-Ƭ **GeneralJWS**: `TypeOf`<typeof [`GeneralJWS`](dids.md#generaljws-1)\>
+Ƭ **GeneralJWS**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `payload` | `string` |
+| `signatures` | [`JWSSignature`](dids.md#jwssignature-1)[] |
 
 ___
 
 ### JWSSignature
 
-Ƭ **JWSSignature**: `TypeOf`<typeof [`JWSSignature`](dids.md#jwssignature-1)\>
+Ƭ **JWSSignature**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `protected` | `string` |
+| `signature` | `string` |
 
 ___
 
