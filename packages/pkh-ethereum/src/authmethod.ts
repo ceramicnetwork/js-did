@@ -95,4 +95,3 @@ export async function getAccountId(ethProvider: any, address: string): Promise<A
   const chainId = `${CHAIN_NAMESPACE}:${ethChainId}`
   return new AccountId({ address: address.toLowerCase(), chainId })
 }
-
