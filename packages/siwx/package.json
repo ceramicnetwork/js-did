@@ -1,13 +1,17 @@
 {
-  "name": "key-did-provider-ed25519",
-  "version": "3.0.1",
-  "author": "Joel Thorstensson",
+  "name": "@didtools/siwx",
+  "version": "0.0.1",
+  "description": "Typescript library for Sign-In With X",
+  "author": "Sergey Ukustov <sergey@ukstv.me>",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "files": [
     "dist"
@@ -22,12 +26,11 @@
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
     "lint": "eslint src --fix",
-    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
-    "test:ci": "pnpm run test --ci --coverage",
+    "test": "./node_modules/.bin/tsm ./node_modules/uvu/bin.js . .+\\.test\\.ts",
+    "test:watch": "./node_modules/.bin/watchlist --eager src -- pnpm run test",
+    "test:ci": "pnpm run test",
     "prepare": "pnpm run build",
-    "prepublishOnly": "package-check",
-    "size": "./node_modules/.bin/size-limit",
-    "analyze": "./node_modules/.bin/size-limit --why"
+    "prepublishOnly": "package-check"
   },
   "repository": {
     "type": "git",
@@ -36,22 +39,24 @@
   "keywords": [
     "DID",
     "identity",
-    "did-provider",
-    "self-sovereign"
+    "OCAP",
+    "capabilities",
+    "SIWX",
+    "signin",
+    "authentication"
   ],
   "bugs": {
     "url": "https://github.com/ceramicnetwork/js-did/issues"
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
-  "devDependencies": {
-    "@stablelib/random": "^1.0.2"
-  },
   "dependencies": {
-    "@stablelib/ed25519": "^1.0.2",
-    "did-jwt": "^7.2.0",
-    "dids": "workspace:^4.0.1",
-    "fast-json-stable-stringify": "^2.1.0",
-    "rpc-utils": "^0.6.2",
-    "uint8arrays": "^4.0.3"
+    "codeco": "^1.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.3",
+    "ts-essentials": "^9.3.2",
+    "tsm": "^2.3.0",
+    "uvu": "^0.5.6",
+    "watchlist": "^0.3.1"
   }
 }

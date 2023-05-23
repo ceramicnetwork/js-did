@@ -1,8 +1,8 @@
 /* eslint-disable  @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 // @ts-nocheck
-import type { Cacao } from '@didtools/codecs'
-import { ParsedMessage as ABNFParsedMessage } from '../abnf.js'
+import type { Cacao } from '../cacao.js'
 import { AccountId, ChainId } from 'caip'
+import { fromString } from '@didtools/siwx'
 
 /**
  * Possible message error types.
@@ -66,7 +66,7 @@ export class SiwxMessage {
 
   constructor(param: string | Partial<SiwxMessage>) {
     if (typeof param === 'string') {
-      const parsedMessage = new ABNFParsedMessage(param)
+      const parsedMessage = fromString(param)
       this.domain = parsedMessage.domain
       this.address = parsedMessage.address
       this.statement = parsedMessage.statement

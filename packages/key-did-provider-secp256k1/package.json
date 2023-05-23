@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@noble/curves": "^1.0.0",
-    "did-jwt": "^7.1.0",
+    "did-jwt": "^7.2.0",
     "dids": "workspace:^4.0.1",
     "fast-json-stable-stringify": "^2.1.0",
     "rpc-utils": "^0.6.2",
