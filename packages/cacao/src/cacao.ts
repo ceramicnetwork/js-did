@@ -3,6 +3,7 @@ import * as dagCbor from '@ipld/dag-cbor'
 import * as multiformats from 'multiformats'
 import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2'
+import type { Cacao, SignedCacao } from '@didtools/codecs'
 import { SiweMessage } from './siwx/siwe.js'
 import { SiwsMessage } from './siwx/siws.js'
 import { SiwTezosMessage } from './siwx/siwTezos.js'
@@ -14,30 +15,17 @@ const CLOCK_SKEW_DEFAULT_SEC = 5 * 60
 // CACAOs issued after that day must be of new format
 export const LEGACY_CHAIN_ID_REORG_DATE = new Date('2022-09-20').valueOf()
 
+export type {
+  CacaoHeader as Header,
+  CacaoPayload as Payload,
+  CacaoSignature as Signature,
+  SignedCacao,
+} from '@didtools/codecs'
+
 export type CacaoBlock = {
   value: Cacao
   cid: multiformats.CID
   bytes: Uint8Array
-}
-
-export type Header = {
-  t: 'eip4361' | 'caip122'
-}
-
-export type Signature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1'
-  s: string
-}
-export type Cacao = {
-  h: Header
-  p: Payload
-  s?: Signature
-}
-
-export type SignedCacao = {
-  h: Header
-  p: Payload
-  s: Signature
 }
 
 export type Verifiers = Record<string, CacaoVerifier>
@@ -315,6 +303,8 @@ export namespace Cacao {
     return verify(cacao, opts)
   }
 }
+
+export type Cacao = Cacao
 
 export namespace CacaoBlock {
   export function fromCacao(cacao: Cacao): Promise<CacaoBlock> {

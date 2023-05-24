@@ -1,26 +1,24 @@
 import { toString } from 'uint8arrays/to-string'
-import { fromString } from 'uint8arrays/from-string'
+import { decode } from 'codeco'
+import { type DagJWS, uint8ArrayAsBase64pad, uint8ArrayAsBase64url } from '@didtools/codecs'
 
-import type { DagJWS } from './types.js'
 export * from './random-string.util.js'
 
-const B64 = 'base64pad'
-const B64_URL = 'base64url'
-
 export function encodeBase64(bytes: Uint8Array): string {
-  return toString(bytes, B64)
+  return uint8ArrayAsBase64pad.encode(bytes)
 }
 
 export function encodeBase64Url(bytes: Uint8Array): string {
-  return toString(bytes, B64_URL)
+  return uint8ArrayAsBase64url.encode(bytes)
 }
 
 export function decodeBase64(s: string): Uint8Array {
-  return fromString(s, B64)
+  return decode(uint8ArrayAsBase64pad, s)
 }
 
 export function base64urlToJSON(s: string): Record<string, any> {
-  return JSON.parse(toString(fromString(s, B64_URL))) as Record<string, any>
+  const decoded = decode(uint8ArrayAsBase64url, s)
+  return JSON.parse(toString(decoded)) as Record<string, any>
 }
 
 export function fromDagJWS(jws: DagJWS): string {

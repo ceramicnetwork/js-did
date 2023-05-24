@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.build.json",
   "include": [
+    "./packages/codecs/src",
     "./packages/did-session/src", 
     "./packages/dids/src",
     "./packages/pkh-ethereum/src",
@@ -23,6 +24,7 @@
     "readme": "none",
     "entryDocument": "index.md",
     "entryPoints": [
+      "./packages/codecs/src/index.ts", 
       "./packages/did-session/src/index.ts", 
       "./packages/dids/src/index.ts",
       "./packages/pkh-ethereum/src/index.ts",

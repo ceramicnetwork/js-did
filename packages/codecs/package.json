@@ -1,7 +1,7 @@
 {
-  "name": "key-did-provider-ed25519",
-  "version": "3.0.1",
-  "author": "Joel Thorstensson",
+  "name": "@didtools/codecs",
+  "version": "1.0.1",
+  "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
   "main": "dist/index.js",
@@ -37,21 +37,19 @@
     "DID",
     "identity",
     "did-provider",
-    "self-sovereign"
+    "self-sovereign",
+    "codecs"
   ],
   "bugs": {
     "url": "https://github.com/ceramicnetwork/js-did/issues"
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
-  "devDependencies": {
-    "@stablelib/random": "^1.0.2"
-  },
   "dependencies": {
-    "@stablelib/ed25519": "^1.0.2",
-    "did-jwt": "^7.2.0",
-    "dids": "workspace:^4.0.1",
-    "fast-json-stable-stringify": "^2.1.0",
-    "rpc-utils": "^0.6.2",
+    "codeco": "^1.1.0",
+    "multiformats": "^11.0.1",
     "uint8arrays": "^4.0.3"
+  },
+  "devDependencies": {
+    "ts-essentials": "^9.3.2"
   }
 }

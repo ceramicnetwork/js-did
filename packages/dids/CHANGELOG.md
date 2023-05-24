@@ -1,5 +1,15 @@
 ## v2.4.0 (2021-07-12)
 
+## 4.0.2
+
+### Patch Changes
+
+- Add new codecs package
+- Updated dependencies
+  - @didtools/pkh-ethereum@0.3.1
+  - @didtools/codecs@1.0.1
+  - @didtools/cacao@2.0.1
+
 feat: Pass explicit issuer to verifyJWS function
 
 ## v2.3.0 (2021-07-08)
@@ -13,7 +23,7 @@ feat: Use implicit notion of _now_, instead of explicit `new Date`
 
 ## v2.2.0 (2021-06-23)
 
-feat: Handle key revocation when checking a signature 
+feat: Handle key revocation when checking a signature
 
 ## v2.1.0 (2021-04-20)
 

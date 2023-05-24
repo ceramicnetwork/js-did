@@ -174,7 +174,7 @@ ___
 
 ### createJWS
 
-▸ **createJWS**<`T`\>(`payload`, `options?`): `Promise`<[`DagJWS`](../modules/dids.md#dagjws)\>
+▸ **createJWS**<`T`\>(`payload`, `options?`): `Promise`<[`DagJWS`](../modules/dids.md#dagjws-1)\>
 
 Create a JWS encoded signature over the given payload.
 Will be signed by the currently authenticated DID.
@@ -194,7 +194,7 @@ Will be signed by the currently authenticated DID.
 
 #### Returns
 
-`Promise`<[`DagJWS`](../modules/dids.md#dagjws)\>
+`Promise`<[`DagJWS`](../modules/dids.md#dagjws-1)\>
 
 ___
 
@@ -304,7 +304,7 @@ the author public key.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `jws` | `string` \| [`DagJWS`](../modules/dids.md#dagjws) | The JWS to verify |
+| `jws` | `string` \| [`DagJWS`](../modules/dids.md#dagjws-1) | The JWS to verify |
 | `options` | [`VerifyJWSOptions`](../modules/dids.md#verifyjwsoptions) | Optional arguments for verification |
 
 #### Returns
