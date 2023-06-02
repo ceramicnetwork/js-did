@@ -65,7 +65,6 @@ describe('@didtools/key-webcrypto', () => {
       params: { payload, protected: prot, did },
     })
     const pub = await getPublicKey(keypair)
-    console.log(pub)
 
     const pubkey = {
       id: '',
