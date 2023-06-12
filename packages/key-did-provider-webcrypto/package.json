@@ -44,7 +44,6 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@peculiar/webcrypto": "^1.4.3",
     "@types/varint": "^6.0.1",
     "did-jwt": "^7.2.0",
     "dids": "workspace:^4.0.1",

@@ -70,7 +70,7 @@ export function ecPointCompress(x: Uint8Array, y: Uint8Array): Uint8Array {
 
 // export the raw public key from the CryptoKeyPair using the webcrypto api
 export async function getPublicKey({ publicKey }: CryptoKeyPair): Promise<Uint8Array> {
-  const rawKey = await window.crypto.subtle.exportKey('raw', publicKey)
+  const rawKey = await globalThis.crypto.subtle.exportKey('raw', publicKey)
   // convert raw key with x,y to a compressed key
   const compressedKey = ecPointCompress(
     new Uint8Array(rawKey.slice(1, 33)),
@@ -87,7 +87,7 @@ export function encodeDIDFromPub(publicKey: Uint8Array): string {
 
 // A method that generates a new key using webcrypto, p-256, extractable false.
 export async function generateP256KeyPair(): Promise<CryptoKeyPair> {
-  const { privateKey, publicKey } = await window.crypto.subtle.generateKey(
+  const { privateKey, publicKey } = await globalThis.crypto.subtle.generateKey(
     {
       name: 'ECDSA',
       namedCurve: 'P-256',
@@ -127,7 +127,7 @@ const sign = async (
   const actualPayload =
     typeof payload === 'string' ? payload : jsonToBase64Url(toStableObject(payload))
   const data = `${encodedHeader}.${actualPayload}`
-  const signature = await window.crypto.subtle.sign(
+  const signature = await globalThis.crypto.subtle.sign(
     {
       name: 'ECDSA',
       hash: 'SHA-256',

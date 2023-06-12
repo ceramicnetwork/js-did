@@ -2,8 +2,8 @@ import { TextEncoder, TextDecoder } from 'util';
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
-import { Crypto } from '@peculiar/webcrypto'
+import { webcrypto } from 'crypto'
 
 Object.defineProperty(globalThis, 'crypto', {
-    value: new Crypto()
-  });
+  value: webcrypto
+});
