@@ -69,6 +69,17 @@ didsession.authorizations
 didsession.expiresInSecs
 ```
 
+You can also get an AccountId from a user's DID instead of the address and provider.
+
+```js
+import { DIDSession, getAccountIdByDID } from 'did-session'
+import { EthereumWebAuth } from '@didtools/pkh-ethereum'
+
+const ethProvider = // import/get your web3 eth provider
+const userDID = // have a user's DID
+const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, getAccountIdByDID(userDID))
+```
+
 ## Configuration
 
 The resources your app needs to write access to must be passed during authorization. Resources are an array

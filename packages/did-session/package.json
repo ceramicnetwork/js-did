@@ -42,6 +42,7 @@
   "dependencies": {
     "@ceramicnetwork/stream-tile": "^2.21.0",
     "@stablelib/random": "^1.0.1",
+    "caip": "^1.1.0",
     "dids": "workspace:^4.0.1",
     "key-did-provider-ed25519": "workspace:^3.0.1",
     "key-did-resolver": "workspace:^3.0.0",
