@@ -213,6 +213,7 @@ import { Ed25519Provider } from 'key-did-provider-ed25519'
 import KeyDidResolver from 'key-did-resolver'
 import { randomBytes } from '@stablelib/random'
 import { DID } from 'dids'
+import { AccountId } from 'caip'
 import type { Cacao, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 import * as u8a from 'uint8arrays'
 
@@ -252,6 +253,10 @@ export async function createDIDCacao(didKey: DID, cacao: Cacao): Promise<DID> {
   const didWithCap = didKey.withCapability(cacao)
   await didWithCap.authenticate()
   return didWithCap
+}
+
+export function getAccountIdByDID(did: string): AccountId {
+  return new AccountId(did.slice(8))
 }
 
 function JSONToBase64url(object: Record<string, any>): string {

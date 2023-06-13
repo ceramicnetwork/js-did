@@ -16,13 +16,15 @@ npm install did-session
 
 ## Usage
 
-Authorize and use DIDs where needed. Import the AuthMethod you need, Ethereum accounts are used here for example.
+Authorize and use DIDs where needed. Import the AuthMethod for the blockchain or method you need and begin using it with did-session.
+
+Ethereum accounts with `EthereumWebAuth` and an Ethereum provider (implementing the standard [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193)) are used here for example.
 
 ```js
 import { DIDSession } from 'did-session'
 import { EthereumWebAuth, getAccountId } from '@didtools/pkh-ethereum'
 
-const ethProvider = // import/get your web3 eth provider
+const ethProvider = // import/get your web3 eth provider (Implements EIP-1193)
 const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
@@ -67,6 +69,17 @@ didsession.authorizations
 
 // Check number of seconds till expiration, may want to re auth user at a time before expiration
 didsession.expiresInSecs
+```
+
+You can also get an AccountId from a user's DID instead of the address and provider.
+
+```js
+import { DIDSession, getAccountIdByDID } from 'did-session'
+import { EthereumWebAuth } from '@didtools/pkh-ethereum'
+
+const ethProvider = // import/get your web3 eth provider (Implements EIP-1193)
+const userDID = // have a user's DID
+const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, getAccountIdByDID(userDID))
 ```
 
 ## Configuration
