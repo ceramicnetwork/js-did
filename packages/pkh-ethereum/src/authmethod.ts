@@ -44,10 +44,11 @@ export namespace EthereumNodeAuth {
     account: AccountId,
     appName: string
   ): Promise<AuthMethod> {
-    const domain = appName
+    if (!appName)
+      throw new Error('Node Auth method requires an application name gethAuthMethod(ethProvider, account, appName)')
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
-      opts.domain = domain
+      opts.domain = appName
       return createCACAO(opts, ethProvider, account)
     }
   }
