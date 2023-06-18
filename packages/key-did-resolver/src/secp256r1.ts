@@ -34,7 +34,7 @@ export function keyToDidDoc(pubKeyBytes: Uint8Array, fingerprint: string): any {
 }
 
 /**
- * If raw p256 key, convert it to uncompressed one by adding 0x04 prefix
+ * If raw p256 key (i.e., contains 64 bytes), convert it to uncompressed one by adding 0x04 prefix
  */
 function normalizePubKeyBytes(pubKeyBytes: Uint8Array): Uint8Array {
   if (pubKeyBytes.length === 64) {
