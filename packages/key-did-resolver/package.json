@@ -45,7 +45,7 @@
     "analyze": "./node_modules/.bin/size-limit --why"
   },
   "dependencies": {
-    "@stablelib/ed25519": "^1.0.2",
+    "@noble/curves": "^1.1.0",
     "bigint-mod-arith": "^3.2.1",
     "multiformats": "^11.0.2",
     "nist-weierstrauss": "^1.6.1",
