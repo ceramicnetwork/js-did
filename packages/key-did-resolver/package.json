@@ -46,9 +46,7 @@
   },
   "dependencies": {
     "@noble/curves": "^1.1.0",
-    "bigint-mod-arith": "^3.2.1",
     "multiformats": "^11.0.2",
-    "nist-weierstrauss": "^1.6.1",
     "uint8arrays": "^4.0.3",
     "varint": "^6.0.0"
   },

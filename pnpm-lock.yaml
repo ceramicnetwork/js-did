@@ -332,15 +332,9 @@ importers:
       '@noble/curves':
         specifier: ^1.1.0
         version: 1.1.0
-      bigint-mod-arith:
-        specifier: ^3.2.1
-        version: 3.2.1
       multiformats:
         specifier: ^11.0.2
         version: 11.0.2
-      nist-weierstrauss:
-        specifier: ^1.6.1
-        version: 1.6.1
       uint8arrays:
         specifier: ^4.0.3
         version: 4.0.3
@@ -8093,11 +8087,6 @@ packages:
     resolution: {integrity: sha512-ddkU+dFIuEIW8lE7ZwdIAf2UPoM90eaprg5m3YXAVVTmKlqV/9BX4A2M8BOK2yOq6/VgZFVhK6QAxJebhlbhzw==}
     dev: false
 
-  /bigint-mod-arith@3.2.1:
-    resolution: {integrity: sha512-roLlzeQ0okNjT8Ph9zL9Nvw85ucHSQkNndLRfAR2CVaYOEAMtbpIK3f6oJb3Jv/hg9mkrYaw/DknysTuvc8QhA==}
-    engines: {node: '>=10.4.0'}
-    dev: false
-
   /bignumber.js@9.1.1:
     resolution: {integrity: sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==}
     dev: true
@@ -14591,13 +14580,6 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: false
 
-  /nist-weierstrauss@1.6.1:
-    resolution: {integrity: sha512-FpjCOnPV/s3ZVIkeldCVSml2K4lruabPbBgoEitpCK1JL0KTVoWb56CFTU6rZn5i6VqAjdwcOp0FDwJACPmeFA==}
-    dependencies:
-      multiformats: 9.9.0
-      uint8arrays: 2.1.10
-    dev: false
-
   /no-case@3.0.4:
     resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
     dependencies:
@@ -18067,12 +18049,6 @@ packages:
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       uint8arrays: 4.0.3
-    dev: false
-
-  /uint8arrays@2.1.10:
-    resolution: {integrity: sha512-Q9/hhJa2836nQfEJSZTmr+pg9+cDJS9XEAp7N2Vg5MzL3bK/mkMVfjscRGYruP9jNda6MAdf4QD/y78gSzkp6A==}
-    dependencies:
-      multiformats: 9.9.0
     dev: false
 
   /uint8arrays@4.0.3:
