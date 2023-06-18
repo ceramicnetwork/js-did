@@ -1,6 +1,6 @@
 // Brent Shambaugh <brent.shambaugh@gmail.com>. 2021.
 
-import { secp256r1 } from '@noble/curves/p256'
+import { p256 } from '@noble/curves/p256'
 import { toString, concat } from 'uint8arrays'
 import { numberToVarBytesBE } from '@noble/curves/abstract/utils'
 
@@ -10,7 +10,7 @@ import { numberToVarBytesBE } from '@noble/curves/abstract/utils'
 export function keyToDidDoc(pubKeyBytes: Uint8Array, fingerprint: string): any {
   const did = `did:key:${fingerprint}`
   const keyId = `${did}#${fingerprint}`
-  const point = secp256r1.ProjectivePoint.fromHex(normalizePubKeyBytes(pubKeyBytes))
+  const point = p256.ProjectivePoint.fromHex(normalizePubKeyBytes(pubKeyBytes))
   return {
     id: did,
     verificationMethod: [
