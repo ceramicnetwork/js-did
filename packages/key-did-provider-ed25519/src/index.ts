@@ -39,7 +39,8 @@
  * @module key-did-provider-ed25519
  */
 
-import { generateKeyPairFromSeed, convertSecretKeyToX25519 } from '@stablelib/ed25519'
+import { generateKeyPairFromSeed } from '@stablelib/ed25519'
+import { ed25519, edwardsToMontgomeryPriv } from '@noble/curves/ed25519'
 import { createJWS, decryptJWE, x25519Decrypter, EdDSASigner } from 'did-jwt'
 import type {
   AuthParams,
@@ -118,7 +119,8 @@ const didMethods: HandlerMethods<Context, DIDProviderMethods> = {
     return { jws: toGeneralJWS(jws) }
   },
   did_decryptJWE: async ({ secretKey }, params: DecryptJWEParams) => {
-    const decrypter = x25519Decrypter(convertSecretKeyToX25519(secretKey))
+    const x25519PrivKey = edwardsToMontgomeryPriv(secretKey.subarray(0, 32))
+    const decrypter = x25519Decrypter(x25519PrivKey)
     try {
       const bytes = await decryptJWE(params.jwe, decrypter)
       return { cleartext: u8a.toString(bytes, B64) }
