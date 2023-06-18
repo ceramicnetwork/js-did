@@ -276,9 +276,6 @@ importers:
       '@noble/curves':
         specifier: ^1.1.0
         version: 1.1.0
-      '@stablelib/ed25519':
-        specifier: ^1.0.2
-        version: 1.0.3
       did-jwt:
         specifier: ^7.2.0
         version: 7.2.0
