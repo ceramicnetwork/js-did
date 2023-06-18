@@ -58,6 +58,7 @@
     "@didtools/pkh-solana": "workspace:^0.1.1",
     "@ethersproject/wallet": "^5.6.2",
     "@jest/globals": "^29.5.0",
+    "@noble/curves": "^1.1.0",
     "@stablelib/ed25519": "^1.0.3",
     "@types/create-hash": "^1.2.2",
     "@types/secp256k1": "^4.0.3",
