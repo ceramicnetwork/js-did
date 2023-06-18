@@ -39,7 +39,6 @@
  * @module key-did-provider-ed25519
  */
 
-import { generateKeyPairFromSeed } from '@stablelib/ed25519'
 import { ed25519, edwardsToMontgomeryPriv } from '@noble/curves/ed25519'
 import { createJWS, decryptJWE, x25519Decrypter, EdDSASigner } from 'did-jwt'
 import type {
@@ -54,7 +53,7 @@ import type {
 import stringify from 'fast-json-stable-stringify'
 import { RPCError, createHandler } from 'rpc-utils'
 import type { HandlerMethods, RPCRequest, RPCResponse, SendRequestFunc } from 'rpc-utils'
-import * as u8a from 'uint8arrays'
+import { toString, concat } from 'uint8arrays'
 
 const B64 = 'base64pad'
 
@@ -69,7 +68,7 @@ export function encodeDID(publicKey: Uint8Array): string {
   // See js-multicodec for a general implementation
   bytes[1] = 0x01
   bytes.set(publicKey, 2)
-  return `did:key:z${u8a.toString(bytes, 'base58btc')}`
+  return `did:key:z${toString(bytes, 'base58btc')}`
 }
 
 function toGeneralJWS(jws: string): GeneralJWS {
@@ -123,7 +122,7 @@ const didMethods: HandlerMethods<Context, DIDProviderMethods> = {
     const decrypter = x25519Decrypter(x25519PrivKey)
     try {
       const bytes = await decryptJWE(params.jwe, decrypter)
-      return { cleartext: u8a.toString(bytes, B64) }
+      return { cleartext: toString(bytes, B64) }
     } catch (e) {
       throw new RPCError(-32000, (e as Error).message)
     }
@@ -134,7 +133,8 @@ export class Ed25519Provider implements DIDProvider {
   _handle: SendRequestFunc<DIDProviderMethods>
 
   constructor(seed: Uint8Array) {
-    const { secretKey, publicKey } = generateKeyPairFromSeed(seed)
+    const publicKey = ed25519.getPublicKey(seed)
+    const secretKey = concat([seed, ed25519.getPublicKey(seed)])
     const did = encodeDID(publicKey)
     const handler = createHandler<Context, DIDProviderMethods>(didMethods)
     this._handle = async (msg) => await handler({ did, secretKey }, msg)
