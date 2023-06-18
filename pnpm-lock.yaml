@@ -167,15 +167,9 @@ importers:
       '@noble/curves':
         specifier: ^1.1.0
         version: 1.1.0
-      '@stablelib/ed25519':
-        specifier: ^1.0.3
-        version: 1.0.3
       '@types/create-hash':
         specifier: ^1.2.2
         version: 1.2.2
-      '@types/secp256k1':
-        specifier: ^4.0.3
-        version: 4.0.3
       ajv-formats:
         specifier: ^2.1.1
         version: 2.1.1(ajv@8.12.0)
@@ -7024,12 +7018,6 @@ packages:
 
   /@types/scheduler@0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
-
-  /@types/secp256k1@4.0.3:
-    resolution: {integrity: sha512-Da66lEIFeIz9ltsdMZcpQvmrmmoqrfju8pm1BH8WbYjZSwUgCwXLb9C+9XYogwBITnbsSaMdVPb2ekf7TV+03w==}
-    dependencies:
-      '@types/node': 20.2.3
-    dev: true
 
   /@types/semver@6.2.3:
     resolution: {integrity: sha512-KQf+QAMWKMrtBMsB8/24w53tEsxllMj6TuA80TT/5igJalLI/zm0L3oXRbIAl4Ohfc85gyHX/jhMwsVkmhLU4A==}
