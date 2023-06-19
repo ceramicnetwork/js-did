@@ -1,5 +1,5 @@
 import { toString } from 'uint8arrays/to-string'
-import { convertPublicKeyToX25519 } from '@stablelib/ed25519'
+import { edwardsToMontgomeryPub } from '@noble/curves/ed25519'
 
 function encodeKey(key: Uint8Array): string {
   const bytes = new Uint8Array(key.length + 2)
@@ -17,7 +17,7 @@ function encodeKey(key: Uint8Array): string {
 export function keyToDidDoc(pubKeyBytes: Uint8Array, fingerprint: string): any {
   const did = `did:key:${fingerprint}`
   const keyId = `${did}#${fingerprint}`
-  const x25519PubBytes = convertPublicKeyToX25519(pubKeyBytes)
+  const x25519PubBytes = edwardsToMontgomeryPub(pubKeyBytes)
   const x25519KeyId = `${did}#${encodeKey(x25519PubBytes)}`
   return {
     id: did,

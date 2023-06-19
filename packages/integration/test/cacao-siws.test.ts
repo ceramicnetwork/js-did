@@ -1,4 +1,4 @@
-import { extractPublicKeyFromSecretKey, sign } from '@stablelib/ed25519'
+import { ed25519 } from '@noble/curves/ed25519'
 import { fromString } from 'uint8arrays/from-string'
 import { toString } from 'uint8arrays/to-string'
 import { Cacao, CacaoBlock, SiwsMessage } from '@didtools/cacao'
@@ -8,18 +8,19 @@ import { DateTime } from 'luxon'
 const ISSUED_AT = DateTime.fromISO('2021-10-14T07:18:41Z').toUTC()
 const EXPIRATION_TIME = ISSUED_AT.plus({ seconds: 5 })
 
-const verifiers = { ...getSolanaVerifier()}
+const verifiers = { ...getSolanaVerifier() }
 
 describe('Cacao SIWS', () => {
   const solanaSecretKey = fromString(
-    '92e08e39aee87d53fe263913bf9df6615c1c909860a1d3ad57bd0e6e2e507161ecbf1e2d9da80d3ae09de54ce71cbff723e291e7a4b133ce10993be5edfaca50',
+    '92e08e39aee87d53fe263913bf9df6615c1c909860a1d3ad57bd0e6e2e507161',
     'hex'
   )
+  const solanaPublicKey = ed25519.getPublicKey(solanaSecretKey)
 
   test('Can create and verify Cacao Block for Solana', async () => {
     const msg = new SiwsMessage({
       domain: 'service.org',
-      address: toString(extractPublicKeyFromSecretKey(solanaSecretKey), 'base58btc'),
+      address: toString(solanaPublicKey, 'base58btc'),
       statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
       uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
       version: '1',
@@ -33,7 +34,7 @@ describe('Cacao SIWS', () => {
     })
 
     const signData = msg.signMessage()
-    const rawSignature = sign(solanaSecretKey, signData)
+    const rawSignature = ed25519.sign(signData, solanaSecretKey)
     const signature = toString(rawSignature, 'base58btc')
     msg.signature = signature
 
@@ -46,7 +47,7 @@ describe('Cacao SIWS', () => {
   test('Converts between Cacao and SiwsMessage', () => {
     const msg = new SiwsMessage({
       domain: 'service.org',
-      address: toString(extractPublicKeyFromSecretKey(solanaSecretKey), 'base58btc'),
+      address: toString(solanaPublicKey, 'base58btc'),
       statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
       uri: 'https://service.org/login',
       version: '1',
@@ -68,7 +69,7 @@ describe('Cacao SIWS', () => {
     const fixedDate = new Date('2021-10-14T07:18:41Z')
     const msg = new SiwsMessage({
       domain: 'service.org',
-      address: toString(extractPublicKeyFromSecretKey(solanaSecretKey), 'base58btc'),
+      address: toString(solanaPublicKey, 'base58btc'),
       statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
       uri: 'https://service.org/login',
       version: '1',
@@ -83,7 +84,7 @@ describe('Cacao SIWS', () => {
     })
 
     const signData = msg.signMessage()
-    const rawSignature = sign(solanaSecretKey, signData)
+    const rawSignature = ed25519.sign(signData, solanaSecretKey)
     const signature = toString(rawSignature, 'base58btc')
     msg.signature = signature
 
@@ -97,7 +98,7 @@ describe('Cacao SIWS', () => {
   test('fail after expiration if after phase out period', async () => {
     const msg = new SiwsMessage({
       domain: 'service.org',
-      address: toString(extractPublicKeyFromSecretKey(solanaSecretKey), 'base58btc'),
+      address: toString(solanaPublicKey, 'base58btc'),
       statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
       uri: 'https://service.org/login',
       version: '1',
@@ -110,9 +111,9 @@ describe('Cacao SIWS', () => {
         'https://example.com/my-web2-claim.json',
       ],
     })
-  
+
     const signData = msg.signMessage()
-    const rawSignature = sign(solanaSecretKey, signData)
+    const rawSignature = ed25519.sign(signData, solanaSecretKey)
     const signature = toString(rawSignature, 'base58btc')
     msg.signature = signature
 
@@ -123,7 +124,7 @@ describe('Cacao SIWS', () => {
         atTime: expiredTime.toJSDate(),
         revocationPhaseOutSecs: 1,
         clockSkewSecs: 0,
-        verifiers
+        verifiers,
       })
     ).rejects.toThrow(`CACAO has expired`)
   })

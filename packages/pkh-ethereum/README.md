@@ -10,7 +10,7 @@ npm install --save @didtools/pkh-ethereum
 
 ## Auth Usage
 
-To Auth in web based env, use any injected web3 provider that implements the standard interface with `EthereumWebAuth`.
+To Auth in a web based env, use any injected Ethereum provider that implements the standard interface with `EthereumWebAuth`. A standard Ethereum provider should impelement the interface as defined by [EIP-1193](https://eips.ethereum.org/EIPS/eip-1193).
 
 ```js
 // Web Auth Usage

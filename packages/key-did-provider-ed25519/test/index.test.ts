@@ -1,29 +1,34 @@
-import * as u8a from 'uint8arrays'
+import { toString, fromString, concat } from 'uint8arrays'
 import { verifyJWS, createJWE, x25519Encrypter } from 'did-jwt'
 import { randomBytes } from '@stablelib/random'
-import { KeyPair, generateKeyPairFromSeed, convertPublicKeyToX25519 } from '@stablelib/ed25519'
+import { ed25519, edwardsToMontgomeryPub } from '@noble/curves/ed25519'
 import type { GeneralJWS } from 'dids'
 
 import { encodeDID, Ed25519Provider } from '../src/index.js'
 
 const b64urlToObj = (s: string): Record<string, any> =>
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  JSON.parse(u8a.toString(u8a.fromString(s, 'base64url')))
+  JSON.parse(toString(fromString(s, 'base64url')))
 
 describe('key-did-provider-ed25519', () => {
   let provider: Ed25519Provider
   let did: string
-  let kp: KeyPair
+  let kp: { publicKey: Uint8Array; secretKey: Uint8Array }
 
   beforeAll(() => {
     const seed = randomBytes(32)
-    kp = generateKeyPairFromSeed(seed)
+    const publicKey = ed25519.getPublicKey(seed)
+    const secretKey = concat([seed, publicKey])
+    kp = {
+      publicKey: publicKey,
+      secretKey: secretKey,
+    }
     provider = new Ed25519Provider(seed)
     did = encodeDID(kp.publicKey)
   })
 
   it('encodeDID', () => {
-    const pubkey = u8a.fromString(
+    const pubkey = fromString(
       'd713cb7f8624d8648496e01010f2bd72f0dcbbdecdb7036f38c20475f5f429bf',
       'base16'
     )
@@ -69,7 +74,7 @@ describe('key-did-provider-ed25519', () => {
       id: '',
       type: '',
       controller: '',
-      publicKeyBase64: u8a.toString(kp.publicKey, 'base64pad'),
+      publicKeyBase64: toString(kp.publicKey, 'base64pad'),
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const gjws = res?.result?.jws as GeneralJWS
@@ -79,7 +84,7 @@ describe('key-did-provider-ed25519', () => {
   })
 
   it('decrypts JWE properly', async () => {
-    const encrypter = x25519Encrypter(convertPublicKeyToX25519(kp.publicKey))
+    const encrypter = x25519Encrypter(edwardsToMontgomeryPub(kp.publicKey))
     const cleartext = randomBytes(123)
     const jwe = await createJWE(cleartext, [encrypter])
     const res = await provider.send({
@@ -89,7 +94,7 @@ describe('key-did-provider-ed25519', () => {
       params: { jwe },
     })
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    expect(res?.result?.cleartext as string).toEqual(u8a.toString(cleartext, 'base64pad'))
+    expect(res?.result?.cleartext as string).toEqual(toString(cleartext, 'base64pad'))
   })
 
   it('thows if fails to decrypt JWE', async () => {
