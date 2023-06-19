@@ -9,11 +9,14 @@
       "dids": ["packages/dids/src"],
       "did-session": ["packages/did-session/src"],
       "@didtools/cacao": ["packages/cacao/src"],
+      "@didtools/codecs": ["packages/codecs/src"],
       "key-did-provider-ed25519": ["packages/key-did-provider-ed25519/src"],
       "key-did-provider-secp256k1": ["packages/key-did-provider-secp256k1/src"],
+      "@didtools/key-webcrypto": ["packages/key-did-provider-webcrypto/src"],
       "@didtools/multidid": ["packages/multidid/src"],
       "@didtools/pkh-ethereum": ["packages/pkh-ethereum/src"],
       "@didtools/pkh-solana": ["packages/pkh-solana/src"],
+      "@didtools/siwx": ["packages/siwx/src"],
       "pkh-did-resolver": ["packages/pkh-did-resolver/src"],
       "key-did-resolver": ["packages/key-did-resolver/src"]
     }
