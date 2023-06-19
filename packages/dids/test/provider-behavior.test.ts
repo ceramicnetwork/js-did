@@ -2,7 +2,7 @@
 
 import { jest } from '@jest/globals'
 import { randomBytes } from '@stablelib/random'
-import { generateKeyPairFromSeed } from '@stablelib/x25519'
+import { x25519 } from '@noble/curves/ed25519'
 import { Cacao, CacaoBlock, SiweMessage } from '@didtools/cacao'
 import { decodeCleartext, encodePayload, prepareCleartext } from 'dag-jose-utils'
 import { decryptJWE, JWE, x25519Decrypter } from 'did-jwt'
@@ -634,7 +634,7 @@ describe('`verifyJWS method`', () => {
 const createRegistry = (didMap: Record<string, Uint8Array>): ResolverRegistry => ({
   // eslint-disable-next-line @typescript-eslint/require-await
   test: async (did: string) => {
-    const pk = generateKeyPairFromSeed(didMap[did]).publicKey
+    const pk = x25519.getPublicKey(didMap[did])
     return {
       didResolutionMetadata: {},
       didDocumentMetadata: {},

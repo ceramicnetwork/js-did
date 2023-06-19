@@ -45,7 +45,9 @@ export namespace EthereumNodeAuth {
     appName: string
   ): Promise<AuthMethod> {
     if (!appName)
-      throw new Error('Node Auth method requires an application name gethAuthMethod(ethProvider, account, appName)')
+      throw new Error(
+        'Node Auth method requires an application name gethAuthMethod(ethProvider, account, appName)'
+      )
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
       opts.domain = appName

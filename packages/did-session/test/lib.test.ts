@@ -15,7 +15,7 @@ import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
 import { EthereumNodeAuth } from '@didtools/pkh-ethereum'
 import { SolanaNodeAuth, getAccountIdByNetwork } from '@didtools/pkh-solana'
 import { AccountId } from 'caip'
-import { sign, extractPublicKeyFromSecretKey } from '@stablelib/ed25519'
+import { ed25519 } from '@noble/curves/ed25519'
 import { Ed25519Provider } from 'key-did-provider-ed25519'
 import { DID } from 'dids'
 import { getResolver } from 'key-did-resolver'
@@ -342,12 +342,11 @@ const solanaSecretKey = fromString(
 
 function createSolanaAuthMethod(key?: Uint8Array): Promise<AuthMethod> {
   const walletKey = key ?? solanaSecretKey
-
-  const address = toString(extractPublicKeyFromSecretKey(walletKey), 'base58btc')
+  const address = toString(ed25519.getPublicKey(walletKey.subarray(0, 32)), 'base58btc')
 
   const solProvider = {
     signMessage: (data: Uint8Array): Promise<{ signature: Uint8Array }> => {
-      return Promise.resolve({ signature: sign(walletKey, data) })
+      return Promise.resolve({ signature: ed25519.sign(data, walletKey.subarray(0, 32)) })
     },
   }
 
