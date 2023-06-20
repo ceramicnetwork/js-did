@@ -125,7 +125,7 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       dids:
-        specifier: workspace:^4.0.1
+        specifier: workspace:^4.0.3
         version: link:../dids
       key-did-provider-ed25519:
         specifier: workspace:^3.0.1
@@ -150,10 +150,10 @@ importers:
         specifier: ^2.14.0
         version: 2.14.0
       '@didtools/cacao':
-        specifier: workspace:^2.0.0
+        specifier: workspace:^2.1.0
         version: link:../cacao
       '@didtools/pkh-ethereum':
-        specifier: workspace:^0.3.0
+        specifier: workspace:^0.4.0
         version: link:../pkh-ethereum
       '@didtools/pkh-solana':
         specifier: workspace:^0.1.1
@@ -180,13 +180,13 @@ importers:
   packages/dids:
     dependencies:
       '@didtools/cacao':
-        specifier: workspace:^2.0.1
+        specifier: workspace:^2.1.0
         version: link:../cacao
       '@didtools/codecs':
         specifier: workspace:^1.0.1
         version: link:../codecs
       '@didtools/pkh-ethereum':
-        specifier: workspace:^0.3.1
+        specifier: workspace:^0.4.0
         version: link:../pkh-ethereum
       '@stablelib/random':
         specifier: ^1.0.1
@@ -223,10 +223,10 @@ importers:
   packages/integration:
     devDependencies:
       '@didtools/cacao':
-        specifier: workspace:^2.0.1
+        specifier: workspace:^2.1.0
         version: link:../cacao
       '@didtools/pkh-ethereum':
-        specifier: workspace:^0.3.1
+        specifier: workspace:^0.4.0
         version: link:../pkh-ethereum
       '@didtools/pkh-solana':
         specifier: workspace:^0.1.0
@@ -397,7 +397,7 @@ importers:
   packages/pkh-ethereum:
     dependencies:
       '@didtools/cacao':
-        specifier: workspace:^2.0.1
+        specifier: workspace:^2.1.0
         version: link:../cacao
       '@ethersproject/wallet':
         specifier: ^5.7.0
