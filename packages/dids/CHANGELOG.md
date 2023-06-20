@@ -1,5 +1,13 @@
 ## v2.4.0 (2021-07-12)
 
+## 4.0.3
+
+### Patch Changes
+
+- Updated dependencies [c64ce06]
+  - @didtools/pkh-ethereum@0.4.0
+  - @didtools/cacao@2.1.0
+
 ## 4.0.2
 
 ### Patch Changes

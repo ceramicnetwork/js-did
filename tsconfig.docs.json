@@ -10,8 +10,10 @@
     "./packages/pkh-stacks/src",
     "./packages/key-did-provider-ed25519/src",
     "./packages/key-did-provider-secp256k1/src",
+    "./packages/key-did-provider-webcrypto/src",
     "./packages/key-did-resolver/src",
     "./packages/pkh-did-resolver/src",
+    "./packages/siwx/src",
     "./packages/multidid/src"
   ],
   "compilerOptions": {
@@ -33,8 +35,10 @@
       "./packages/pkh-stacks/src/index.ts",
       "./packages/key-did-provider-ed25519/src/index.ts",
       "./packages/key-did-provider-secp256k1/src/index.ts",
+      "./packages/key-did-provider-webcrypto/src/index.ts",
       "./packages/key-did-resolver/src/index.ts",
       "./packages/pkh-did-resolver/src/index.ts",
+      "./packages/siwx/src/index.ts",
       "./packages/multidid/src/index.ts"
     ],
     "disableSources": true,
