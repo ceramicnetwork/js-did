@@ -2,7 +2,7 @@ import React from 'react'
 import { useStore } from '@nanostores/react'
 import { $account } from './account'
 import { RainbowProvider, WithEthereumCacao } from './ethereum'
-import { WithTezos } from './tezos'
+// import { WithTezos } from './tezos'
 
 function SignIn() {
   return (
@@ -15,15 +15,15 @@ function SignIn() {
         <li>
           <WithEthereumCacao />
         </li>
-        <li>
-          <WithTezos />
-        </li>
-        <li>
-          <button className={'solana'}>Solana</button>
-        </li>
-        <li>
-          <button className={'stacks'}>Stacks</button>
-        </li>
+        {/*<li>*/}
+        {/*  <WithTezos />*/}
+        {/*</li>*/}
+        {/*<li>*/}
+        {/*  <button className={'solana'}>Solana</button>*/}
+        {/*</li>*/}
+        {/*<li>*/}
+        {/*  <button className={'stacks'}>Stacks</button>*/}
+        {/*</li>*/}
       </ul>
     </>
   )
