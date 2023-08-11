@@ -186,7 +186,7 @@ importers:
         specifier: workspace:^1.0.1
         version: link:../codecs
       '@didtools/pkh-ethereum':
-        specifier: workspace:^0.4.0
+        specifier: workspace:^0.4.1
         version: link:../pkh-ethereum
       '@stablelib/random':
         specifier: ^1.0.1
