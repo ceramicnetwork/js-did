@@ -1,6 +1,6 @@
 {
   "name": "key-did-provider-ed25519",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "author": "Joel Thorstensson",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
