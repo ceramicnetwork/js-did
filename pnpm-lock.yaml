@@ -226,7 +226,7 @@ importers:
         specifier: workspace:^2.1.0
         version: link:../cacao
       '@didtools/pkh-ethereum':
-        specifier: workspace:^0.4.0
+        specifier: workspace:^0.4.1
         version: link:../pkh-ethereum
       '@didtools/pkh-solana':
         specifier: workspace:^0.1.0
@@ -280,7 +280,7 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       dids:
-        specifier: workspace:^4.0.1
+        specifier: workspace:^4.0.4
         version: link:../dids
       fast-json-stable-stringify:
         specifier: ^2.1.0

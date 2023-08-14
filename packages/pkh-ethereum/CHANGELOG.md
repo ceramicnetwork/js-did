@@ -1,5 +1,11 @@
 # @didtools/pkh-ethereum
 
+## 0.4.1
+
+### Patch Changes
+
+- 71280f1: Do not use ethers on pkh-ethereum
+
 ## 0.4.0
 
 ### Minor Changes
