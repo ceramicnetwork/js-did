@@ -70,14 +70,22 @@ class EthereumProvider extends EventEmitter {
   }
 }
 
-function createEthereumAuthMethod(mnemonic?: string): Promise<AuthMethod> {
+interface AuthAndAccount {
+  authMethod: AuthMethod
+  account: AccountId
+}
+
+async function createEthereumAuthMethod(mnemonic?: string): Promise<AuthAndAccount> {
   const wallet = mnemonic ? EthereumWallet.fromMnemonic(mnemonic) : EthereumWallet.createRandom()
   const provider = new EthereumProvider(wallet)
   const accountId = new AccountId({
     address: wallet.address.toLowerCase(),
     chainId: { namespace: 'eip155', reference: '1' },
   })
-  return Promise.resolve(EthereumNodeAuth.getAuthMethod(provider, accountId, 'testapp'))
+  return {
+    account: accountId,
+    authMethod: await EthereumNodeAuth.getAuthMethod(provider, accountId, 'testapp'),
+  }
 }
 
 const bytes32 = [
@@ -96,6 +104,7 @@ declare global {
 
 describe('did-session', () => {
   let authMethod: AuthMethod
+  let account: AccountId
   jest.setTimeout(20000)
   let model: Model
 
@@ -106,7 +115,9 @@ describe('did-session', () => {
       provider: new Ed25519Provider(seed),
     })
     ceramic.did = did
-    authMethod = await createEthereumAuthMethod()
+    const authResult = await createEthereumAuthMethod()
+    authMethod = authResult.authMethod
+    account = authResult.account
     model = await Model.create(ceramic, MODEL_DEFINITION)
   })
 
@@ -151,6 +162,38 @@ describe('did-session', () => {
     const sessionStr = session.serialize()
     const session2 = await DIDSession.fromSession(sessionStr)
     ceramic.did = session2.did
+    const doc = await TileDocument.create(
+      ceramic,
+      { foo: 'bar' },
+      {},
+      {
+        anchor: false,
+        publish: false,
+      }
+    )
+    expect(doc.content).toEqual({ foo: 'bar' })
+
+    await doc.update({ foo: 'boo' })
+    expect(doc.content).toEqual({ foo: 'boo' })
+  })
+
+  test('get and create/update streams from persisted session', async () => {
+    const authMock = jest.fn(authMethod)
+    await DIDSession.get(account, authMock, {
+      resources: [`ceramic://*`],
+    })
+
+    // auth was used
+    expect(authMock).toHaveBeenCalledTimes(1)
+
+    const session = await DIDSession.get(account, authMethod, {
+      resources: [`ceramic://*`],
+    })
+
+    // indicates that we loaded auth from session storage
+    expect(authMock).toHaveBeenCalledTimes(1)
+
+    ceramic.did = session.did
     const doc = await TileDocument.create(
       ceramic,
       { foo: 'bar' },

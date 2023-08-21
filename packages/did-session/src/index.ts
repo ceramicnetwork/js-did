@@ -210,15 +210,17 @@
  */
 
 import { Ed25519Provider } from 'key-did-provider-ed25519'
+import { WebcryptoProvider, generateP256KeyPair } from '@didtools/key-webcrypto'
 import KeyDidResolver from 'key-did-resolver'
 import { randomBytes } from '@stablelib/random'
 import { DID } from 'dids'
 import { AccountId } from 'caip'
 import type { Cacao, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 import * as u8a from 'uint8arrays'
+import { SessionStore } from './sessionStore'
 
 export type SessionParams = {
-  keySeed: Uint8Array
+  keySeed?: Uint8Array
   cacao: Cacao
   did: DID
 }
@@ -275,6 +277,10 @@ function base64ToBytes(s: string): Uint8Array {
   return u8a.fromString(s, 'base64pad')
 }
 
+function cacaoContainsResources(cacao: Cacao, resources: Array<string>): boolean {
+  return resources.every((res) => cacao.p.resources?.includes(res))
+}
+
 /**
  * DID Session
  *
@@ -284,7 +290,7 @@ function base64ToBytes(s: string): Uint8Array {
  */
 export class DIDSession {
   #did: DID
-  #keySeed: Uint8Array
+  #keySeed: Uint8Array | undefined
   #cacao: Cacao
 
   constructor(params: SessionParams) {
@@ -322,6 +328,45 @@ export class DIDSession {
   }
 
   /**
+   * Get a session for the given accountId, if one exists, otherwise creates a new one.
+   */
+  static async get(
+    account: AccountId,
+    authMethod: AuthMethod,
+    authOpts: AuthOpts = {}
+  ): Promise<DIDSession> {
+    if (typeof window === 'undefined')
+      throw new Error(
+        'DIDSession.get function requires browser environment, try using authorize instead'
+      )
+    if (!authOpts.resources || authOpts.resources.length === 0)
+      throw new Error('Required: resource argument option when authorizing')
+
+    const store = await SessionStore.create()
+    const result = (await store.get(account)) || {}
+    let { cacao, keypair } = result as { cacao: Cacao; keypair: CryptoKeyPair }
+    if (cacao && keypair && cacaoContainsResources(cacao, authOpts.resources)) {
+      const provider = new WebcryptoProvider(keypair)
+      const did = new DID({ provider, resolver: KeyDidResolver.getResolver(), capability: cacao })
+      await did.authenticate()
+      const session = new DIDSession({ cacao, did })
+      if (!session.isExpired) return session
+    }
+    // create a new DID instance using the WebcryptoProvider
+    keypair = await generateP256KeyPair()
+    const provider = new WebcryptoProvider(keypair)
+    const didKey = new DID({ provider, resolver: KeyDidResolver.getResolver() })
+    await didKey.authenticate()
+    const authMethodOpts: AuthMethodOpts = authOpts
+    authMethodOpts.uri = didKey.id
+    cacao = await authMethod(authMethodOpts)
+    const did = await createDIDCacao(didKey, cacao)
+    await store.set(account, { cacao, keypair })
+    store.close()
+    return new DIDSession({ cacao, did })
+  }
+
+  /**
    * Get DID instance, if authorized
    */
   get did(): DID {
@@ -332,6 +377,7 @@ export class DIDSession {
    * Serialize session into string, can store and initalize the same session again while valid
    */
   serialize(): string {
+    if (!this.#keySeed) throw new Error('Secure sessions cannot be serialized')
     const session = {
       sessionKeySeed: bytesToBase64(this.#keySeed),
       cacao: this.#cacao,
