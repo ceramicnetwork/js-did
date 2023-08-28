@@ -277,7 +277,7 @@ function base64ToBytes(s: string): Uint8Array {
   return u8a.fromString(s, 'base64pad')
 }
 
-function cacaoContainsResources(cacao: Cacao, resources: Array<string>): boolean {
+export function cacaoContainsResources(cacao: Cacao, resources: Array<string>): boolean {
   return resources.every((res) => cacao.p.resources?.includes(res))
 }
 
@@ -335,13 +335,8 @@ export class DIDSession {
     authMethod: AuthMethod,
     authOpts: AuthOpts = {}
   ): Promise<DIDSession> {
-    if (typeof window === 'undefined')
-      throw new Error(
-        'DIDSession.get function requires browser environment, try using authorize instead'
-      )
     if (!authOpts.resources || authOpts.resources.length === 0)
       throw new Error('Required: resource argument option when authorizing')
-
     const store = await SessionStore.create()
     const result = (await store.get(account)) || {}
     let { cacao, keypair } = result as { cacao: Cacao; keypair: CryptoKeyPair }

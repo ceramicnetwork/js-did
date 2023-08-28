@@ -14,6 +14,9 @@ export class SessionStore {
   }
 
   static async create(): Promise<SessionStore> {
+    if (typeof globalThis === 'undefined') {
+        throw new Error('SessionStore is only supported in the browser')
+    }
     const request = indexedDB.open('did-session', 1)
     request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
       const db: IDBDatabase = (event.target as IDBOpenDBRequest).result
