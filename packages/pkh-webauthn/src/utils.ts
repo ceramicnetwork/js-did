@@ -1,12 +1,9 @@
 import { decode } from 'cborg'
 import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
-import { ecPointCompress, encodeDIDFromPub } from '@didtools/key-webcrypto'
-
-const { credentials } = globalThis.navigator
+import { ecPointCompress } from '@didtools/key-webcrypto'
 const { crypto, localStorage } = globalThis
 
-const useKnownKeysCache = true // TODO: remove and repair tests
 const RelayingPartyName = 'Ceramic Network'
 
 export interface SimpleCreateCredentialOpts {
@@ -43,23 +40,6 @@ export function populateCreateOpts (opts: SimpleCreateCredentialOpts): Credentia
       }
     }
   }
-}
-
-/**
- * Creates a new public key credential for this host/domain.
- * Useful when no credential key was discovered.
- */
-export async function createCredential (opts: SimpleCreateCredentialOpts = {}) {
-  // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create
-  const credential = await credentials.create(populateCreateOpts(opts)) as any
-  if (!credential) throw new Error('AbortedByUser')
-
-  const authenticatorData = getAuthenticatorData(credential.response)
-  const { publicKey } = decodeAuthenticatorData(authenticatorData)
-
-  if (useKnownKeysCache) storePublicKey(publicKey) // save in browser as known key
-
-  return encodeDIDFromPub(publicKey)
 }
 
 export async function authenticatorSign (challenge: Uint8Array, credentialId?: Uint8Array|string): Promise<{

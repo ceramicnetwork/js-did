@@ -47,8 +47,9 @@ export const CacaoSignature = strict(
   'CacaoSignature'
 )
 export type CacaoSignature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1'
+  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1' | 'webauthn:p256'
   s: string
+  aad?: string
 }
 
 export const Cacao = sparse(

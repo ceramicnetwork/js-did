@@ -21,6 +21,7 @@ import {
 } from '@didtools/cacao'
 import varint from 'varint'
 import * as u8a from 'uint8arrays'
+import { encode, decode } from 'cborg'
 
 class LocalStorageKeySelector implements WebauthnAuth.KeySelector {
   seen (_: string, pk: Uint8Array) { storePublicKey(pk) }
@@ -46,11 +47,6 @@ const blockFromCacao = (cacao: Cacao): Promise<CacaoBlock> => {
 }
 
 export namespace WebauthnAuth {
-  export type AdditionalAuthenticatorData = {
-    authData: string,
-    clientDataJSON: string
-  }
-
   export interface CreateCredentialResult {
     publicKey: Uint8Array,
     credential: PublicKeyCredential,
@@ -76,6 +72,7 @@ export namespace WebauthnAuth {
   // auth-method.ts
   export async function createCredential (session: AuthenticatorSession, opts: SimpleCreateCredentialOpts): Promise<CreateCredentialResult> {
     const credentials = globalThis.navigator.credentials
+    // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create
     const credential = await credentials.create(populateCreateOpts(opts)) as any
     if (!credential) throw new Error('Empty Credential Response')
 
@@ -96,7 +93,7 @@ export namespace WebauthnAuth {
     }
   }
 
-  async function createCacao (opts: AuthMethodOpts, session: AuthenticatorSession) {
+  async function createCacao (opts: AuthMethodOpts, session: AuthenticatorSession): Promise<Cacao> {
     const now = Date.now()
     // The public key is not known at pre-sign time.
     // so we sign a "challenge"-block without Issuer attribute
@@ -108,7 +105,7 @@ export namespace WebauthnAuth {
         domain: globalThis.location.hostname,
         aud: '' + globalThis.location,
         iss: '',
-        version: 1,
+        version: '1',
         nonce: globalThis.crypto.randomUUID(),
         resources: [],
         exp: new Date(now + 7 * 86400000).toISOString(), // 1 week
@@ -125,11 +122,8 @@ export namespace WebauthnAuth {
     // @ts-ignore - credential.response does exist.
     const { response } = credential
     const { clientDataJSON, signature } = response
-    const authenticatorData = getAuthenticatorData(response)
-    const aad: AdditionalAuthenticatorData = {
-      authData: u8a.toString(authenticatorData, 'base64url'),
-      clientDataJSON:  u8a.toString(clientDataJSON, 'base64url')
-    }
+    const authData = getAuthenticatorData(response)
+    const aad = u8a.toString(encode({ authData, clientDataJSON}), 'base64url')
 
     let pk
     for (const selector of session.selectors) {
@@ -164,9 +158,7 @@ export namespace WebauthnAuth {
    */
   async function verifyCacao (cacao: Cacao, _: VerifyOptions): Promise<void> {
     if (!cacao.s?.aad) throw new Error('AdditionalAuthenticatorData missing')
-    const aad = cacao.s.aad as AdditionalAuthenticatorData
-    const authData = u8a.fromString(aad.authData, 'base64url')
-    const clientDataJSON = u8a.fromString(aad.clientDataJSON, 'base64url')
+    const { authData, clientDataJSON } = decode(u8a.fromString(cacao.s.aad, 'base64url'))
 
     if (!cacao.s.s) throw new Error('Signature missing')
     const signature = u8a.fromString(cacao.s.s, 'base64url')

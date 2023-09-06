@@ -2,11 +2,9 @@
 import {
   decodeAuthenticatorData,
   decodeAttestationObject,
-  verify,
   recoverPublicKey,
   storePublicKey,
   selectPublicKey,
-  createCredential
 } from '../src/utils'
 import { MockAuthenticator } from './mock-authenticator'
 import { hexToBytes } from '@noble/curves/abstract/utils'
@@ -50,8 +48,7 @@ describe('@didtools/key-passkey', () => {
     expect(s.t).toEqual('webauthn:p256')
     // TODO: Should we leave buffers as Uint8Array to save space?
     expect(typeof s.s).toEqual('string')
-    expect(typeof s.aad?.authData).toEqual('string')
-    expect(typeof s.aad?.clientDataJSON).toEqual('string')
+    expect(typeof s.aad).toEqual('string')
     const did = session.did
     const jws = await did.createJWS({ hello: 'world' })
     const verifiers = { ...WebauthnAuth.getVerifier() }

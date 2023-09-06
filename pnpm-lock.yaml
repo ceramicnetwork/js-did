@@ -500,6 +500,52 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4
 
+  packages/pkh-webauthn:
+    dependencies:
+      '@didtools/cacao':
+        specifier: workspace:*
+        version: link:../cacao
+      '@didtools/key-webcrypto':
+        specifier: workspace:*
+        version: link:../key-did-provider-webcrypto
+      '@ipld/dag-cbor':
+        specifier: ^9.0.1
+        version: 9.0.1
+      '@noble/curves':
+        specifier: ^1.1.0
+        version: 1.1.0
+      caip:
+        specifier: ^1.1.0
+        version: 1.1.0
+      cborg:
+        specifier: ^1.10.2
+        version: 1.10.2
+      did-session:
+        specifier: workspace:*
+        version: link:../did-session
+      multiformats:
+        specifier: ^11.0.2
+        version: 11.0.2
+      uint8arrays:
+        specifier: ^4.0.3
+        version: 4.0.3
+      varint:
+        specifier: ^6.0.0
+        version: 6.0.0
+    devDependencies:
+      '@types/varint':
+        specifier: ^6.0.1
+        version: 6.0.1
+      did-jwt:
+        specifier: ^7.2.0
+        version: 7.2.0
+      dids:
+        specifier: workspace:*
+        version: link:../dids
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
   packages/siwx:
     dependencies:
       codeco:
