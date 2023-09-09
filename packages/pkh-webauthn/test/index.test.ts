@@ -2,7 +2,7 @@
 import {
   decodeAuthenticatorData,
   decodeAttestationObject,
-  recoverPublicKey,
+  recoverPublicKeys,
   storePublicKey,
   selectPublicKey,
 } from '../src/utils'
@@ -104,7 +104,7 @@ describe('@didtools/key-passkey: R&D Sanity Checks', () => {
     const authData2 = '49960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97630500000005'
     const sig = '3044022006b2c838abf114f97e3e57d0d2d0124d1e3f8089d707294bde2fa60c8ae0650002204723780cdd0c405147975aed229e84b7e4d47a8bb8aaa07407b1f842ba16fae1'
 
-    const keys = recoverPublicKey(hexToBytes(sig), hexToBytes(authData2), hexToBytes(clientDataJSON))
+    const keys = recoverPublicKeys(hexToBytes(sig), hexToBytes(authData2), hexToBytes(clientDataJSON))
     const recoveredKey = selectPublicKey(keys[0], keys[1])
     if (!recoveredKey) throw new Error('Select Failed')
     expect(toHex(recoveredKey)).toEqual(toHex(publicKey))

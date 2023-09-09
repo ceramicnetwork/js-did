@@ -1,7 +1,6 @@
 import { decode } from 'cborg'
 import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
-import { ecPointCompress } from '@didtools/key-webcrypto'
 const { crypto, localStorage } = globalThis
 
 const RelayingPartyName = 'Ceramic Network'
@@ -128,17 +127,28 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
   const credentialId = authData.slice(o, o += clen)
 
   // https://datatracker.ietf.org/doc/html/rfc9052#section-7
-  // const publicKey = decode(authData.slice(o)) // cborg.decode fails; Refuses to decode COSE use of numerical keys
-  const cose = decodeCBORHack(authData.slice(o)) // Decode cbor manually
+  let cose
+  try {
+    cose = decode(authData.slice(o - 1), { useMaps: true }) as Map<number, number|Uint8Array>
+  } catch (err) {
+    // https://github.com/rvagg/cborg/issues/92
+    cose = decodeCOSE(authData.slice(o))
+    console.log(u8a.toString(authData.slice(o), 'hex'))
+    debugger
+  }
 
   // Section 'COSE Key Type Parameters'
   // https://www.iana.org/assignments/cose/cose.xhtml
-  if (cose[1] !== 2) throw new Error('Expected EC Coordinate pair')
-  if (cose[3] !== -7) throw new Error('Expected ES256 Algorithm')
-  const x = cose[-2]
-  const y = cose[-3]
+  if (cose.get(1) !== 2) throw new Error('Expected COSE object type to be a EC Coordinate pair')
+  if (cose.get(3) !== -7) throw new Error('Expected ES256 Algorithm')
+  const x = cose.get(-2)
+  const y = cose.get(-3)
+
   if (!(x instanceof Uint8Array) || !(y instanceof Uint8Array)) throw new Error('Expected X and Y coordinate to be buffers')
-  const publicKey = ecPointCompress(x, y)
+  const publicKey = new Uint8Array(33)
+  publicKey[0] = 1 + (y[y.length -1] & 1)
+  publicKey.set(x, 1)
+
   return {
     rpidHash,
     flags,
@@ -174,22 +184,33 @@ function assertU8 (o: Uint8Array | ArrayBuffer) : Uint8Array {
 }
 
 /**
- * Tiny unsafe CBOR decoder that supports COSE_key numerical keys
+ * Tiny partial CBOR decoder that supports COSE_key numerical keys
  * https://www.iana.org/assignments/cose/cose.xhtml
  * Section 'COSE Key Type Parameters'
- * TODO: check if iso-webauthn package handles this
  */
-function decodeCBORHack (buf: Uint8Array) {
+function decodeCOSE (buf: Uint8Array) {
   if (!(buf instanceof Uint8Array)) throw new Error('Uint8ArrayExpected')
   const view = new DataView(buf.buffer)
   let o = 0
-  const readByte = () => buf[o++]
-  const readU8 = () => view.getUint8(o++) // @ts-ignore
-  const readU16 = () => view.getUint16(o, undefined, o += 2) // @ts-ignore
-  const readU32 = () => view.getUint16(o, undefined, o += 4) // @ts-ignore
-  const readU64 = () => view.getBigUint64(o, undefined, o += 8) // @ts-ignore
-  const readLength = l => l < 24 ? l : [readU8, readU16, readU32, readU64][l - 24]() // @ts-ignore
-  const readMap = l => {
+  const readByte = (): number => buf[o++]
+  const readU8 = (): number => view.getUint8(o++)
+  const readU16 = () => { 
+    const n = view.getUint16(o)
+    o+= 2
+    return n
+  }
+  const readU32 = () => { 
+    const n = view.getUint32(o)
+    o += 4
+    return n
+  }
+  const readU64 = () => { 
+    const n = view.getBigUint64(o)
+    o += 8
+    return n
+  }
+  const readLength = (l:number) => l < 24 ? l : [readU8, readU16, readU32, readU64][l - 24]()
+  const readMap = (l: number) => {
     const map = {} // @ts-ignore
     for (let i = 0; i < l; i++) map[readItem()] = readItem()
     return map
@@ -200,9 +221,9 @@ function decodeCBORHack (buf: Uint8Array) {
     const l = readLength(b & 0x1f)
     switch (b >> 5) {
       case 0: return l // Uint
-      case 1: return -(l + 1) // Negative integer
+      case 1: return typeof l === 'bigint' ? -(l +1n) : -(l + 1) // Negative integer
       case 2: return readBuffer(l) // binstr
-      case 5: return readMap(l)
+      case 5: return readMap(l as number)
       default: throw new Error('UnsupportedType' + (b >> 5))
     }
   }
@@ -217,7 +238,7 @@ function decodeCBORHack (buf: Uint8Array) {
  * @param clientDataJSON Authenticator generated clientDataJSON - watch out for https://goo.gl/yabPex
  * @returns Recovered tuple of pk0 and pk1
  */
-export function recoverPublicKey (
+export function recoverPublicKeys (
   signature: Uint8Array,
   authenticatorData: Uint8Array,
   clientDataJSON: Uint8Array
