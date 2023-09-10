@@ -4,7 +4,7 @@ import * as u8a from 'uint8arrays'
 import { decodeCOSE } from './cose'
 import { ecPointCompress } from '@didtools/key-webcrypto'
 
-const { crypto, localStorage } = globalThis
+const { localStorage } = globalThis
 
 export async function authenticatorSign (challenge: Uint8Array, credentialId?: Uint8Array|string): Promise<{
   signature: Uint8Array,

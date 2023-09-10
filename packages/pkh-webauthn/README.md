@@ -15,7 +15,7 @@ This module is designed to run in browser environments.
 
 Create a Credential for first time users:
 ```js
-import { createCredential, simpleCreateOpts } from '@didtools/pkh-webauthn'
+import { WebauthnAuth, createCredential, simpleCreateOpts } from '@didtools/pkh-webauthn'
 
 const wns = WebauthnAuth.createSession()
 const { credentialId, publicKey, did } = await WebauthnAuth.createCredential(wsn, simpleCreateOpts('richard@app'))

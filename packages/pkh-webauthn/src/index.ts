@@ -86,7 +86,7 @@ export function simpleCreateOpts (
   }
 }
 
-export async function createCredential (session: WebauthnAuth.AuthenticatorSession, opts: CredentialCreationOptions): Promise<CreateCredentialResult> {
+export async function createCredential (session: WebauthnAuth.AuthenticatorSession, opts: CredentialCreationOptions): Promise<WebauthnAuth.CreateCredentialResult> {
   const credentials = globalThis.navigator.credentials
   if (!opts) throw new Error('credential creation options required, use discoverableSimple(userTag) to generate')
   // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create
@@ -95,13 +95,28 @@ export async function createCredential (session: WebauthnAuth.AuthenticatorSessi
 
   const authenticatorData = getAuthenticatorData(credential.response)
   const { publicKey } = decodeAuthenticatorData(authenticatorData)
-  for (const selector of session.selectors) selector.seen(credential.id, publicKey)
+  for (const selector of session.selectors) {
+    if (typeof selector.seen === 'function') selector.seen(credential.id, publicKey)
+  }
 
   return {
     publicKey,
     did: encodeDIDFromPub(publicKey),
     credential
   }
+}
+
+/**
+ * Asks user to sign a random challenge
+ * returns either pk0 or pk1 given correct credential is presented
+ */
+export async function probeAuthenticator(pk0: Uint8Array, pk1: Uint8Array) {
+  const res = await authenticatorSign(randomBytes(32))
+  for (const candidate of res.recovered) {
+    if (!u8a.compare(candidate, pk0)) return pk0
+    if (!u8a.compare(candidate, pk1)) return pk1
+  }
+  throw new Error('DifferentCredentialSelected')
 }
 
 
@@ -112,7 +127,7 @@ export namespace WebauthnAuth {
     did: string
   }
   export interface KeySelector {
-    seen: (credentialId: string, pk: Uint8Array) => void
+    seen?: (credentialId: string, pk: Uint8Array) => void
     select: (credentialId: string, pk0: Uint8Array, pk1: Uint8Array) => Uint8Array|null
   }
   export interface AuthenticatorSession {
@@ -121,11 +136,15 @@ export namespace WebauthnAuth {
     selectors: KeySelector[]
   }
 
-  export function createSession (publicKey?: Uint8Array): AuthenticatorSession {
-    return {
-      publicKey,
-      selectors: [new LocalStorageKeySelector()]
-    }
+  /**
+   * Creates a new session that remembers seen credentials
+   * @param {KeySelector?} selector An object implemeting the KeySelector interface.
+   * @param {string?} credentialId Optionally specify which credential to use for all operations if known ahead of time.
+   */
+  export function createSession (selector?: KeySelector, credentialId?: string): AuthenticatorSession {
+    const selectors: Array<KeySelector> = [new LocalStorageKeySelector()]
+    if (selector) selectors.push(selector)
+    return { credentialId, selectors }
   }
 
   export async function getAuthMethod (session: AuthenticatorSession): Promise<AuthMethod> {
@@ -166,11 +185,13 @@ export namespace WebauthnAuth {
     const authData = getAuthenticatorData(response)
     const aad = u8a.toString(assertU8(encode({ authData, clientDataJSON })), 'base64url')
 
-    let pk
+    let pk: any
     for (const selector of session.selectors) {
+      if (typeof selector.select !== 'function') continue
       if (pk = await selector.select(credential.id, ...recovered)) break
     }
     if (!pk) throw new Error('PublicKeySelectionFailed')
+    if (!recovered.find(c => !u8a.compare(c, pk))) throw new Error('UnrelatedPublickey')
 
     // Insert iss + aad after signature
     return {
