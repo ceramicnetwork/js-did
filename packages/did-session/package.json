@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@ceramicnetwork/stream-tile": "^2.21.0",
+    "@didtools/key-webcrypto": "workspace:^0.1.1",
     "@stablelib/random": "^1.0.1",
     "caip": "^1.1.0",
     "dids": "workspace:^4.0.3",
@@ -62,9 +63,12 @@
     "@types/create-hash": "^1.2.2",
     "ajv-formats": "^2.1.1",
     "caip": "^1.1.0",
+    "fake-indexeddb": "^4.0.2",
     "jest-environment-ceramic": "workspace:^0.17.0"
   },
   "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/setup.jest.js"],
     "extensionsToTreatAsEsm": [
       ".ts"
     ],
