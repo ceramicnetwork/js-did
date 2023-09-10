@@ -2,16 +2,15 @@ import * as dagCbor from '@ipld/dag-cbor'
 import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2' // Hashing workaround
 import {
-  populateCreateOpts,
   selectPublicKey,
   storePublicKey,
   getAuthenticatorData,
   decodeAuthenticatorData,
   authenticatorSign,
   verify,
-  assertU8
+  assertU8,
+  randomBytes
 } from './utils'
-import type { SimpleCreateCredentialOpts } from './utils'
 import { encodeDIDFromPub } from '@didtools/key-webcrypto'
 import {
   AuthMethod,
@@ -47,6 +46,65 @@ const blockFromCacao = (cacao: Cacao): Promise<CacaoBlock> => {
   })
 }
 
+
+// auth-method.ts
+
+/**
+ * A simple approach to create a discoverable
+ * credential with sane defaults.
+ * @param {string} name username|email|user-alias
+ * @param {string} displayName Human friendly identifier of credential, shown in OS-popups.
+ * @param {string} rpname (RelayingPartyName) name of the app.
+ * @returns {CredentialCreationOptions} An options object that can be passed to credentials.create(opts)
+ */
+export function simpleCreateOpts (
+  name: string = 'pkh-webauthn',
+  displayName: string =  'Ceramic Auth Provider',
+  rpname: string = globalThis.location.hostname
+): CredentialCreationOptions {
+  return {
+    publicKey: {
+      challenge: randomBytes(32), // Otherwise issued by server
+      rp: {
+        id: globalThis.location.hostname, // Must be set to current hostname
+        name: rpname // A known constant.
+      },
+      user: {
+        id: randomBytes(32), // Server issued arbitrary bytes
+        name,
+        displayName
+      },
+      pubKeyCredParams: [
+        { type: 'public-key', alg: -7 }, // ECDSA (secp256r1) with SHA-256
+      ],
+      authenticatorSelection: {
+        requireResidentKey: true, // Deprecated (superseded by `residentKey`), some webauthn v1 impl still use it.
+        residentKey: 'required', // Require private key to be created on authenticator/ secure storage
+        userVerification: 'required', // Require user to push button/input pin sign requests
+      }
+    }
+  }
+}
+
+export async function createCredential (session: WebauthnAuth.AuthenticatorSession, opts: CredentialCreationOptions): Promise<CreateCredentialResult> {
+  const credentials = globalThis.navigator.credentials
+  if (!opts) throw new Error('credential creation options required, use discoverableSimple(userTag) to generate')
+  // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create
+  const credential = await credentials.create(opts) as any
+  if (!credential) throw new Error('Empty Credential Response')
+
+  const authenticatorData = getAuthenticatorData(credential.response)
+  const { publicKey } = decodeAuthenticatorData(authenticatorData)
+  for (const selector of session.selectors) selector.seen(credential.id, publicKey)
+
+  return {
+    publicKey,
+    did: encodeDIDFromPub(publicKey),
+    credential
+  }
+}
+
+
 export namespace WebauthnAuth {
   export interface CreateCredentialResult {
     publicKey: Uint8Array,
@@ -67,24 +125,6 @@ export namespace WebauthnAuth {
     return {
       publicKey,
       selectors: [new LocalStorageKeySelector()]
-    }
-  }
-
-  // auth-method.ts
-  export async function createCredential (session: AuthenticatorSession, opts: SimpleCreateCredentialOpts): Promise<CreateCredentialResult> {
-    const credentials = globalThis.navigator.credentials
-    // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create
-    const credential = await credentials.create(populateCreateOpts(opts)) as any
-    if (!credential) throw new Error('Empty Credential Response')
-
-    const authenticatorData = getAuthenticatorData(credential.response)
-    const { publicKey } = decodeAuthenticatorData(authenticatorData)
-    for (const selector of session.selectors) selector.seen(credential.id, publicKey)
-
-    return {
-      publicKey,
-      did: encodeDIDFromPub(publicKey),
-      credential
     }
   }
 
@@ -112,7 +152,7 @@ export namespace WebauthnAuth {
         exp: new Date(now + 7 * 86400000).toISOString(), // 1 week
         nbf: new Date(now).toISOString(),
         iat: new Date(now).toISOString(),
-        ...opts
+        ...opts // let provided options override defaults
       }
     })
 

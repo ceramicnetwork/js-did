@@ -2,9 +2,9 @@
 import {
   decodeAuthenticatorData,
   decodeAttestationObject,
-  recoverPublicKeys,
   storePublicKey,
   selectPublicKey,
+  recoverPublicKeys,
 } from '../src/utils'
 import { MockAuthenticator } from './mock-authenticator'
 import { hexToBytes } from '@noble/curves/abstract/utils'
@@ -13,7 +13,7 @@ import * as u8a from 'uint8arrays'
 
 // High-level imports
 import { DIDSession } from 'did-session'
-import { WebauthnAuth } from '../src/index'
+import { WebauthnAuth, simpleCreateOpts, createCredential } from '../src/index'
 import { Cacao } from '@didtools/cacao'
 import { encodeDIDFromPub } from '@didtools/key-webcrypto'
 
@@ -28,7 +28,7 @@ describe('@didtools/key-passkey', () => {
   let pk: Uint8Array
 
   beforeAll(async () => {
-    const res = await WebauthnAuth.createCredential(wSession, { name: 'rob' })
+    const res = await createCredential(wSession, simpleCreateOpts('bob'))
     pk = res.publicKey
   })
 

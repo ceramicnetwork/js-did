@@ -3,47 +3,8 @@ import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
 import { decodeCOSE } from './cose'
 import { ecPointCompress } from '@didtools/key-webcrypto'
-export { decodeCOSE } from './cose'
 
 const { crypto, localStorage } = globalThis
-
-const RelayingPartyName = 'Ceramic Network'
-
-export interface SimpleCreateCredentialOpts {
-  /** Defaults to website host */
-  rpname?: PublicKeyCredentialCreationOptions['rp']['name'],
-
-  // User facing identifiers (Shown on device/selection screens)
-  /** username / email */
-  name?: PublicKeyCredentialCreationOptions['user']['name'],
-  /** Human-friendly identifier for credential, usually shown in system popups */
-  displayName?: PublicKeyCredentialCreationOptions['user']['displayName']
-}
-
-export function populateCreateOpts (opts: SimpleCreateCredentialOpts): CredentialCreationOptions {
-  return {
-    publicKey: {
-      challenge: randomBytes(32), // Otherwise issued by server
-      rp: {
-        id: globalThis.location.hostname, // Must be set to current hostname
-        name: opts.rpname || RelayingPartyName // A known constant.
-      },
-      user: {
-        id: randomBytes(32), // Server issued arbitrary bytes
-        name: opts.name || 'ceramic', // username or email
-        displayName: opts.displayName || opts.displayName || 'Ceramic', // display name
-      },
-      pubKeyCredParams: [
-        { type: 'public-key', alg: -7 }, // ECDSA (secp256r1) with SHA-256
-      ],
-      authenticatorSelection: {
-        requireResidentKey: true, // Deprecated (superseded by `residentKey`), some webauthn v1 impl still use it.
-        residentKey: 'required', // Require private key to be created on authenticator/ secure storage
-        userVerification: 'required', // Require user to push button/input pin sign requests
-      }
-    }
-  }
-}
 
 export async function authenticatorSign (challenge: Uint8Array, credentialId?: Uint8Array|string): Promise<{
   signature: Uint8Array,
@@ -91,10 +52,8 @@ export function verify (
 }
 
 // --- tools.js
-function randomBytes (n: number) {
-  const b = new Uint8Array(n)
-  crypto.getRandomValues(b)
-  return b
+export function randomBytes (n: number) {
+  return p256.CURVE.randomBytes(n)
 }
 
 export function decodeAttestationObject (attestationObject: Uint8Array|ArrayBuffer) {
@@ -153,8 +112,7 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
 }
 
 /**
- * Normalize authenticatorData across browsers/runtimes
- * different runtimes implement different parts of spec.
+ * Normalizes authenticatorData across browsers/runtimes.
  */
 export function getAuthenticatorData (response: any) {
   if (response.getAuthenticatorData === 'function') return response.getAuthenticatorData() // only on Chrome
@@ -167,7 +125,7 @@ export function getAuthenticatorData (response: any) {
 }
 
 /**
- * Normalize ArrayBuffer|Uint8Array|node:Buffer => Uint8Array or throw
+ * Normalize ArrayBuffer|Uint8Array|node:Buffer => Uint8Array or throws
  */
 export function assertU8 (o: any) : Uint8Array {
   if (o instanceof ArrayBuffer) return new Uint8Array(o)
