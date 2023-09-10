@@ -53,6 +53,7 @@
     "@types/varint": "^6.0.1"
   },
   "dependencies": {
+    "@didtools/key-webcrypto": "workspace:*",
     "@didtools/cacao": "workspace:*",
     "did-session": "workspace:*",
     "@ipld/dag-cbor": "^9.0.1",

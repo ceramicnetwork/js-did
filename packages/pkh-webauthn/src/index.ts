@@ -8,7 +8,8 @@ import {
   getAuthenticatorData,
   decodeAuthenticatorData,
   authenticatorSign,
-  verify
+  verify,
+  assertU8
 } from './utils'
 import type { SimpleCreateCredentialOpts } from './utils'
 import { encodeDIDFromPub } from '@didtools/key-webcrypto'
@@ -123,7 +124,7 @@ export namespace WebauthnAuth {
     const { response } = credential
     const { clientDataJSON, signature } = response
     const authData = getAuthenticatorData(response)
-    const aad = u8a.toString(encode({ authData, clientDataJSON}), 'base64url')
+    const aad = u8a.toString(assertU8(encode({ authData, clientDataJSON })), 'base64url')
 
     let pk
     for (const selector of session.selectors) {

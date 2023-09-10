@@ -1,6 +1,10 @@
 import { decode } from 'cborg'
 import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
+import { decodeCOSE } from './cose'
+import { ecPointCompress } from '@didtools/key-webcrypto'
+export { decodeCOSE } from './cose'
+
 const { crypto, localStorage } = globalThis
 
 const RelayingPartyName = 'Ceramic Network'
@@ -66,7 +70,7 @@ export async function authenticatorSign (challenge: Uint8Array, credentialId?: U
     const { response } = credential
     const { clientDataJSON, signature } = response
     const authenticatorData = getAuthenticatorData(response)
-    const recovered = recoverPublicKey(
+    const recovered = recoverPublicKeys(
       signature,
       authenticatorData,
       clientDataJSON
@@ -94,10 +98,7 @@ function randomBytes (n: number) {
 }
 
 export function decodeAttestationObject (attestationObject: Uint8Array|ArrayBuffer) {
-  // TODO: AttestationObject is not same as authData; AObject is a CBOR containing a copy of AuthData
-  if (attestationObject instanceof ArrayBuffer) attestationObject = new Uint8Array(attestationObject)
-  if (!(attestationObject instanceof Uint8Array)) throw new Error('Uint8ArrayExpected')
-  return decode(attestationObject)
+  return decode(assertU8(attestationObject))
 }
 
 /**
@@ -127,28 +128,19 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
   const credentialId = authData.slice(o, o += clen)
 
   // https://datatracker.ietf.org/doc/html/rfc9052#section-7
-  let cose
-  try {
-    cose = decode(authData.slice(o - 1), { useMaps: true }) as Map<number, number|Uint8Array>
-  } catch (err) {
-    // https://github.com/rvagg/cborg/issues/92
-    cose = decodeCOSE(authData.slice(o))
-    console.log(u8a.toString(authData.slice(o), 'hex'))
-    debugger
-  }
 
-  // Section 'COSE Key Type Parameters'
-  // https://www.iana.org/assignments/cose/cose.xhtml
-  if (cose.get(1) !== 2) throw new Error('Expected COSE object type to be a EC Coordinate pair')
-  if (cose.get(3) !== -7) throw new Error('Expected ES256 Algorithm')
-  const x = cose.get(-2)
-  const y = cose.get(-3)
+  // Bug in cborg.decode() prevents next-line: https://github.com/rvagg/cborg/issues/92
+  // const cose = decode(authData.slice(o - 1), { useMaps: true }) as Map<number, number|Uint8Array>
 
+  // Using local CBOR/COSE implementation until resolved:
+  const cose = decodeCOSE(authData.slice(o))
+  if (cose['kty'] !== 2) throw new Error('Expected COSE key-type to be a EC Coordinate pair')
+  if (cose['alg'] !== -7) throw new Error('Expected ES256 Algorithm')
+  const { x, y } = cose
   if (!(x instanceof Uint8Array) || !(y instanceof Uint8Array)) throw new Error('Expected X and Y coordinate to be buffers')
-  const publicKey = new Uint8Array(33)
-  publicKey[0] = 1 + (y[y.length -1] & 1)
-  publicKey.set(x, 1)
 
+  // Compress publicKey
+  const publicKey = ecPointCompress(x, y)
   return {
     rpidHash,
     flags,
@@ -175,59 +167,16 @@ export function getAuthenticatorData (response: any) {
 }
 
 /**
- * Normalize ArrayBuffer|Uint8Array => Uint8Array or throw
+ * Normalize ArrayBuffer|Uint8Array|node:Buffer => Uint8Array or throw
  */
-function assertU8 (o: Uint8Array | ArrayBuffer) : Uint8Array {
+export function assertU8 (o: any) : Uint8Array {
   if (o instanceof ArrayBuffer) return new Uint8Array(o)
   if (o instanceof Uint8Array) return o
+  // node:Buffer to Uint8Array
+  if (!(o instanceof Uint8Array) && o?.buffer) {
+    return new Uint8Array(o.buffer, o.byteOffset, o.byteLength)
+  }
   throw new Error('Expected Uint8Array')
-}
-
-/**
- * Tiny partial CBOR decoder that supports COSE_key numerical keys
- * https://www.iana.org/assignments/cose/cose.xhtml
- * Section 'COSE Key Type Parameters'
- */
-function decodeCOSE (buf: Uint8Array) {
-  if (!(buf instanceof Uint8Array)) throw new Error('Uint8ArrayExpected')
-  const view = new DataView(buf.buffer)
-  let o = 0
-  const readByte = (): number => buf[o++]
-  const readU8 = (): number => view.getUint8(o++)
-  const readU16 = () => { 
-    const n = view.getUint16(o)
-    o+= 2
-    return n
-  }
-  const readU32 = () => { 
-    const n = view.getUint32(o)
-    o += 4
-    return n
-  }
-  const readU64 = () => { 
-    const n = view.getBigUint64(o)
-    o += 8
-    return n
-  }
-  const readLength = (l:number) => l < 24 ? l : [readU8, readU16, readU32, readU64][l - 24]()
-  const readMap = (l: number) => {
-    const map = {} // @ts-ignore
-    for (let i = 0; i < l; i++) map[readItem()] = readItem()
-    return map
-  } // @ts-ignore
-  const readBuffer = l => buf.slice(o, o += l)
-  function readItem () {
-    const b = readByte()
-    const l = readLength(b & 0x1f)
-    switch (b >> 5) {
-      case 0: return l // Uint
-      case 1: return typeof l === 'bigint' ? -(l +1n) : -(l + 1) // Negative integer
-      case 2: return readBuffer(l) // binstr
-      case 5: return readMap(l as number)
-      default: throw new Error('UnsupportedType' + (b >> 5))
-    }
-  }
-  return readItem()
 }
 
 /**
