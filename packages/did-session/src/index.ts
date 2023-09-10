@@ -362,6 +362,15 @@ export class DIDSession {
   }
 
   /**
+   * Check if there is an active session for a given account.
+   */
+  static async hasSessionFor(account: AccountId, resources: Array<string>): Promise<boolean> {
+    const store = await SessionStore.create()
+    const { cacao } = (await store.get(account)) || {}
+    return cacao && cacaoContainsResources(cacao, resources)
+  }
+
+  /**
    * Get DID instance, if authorized
    */
   get did(): DID {

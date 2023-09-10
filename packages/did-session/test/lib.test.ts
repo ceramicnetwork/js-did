@@ -179,17 +179,19 @@ describe('did-session', () => {
 
   test('get and create/update streams from persisted session', async () => {
     const authMock = jest.fn(authMethod)
-    await DIDSession.get(account, authMock, {
-      resources: [`ceramic://*`],
-    })
+    const resources = [`ceramic://*`]
+    expect(await DIDSession.hasSessionFor(account, resources)).toBeFalsy()
 
+    await DIDSession.get(account, authMock, {
+      resources,
+    })
     // auth was used
     expect(authMock).toHaveBeenCalledTimes(1)
+    expect(await DIDSession.hasSessionFor(account, resources)).toBeTruthy()
 
     const session = await DIDSession.get(account, authMethod, {
-      resources: [`ceramic://*`],
+      resources,
     })
-
     // indicates that we loaded auth from session storage
     expect(authMock).toHaveBeenCalledTimes(1)
 
