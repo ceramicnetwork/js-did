@@ -88,7 +88,7 @@ export function simpleCreateOpts (
 
 export async function createCredential (session: WebauthnAuth.AuthenticatorSession, opts: CredentialCreationOptions): Promise<WebauthnAuth.CreateCredentialResult> {
   const credentials = globalThis.navigator.credentials
-  if (!opts) throw new Error('credential creation options required, use discoverableSimple(userTag) to generate')
+  if (!opts) throw new Error('Expected options: CredentialCreationOptions')
   // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create
   const credential = await credentials.create(opts) as any
   if (!credential) throw new Error('Empty Credential Response')
