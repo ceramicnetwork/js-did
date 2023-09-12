@@ -26,7 +26,7 @@ export function WithEthereumCacao() {
         const accountId = new AccountId({ address: address, chainId: `eip155:${chainId}` })
         const provider = await connector.getProvider()
         const authMethod = await EthereumWebAuth.getAuthMethod(provider, accountId)
-        const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://nil'] })
+        const session = await DIDSession.get(accountId, authMethod, { resources: ['ceramic://nil'] })
         const did = session.did
         const signature = await did.createJWS({ hello: 'world' })
         console.log('did-signature-jws', signature)
