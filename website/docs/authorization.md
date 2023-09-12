@@ -15,7 +15,7 @@ const addresses = await ethProvider.request({ method: 'eth_requestAccounts' })
 const accountId = await getAccountId(ethProvider, addresses[0])
 const authMethod = await EthereumWebAuth.getAuthMethod(ethprovider, accountId)
 
-const session = await DIDSession.authorize(authMethod, { resources: [...]})
+const session = await DIDSession.get(accountId, authMethod, { resources: [...]})
 ```
 
 Authorize with a Solana account using [@didtools/pkh-solana](./api/modules/pkh_solana.md):
@@ -29,7 +29,7 @@ const address = await solProvider.connect()
 const accountId = getAccountIdByNetwork('mainnet', address.publicKey.toString())
 const authMethod = await SolanaWebAuth.getAuthMethod(solProvider, accountId)
 
-const session = await DIDSession.authorize(authMethod, { resources: [...]})
+const session = await DIDSession.get(accountId, authMethod, { resources: [...]})
 ```
 
 With your session, use DIDs in composedb, ceramic & glaze libraries:

@@ -12,7 +12,7 @@ import { ComposeClient } from '@composedb/client'
 
 const client = new ComposeClient({ceramic, definition})
 const resources = client.resources
-const session = await DIDSession.authorize(authMethod, { resources })
+const session = await DIDSession.get(accountId, authMethod, { resources })
 client.setDID(session.did)
 ```
 
@@ -23,13 +23,13 @@ designed with model document streams and `@composedb` libraries in mind. Wildcar
 the future.
 
 ```js
-const session = await DIDSession.authorize(authMethod, { resources: [`ceramic://*`]})
+const session = await DIDSession.get(accountId, authMethod, { resources: [`ceramic://*`]})
 ```
 
-By default a session will expire in 1 day. You can change this time by passing the `expiresInSecs` option to
+By default a session will expire in 1 week. You can change this time by passing the `expiresInSecs` option to
 indicate how many seconds from the current time you want this session to expire.
 
 ```js
-const oneWeek = 60 * 60 * 24 * 7
-const session = await DIDSession.authorize(authMethod, { resources: [...], expiresInSecs: oneWeek })
+const oneDay = 60 * 60 * 24
+const session = await DIDSession.get(accountId, authMethod, { resources: [...], expiresInSecs: oneDay })
 ```
