@@ -2,7 +2,7 @@ import { Cacao, SiweMessage, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 import { randomString } from '@stablelib/random'
 import { AccountId } from 'caip'
 import { safeSend, normalizeAccountId } from './utils.js'
-import * as u8a from 'uint8arrays'
+import { bytesToHex, utf8ToBytes } from '@noble/hashes/utils'
 
 /**
  * SIWX Version
@@ -14,7 +14,7 @@ export const VERSION = '1'
 export const CHAIN_NAMESPACE = 'eip155'
 
 function encodeHexStr(str: string): string {
-  return `0x${u8a.toString(u8a.fromString(str, 'utf8'), 'base16')}`
+  return `0x${bytesToHex(utf8ToBytes(str))}`
 }
 
 export namespace EthereumWebAuth {

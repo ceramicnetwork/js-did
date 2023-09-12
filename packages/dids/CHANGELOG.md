@@ -1,5 +1,13 @@
 ## v2.4.0 (2021-07-12)
 
+## 4.0.4
+
+### Patch Changes
+
+- 71280f1: Do not use ethers on pkh-ethereum
+- Updated dependencies [71280f1]
+  - @didtools/pkh-ethereum@0.4.2
+
 ## 4.0.3
 
 ### Patch Changes

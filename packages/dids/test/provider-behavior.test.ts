@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import { jest } from '@jest/globals'
+import { jest, test, expect, describe, beforeAll } from '@jest/globals'
 import { randomBytes } from '@stablelib/random'
 import { x25519 } from '@noble/curves/ed25519'
 import { Cacao, CacaoBlock, SiweMessage } from '@didtools/cacao'

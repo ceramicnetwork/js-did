@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Typescript library for interacting with DIDs",
   "author": "Joel Thorstensson <oed@3box.io>",
   "license": "(Apache-2.0 OR MIT)",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@didtools/cacao": "workspace:^2.1.0",
     "@didtools/codecs": "workspace:^1.0.1",
-    "@didtools/pkh-ethereum": "workspace:^0.4.0",
+    "@didtools/pkh-ethereum": "workspace:^0.4.1",
     "@stablelib/random": "^1.0.1",
     "codeco": "^1.1.0",
     "dag-jose-utils": "^3.0.0",
