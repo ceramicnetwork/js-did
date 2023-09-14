@@ -40,7 +40,7 @@ const blockFromCacao = (cacao: Cacao): Promise<CacaoBlock> => {
       ...hasher,
       digest (bytes: any) { // monkeypatch Buffer to Uint8Array conversion
         if (!(bytes instanceof Uint8Array) && bytes?.buffer) bytes = new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength)
-          return hasher.digest(bytes)
+        return hasher.digest(bytes)
       }
     }
   })
@@ -154,10 +154,9 @@ export namespace WebauthnAuth {
   }
 
   async function createCacao (opts: AuthMethodOpts, session: AuthenticatorSession): Promise<Cacao> {
-    const now = Date.now()
     // The public key is not known at pre-sign time.
     // so we sign a "challenge"-block without Issuer attribute
-    const challenge: Cacao = Object.freeze({
+    const challenge: Cacao = {
       h: {
         t: 'caip122'
       },
@@ -165,15 +164,14 @@ export namespace WebauthnAuth {
         domain: globalThis.location.hostname,
         aud: '' + globalThis.location,
         iss: '',
-        version: '1',
-        nonce: globalThis.crypto.randomUUID(),
-        resources: [],
-        exp: new Date(now + 7 * 86400000).toISOString(), // 1 week
-        nbf: new Date(now).toISOString(),
-        iat: new Date(now).toISOString(),
-        ...opts // let provided options override defaults
+        version: opts.version || '1',
+        nonce: opts.nonce || u8a.toString(randomBytes(8), 'base64url'),
+        resources: opts.resources,
+        exp: opts.expirationTime,
+        nbf: opts.notBefore,
+        iat: opts.issuedAt || new Date().toISOString(),
       }
-    })
+    }
 
     const block = await blockFromCacao(challenge) // await CacaoBlock.fromCacao(challenge) when issue resolved
     // perform sign
