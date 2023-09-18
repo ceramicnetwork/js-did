@@ -125,7 +125,7 @@ export function getAuthenticatorData (response: any) {
 }
 
 /**
- * Normalize ArrayBuffer|Uint8Array|node:Buffer => Uint8Array or throws
+ * Normalize ArrayBuffer|Uint8Array|node:Buffer => Uint8Array or throw
  */
 export function assertU8 (o: any) : Uint8Array {
   if (o instanceof ArrayBuffer) return new Uint8Array(o)

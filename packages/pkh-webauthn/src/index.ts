@@ -17,6 +17,7 @@ import {
   AuthMethodOpts,
   Cacao,
   CacaoBlock,
+  Payload,
   VerifyOptions
 } from '@didtools/cacao'
 import varint from 'varint'
@@ -24,9 +25,9 @@ import * as u8a from 'uint8arrays'
 import { encode, decode } from 'cborg'
 
 class LocalStorageKeySelector implements WebauthnAuth.KeySelector {
-  seen (_: string, pk: Uint8Array) { storePublicKey(pk) }
+  async seen (_: string, pk: Uint8Array) { storePublicKey(pk) }
 
-  select (_: string, pk0: Uint8Array, pk1: Uint8Array): Uint8Array|null {
+  async select (_: string, pk0: Uint8Array, pk1: Uint8Array) {
     return selectPublicKey(pk0, pk1)
   }
 }
@@ -38,10 +39,8 @@ const blockFromCacao = (cacao: Cacao): Promise<CacaoBlock> => {
     codec: dagCbor,
     hasher: {
       ...hasher,
-      digest (bytes: any) { // monkeypatch Buffer to Uint8Array conversion
-        if (!(bytes instanceof Uint8Array) && bytes?.buffer) bytes = new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength)
-        return hasher.digest(bytes)
-      }
+      // monkeypatch Buffer to Uint8Array conversion
+      digest: (bytes: any) => hasher.digest(assertU8(bytes))
     }
   })
 }
@@ -127,8 +126,8 @@ export namespace WebauthnAuth {
     did: string
   }
   export interface KeySelector {
-    seen?: (credentialId: string, pk: Uint8Array) => void
-    select: (credentialId: string, pk0: Uint8Array, pk1: Uint8Array) => Uint8Array|null
+    seen?: (credentialId: string, pk: Uint8Array) => Promise<void>
+    select: (credentialId: string, pk0: Uint8Array, pk1: Uint8Array) => Promise<Uint8Array|null>
   }
   export interface AuthenticatorSession {
     credentialId?: string // Set if PasskeyProvider was initialized in non-discoverable mode
@@ -154,6 +153,7 @@ export namespace WebauthnAuth {
   }
 
   async function createCacao (opts: AuthMethodOpts, session: AuthenticatorSession): Promise<Cacao> {
+    const now = new Date()
     // The public key is not known at pre-sign time.
     // so we sign a "challenge"-block without Issuer attribute
     const challenge: Cacao = {
@@ -162,15 +162,14 @@ export namespace WebauthnAuth {
       },
       p: {
         domain: globalThis.location.hostname,
-        aud: '' + globalThis.location,
-        iss: '',
+        aud: opts.uri || globalThis.location.toString(),
         version: opts.version || '1',
         nonce: opts.nonce || u8a.toString(randomBytes(8), 'base64url'),
         resources: opts.resources,
-        exp: opts.expirationTime,
-        nbf: opts.notBefore,
-        iat: opts.issuedAt || new Date().toISOString(),
-      }
+        exp: opts.expirationTime || new Date(now.getTime() + 7 * 86400000).toISOString(), // 1 week
+        nbf: opts.notBefore || now.toISOString(),
+        iat: opts.issuedAt || now.toISOString()
+      } as Payload // squelch missing p.iss
     }
 
     const block = await blockFromCacao(challenge) // await CacaoBlock.fromCacao(challenge) when issue resolved
@@ -181,7 +180,7 @@ export namespace WebauthnAuth {
     const { response } = credential
     const { clientDataJSON, signature } = response
     const authData = getAuthenticatorData(response)
-    const aad = u8a.toString(assertU8(encode({ authData, clientDataJSON })), 'base64url')
+    const aad = assertU8(encode({ authData, clientDataJSON }))
 
     let pk: any
     for (const selector of session.selectors) {
@@ -193,7 +192,7 @@ export namespace WebauthnAuth {
 
     // Insert iss + aad after signature
     return {
-      ...challenge,
+      h: challenge.h,
       p: {
         ...challenge.p,
         iss: encodeDIDFromPub(pk),
@@ -218,7 +217,7 @@ export namespace WebauthnAuth {
    */
   async function verifyCacao (cacao: Cacao, _: VerifyOptions): Promise<void> {
     if (!cacao.s?.aad) throw new Error('AdditionalAuthenticatorData missing')
-    const { authData, clientDataJSON } = decode(u8a.fromString(cacao.s.aad, 'base64url'))
+    const { authData, clientDataJSON } = decode(cacao.s.aad)
 
     if (!cacao.s.s) throw new Error('Signature missing')
     const signature = u8a.fromString(cacao.s.s, 'base64url')
@@ -237,9 +236,13 @@ export namespace WebauthnAuth {
     if (clientData.type !== 'webauthn.get') throw new Error('Invalid clientDataJSON.type')
     const expectedHash = u8a.fromString(clientData.challenge, 'base64url')
 
-    const challenge = { ...cacao, p: { ...cacao.p, iss: '' } }
-    delete challenge.s
+    const challenge = { ...cacao, p: { ...cacao.p } } // deep-clone
+    delete challenge.s // remove signature
+    // @ts-ignore
+    delete challenge.p.iss // remove issuer
     const block = await blockFromCacao(challenge) // await CacaoBlock.fromCacao(challenge)
+
+    // Compare reproduced challenge-hash to signed hash
     if (u8a.compare(expectedHash, block.cid.bytes) !== 0) throw new Error('MessageMismatch')
   }
 }

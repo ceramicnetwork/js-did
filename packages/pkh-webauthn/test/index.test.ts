@@ -44,19 +44,26 @@ describe('@didtools/key-passkey', () => {
     const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://nil'] })
     const { cacao } = session
     const { p, s } = cacao
+    if (!s) throw new Error('signature missing')
+
     expect(p.iss).toEqual(encodeDIDFromPub(pk))
     expect(s.t).toEqual('webauthn:p256')
-    // TODO: Should we leave buffers as Uint8Array to save space?
     expect(typeof s.s).toEqual('string')
-    expect(typeof s.aad).toEqual('string')
+    expect(s.aad instanceof Uint8Array).toEqual(true)
+
     const did = session.did
+
+    expect(did.parent).toEqual(encodeDIDFromPub(pk))
+
     const jws = await did.createJWS({ hello: 'world' })
+    expect(jws).toBeDefined()
+
     const verifiers = { ...WebauthnAuth.getVerifier() }
     await Cacao.verify(session.cacao, { verifiers })
   })
 })
 
-describe('@didtools/key-passkey: R&D Sanity Checks', () => {
+describe('@didtools/pkh-webauthn: R&D Sanity Checks', () => {
 
   // Data Extracted from: https://heavy-mint.surge.sh/
   test('Extract public key from AuthenticatorData', () => {
