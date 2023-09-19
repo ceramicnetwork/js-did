@@ -5,6 +5,8 @@ import {
   storePublicKey,
   selectPublicKey,
   recoverPublicKeys,
+  decodePubFromDID,
+  encodeDIDFromPub
 } from '../src/utils'
 import { MockAuthenticator } from './mock-authenticator'
 import { hexToBytes } from '@noble/curves/abstract/utils'
@@ -14,7 +16,6 @@ import * as u8a from 'uint8arrays'
 // High-level imports
 import { DIDSession } from 'did-session'
 import { Cacao } from '@didtools/cacao'
-import { encodeDIDFromPub } from '@didtools/key-webcrypto'
 import { WebauthnAuth } from '../src/index'
 
 const { createDID, getAuthMethod, probeDIDs } = WebauthnAuth

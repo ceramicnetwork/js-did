@@ -180,3 +180,24 @@ export function selectPublicKey (pk0: Uint8Array, pk1: Uint8Array): Uint8Array|n
   }
   return null
 }
+
+export function decodePubFromDID(did: string): Uint8Array{
+
+  // did:key:zDnaeYTJrrVC5NMZXjVQZm6CXKGE7DWrevEmSMhuVSGZUCUN2
+  //         xxxxx <---Base Encoded 
+  // const multicodecPubKey: Uint8Array = base58btc.decode(parsed.id)
+  const xxxx = did.replace('did:key:', '')
+
+  debugger
+  const multicodecPubKey: Uint8Array = u8a.fromString(xxxx, 'base58btc')
+  const keyType = varint.decode(multicodecPubKey)
+  //todo throw error invalid, not p256key.
+  const pubKeyBytes = multicodecPubKey.slice(varint.decode.bytes)
+  return pubKeyBytes
+}
+
+export function encodeDIDFromPub(publicKey: Uint8Array): string {
+  const CODE = varint.encode(0x1200) // p-256 multicodec
+  const bytes = u8a.concat([CODE, publicKey])
+  return `did:key:z${u8a.toString(bytes, 'base58btc')}`
+}
