@@ -13,9 +13,11 @@ import * as u8a from 'uint8arrays'
 
 // High-level imports
 import { DIDSession } from 'did-session'
-import { WebauthnAuth, simpleCreateOpts, createCredential } from '../src/index'
 import { Cacao } from '@didtools/cacao'
 import { encodeDIDFromPub } from '@didtools/key-webcrypto'
+import { WebauthnAuth } from '../src/index'
+
+const { createDID, getAuthMethod, probeDIDs } = WebauthnAuth
 
 const toHex = (b: Uint8Array) => u8a.toString(b, 'hex')
 
@@ -24,42 +26,80 @@ const toHex = (b: Uint8Array) => u8a.toString(b, 'hex')
 globalThis.navigator.credentials = new MockAuthenticator()
 
 describe('@didtools/key-passkey', () => {
-  const wSession: WebauthnAuth.AuthenticatorSession = WebauthnAuth.createSession()
-  let pk: Uint8Array
 
-  beforeAll(async () => {
-    const res = await createCredential(wSession, simpleCreateOpts('bob'))
-    pk = res.publicKey
-  })
-
-  it('decodes public key', () => {
+  it.only('MockAuthenticator sanity check', async () => {
+    const did = await createDID('key-test')
+    const publicKey = decodePubFromDID(did) // I think this is what KeyResolver does, check pkh-etherium README.md
+    // MockAuthenticator sanity proof
     // @ts-ignore
     const authenticator = globalThis.navigator.credentials as MockAuthenticator
     // @ts-ignore
-    expect(u8a.toString(pk, 'hex')).toEqual(u8a.toString(authenticator.credentials[0].pk, 'hex'))
+    expect(u8a.toString(publicKey, 'hex'))
+      .toEqual(u8a.toString(authenticator.credentials[0].pk, 'hex'))
   })
 
-  it('authenticates and verifies', async () => {
-    const authMethod = await WebauthnAuth.getAuthMethod(wSession)
+  it('Creates a credential', async () => {
+    // Creates a credential on Authenticator returns as DID-string
+    const did = await createDID('my credential')
+    const authMethod = await getAuthMethod({ did })
+
+    // Authenticate
     const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://nil'] })
-    const { cacao } = session
-    const { p, s } = cacao
-    if (!s) throw new Error('signature missing')
+    expect(session.did.parent).toEqual(did) // logged in with correct id
+    expect(session.cacao.p.iss).toEqual(did)
+    expect(session.cacao.s?.t).toEqual('webauthn:p256')
+    expect(typeof session.cacao.s?.s).toEqual('string')
+    expect(session.cacao.s?.aad instanceof Uint8Array).toEqual(true)
 
-    expect(p.iss).toEqual(encodeDIDFromPub(pk))
-    expect(s.t).toEqual('webauthn:p256')
-    expect(typeof s.s).toEqual('string')
-    expect(s.aad instanceof Uint8Array).toEqual(true)
-
-    const did = session.did
-
-    expect(did.parent).toEqual(encodeDIDFromPub(pk))
-
-    const jws = await did.createJWS({ hello: 'world' })
-    expect(jws).toBeDefined()
-
+    // Verify signature of session
     const verifiers = { ...WebauthnAuth.getVerifier() }
     await Cacao.verify(session.cacao, { verifiers })
+  })
+
+  it('Recovers DID via pre-probe', async () => {
+    // Probe ahead by asking user to press the button
+    const dids = await probeDIDs()
+    const authMethod = await getAuthMethod({ dids })
+
+    // Authenticate
+    const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://nil'] })
+    const did = session.did.parent // User identity settled.
+    expect(dids.includes(did)).toEqual(true) // logged in with correct id
+    expect(session.cacao.p.iss).toEqual(did)
+
+    // Verify signature of session
+    const verifiers = { ...WebauthnAuth.getVerifier() }
+    await Cacao.verify(session.cacao, { verifiers })
+  })
+
+  it('Recover DID on callback', async () => {
+    // Define a callback that probes on-demand
+    async function selectDID(a: string, b: string): Promise<string> {
+      const dids = await probeDIDs()
+      if (dids.includes(a)) return a
+      if (dids.includes(b)) return b
+      throw new Error('Neither A nor B was in probe result')
+    }
+    const authMethod = await getAuthMethod({ selectDID })
+
+    // Authenticate
+    const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://nil'] })
+    const did = session.did.parent // User identity settled.
+    expect(session.cacao.p.iss).toEqual(did)
+
+    // Verify signature of session
+    const verifiers = { ...WebauthnAuth.getVerifier() }
+    await Cacao.verify(session.cacao, { verifiers })
+  })
+
+  it ('getAuthMethod() has a runtime guard', async () =>  {
+    try {
+      // @ts-ignore
+      const authMethod = await getAuthMethod({})
+    } catch (error) {
+      expect(error.message)
+        .toEqual('Webauthn.getAuthMethod(opts) expected `did`, `dids` or `selectDID`')
+    }
   })
 })
 

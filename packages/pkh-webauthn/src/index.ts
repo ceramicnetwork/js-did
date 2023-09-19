@@ -163,7 +163,7 @@ export namespace WebauthnAuth {
       p: {
         domain: globalThis.location.hostname,
         aud: opts.uri || globalThis.location.toString(),
-        version: opts.version || '1',
+        version: '1',
         nonce: opts.nonce || u8a.toString(randomBytes(8), 'base64url'),
         resources: opts.resources,
         exp: opts.expirationTime || new Date(now.getTime() + 7 * 86400000).toISOString(), // 1 week
