@@ -166,6 +166,7 @@ export function recoverPublicKeys (
 export function decodePubFromDID(did: string): Uint8Array{
   const multicodecPubKey: Uint8Array = u8a.fromString(did.replace('did:key:z', ''), 'base58btc')
   const keyType = varint.decode(multicodecPubKey)
+  if (keyType !== 0x1200) throw new Error('Expexted p256 public key')
   return multicodecPubKey.slice(varint.decode.bytes)
 }
 
