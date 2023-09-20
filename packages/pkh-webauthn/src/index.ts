@@ -120,6 +120,16 @@ export async function probeAuthenticator(pk0: Uint8Array, pk1: Uint8Array) {
 
 
 export namespace WebauthnAuth {
+  export async function createDID(lable: string): Promise<string> {
+    const credentials = globalThis.navigator.credentials
+    const credential = await credentials.create(simpleCreateOpts(lable, lable))
+    if (!credential) throw new Error('Empty Credential Response')
+
+    const authenticatorData = getAuthenticatorData(credential.response)
+    const { publicKey } = decodeAuthenticatorData(authenticatorData)
+    return encodeDIDFromPub(publicKey)
+
+  }
   export interface CreateCredentialResult {
     publicKey: Uint8Array,
     credential: PublicKeyCredential,

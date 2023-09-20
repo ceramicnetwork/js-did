@@ -3,6 +3,8 @@ import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
 import { decodeCOSE } from './cose'
 import { ecPointCompress } from '@didtools/key-webcrypto'
+import varint from 'varint'
+
 
 const { localStorage } = globalThis
 
@@ -179,4 +181,16 @@ export function selectPublicKey (pk0: Uint8Array, pk1: Uint8Array): Uint8Array|n
     if (key === u8a.toString(pk1, 'hex')) return pk1
   }
   return null
+}
+
+export function decodePubFromDID(did: string): Uint8Array{
+  const multicodecPubKey: Uint8Array = u8a.fromString(did.replace('did:key:z', ''), 'base58btc')
+  const keyType = varint.decode(multicodecPubKey)
+  return multicodecPubKey.slice(varint.decode.bytes)
+}
+
+export function encodeDIDFromPub(publicKey: Uint8Array): string {
+  const CODE = varint.encode(0x1200) // p-256 multicodec
+  const bytes = u8a.concat([CODE, publicKey])
+  return `did:key:z${u8a.toString(bytes, 'base58btc')}`
 }
