@@ -6,17 +6,21 @@ import { encode } from 'cborg'
  * Dummy webauthn/fido2 Mock device that uses
  * p256/ES256(-7).
  * Produces structurally correct and verifiale credentials/signatures for unit tests.
+ * Does not support multiple credentials.
  */
 export class MockAuthenticator {
   credentials: any[] = []
 
   async create (opts: CredentialCreationOptions) {
+    // Return previous cached result
+    if (this.credentials.length) return this.credentials[0].createResponse
+
+    // Generate a new identity
     const secret = p256.utils.randomPrivateKey()
     const pk = p256.getPublicKey(secret)
     const rawId = u8a.concat([pk.slice(1, 14), u8a.fromString('STUB', 'utf8')])
     const id = u8a.toString(rawId, 'base64url')
     const userHandle = hash(opts.publicKey?.user?.id || p256.CURVE.randomBytes(32))
-    this.credentials.push({ secret, pk, id, rawId, userHandle }) // save for later
     const authData = mkAuthData(pk)
     const attestationObject = bufToU8(encode({ fmt: 'none', attStmt: {}, authData }))
     const challenge = u8a.toString(opts.publicKey?.challenge as Uint8Array, 'base64url')
@@ -43,6 +47,7 @@ export class MockAuthenticator {
       type: 'public-key',
       getClientExtensionResults: () => ({})
     }
+    this.credentials.push({ secret, pk, id, rawId, userHandle, createResponse: out }) // save for later
     // console.log('MockAuthenticator#create()', out)
     return out
   }

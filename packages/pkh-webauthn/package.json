@@ -48,14 +48,13 @@
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
     "dids": "workspace:*",
+    "did-session": "workspace:*",
     "did-jwt": "^7.2.0",
     "typescript": "^5.0.4",
     "@types/varint": "^6.0.1"
   },
   "dependencies": {
-    "@didtools/key-webcrypto": "workspace:*",
     "@didtools/cacao": "workspace:*",
-    "did-session": "workspace:*",
     "@ipld/dag-cbor": "^9.0.1",
     "multiformats": "^11.0.2",
     "cborg": "^1.10.2",

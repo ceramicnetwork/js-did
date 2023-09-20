@@ -13,32 +13,13 @@ npm install --save @didtools/pkh-webauthn
 
 This module is designed to run in browser environments.
 
-Create a Credential for first time users:
+Create a Credential for first time use:
 ```js
-import { WebauthnAuth, createCredential, simpleCreateOpts } from '@didtools/pkh-webauthn'
+import { WebauthnAuth } from '@didtools/pkh-webauthn'
 
-const wns = WebauthnAuth.createSession()
-const { credentialId, publicKey, did } = await WebauthnAuth.createCredential(wsn, simpleCreateOpts('richard@app'))
-console.log('Credential created:', credentialId, publicKey, did)
-```
+const did = await WebauthnAuth.createDid('app-user')
 
-Initialize instance of Webauthn auth provider
-
-```js
-import { WebauthnAuth, probeAuthenticator } from '@didtools/pkh-webauthn'
-
-// Initialize a new webauthn session using
-const wns = WebauthnAuth.createSession({
-    async select (credentialId, pk0, pk1) {
-        // Recover publicKey with help of user-interaction (see caveat below)
-        alert('New device detected! Authenticator says "Hello"')
-        return await probeAuthenticator(pk0, pk1)
-    }
-})
-
-const authMethod = await WebauthnAuth.getAuthMethod(wns)
-
-// Proceed as normal
+const authMethod = await WebauthnAuth.getAuthMethod({ did })
 const session = await DIDSession.authorize(authMethod, { resources: ['ceramic://nil'] })
 ```
 
@@ -64,67 +45,51 @@ const dids = // configured dids instance
 await dids.verifyJWS(jws, { capability, verifiers, ...opts})
 ```
 
-## Caveat - KeySelector
+## Caveat: DID selection
 
-The webauthn+fido2 standard was originally designed for use with central databases and at that time
+The webauthn+fido2 standard was originally developed for use with databases and at that time
 a pesudo random `CredentialID` was preferred over the use of public keys.  
-And thus when generating a secret on secure hardware, then the public key is only ever exported once
-on `createCredential(opts)` and expected to be stored in a KV-store `CredentialID => PublicKey` for later lookup.  
 
-However we can use the authenticators in a decentral manner by recovering the public key given two signed messages from the same credential.
+The public key is exported only **once** when the credential is created - spec limitation.
+There are 3 options for `getAuthMethod()`
 
-Here are two `KeySelector` examples:
+#### Option 1. Known DID
 
 ```js
-// Using a service
-const selector = {
-    async seen (credentialId, publicKey) {
-        await fetch(`https://name.me/register/${credentialId}`, {
-            method: 'POST',
-            body: { publicKey }
-        })
-    },
-
-    async select (credentialId) {
-        const res = await fetch(`https://name.me/whois/${credentialId}`)
-        const { publicKey } = await res.json()
-        return publicKey
-    }
-}
-
-const wns = WebauthnAuth.createSession(selector)
-```
-
-Or using the `probeAuthenticator` helper:
-```js
-// recovery through probing
-import { probeAuthenticator } from '@didtools/pkh-webauthn'
-
-const selector = {
-    async select (_, pk0, pk1) {
-        return await probeAuthenticator(pk0, pk1)
-    }
-}
-
-const wns = WebauthnAuth.createSession(selector)
-```
-
-### KeySelector Interface
-
-```ts
 import { WebauthnAuth } from '@didtools/pkh-webauthn'
 
-// WebauthnAuth.KeySelector
-export interface KeySelector {
+const authMethod = WebauthnAuth.getAuthMethod({ did: 'did:key:zDn...' })
+```
+#### Option 2. Probe
 
-    // Invoked when a new credential/publicKey is detected.
-    seen: (credentialId: string, pk: Uint8Array) => void
+Probe the authenticator for public keys by asking user to sign a nonce:
 
-    // Invoked during Cacao signing process in the scenario that
-    // user has plugged their authenticator into a new device.
-    // The return value must be either pk0 or pk1 - otherwise the operation fails.
-    select: (credentialId: string, pk0: Uint8Array, pk1: Uint8Array) => Uint8Array|null
+```js
+import { WebauthnAuth } from '@didtools/pkh-webauthn'
+
+const dids = await WebauthnAuth.probeDIDs()
+const authMethod = WebauthnAuth.getAuthMethod({ dids })
+```
+
+#### Option 3. Callback
+
+Use a callback with the following call signature:
+
+```ts
+(did1: string, did2: string) => Promise<string>
+```
+
+Example that probes on-demand:
+```js
+import { WebauthnAuth } from '@didtools/pkh-webauthn'
+
+const selectDIDs = async (did1, did2) {
+    const dids = await WebauthnAuth.probeDIDs()
+    if (dids.includes(did1)) return did1
+    else return did2
 }
+
+const authMethod = WebauthnAuth.getAuthMethod({ selectDIDs })
 ```
 
 ## License

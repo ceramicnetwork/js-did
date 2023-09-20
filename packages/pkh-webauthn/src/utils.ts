@@ -113,7 +113,7 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
 }
 
 /**
- * Normalizes authenticatorData across browsers/runtimes.
+ * Normalize authenticatorData across browsers/runtimes.
  */
 export function getAuthenticatorData (response: any) {
   if (response.getAuthenticatorData === 'function') return response.getAuthenticatorData() // only on Chrome
@@ -140,7 +140,7 @@ export function assertU8 (o: any) : Uint8Array {
 
 /**
  * Recovers both recovery bit 0|1 candidates from
- * an webauthn signature.
+ * an authenticator produced signature.
  * @param signature Authenticator generated signature
  * @param authenticatorData Authenticator Data
  * @param clientDataJSON Authenticator generated clientDataJSON - watch out for https://goo.gl/yabPex
@@ -166,7 +166,7 @@ export function recoverPublicKeys (
 export function decodePubFromDID(did: string): Uint8Array{
   const multicodecPubKey: Uint8Array = u8a.fromString(did.replace('did:key:z', ''), 'base58btc')
   const keyType = varint.decode(multicodecPubKey)
-  if (keyType !== 0x1200) throw new Error('Expexted p256 public key')
+  if (keyType !== 0x1200) throw new Error('Expected p256 public key')
   return multicodecPubKey.slice(varint.decode.bytes)
 }
 

@@ -90,10 +90,10 @@ describe('@didtools/key-passkey', () => {
   it ('getAuthMethod() has a runtime guard', async () =>  {
     try {
       // @ts-ignore
-      const authMethod = await getAuthMethod({})
+      await getAuthMethod({})
     } catch (error) {
       expect(error.message)
-        .toEqual('Webauthn.getAuthMethod(opts) expected `did`, `dids` or `selectDID`')
+        .toEqual('getAuthMethod({ did|dids|selectDID }) expects one resolution option')
     }
   })
 })

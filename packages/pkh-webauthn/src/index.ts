@@ -1,11 +1,14 @@
 /**
- * TODO: Paste instructions from final README.md
+ * TODO: Copy final instructions
  *
  * @module @didtools/pkh-webauthn
  */
 import * as dagCbor from '@ipld/dag-cbor'
-import * as Block from 'multiformats/block'
-import { sha256 as hasher } from 'multiformats/hashes/sha2' // Hashing workaround
+import * as Block from 'multiformats/block' // Monkeypatch workaround
+import { sha256 as hasher } from 'multiformats/hashes/sha2' // Monkeypatch workaround
+import varint from 'varint'
+import * as u8a from 'uint8arrays'
+import { encode, decode } from 'cborg'
 import {
   getAuthenticatorData,
   decodeAuthenticatorData,
@@ -13,9 +16,8 @@ import {
   verify,
   assertU8,
   randomBytes,
-  recoverPublicKeys
+  encodeDIDFromPub
 } from './utils'
-import { encodeDIDFromPub } from '@didtools/key-webcrypto'
 import {
   AuthMethod,
   AuthMethodOpts,
@@ -24,9 +26,6 @@ import {
   Payload,
   VerifyOptions
 } from '@didtools/cacao'
-import varint from 'varint'
-import * as u8a from 'uint8arrays'
-import { encode, decode } from 'cborg'
 
 // Workaround for CacaoBlock.fromCacao(): https://github.com/multiformats/js-multiformats/issues/259
 const blockFromCacao = (cacao: Cacao): Promise<CacaoBlock> => {
@@ -41,85 +40,16 @@ const blockFromCacao = (cacao: Cacao): Promise<CacaoBlock> => {
   })
 }
 
-
-// auth-method.ts
-
-/**
- * A simple approach to create a discoverable
- * credential with sane defaults.
- * @param {string} name username|email|user-alias
- * @param {string} displayName Human friendly identifier of credential, shown in OS-popups.
- * @param {string} rpname (RelayingPartyName) name of the app.
- * @returns {CredentialCreationOptions} An options object that can be passed to credentials.create(opts)
- */
-export function simpleCreateOpts (
-  name: string = 'pkh-webauthn',
-  displayName: string =  'Ceramic Auth Provider',
-  rpname: string = globalThis.location.hostname
-): CredentialCreationOptions {
-  return {
-    publicKey: {
-      challenge: randomBytes(32), // Otherwise issued by server
-      rp: {
-        id: globalThis.location.hostname, // Must be set to current hostname
-        name: rpname // A known constant.
-      },
-      user: {
-        id: randomBytes(32), // Server issued arbitrary bytes
-        name,
-        displayName
-      },
-      pubKeyCredParams: [
-        { type: 'public-key', alg: -7 }, // ECDSA (secp256r1) with SHA-256
-      ],
-      authenticatorSelection: {
-        requireResidentKey: true, // Deprecated (superseded by `residentKey`), some webauthn v1 impl still use it.
-        residentKey: 'required', // Require private key to be created on authenticator/ secure storage
-        userVerification: 'required', // Require user to push button/input pin sign requests
-      }
-    }
-  }
-}
-
-export async function createCredential (session: WebauthnAuth.AuthenticatorSession, opts: CredentialCreationOptions): Promise<WebauthnAuth.CreateCredentialResult> {
-  const credentials = globalThis.navigator.credentials
-  if (!opts) throw new Error('Expected options: CredentialCreationOptions')
-  // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/create
-  const credential = await credentials.create(opts) as any
-  if (!credential) throw new Error('Empty Credential Response')
-
-  const authenticatorData = getAuthenticatorData(credential.response)
-  const { publicKey } = decodeAuthenticatorData(authenticatorData)
-  for (const selector of session.selectors) {
-    if (typeof selector.seen === 'function') selector.seen(credential.id, publicKey)
-  }
-
-  return {
-    publicKey,
-    did: encodeDIDFromPub(publicKey),
-    credential
-  }
-}
-
-/**
- * Asks user to sign a random challenge
- * returns either pk0 or pk1 given correct credential is presented
- */
-export async function probeAuthenticator(pk0: Uint8Array, pk1: Uint8Array) {
-  const res = await authenticatorSign(randomBytes(32))
-  for (const candidate of res.recovered) {
-    if (!u8a.compare(candidate, pk0)) return pk0
-    if (!u8a.compare(candidate, pk1)) return pk1
-  }
-  throw new Error('DifferentCredentialSelected')
-}
-
-
 export namespace WebauthnAuth {
+  export type DIDSelector = (did1: string, did2: string) => Promise<string|undefined>
 
-  export async function createDID(lable: string): Promise<string> {
+  export async function createDID(label: string|CredentialCreationOptions): Promise<string> {
+    const opts = typeof label === 'string'
+      ? p256CredentialCreateOptions(label, label)
+      : label
+
     const credentials = globalThis.navigator.credentials
-    const credential = await credentials.create(simpleCreateOpts(lable, lable))
+    const credential = await credentials.create(opts)
     if (!credential) throw new Error('Empty Credential Response')
     // @ts-ignore CredentialsContainer does contain response
     const { response } = credential
@@ -129,24 +59,26 @@ export namespace WebauthnAuth {
 
   }
 
-  export type DIDSelector = (did1: string, did2: string) => Promise<string>
-
   export async function getAuthMethod (didOpts: {
     did?: string
     dids?: Array<string>,
     selectDID?: DIDSelector
   }): Promise<AuthMethod> {
-    const { selectDID, did, dids } = didOpts
-    let select = selectDID
-    if (!select && did) select = async () => did
-    // TODO: if (!select && dids) select = async (a, b) => ....
+    const { did, dids } = didOpts
+
+    let selectDID: DIDSelector
+
+    if (didOpts.selectDID) selectDID = didOpts.selectDID // Use callback
+    else if (did) selectDID = async () => did // Use known DID
+    else if (dids) selectDID = async (a, b) => dids.find(x => x == a || x == b) // Use probe result
+    else throw new Error('getAuthMethod({ did|dids|selectDID }) expects one resolution option')
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
-      return createCacao(opts, select)
+      return createCacao(opts, selectDID)
     }
   }
 
-  async function createCacao (opts: AuthMethodOpts, select: DIDSelector): Promise<Cacao> {
+  async function createCacao (opts: AuthMethodOpts, selectDID: DIDSelector): Promise<Cacao> {
     const now = new Date()
     // The public key is not known at pre-sign time.
     // so we sign a "challenge"-block without Issuer attribute
@@ -176,9 +108,9 @@ export namespace WebauthnAuth {
     const authData = getAuthenticatorData(response)
     const aad = assertU8(encode({ authData, clientDataJSON }))
 
-    const recoveredDIDs = recovered.map(key => encodeDIDFromPub(key))
+    const recoveredDIDs = recovered.map(encodeDIDFromPub)
 
-    const iss = await select(recoveredDIDs[0], recoveredDIDs[1])
+    const iss = await selectDID(recoveredDIDs[0], recoveredDIDs[1])
     if (!iss) throw new Error('PublicKeySelectionFailed')
     // Assert that the resolved key belongs to the signature
     if (!recoveredDIDs.includes(iss)) throw new Error('UnrelatedPublickey')
@@ -198,20 +130,16 @@ export namespace WebauthnAuth {
     }
   }
 
-  // -------------- OLD API --------------------------------
-  export interface CreateCredentialResult {
-    publicKey: Uint8Array,
-    credential: PublicKeyCredential,
-    did: string
-  }
-  export interface KeySelector {
-    seen?: (credentialId: string, pk: Uint8Array) => Promise<void>
-    select: (credentialId: string, pk0: Uint8Array, pk1: Uint8Array) => Promise<Uint8Array|null>
+  /**
+   * Ask user to sign a random challenge
+   * @returns {Promise<Array<string>>} Two potential DIDs
+   */
+  export async function probeDIDs(): Promise<Array<string>> {
+    const res = await authenticatorSign(randomBytes(32))
+    return res.recovered.map(encodeDIDFromPub)
   }
 
 
-
-  // verifier.ts
   export function getVerifier () {
     return { 'webauthn:p256': verifyCacao }
   }
@@ -250,5 +178,44 @@ export namespace WebauthnAuth {
 
     // Compare reproduced challenge-hash to signed hash
     if (u8a.compare(expectedHash, block.cid.bytes) !== 0) throw new Error('MessageMismatch')
+  }
+
+
+
+  /**
+   * A simple approach to create a discoverable
+   * credential with sane defaults.
+   * @param {string} name username|email|user-alias
+   * @param {string} displayName Human friendly identifier of credential, shown in OS-popups.
+   * @param {string} rpname (RelayingPartyName) name of the app.
+   * @returns {CredentialCreationOptions} An options object that can be passed to credentials.create(opts)
+   */
+  export function p256CredentialCreateOptions (
+    name: string = 'pkh-webauthn',
+      displayName: string =  'Ceramic Auth Provider',
+      rpname: string = globalThis.location.hostname
+  ): CredentialCreationOptions {
+    return {
+      publicKey: {
+        challenge: randomBytes(32), // Otherwise issued by server
+        rp: {
+          id: globalThis.location.hostname, // Must be set to current hostname
+          name: rpname // A known constant.
+        },
+        user: {
+          id: randomBytes(32), // Server issued arbitrary bytes
+          name,
+          displayName
+        },
+        pubKeyCredParams: [
+          { type: 'public-key', alg: -7 }, // ECDSA (secp256r1) with SHA-256
+        ],
+        authenticatorSelection: {
+          requireResidentKey: true, // Deprecated (superseded by `residentKey`), some webauthn v1 impl still use it.
+          residentKey: 'required', // Require private key to be created on authenticator/ secure storage
+          userVerification: 'required', // Require user to push button/input pin sign requests
+        }
+      }
+    }
   }
 }
