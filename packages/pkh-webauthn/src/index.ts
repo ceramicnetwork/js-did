@@ -1,15 +1,19 @@
+/**
+ * TODO: Paste instructions from final README.md
+ *
+ * @module @didtools/pkh-webauthn
+ */
 import * as dagCbor from '@ipld/dag-cbor'
 import * as Block from 'multiformats/block'
 import { sha256 as hasher } from 'multiformats/hashes/sha2' // Hashing workaround
 import {
-  selectPublicKey,
-  storePublicKey,
   getAuthenticatorData,
   decodeAuthenticatorData,
   authenticatorSign,
   verify,
   assertU8,
-  randomBytes
+  randomBytes,
+  recoverPublicKeys
 } from './utils'
 import { encodeDIDFromPub } from '@didtools/key-webcrypto'
 import {
@@ -23,14 +27,6 @@ import {
 import varint from 'varint'
 import * as u8a from 'uint8arrays'
 import { encode, decode } from 'cborg'
-
-class LocalStorageKeySelector implements WebauthnAuth.KeySelector {
-  async seen (_: string, pk: Uint8Array) { storePublicKey(pk) }
-
-  async select (_: string, pk0: Uint8Array, pk1: Uint8Array) {
-    return selectPublicKey(pk0, pk1)
-  }
-}
 
 // Workaround for CacaoBlock.fromCacao(): https://github.com/multiformats/js-multiformats/issues/259
 const blockFromCacao = (cacao: Cacao): Promise<CacaoBlock> => {
@@ -120,49 +116,37 @@ export async function probeAuthenticator(pk0: Uint8Array, pk1: Uint8Array) {
 
 
 export namespace WebauthnAuth {
+
   export async function createDID(lable: string): Promise<string> {
     const credentials = globalThis.navigator.credentials
     const credential = await credentials.create(simpleCreateOpts(lable, lable))
     if (!credential) throw new Error('Empty Credential Response')
-
-    const authenticatorData = getAuthenticatorData(credential.response)
+    // @ts-ignore CredentialsContainer does contain response
+    const { response } = credential
+    const authenticatorData = getAuthenticatorData(response)
     const { publicKey } = decodeAuthenticatorData(authenticatorData)
     return encodeDIDFromPub(publicKey)
 
   }
-  export interface CreateCredentialResult {
-    publicKey: Uint8Array,
-    credential: PublicKeyCredential,
-    did: string
-  }
-  export interface KeySelector {
-    seen?: (credentialId: string, pk: Uint8Array) => Promise<void>
-    select: (credentialId: string, pk0: Uint8Array, pk1: Uint8Array) => Promise<Uint8Array|null>
-  }
-  export interface AuthenticatorSession {
-    credentialId?: string // Set if PasskeyProvider was initialized in non-discoverable mode
-    publicKey?: Uint8Array // source for did
-    selectors: KeySelector[]
-  }
 
-  /**
-   * Creates a new session that remembers seen credentials
-   * @param {KeySelector?} selector An object implemeting the KeySelector interface.
-   * @param {string?} credentialId Optionally specify which credential to use for all operations if known ahead of time.
-   */
-  export function createSession (selector?: KeySelector, credentialId?: string): AuthenticatorSession {
-    const selectors: Array<KeySelector> = [new LocalStorageKeySelector()]
-    if (selector) selectors.push(selector)
-    return { credentialId, selectors }
-  }
+  export type DIDSelector = (did1: string, did2: string) => Promise<string>
 
-  export async function getAuthMethod (session: AuthenticatorSession): Promise<AuthMethod> {
+  export async function getAuthMethod (didOpts: {
+    did?: string
+    dids?: Array<string>,
+    selectDID?: DIDSelector
+  }): Promise<AuthMethod> {
+    const { selectDID, did, dids } = didOpts
+    let select = selectDID
+    if (!select && did) select = async () => did
+    // TODO: if (!select && dids) select = async (a, b) => ....
+
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
-      return createCacao(opts, session)
+      return createCacao(opts, select)
     }
   }
 
-  async function createCacao (opts: AuthMethodOpts, session: AuthenticatorSession): Promise<Cacao> {
+  async function createCacao (opts: AuthMethodOpts, select: DIDSelector): Promise<Cacao> {
     const now = new Date()
     // The public key is not known at pre-sign time.
     // so we sign a "challenge"-block without Issuer attribute
@@ -192,20 +176,19 @@ export namespace WebauthnAuth {
     const authData = getAuthenticatorData(response)
     const aad = assertU8(encode({ authData, clientDataJSON }))
 
-    let pk: any
-    for (const selector of session.selectors) {
-      if (typeof selector.select !== 'function') continue
-      if (pk = await selector.select(credential.id, ...recovered)) break
-    }
-    if (!pk) throw new Error('PublicKeySelectionFailed')
-    if (!recovered.find(c => !u8a.compare(c, pk))) throw new Error('UnrelatedPublickey')
+    const recoveredDIDs = recovered.map(key => encodeDIDFromPub(key))
+
+    const iss = await select(recoveredDIDs[0], recoveredDIDs[1])
+    if (!iss) throw new Error('PublicKeySelectionFailed')
+    // Assert that the resolved key belongs to the signature
+    if (!recoveredDIDs.includes(iss)) throw new Error('UnrelatedPublickey')
 
     // Insert iss + aad after signature
     return {
       h: challenge.h,
       p: {
         ...challenge.p,
-        iss: encodeDIDFromPub(pk),
+        iss,
       },
       s: {
         t: 'webauthn:p256',
@@ -214,6 +197,19 @@ export namespace WebauthnAuth {
       }
     }
   }
+
+  // -------------- OLD API --------------------------------
+  export interface CreateCredentialResult {
+    publicKey: Uint8Array,
+    credential: PublicKeyCredential,
+    did: string
+  }
+  export interface KeySelector {
+    seen?: (credentialId: string, pk: Uint8Array) => Promise<void>
+    select: (credentialId: string, pk0: Uint8Array, pk1: Uint8Array) => Promise<Uint8Array|null>
+  }
+
+
 
   // verifier.ts
   export function getVerifier () {

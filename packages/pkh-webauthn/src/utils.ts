@@ -2,11 +2,7 @@ import { decode } from 'cborg'
 import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
 import { decodeCOSE } from './cose'
-import { ecPointCompress } from '@didtools/key-webcrypto'
 import varint from 'varint'
-
-
-const { localStorage } = globalThis
 
 export async function authenticatorSign (challenge: Uint8Array, credentialId?: Uint8Array|string): Promise<{
   signature: Uint8Array,
@@ -67,13 +63,13 @@ export function decodeAttestationObject (attestationObject: Uint8Array|ArrayBuff
  *
  * See box `CREDENTIAL PUBLIC KEY` in picture:
  * https://w3c.github.io/webauthn/images/fido-attestation-structures.svg
- * @param {Uint8Array|ArrayBuffer} attestationObject As given by credentials.create().response.attestationObject
+ * @param {Uint8Array|ArrayBuffer} authData Use getAuthenticatorData(response).
  */
 export function decodeAuthenticatorData (authData: Uint8Array) {
   authData = assertU8(authData)
   // https://w3c.github.io/webauthn/#sctn-authenticator-data
   if (authData.length < 37) throw new Error('AuthenticatorDataTooShort')
-  let o = 0
+    let o = 0
   const rpidHash = authData.slice(o, o += 32) // SHA-256 hash of rp.id
 
   const flags = authData[o++]
@@ -101,7 +97,10 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
   if (!(x instanceof Uint8Array) || !(y instanceof Uint8Array)) throw new Error('Expected X and Y coordinate to be buffers')
 
   // Compress publicKey
-  const publicKey = ecPointCompress(x, y)
+  const publicKey = new Uint8Array(x.length + 1)
+  publicKey[0] = 2 + (y[y.length - 1] & 1)
+  publicKey.set(x, 1)
+
   return {
     rpidHash,
     flags,
@@ -162,25 +161,6 @@ export function recoverPublicKeys (
     .recoverPublicKey(msgHash)
     .toRawBytes(true)
   ) as [Uint8Array, Uint8Array]
-}
-
-export const KNOWN_KEYSTORE = 'knownKeys'
-export function storePublicKey (pk: Uint8Array) {
-  const hex = u8a.toString(pk, 'hex')
-  const knownKeys = JSON.parse(localStorage.getItem(KNOWN_KEYSTORE) || '[]')
-  if (!knownKeys.includes(hex)) {
-    knownKeys.push(hex)
-    localStorage.setItem(KNOWN_KEYSTORE, JSON.stringify(knownKeys))
-  }
-}
-
-export function selectPublicKey (pk0: Uint8Array, pk1: Uint8Array): Uint8Array|null {
-  const knownKeys = JSON.parse(localStorage.getItem(KNOWN_KEYSTORE) || '[]')
-  for (const key of knownKeys) {
-    if (key === u8a.toString(pk0, 'hex')) return pk0
-    if (key === u8a.toString(pk1, 'hex')) return pk1
-  }
-  return null
 }
 
 export function decodePubFromDID(did: string): Uint8Array{
