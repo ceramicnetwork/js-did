@@ -138,7 +138,7 @@ import { DID } from 'dids'
 import { AccountId } from 'caip'
 import type { Cacao, AuthMethod, AuthMethodOpts } from '@didtools/cacao'
 import * as u8a from 'uint8arrays'
-import { SessionStore } from './sessionStore'
+import { SessionStore } from './sessionStore.js'
 
 export type SessionParams = {
   keySeed?: Uint8Array

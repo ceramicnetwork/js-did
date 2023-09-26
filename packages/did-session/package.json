@@ -68,7 +68,9 @@
   },
   "jest": {
     "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/setup.jest.js"],
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup.jest.js"
+    ],
     "extensionsToTreatAsEsm": [
       ".ts"
     ],
