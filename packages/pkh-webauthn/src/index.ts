@@ -125,7 +125,7 @@ export namespace WebauthnAuth {
       s: {
         t: 'webauthn:p256',
         s: signature,
-        aad
+        m: { aad }
       }
     }
   }
@@ -150,8 +150,9 @@ export namespace WebauthnAuth {
    * 3. Unpacks clientDataJSON and assert embedded hash against message hash
    */
   async function verifyCacao (cacao: Cacao, _: VerifyOptions): Promise<void> {
-    if (!cacao.s?.aad) throw new Error('AdditionalAuthenticatorData missing')
-    const { authData, clientDataJSON } = decode(cacao.s.aad)
+    if (!cacao.s) throw new Error('Cacao Signature Construct missing')
+    if (!cacao.s.m?.aad) throw new Error('AdditionalAuthenticatorData missing')
+    const { authData, clientDataJSON } = decode(cacao.s.m.aad)
 
     if (!cacao.s.s) throw new Error('Signature missing')
     const signature = assertU8(cacao.s.s)
