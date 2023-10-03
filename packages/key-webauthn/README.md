@@ -6,7 +6,7 @@ by webauthn/passkey compatible hardware authenticators and OS/software implement
 ## Installation
 
 ```
-npm install --save @didtools/pkh-webauthn
+npm install --save @didtools/key-webauthn
 ```
 
 ## Auth Usage
@@ -15,7 +15,7 @@ This module is designed to run in browser environments.
 
 Create a Credential for first time use:
 ```js
-import { WebauthnAuth } from '@didtools/pkh-webauthn'
+import { WebauthnAuth } from '@didtools/key-webauthn'
 
 const did = await WebauthnAuth.createDid('app-user')
 
@@ -30,7 +30,7 @@ consume a verifiers map allowing your to register the verifiers you want to supp
 
 ```js
 import { Cacao } from '@didtools/cacao'
-import { WebauthnAuth } from '@didtools/pkh-webauthn'
+import { WebauthnAuth } from '@didtools/key-webauthn'
 import { DID } from 'dids'
 
 const verifiers = {
@@ -56,7 +56,7 @@ There are 3 options for `getAuthMethod()`
 #### Option 1. Known DID
 
 ```js
-import { WebauthnAuth } from '@didtools/pkh-webauthn'
+import { WebauthnAuth } from '@didtools/key-webauthn'
 
 const authMethod = WebauthnAuth.getAuthMethod({ did: 'did:key:zDn...' })
 ```
@@ -65,7 +65,7 @@ const authMethod = WebauthnAuth.getAuthMethod({ did: 'did:key:zDn...' })
 Probe the authenticator for public keys by asking user to sign a nonce:
 
 ```js
-import { WebauthnAuth } from '@didtools/pkh-webauthn'
+import { WebauthnAuth } from '@didtools/key-webauthn'
 
 const dids = await WebauthnAuth.probeDIDs()
 const authMethod = WebauthnAuth.getAuthMethod({ dids })
@@ -81,7 +81,7 @@ Use a callback with the following call signature:
 
 Example that probes on-demand:
 ```js
-import { WebauthnAuth } from '@didtools/pkh-webauthn'
+import { WebauthnAuth } from '@didtools/key-webauthn'
 
 const selectDIDs = async (did1, did2) {
     const dids = await WebauthnAuth.probeDIDs()

@@ -1,5 +1,5 @@
 {
-  "name": "@didtools/pkh-webauthn",
+  "name": "@didtools/key-webauthn",
   "version": "1.0.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",

@@ -99,7 +99,7 @@ describe('@didtools/key-passkey', () => {
   })
 })
 
-describe('@didtools/pkh-webauthn: R&D Sanity Checks', () => {
+describe('@didtools/key-webauthn: R&D Sanity Checks', () => {
 
   // Data Extracted from: https://heavy-mint.surge.sh/
   test('Extract public key from AuthenticatorData', () => {

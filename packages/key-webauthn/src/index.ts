@@ -1,7 +1,7 @@
 /**
  * TODO: Copy final instructions
  *
- * @module @didtools/pkh-webauthn
+ * @module @didtools/key-webauthn
  */
 import * as dagCbor from '@ipld/dag-cbor'
 import * as Block from 'multiformats/block' // Monkeypatch workaround
@@ -192,7 +192,7 @@ export namespace WebauthnAuth {
    * @returns {CredentialCreationOptions} An options object that can be passed to credentials.create(opts)
    */
   export function p256CredentialCreateOptions (
-    name: string = 'pkh-webauthn',
+      name: string = 'key-webauthn',
       displayName: string =  'Ceramic Auth Provider',
       rpname: string = globalThis.location.hostname
   ): CredentialCreationOptions {
