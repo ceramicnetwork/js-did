@@ -57,7 +57,7 @@
     "@didtools/cacao": "workspace:*",
     "@ipld/dag-cbor": "^9.0.1",
     "multiformats": "^11.0.2",
-    "cborg": "^1.10.2",
+    "cborg": "^4.0.3",
     "caip": "^1.1.0",
     "uint8arrays": "^4.0.3",
     "@noble/curves": "^1.1.0",

@@ -1,7 +1,6 @@
-import { decode } from 'cborg'
+import { decode, decodeFirst } from 'cborg'
 import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
-import { decodeCOSE } from './cose'
 import varint from 'varint'
 
 export async function authenticatorSign (challenge: Uint8Array, credentialId?: Uint8Array|string): Promise<{
@@ -85,15 +84,13 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
   const credentialId = authData.slice(o, o += clen)
 
   // https://datatracker.ietf.org/doc/html/rfc9052#section-7
-
-  // Bug in cborg.decode() prevents next-line: https://github.com/rvagg/cborg/issues/92
-  // const cose = decode(authData.slice(o - 1), { useMaps: true }) as Map<number, number|Uint8Array>
-
-  // Using local CBOR/COSE implementation until resolved:
-  const cose = decodeCOSE(authData.slice(o))
-  if (cose['kty'] !== 2) throw new Error('Expected COSE key-type to be a EC Coordinate pair')
-  if (cose['alg'] !== -7) throw new Error('Expected ES256 Algorithm')
-  const { x, y } = cose
+  const [cose, _] = decodeFirst(authData.slice(o), { useMaps: true })
+  // KTY = 1
+  if (cose.get(1) !== 2) throw new Error('Expected COSE key-type to be a EC Coordinate pair')
+  // ALG = 3
+  if (cose.get(3) !== -7) throw new Error('Expected ES256 Algorithm')
+  // X = -2, Y = -3
+  const [x, y] = [cose.get(-2), cose.get(-3)]
   if (!(x instanceof Uint8Array) || !(y instanceof Uint8Array)) throw new Error('Expected X and Y coordinate to be buffers')
 
   // Compress publicKey
