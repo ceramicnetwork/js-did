@@ -13,7 +13,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=14.14"
+    "node": ">=20.8"
   },
   "sideEffects": false,
   "scripts": {
@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
-    "codeco": "^1.1.0",
+    "codeco": "^1.2.0",
     "multiformats": "^11.0.1",
     "uint8arrays": "^4.0.3"
   },

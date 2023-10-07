@@ -50,10 +50,10 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
-    "codeco": "^1.1.0"
+    "codeco": "^1.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20.2.3",
+    "@types/node": "^20.8.0",
     "ts-essentials": "^9.3.2",
     "tsm": "^2.3.0",
     "uvu": "^0.5.6",

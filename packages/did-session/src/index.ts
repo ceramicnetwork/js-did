@@ -287,7 +287,7 @@ export class DIDSession {
    */
   static async hasSessionFor(account: AccountId, resources: Array<string>): Promise<boolean> {
     const store = await SessionStore.create()
-    const { cacao } = (await store.get(account)) || {} as { cacao: Cacao }
+    const { cacao } = (await store.get(account)) || ({} as { cacao: Cacao })
     return cacao && cacaoContainsResources(cacao, resources)
   }
 

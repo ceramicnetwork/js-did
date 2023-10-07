@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@types/luxon": "^3.3.0",
-    "@types/node": "^20.2.3",
+    "@types/node": "^20.8.0",
     "luxon": "^3.3.0"
   }
 }
