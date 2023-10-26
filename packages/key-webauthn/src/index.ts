@@ -124,7 +124,7 @@ export namespace WebauthnAuth {
       },
       s: {
         t: 'webauthn:p256',
-        s: signature,
+        s: u8a.toString(signature, 'base64url'),
         m: { aad }
       }
     }
@@ -154,8 +154,8 @@ export namespace WebauthnAuth {
     if (!cacao.s.m?.aad) throw new Error('AdditionalAuthenticatorData missing')
     const { authData, clientDataJSON } = decode(cacao.s.m.aad)
 
-    if (!cacao.s.s) throw new Error('Signature missing')
-    const signature = assertU8(cacao.s.s)
+    if (!cacao.s.s && typeof cacao.s.s !== 'string') throw new Error('Signature missing')
+    const signature = u8a.fromString(cacao.s.s, 'base64url')
 
     if (!cacao.p?.iss) throw new Error('Issuer missing')
     const bIss = u8a.fromString(cacao.p.iss.slice('did:key:z'.length), 'base58btc')

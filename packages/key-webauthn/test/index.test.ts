@@ -44,7 +44,7 @@ describe('@didtools/key-passkey', () => {
     expect(session.cacao.p.iss).toEqual(did)
     expect(session.cacao.s?.t).toEqual('webauthn:p256')
     // @ts-ignore - unignore when codecs/src/cacao.ts:51 is up-to-date with https://chainagnostic.org/CAIPs/caip-74#specification
-    expect(session.cacao.s?.s instanceof Uint8Array).toEqual(true)
+    expect(typeof session.cacao.s?.s).toEqual('string')
     expect(session.cacao.s?.m?.aad instanceof Uint8Array).toEqual(true)
 
     // Verify signature of session
