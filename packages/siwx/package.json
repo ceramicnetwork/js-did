@@ -1,6 +1,6 @@
 {
   "name": "@didtools/siwx",
-  "version": "1.0.0",
+  "version": "1.0.1-next.0",
   "description": "Typescript library for Sign-In With X",
   "author": "Sergey Ukustov <sergey@ukstv.me>",
   "license": "(Apache-2.0 OR MIT)",

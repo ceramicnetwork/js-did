@@ -1,5 +1,12 @@
 # @didtools/pkh-ethereum
 
+## 0.4.2-next.0
+
+### Patch Changes
+
+- Updated dependencies
+  - @didtools/cacao@2.1.1-next.0
+
 ## 0.4.1
 
 ### Patch Changes

@@ -1,0 +1,27 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@didtools/cacao": "2.1.0",
+    "@didtools/codecs": "1.0.1",
+    "did-session": "2.1.1",
+    "dids": "4.0.4",
+    "integration": "0.0.1",
+    "jest-environment-ceramic": "0.17.0",
+    "key-did-provider-ed25519": "3.0.2",
+    "@didtools/key-secp256k1": "0.2.1",
+    "@didtools/key-webcrypto": "0.1.1",
+    "key-did-resolver": "3.0.0",
+    "@didtools/multidid": "0.0.1",
+    "pkh-did-resolver": "1.2.0",
+    "@didtools/pkh-ethereum": "0.4.1",
+    "@didtools/pkh-solana": "0.1.1",
+    "@didtools/pkh-stacks": "0.1.0",
+    "@didtools/pkh-tezos": "0.2.2",
+    "@didtools/siwx": "1.0.0",
+    "website": "0.0.0"
+  },
+  "changesets": [
+    "khaki-eyes-smell"
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "@didtools/pkh-stacks",
-  "version": "0.1.0",
+  "version": "0.1.1-next.0",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
   "main": "dist/index.js",
@@ -46,7 +46,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@didtools/cacao": "workspace:^2.0.0",
+    "@didtools/cacao": "workspace:^2.1.1-next.0",
     "@stablelib/random": "^1.0.2",
     "@stacks/common": "^6.5.2",
     "@stacks/encryption": "^6.5.4",

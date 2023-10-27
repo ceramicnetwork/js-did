@@ -1,5 +1,15 @@
 ## v2.4.0 (2021-07-12)
 
+## 4.0.5-next.0
+
+### Patch Changes
+
+- Use worker threads
+- Updated dependencies
+  - @didtools/codecs@1.0.2-next.0
+  - @didtools/cacao@2.1.1-next.0
+  - @didtools/pkh-ethereum@0.4.2-next.0
+
 ## 4.0.4
 
 ### Patch Changes

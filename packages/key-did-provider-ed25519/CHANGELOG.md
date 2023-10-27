@@ -1,5 +1,12 @@
 # key-did-provider-ed25519
 
+## 3.0.3-next.0
+
+### Patch Changes
+
+- Updated dependencies
+  - dids@4.0.5-next.0
+
 ## 3.0.2
 
 ### Patch Changes

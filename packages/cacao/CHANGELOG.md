@@ -1,5 +1,14 @@
 # @didtools/cacao
 
+## 2.1.1-next.0
+
+### Patch Changes
+
+- Use worker threads
+- Updated dependencies
+  - @didtools/codecs@1.0.2-next.0
+  - @didtools/siwx@1.0.1-next.0
+
 ## 2.1.0
 
 ### Minor Changes
