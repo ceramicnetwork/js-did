@@ -1,0 +1,66 @@
+{
+  "name": "@didtools/key-webauthn",
+  "version": "1.0.0",
+  "author": "3Box Labs",
+  "license": "(Apache-2.0 OR MIT)",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=14.14"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build:clean": "del dist",
+    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+    "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
+    "lint": "eslint src --fix",
+    "test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "debug": "node inspect --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+    "test:ci": "pnpm run test --ci --coverage",
+    "prepare": "pnpm run build",
+    "prepublishOnly": "package-check",
+    "size": "./node_modules/.bin/size-limit",
+    "analyze": "./node_modules/.bin/size-limit --why"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceramicnetwork/js-did.git"
+  },
+  "keywords": [
+    "DID",
+    "identity",
+    "did-provider",
+    "self-sovereign",
+    "passkey",
+    "webauthn"
+  ],
+  "bugs": {
+    "url": "https://github.com/ceramicnetwork/js-did/issues"
+  },
+  "homepage": "https://github.com/ceramicnetwork/js-did#readme",
+  "devDependencies": {
+    "dids": "workspace:*",
+    "did-session": "workspace:*",
+    "did-jwt": "^7.2.0",
+    "typescript": "^5.0.4",
+    "@types/varint": "^6.0.1"
+  },
+  "dependencies": {
+    "@didtools/cacao": "workspace:*",
+    "@ipld/dag-cbor": "^9.0.1",
+    "multiformats": "^11.0.2",
+    "cborg": "^4.0.3",
+    "caip": "^1.1.0",
+    "uint8arrays": "^4.0.3",
+    "@noble/curves": "^1.1.0",
+    "varint": "^6.0.0"
+  }
+}

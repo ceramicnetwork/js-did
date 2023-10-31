@@ -377,6 +377,49 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
 
+  packages/key-webauthn:
+    dependencies:
+      '@didtools/cacao':
+        specifier: workspace:*
+        version: link:../cacao
+      '@ipld/dag-cbor':
+        specifier: ^9.0.1
+        version: 9.0.1
+      '@noble/curves':
+        specifier: ^1.1.0
+        version: 1.1.0
+      caip:
+        specifier: ^1.1.0
+        version: 1.1.0
+      cborg:
+        specifier: ^4.0.3
+        version: 4.0.3
+      multiformats:
+        specifier: ^11.0.2
+        version: 11.0.2
+      uint8arrays:
+        specifier: ^4.0.3
+        version: 4.0.3
+      varint:
+        specifier: ^6.0.0
+        version: 6.0.0
+    devDependencies:
+      '@types/varint':
+        specifier: ^6.0.1
+        version: 6.0.1
+      did-jwt:
+        specifier: ^7.2.0
+        version: 7.2.0
+      did-session:
+        specifier: workspace:*
+        version: link:../did-session
+      dids:
+        specifier: workspace:*
+        version: link:../dids
+      typescript:
+        specifier: ^5.0.4
+        version: 5.0.4
+
   packages/multidid:
     dependencies:
       multiformats:
@@ -8656,6 +8699,11 @@ packages:
   /cborg@1.10.2:
     resolution: {integrity: sha512-b3tFPA9pUr2zCUiCfRd2+wok2/LBSNUMKOuRRok+WlvvAgEt/PlbgPTsZUcwCOs53IJvLgTp0eotwtosE6njug==}
     hasBin: true
+
+  /cborg@4.0.3:
+    resolution: {integrity: sha512-poLvpK30KT5KI8gzDx3J/IuVCbsLqMT2fEbOrOuX0H7Hyj8yg5LezeWhRh9aLa5Z6MfPC5sriW3HVJF328M8LQ==}
+    hasBin: true
+    dev: false
 
   /ccount@1.1.0:
     resolution: {integrity: sha512-vlNK021QdI7PNeiUh/lKkC/mNHHfV0m/Ad5JoI0TYtlBnJAslM/JIkm/tGC88bkLIwO6OQ5uV6ztS6kVAtCDlg==}

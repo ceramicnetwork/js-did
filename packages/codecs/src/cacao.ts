@@ -46,10 +46,13 @@ export const CacaoSignature = strict(
   },
   'CacaoSignature'
 )
+
 export type CacaoSignature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1'
-  s: string
+  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1' | 'webauthn:p256'
+  s: string,
+  m?: SignatureMeta
 }
+export type SignatureMeta = any // TODO: add runtime guard against primitives in encoders, obj/struct is expected: https://chainagnostic.org/CAIPs/caip-74#specification
 
 export const Cacao = sparse(
   { h: CacaoHeader, p: CacaoPayload, s: optional(CacaoSignature) },
