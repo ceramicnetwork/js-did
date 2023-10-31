@@ -162,7 +162,7 @@ export namespace WebauthnAuth {
 
     if (didOpts.selectDID) selectDID = didOpts.selectDID // Use callback
     else if (did) selectDID = async () => did // Use known DID
-    else if (dids) selectDID = async (a, b) => dids.find(x => x == a || x == b) // Use probe result
+    else if (dids) selectDID = async (a, b) => dids.find(x => [a, b].includes(x)) // Use probe result
     else throw new Error('getAuthMethod({ did|dids|selectDID }) expects one resolution option')
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
@@ -236,6 +236,16 @@ export namespace WebauthnAuth {
     return { 'webauthn:p256': verifyCacao }
   }
 
+  export interface AdditionalAuthenticatorData {
+    authData: Uint8Array,
+    clientDataJSON: Uint8Array
+  }
+
+  interface ClientData {
+    type: string,
+    challenge: string
+  }
+
   /**
    * 1. Recreates cacao-challenge and message hash
    * 2. Verifies Signature of clientDataJSON
@@ -243,8 +253,10 @@ export namespace WebauthnAuth {
    */
   async function verifyCacao (cacao: Cacao, _: VerifyOptions): Promise<void> {
     if (!cacao.s) throw new Error('Cacao Signature Construct missing')
-    if (!cacao.s.m?.aad) throw new Error('AdditionalAuthenticatorData missing')
-    const { authData, clientDataJSON } = decode(cacao.s.m.aad)
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const aad = cacao.s.m?.aad
+    if (!aad) throw new Error('AdditionalAuthenticatorData missing')
+    const { authData, clientDataJSON } = decode(assertU8(aad)) as AdditionalAuthenticatorData
 
     if (!cacao.s.s && typeof cacao.s.s !== 'string') throw new Error('Signature missing')
     const signature = u8a.fromString(cacao.s.s, 'base64url')
@@ -259,7 +271,7 @@ export namespace WebauthnAuth {
     if (!valid) throw new Error('InvalidMessage')
 
     // Verify clientDataJSON.challenge equals message hash
-    const clientData = JSON.parse(u8a.toString(clientDataJSON, 'utf8'))
+    const clientData = JSON.parse(u8a.toString(clientDataJSON, 'utf8')) as ClientData
     if (clientData.type !== 'webauthn.get') throw new Error('Invalid clientDataJSON.type')
     const expectedHash = u8a.fromString(clientData.challenge, 'base64url')
 
@@ -284,8 +296,8 @@ export namespace WebauthnAuth {
    * @returns {CredentialCreationOptions} An options object that can be passed to credentials.create(opts)
    */
   export function p256CredentialCreateOptions (
-      name: string = 'key-webauthn',
-      displayName: string =  'Ceramic Auth Provider',
+      name = 'key-webauthn',
+      displayName =  'Ceramic Auth Provider',
       rpname: string = globalThis.location.hostname
   ): CredentialCreationOptions {
     return {

@@ -52,7 +52,7 @@ export type CacaoSignature = {
   s: string,
   m?: SignatureMeta
 }
-export type SignatureMeta = any // TODO: guard against primitives in encoders https://chainagnostic.org/CAIPs/caip-74#specification
+export type SignatureMeta = any // TODO: add runtime guard against primitives in encoders, obj/struct is expected: https://chainagnostic.org/CAIPs/caip-74#specification
 
 export const Cacao = sparse(
   { h: CacaoHeader, p: CacaoPayload, s: optional(CacaoSignature) },

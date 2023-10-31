@@ -3,12 +3,22 @@ import { p256 } from '@noble/curves/p256'
 import * as u8a from 'uint8arrays'
 import varint from 'varint'
 
+// Type definition for return type of credentials.get() seems to be incomplete.
+// The actual returned object props varies depending on input parameters.
+export interface CredentialSignResponse extends Credential {
+  response: {
+    clientDataJSON: Uint8Array,
+    authenticatorData: Uint8Array,
+    signature: Uint8Array
+  }
+}
+
 export async function authenticatorSign (challenge: Uint8Array, credentialId?: Uint8Array|string): Promise<{
   signature: Uint8Array,
   recovered: [Uint8Array, Uint8Array],
-  credential: Credential
+  credential: CredentialSignResponse
 }> {
-    const allowCredentials:PublicKeyCredentialDescriptor[] = []
+    const allowCredentials: Array<PublicKeyCredentialDescriptor> = []
     if (credentialId) {
       if (typeof credentialId === 'string') credentialId = u8a.fromString(credentialId, 'base64url')
       allowCredentials.push({ type: 'public-key', id: credentialId })
@@ -22,9 +32,8 @@ export async function authenticatorSign (challenge: Uint8Array, credentialId?: U
         // @ts-ignore
         attestation: 'direct' // https://developer.mozilla.org/en-US/docs/Web/API/CredentialsContainer/get#publickey_object_structure
       }
-    })
+    }) as CredentialSignResponse|null
     if (!credential) throw new Error('AbortedByUser')
-    // @ts-ignore - credential.response does exist.
     const { response } = credential
     const { clientDataJSON, signature } = response
     const authenticatorData = getAuthenticatorData(response)
@@ -53,8 +62,13 @@ export function randomBytes (n: number) {
   return p256.CURVE.randomBytes(n)
 }
 
+export interface AttestationObject {
+  fmt: string,
+  attStmt: any,
+  authData: Uint8Array
+}
 export function decodeAttestationObject (attestationObject: Uint8Array|ArrayBuffer) {
-  return decode(assertU8(attestationObject))
+  return decode(assertU8(attestationObject)) as AttestationObject
 }
 
 /**
@@ -84,7 +98,7 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
   const credentialId = authData.slice(o, o += clen)
 
   // https://datatracker.ietf.org/doc/html/rfc9052#section-7
-  const [cose, _] = decodeFirst(authData.slice(o), { useMaps: true })
+  const [cose, _] = decodeFirst(authData.slice(o), { useMaps: true }) as [Map<number,any>, Uint8Array|null]
   // KTY = 1
   if (cose.get(1) !== 2) throw new Error('Expected COSE key-type to be a EC Coordinate pair')
   // ALG = 3
@@ -112,13 +126,23 @@ export function decodeAuthenticatorData (authData: Uint8Array) {
 /**
  * Normalize authenticatorData across browsers/runtimes.
  */
-export function getAuthenticatorData (response: any) {
-  if (response.getAuthenticatorData === 'function') return response.getAuthenticatorData() // only on Chrome
-  if (response.authenticatorData) return response.authenticatorData // Sometimes not available on FF
-  if (response.attestationObject) { // Worst case scenario, decode attestationObject
+export function getAuthenticatorData (response: any): Uint8Array {
+  // Only on Chrome
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  if (typeof response.getAuthenticatorData === 'function') return assertU8(response.getAuthenticatorData())
+
+  // Sometimes missing in Mozilla
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (response.authenticatorData) return assertU8(response.authenticatorData)
+
+  // Worst case scenario, decode attestationObject
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  if (response.attestationObject) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     const { authData } = decode(assertU8(response.attestationObject))
     return assertU8(authData)
   }
+
   throw new Error('Failed to recover authenticator data from credential response') // Give up
 }
 
@@ -128,10 +152,14 @@ export function getAuthenticatorData (response: any) {
 export function assertU8 (o: any) : Uint8Array {
   if (o instanceof ArrayBuffer) return new Uint8Array(o)
   if (o instanceof Uint8Array) return o
+
   // node:Buffer to Uint8Array
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   if (!(o instanceof Uint8Array) && o?.buffer) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
     return new Uint8Array(o.buffer, o.byteOffset, o.byteLength)
   }
+
   throw new Error('Expected Uint8Array')
 }
 
