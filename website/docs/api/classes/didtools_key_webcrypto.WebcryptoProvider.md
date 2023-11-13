@@ -1,10 +1,10 @@
 ---
-id: "key_did_provider_ed25519.Ed25519Provider"
-title: "Class: Ed25519Provider"
+id: "didtools_key_webcrypto.WebcryptoProvider"
+title: "Class: WebcryptoProvider"
 custom_edit_url: null
 ---
 
-[key-did-provider-ed25519](../modules/key_did_provider_ed25519.md).Ed25519Provider
+[@didtools/key-webcrypto](../modules/didtools_key_webcrypto.md).WebcryptoProvider
 
 ## Implements
 
@@ -14,13 +14,13 @@ custom_edit_url: null
 
 ### constructor
 
-• **new Ed25519Provider**(`seed`)
+• **new WebcryptoProvider**(`keyPair`)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `seed` | `Uint8Array` |
+| `keyPair` | `CryptoKeyPair` |
 
 ## Properties
 

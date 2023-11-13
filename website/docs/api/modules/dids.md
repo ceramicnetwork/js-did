@@ -205,7 +205,7 @@ ___
 
 ### AuthenticateResponse
 
-Ƭ **AuthenticateResponse**: [`AuthenticateParams`](dids.md#authenticateparams) & { `did`: `string` ; `exp`: `number`  }
+Ƭ **AuthenticateResponse**: [`AuthenticateParams`](dids.md#authenticateparams) & \{ `did`: `string` ; `exp`: `number`  }
 
 ___
 
@@ -218,7 +218,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `aad?` | `Uint8Array` |
-| `protectedHeader?` | `Record`<`string`, `any`\> |
+| `protectedHeader?` | `Record`\<`string`, `any`\> |
 
 ___
 
@@ -232,7 +232,7 @@ ___
 | :------ | :------ |
 | `did?` | `string` |
 | `linkedBlock?` | `string` |
-| `protected?` | `Record`<`string`, `any`\> |
+| `protected?` | `Record`\<`string`, `any`\> |
 
 ___
 
@@ -245,8 +245,8 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `did` | `string` |
-| `payload` | `string` \| `Record`<`string`, `any`\> |
-| `protected?` | `Record`<`string`, `any`\> |
+| `payload` | `string` \| `Record`\<`string`, `any`\> |
+| `protected?` | `Record`\<`string`, `any`\> |
 | `revocable?` | `boolean` |
 
 ___
@@ -275,13 +275,13 @@ ___
 
 ### DIDProvider
 
-Ƭ **DIDProvider**: `RPCConnection`<[`DIDProviderMethods`](dids.md#didprovidermethods)\>
+Ƭ **DIDProvider**: `RPCConnection`\<[`DIDProviderMethods`](dids.md#didprovidermethods)\>
 
 ___
 
 ### DIDProviderClient
 
-Ƭ **DIDProviderClient**: `RPCClient`<[`DIDProviderMethods`](dids.md#didprovidermethods)\>
+Ƭ **DIDProviderClient**: `RPCClient`\<[`DIDProviderMethods`](dids.md#didprovidermethods)\>
 
 ___
 
@@ -293,16 +293,16 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `did_authenticate` | { `params`: [`AuthParams`](dids.md#authparams) ; `result`: [`GeneralJWS`](dids.md#generaljws-1)  } |
+| `did_authenticate` | \{ `params`: [`AuthParams`](dids.md#authparams) ; `result`: [`GeneralJWS`](dids.md#generaljws-1)  } |
 | `did_authenticate.params` | [`AuthParams`](dids.md#authparams) |
 | `did_authenticate.result` | [`GeneralJWS`](dids.md#generaljws-1) |
-| `did_createJWS` | { `params`: [`CreateJWSParams`](dids.md#createjwsparams) ; `result`: { `jws`: [`GeneralJWS`](dids.md#generaljws-1)  }  } |
+| `did_createJWS` | \{ `params`: [`CreateJWSParams`](dids.md#createjwsparams) ; `result`: \{ `jws`: [`GeneralJWS`](dids.md#generaljws-1)  }  } |
 | `did_createJWS.params` | [`CreateJWSParams`](dids.md#createjwsparams) |
-| `did_createJWS.result` | { `jws`: [`GeneralJWS`](dids.md#generaljws-1)  } |
+| `did_createJWS.result` | \{ `jws`: [`GeneralJWS`](dids.md#generaljws-1)  } |
 | `did_createJWS.result.jws` | [`GeneralJWS`](dids.md#generaljws-1) |
-| `did_decryptJWE` | { `params`: [`DecryptJWEParams`](dids.md#decryptjweparams) ; `result`: { `cleartext`: `string`  }  } |
+| `did_decryptJWE` | \{ `params`: [`DecryptJWEParams`](dids.md#decryptjweparams) ; `result`: \{ `cleartext`: `string`  }  } |
 | `did_decryptJWE.params` | [`DecryptJWEParams`](dids.md#decryptjweparams) |
-| `did_decryptJWE.result` | { `cleartext`: `string`  } |
+| `did_decryptJWE.result` | \{ `cleartext`: `string`  } |
 | `did_decryptJWE.result.cleartext` | `string` |
 
 ___
@@ -315,7 +315,7 @@ ___
 
 ### DIDRequest
 
-Ƭ **DIDRequest**<`K`\>: `RPCRequest`<[`DIDProviderMethods`](dids.md#didprovidermethods), `K`\>
+Ƭ **DIDRequest**\<`K`\>: `RPCRequest`\<[`DIDProviderMethods`](dids.md#didprovidermethods), `K`\>
 
 #### Type parameters
 
@@ -327,7 +327,7 @@ ___
 
 ### DIDResponse
 
-Ƭ **DIDResponse**<`K`\>: `RPCResponse`<[`DIDProviderMethods`](dids.md#didprovidermethods), `K`\>
+Ƭ **DIDResponse**\<`K`\>: `RPCResponse`\<[`DIDProviderMethods`](dids.md#didprovidermethods), `K`\>
 
 #### Type parameters
 
@@ -455,7 +455,7 @@ ___
 | :------ | :------ |
 | `didResolutionResult` | `DIDResolutionResult` |
 | `kid` | `string` |
-| `payload?` | `Record`<`string`, `any`\> |
+| `payload?` | `Record`\<`string`, `any`\> |
 
 ## Variables
 

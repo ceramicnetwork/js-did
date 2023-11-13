@@ -140,7 +140,7 @@ ___
 
 ### authorize
 
-▸ `Static` **authorize**(`authMethod`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+▸ `Static` **authorize**(`authMethod`, `authOpts?`): `Promise`\<[`DIDSession`](did_session.DIDSession.md)\>
 
 Request authorization for session
 
@@ -153,13 +153,13 @@ Request authorization for session
 
 #### Returns
 
-`Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+`Promise`\<[`DIDSession`](did_session.DIDSession.md)\>
 
 ___
 
 ### fromSession
 
-▸ `Static` **fromSession**(`session`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+▸ `Static` **fromSession**(`session`): `Promise`\<[`DIDSession`](did_session.DIDSession.md)\>
 
 Initialize a session from a serialized session string
 
@@ -171,13 +171,52 @@ Initialize a session from a serialized session string
 
 #### Returns
 
-`Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+`Promise`\<[`DIDSession`](did_session.DIDSession.md)\>
+
+___
+
+### get
+
+▸ `Static` **get**(`account`, `authMethod`, `authOpts?`): `Promise`\<[`DIDSession`](did_session.DIDSession.md)\>
+
+Get a session for the given accountId, if one exists, otherwise creates a new one.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `account` | `AccountId` |
+| `authMethod` | `AuthMethod` |
+| `authOpts` | `AuthOpts` |
+
+#### Returns
+
+`Promise`\<[`DIDSession`](did_session.DIDSession.md)\>
+
+___
+
+### hasSessionFor
+
+▸ `Static` **hasSessionFor**(`account`, `resources`): `Promise`\<`boolean`\>
+
+Check if there is an active session for a given account.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `account` | `AccountId` |
+| `resources` | `string`[] |
+
+#### Returns
+
+`Promise`\<`boolean`\>
 
 ___
 
 ### initDID
 
-▸ `Static` **initDID**(`didKey`, `cacao`): `Promise`<`DID`\>
+▸ `Static` **initDID**(`didKey`, `cacao`): `Promise`\<`DID`\>
 
 #### Parameters
 
@@ -188,4 +227,4 @@ ___
 
 #### Returns
 
-`Promise`<`DID`\>
+`Promise`\<`DID`\>

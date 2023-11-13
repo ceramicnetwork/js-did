@@ -10,7 +10,7 @@ custom_edit_url: null
 
 ### getAuthMethod
 
-▸ **getAuthMethod**(`tzProvider`, `account`): `Promise`<`AuthMethod`\>
+▸ **getAuthMethod**(`tzProvider`, `account`): `Promise`\<`AuthMethod`\>
 
 #### Parameters
 
@@ -21,4 +21,4 @@ custom_edit_url: null
 
 #### Returns
 
-`Promise`<`AuthMethod`\>
+`Promise`\<`AuthMethod`\>

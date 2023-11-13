@@ -15,18 +15,7 @@
 const sidebars = {
   docs: [
     { type: 'doc', id: 'introduction', label: 'Introduction' },
-    {
-      type: 'category',
-      collapsed: false,
-      label: 'Getting Started',
-      items: ['installation', 'authorization', 'configuration', 'managing-sessions'],
-    },
-    {
-      type: 'category',
-      collapsed: false,
-      label: 'Guides',
-      items: ['guides/concepts-overview', 'guides/using-with-composedb-client', 'guides/add-chain-support', 'guides/upgrading-did-session'],
-    },
+    { type: 'doc', id: 'installation', label: 'Installation' },
   ],
   api: [
     {

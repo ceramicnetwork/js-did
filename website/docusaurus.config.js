@@ -72,7 +72,7 @@ const config = {
             type: 'doc',
             docId: 'introduction',
             position: 'left',
-            label: 'Docs',
+            label: 'Introduction',
           },
           {
             type: 'doc',
@@ -92,11 +92,11 @@ const config = {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Introduction',
             items: [
               {
                 label: 'Getting Started',
-                to: '/docs/installation',
+                to: '/docs/introduction',
               },
             ],
           },

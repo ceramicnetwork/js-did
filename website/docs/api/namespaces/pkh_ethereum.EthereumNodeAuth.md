@@ -10,7 +10,7 @@ custom_edit_url: null
 
 ### getAuthMethod
 
-▸ **getAuthMethod**(`ethProvider`, `account`, `appName`): `Promise`<`AuthMethod`\>
+▸ **getAuthMethod**(`ethProvider`, `account`, `appName`): `Promise`\<`AuthMethod`\>
 
 Get a configured authMethod for an Ethereum account in a Node based environment
 
@@ -24,4 +24,4 @@ Get a configured authMethod for an Ethereum account in a Node based environment
 
 #### Returns
 
-`Promise`<`AuthMethod`\>
+`Promise`\<`AuthMethod`\>
