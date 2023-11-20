@@ -1,4 +1,4 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
 
 settings:
   autoInstallPeers: true
@@ -579,9 +579,6 @@ importers:
       codeco:
         specifier: ^1.1.0
         version: 1.1.0
-      dids:
-        specifier: workspace:^
-        version: link:../dids
       key-did-provider-ed25519:
         specifier: workspace:^
         version: link:../key-did-provider-ed25519
