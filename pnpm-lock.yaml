@@ -573,12 +573,18 @@ importers:
 
   packages/varsig:
     dependencies:
+      codeco:
+        specifier: ^1.1.0
+        version: 1.1.0
       multiformats:
         specifier: ^11.0.2
         version: 11.0.2
       uint8arrays:
         specifier: ^4.0.3
         version: 4.0.3
+      varintes:
+        specifier: ^2.0.5
+        version: 2.0.5
     devDependencies:
       '@stablelib/random':
         specifier: ^1.0.2
@@ -18797,6 +18803,10 @@ packages:
 
   /varintes@2.0.4:
     resolution: {integrity: sha512-4Ls542xejhl3tnbUnrZVf/q0ApH3rj7hVRLue2mKDreiXyPFaOP/T0k0elfi+63pcVF18zchT/R/RBAUbnon0A==}
+    dev: false
+
+  /varintes@2.0.5:
+    resolution: {integrity: sha512-iF3jlHLko9NrYjaUZvT3VwypP3V20KNNhT1tzqblyIyrVjNiW7HseGOhuP+apgZBp9X/8+5pxa7kNikhJeZlIw==}
     dev: false
 
   /varuint-bitcoin@1.1.2:
