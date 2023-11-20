@@ -15,16 +15,13 @@ export type Varsig = {
   encoding: ENCODING
   hashing: HASHING
   signing: SIGNING
-  payload: Uint8Array
+  payload: Record<string | number, any>
+  signature: Uint8Array
 }
 
 // Sign an IPLD
 // Here is EIP1271 blob please encode
 // or here is JWT please encode it
-
-export function sign(key: CryptoKey) {
-
-}
 
 // export function verify(signingInput: Uint8Array, bytes: Uint8Array, offset = 0) {
 //   const input = bytes.subarray(offset)
