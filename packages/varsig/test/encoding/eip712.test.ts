@@ -82,6 +82,7 @@ test('Canonicalize ipld eip712 object', async () => {
   const enc = fromEip712(testData)
   const res1 = setupCanonicalizer(enc.params)
   expect(res1.remainder.length).toEqual(0)
+  expect(res1.params).toEqual({ types: testData.types, primaryType: testData.primaryType, domain: testData.domain })
 
   const testRemainder = new Uint8Array([1, 2, 3])
   const res2 = setupCanonicalizer(
@@ -89,4 +90,5 @@ test('Canonicalize ipld eip712 object', async () => {
   )
   expect(res2.remainder.length).toEqual(testRemainder.length)
   expect(res2.remainder).toEqual(testRemainder)
+  expect(res2.params).toEqual({ types: testData.types, primaryType: testData.primaryType, domain: testData.domain })
 })
