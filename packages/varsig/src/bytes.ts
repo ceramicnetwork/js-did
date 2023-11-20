@@ -1,4 +1,3 @@
-import { left, right, type Either } from 'codeco/either'
 import * as varintes from 'varintes'
 
 type VarsigBytes = {
@@ -11,25 +10,21 @@ type VarsigBytes = {
 const VARSIG_SIGIL = 0x34
 const VARSIG_SIGIL_BYTES = new Uint8Array([VARSIG_SIGIL])
 
-export function fromBytes(bytes: Uint8Array): Either<Error, VarsigBytes> {
+export function fromBytes(bytes: Uint8Array): VarsigBytes {
   const [sigil, sigilRead] = varintes.decode(bytes)
-  if (sigil !== VARSIG_SIGIL) return left(new Error(`Wrong sigil`))
-  try {
-    const sigilRemainder = bytes.subarray(sigilRead)
-    const [encoding, encodingRead] = varintes.decode(sigilRemainder)
-    const encodingRemainder = bytes.subarray(encodingRead)
-    const [hashing, hashingRead] = varintes.decode(encodingRemainder)
-    const hashingRemainder = sigilRemainder.subarray(hashingRead)
-    const [signing, signingRead] = varintes.decode(hashingRemainder)
-    const signature = hashingRemainder.subarray(signingRead)
-    return right({
-      encoding: encoding,
-      hashing: hashing,
-      signing: signing,
-      signature: signature,
-    })
-  } catch (e) {
-    return left(e as Error)
+  if (sigil !== VARSIG_SIGIL) throw new Error(`Wrong sigil`)
+  const sigilRemainder = bytes.subarray(sigilRead)
+  const [encoding, encodingRead] = varintes.decode(sigilRemainder)
+  const encodingRemainder = bytes.subarray(encodingRead)
+  const [hashing, hashingRead] = varintes.decode(encodingRemainder)
+  const hashingRemainder = sigilRemainder.subarray(hashingRead)
+  const [signing, signingRead] = varintes.decode(hashingRemainder)
+  const signature = hashingRemainder.subarray(signingRead)
+  return {
+    encoding: encoding,
+    hashing: hashing,
+    signing: signing,
+    signature: signature,
   }
 }
 

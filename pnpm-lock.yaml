@@ -573,6 +573,9 @@ importers:
 
   packages/varsig:
     dependencies:
+      '@types/node':
+        specifier: ^20.2.3
+        version: 20.2.3
       codeco:
         specifier: ^1.1.0
         version: 1.1.0
