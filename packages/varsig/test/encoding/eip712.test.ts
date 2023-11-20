@@ -1,4 +1,5 @@
-import { fromEip712 } from '../../src/encoding/eip712.ts'
+import { fromEip712, setupCanonicalizer } from '../../src/encoding/eip712.ts'
+import * as uint8arrays from 'uint8arrays'
 
 const testData = {
       "types": {
@@ -73,6 +74,19 @@ const testData = {
 test('Encode eip712 message', async () => {
   const enc = fromEip712(testData)
 
-  expect(enc.params.length).toEqual(270)
+  expect(enc.params.length).toEqual(196)
   expect(enc.node.attachment instanceof Uint8Array).toBeTruthy()
+})
+
+test('Canonicalize ipld eip712 object', async () => {
+  const enc = fromEip712(testData)
+  const res1 = setupCanonicalizer(enc.params)
+  expect(res1.remainder.length).toEqual(0)
+
+  const testRemainder = new Uint8Array([1, 2, 3])
+  const res2 = setupCanonicalizer(
+    uint8arrays.concat([enc.params, testRemainder])
+  )
+  expect(res2.remainder.length).toEqual(testRemainder.length)
+  expect(res2.remainder).toEqual(testRemainder)
 })
