@@ -50,6 +50,8 @@
   "dependencies": {
     "@types/node": "^20.2.3",
     "codeco": "^1.1.0",
+    "key-did-provider-ed25519": "workspace:^",
+    "key-did-resolver": "workspace:^",
     "multiformats": "^11.0.2",
     "uint8arrays": "^4.0.3",
     "varintes": "^2.0.5"

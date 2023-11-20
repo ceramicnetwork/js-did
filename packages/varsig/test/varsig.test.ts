@@ -2,6 +2,10 @@ import { test } from '@jest/globals'
 import { toBytes } from '../src/bytes.js'
 import { ENCODING, HASHING, SIGNING, Varsig } from '../src/varsig.js'
 import * as uint8arrays from 'uint8arrays'
+import { Ed25519Provider } from 'key-did-provider-ed25519'
+import KeyResolver from 'key-did-resolver'
+import { DID, GeneralJWS } from 'dids'
+import { randomBytes } from '@stablelib/random'
 
 test('rsa', async () => {
   const key = await crypto.subtle.generateKey(
@@ -29,7 +33,7 @@ test('rsa', async () => {
     signing: SIGNING.RSA,
     signature: signatureBytes,
   })
-  console.log('b', b)
+  // console.log('b', b)
 })
 
 function toIPLD(input: Varsig) {
@@ -43,3 +47,24 @@ function toIPLD(input: Varsig) {
     }),
   }
 }
+
+function jwsToIPLD(jws: GeneralJWS) {
+  const payload = JSON.parse(uint8arrays.toString(uint8arrays.fromString(jws.payload, 'base64url')))
+  console.log('payload', payload)
+  const signature0 = jws.signatures[0]
+  const protectedHeader = JSON.parse(
+    uint8arrays.toString(uint8arrays.fromString(signature0.protected, 'base64url'))
+  )
+  console.log('protected', protectedHeader)
+}
+
+test('jwt-to-ipld', async () => {
+  const seed = randomBytes(32)
+  const provider = new Ed25519Provider(seed)
+  const did = new DID({ provider, resolver: KeyResolver.getResolver() })
+  await did.authenticate()
+  const jws = await did.createJWS({ hello: 'world' })
+  console.log('jws', jws)
+  jwsToIPLD(jws)
+  console.log('dagjws', await did.createDagJWS({ hello: 'world' }))
+})
