@@ -1,5 +1,7 @@
 export enum SIGNING {
   RSA = 0x1205,
+  ED25519 = 0xed,
+  ES256 = 0x12,
 }
 
 export enum HASHING {
@@ -9,6 +11,7 @@ export enum HASHING {
 
 export enum ENCODING {
   IDENTITY = 0x00,
+  JWT = 0x01,
 }
 
 export type Varsig = {
