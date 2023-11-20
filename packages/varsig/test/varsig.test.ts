@@ -1,5 +1,7 @@
 import { test } from '@jest/globals'
-import {toBytes} from "../src/bytes";
+import { toBytes } from '../src/bytes.js'
+import { ENCODING, HASHING, SIGNING } from '../src/varsig.js'
+import * as uint8arrays from 'uint8arrays'
 
 test('rsa', async () => {
   const key = await crypto.subtle.generateKey(
@@ -19,5 +21,12 @@ test('rsa', async () => {
     key.privateKey,
     new Uint8Array([1, 2, 3])
   )
-  console.log('a', new Uint8Array(a))
+  const signatureBytes = new Uint8Array(a)
+  const b = toBytes({
+    encoding: ENCODING.IDENTITY,
+    hashing: HASHING.SHA2_256,
+    signing: SIGNING.RSA,
+    signature: signatureBytes,
+  })
+  console.log('b', uint8arrays.toString(b, 'hex'))
 })
