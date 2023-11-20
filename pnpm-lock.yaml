@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -570,6 +570,19 @@ importers:
       watchlist:
         specifier: ^0.3.1
         version: 0.3.1
+
+  packages/varsig:
+    dependencies:
+      multiformats:
+        specifier: ^11.0.2
+        version: 11.0.2
+      uint8arrays:
+        specifier: ^4.0.3
+        version: 4.0.3
+    devDependencies:
+      '@stablelib/random':
+        specifier: ^1.0.2
+        version: 1.0.2
 
   website:
     dependencies:
