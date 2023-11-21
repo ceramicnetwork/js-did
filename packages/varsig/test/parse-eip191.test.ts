@@ -1,12 +1,13 @@
 import { test } from '@jest/globals'
 import * as varintes from 'varintes'
-import { CANONICALIZATION, HASHING, SIGNING } from '../src/at0.js'
+import { CANONICALIZATION, SIGNING } from '../src/at0.js'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import { keccak_256 } from '@noble/hashes/sha3'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
 import { SigningAlgo, SigningDecoder } from '../src/signing.js'
+import { HashingAlgo, HashingDecoder } from '../src/hashing.js'
 
 class UnreacheableCaseError extends Error {
   constructor(variant: never) {
@@ -14,38 +15,10 @@ class UnreacheableCaseError extends Error {
   }
 }
 
-type Hashing = {
-  kind: HASHING.KECCAK256
-}
-
-class HashingDecoder {
-  constructor(private readonly tape: BytesTape) {}
-
-  static read(tape: BytesTape) {
-    return new HashingDecoder(tape).read()
-  }
-
-  read(): Hashing {
-    const hashingSigil = this.tape.readVarint<HASHING>()
-    switch (hashingSigil) {
-      case HASHING.SHA2_512:
-        throw new Error(`Not implemented: hashingSigil: SHA2_512`)
-      case HASHING.SHA2_256:
-        throw new Error(`Not implemented: hashingSigil: SHA2_256`)
-      case HASHING.KECCAK256:
-        return {
-          kind: HASHING.KECCAK256,
-        }
-      default:
-        throw new UnreacheableCaseError(hashingSigil)
-    }
-  }
-}
-
 class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
 
-  read(signing: SigningAlgo, hashing: Hashing) {
+  read(signing: SigningAlgo, hashing: HashingAlgo) {
     const sigil = this.tape.readVarint<CANONICALIZATION>()
     switch (sigil) {
       case CANONICALIZATION.EIP712:
