@@ -25,6 +25,7 @@ test('rsa', async () => {
     key.privateKey,
     new Uint8Array([1, 2, 3])
   )
+  console.log('verif', await crypto.subtle.verify({ name: 'RSASSA-PKCS1-v1_5'}, key.publicKey, a, new Uint8Array([1, 2, 3])))
   const signatureBytes = new Uint8Array(a)
   const b = toIPLD({
     payload: {},
