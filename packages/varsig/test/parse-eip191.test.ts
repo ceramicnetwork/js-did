@@ -44,6 +44,10 @@ type Signing = {
   recoveryBit: undefined | 27 | 28
 }
 
+type Hashing = {
+  kind: HASHING.KECCAK256
+}
+
 class Decoder {
   #tape: BytesTape
 
@@ -71,13 +75,29 @@ class Decoder {
     }
   }
 
+  readHashing(): Hashing {
+    const hashingSigil = this.#tape.readVarint<HASHING>()
+    switch (hashingSigil) {
+      case HASHING.SHA2_512:
+        throw new Error(`Not implemented: hashingSigil: SHA2_512`)
+      case HASHING.SHA2_256:
+        throw new Error(`Not implemented: hashingSigil: SHA2_256`)
+      case HASHING.KECCAK256:
+        return {
+          kind: HASHING.KECCAK256,
+        }
+      default:
+        throw new UnreacheableCaseError(hashingSigil)
+    }
+  }
+
   decode() {
     this.readVarsigSigil()
     const signing = this.readSigning()
+    const hashing = this.readHashing()
     switch (signing.kind) {
       case SIGNING.SECP256K1: {
-        const hashingSigil = this.#tape.readVarint<HASHING>()
-        switch (hashingSigil) {
+        switch (hashing.kind) {
           case HASHING.KECCAK256: {
             const canonicalizationSigil = this.#tape.readVarint<CANONICALIZATION>()
             switch (canonicalizationSigil) {
@@ -124,12 +144,8 @@ class Decoder {
                 throw new UnreacheableCaseError(canonicalizationSigil)
             }
           }
-          case HASHING.SHA2_256:
-            throw new Error(`Not implemented: HASHING.SHA2_256`)
-          case HASHING.SHA2_512:
-            throw new Error(`Not implemented: HASHING.SHA2_512`)
           default:
-            throw new UnreacheableCaseError(hashingSigil)
+            throw new UnreacheableCaseError(hashing.kind)
         }
       }
       default:
