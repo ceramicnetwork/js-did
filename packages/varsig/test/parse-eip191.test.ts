@@ -6,6 +6,7 @@ import { keccak_256 } from '@noble/hashes/sha3'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
+import { SigningAlgo, SigningDecoder } from '../src/signing.js'
 
 class UnreacheableCaseError extends Error {
   constructor(variant: never) {
@@ -13,55 +14,8 @@ class UnreacheableCaseError extends Error {
   }
 }
 
-type Signing = {
-  kind: SIGNING.SECP256K1
-  recoveryBit: undefined | 27 | 28
-}
-
 type Hashing = {
   kind: HASHING.KECCAK256
-}
-
-class SigningDecoder {
-  constructor(private readonly tape: BytesTape) {}
-
-  static read(tape: BytesTape): Signing {
-    return new SigningDecoder(tape).read()
-  }
-
-  read(): Signing {
-    const signingSigil = this.tape.readVarint<SIGNING>()
-    switch (signingSigil) {
-      case SIGNING.SECP256K1: {
-        const recoveryBit = this.tape.readVarint()
-        if (!(recoveryBit === 27 || recoveryBit === 28)) {
-          throw new Error(`Wrong recovery bit`)
-        }
-        return {
-          kind: SIGNING.SECP256K1,
-          recoveryBit: recoveryBit || undefined,
-        }
-      }
-      case SIGNING.RSA:
-        throw new Error(`Not implemented: signingSigil: RSA`)
-      default:
-        throw new UnreacheableCaseError(signingSigil)
-    }
-  }
-
-  readSignature(signing: Signing): Uint8Array {
-    switch (signing.kind) {
-      case SIGNING.SECP256K1: {
-        if (signing.recoveryBit) {
-          return this.tape.read(65)
-        } else {
-          return this.tape.read(64)
-        }
-      }
-      default:
-        throw new UnreacheableCaseError(signing.kind)
-    }
-  }
 }
 
 class HashingDecoder {
@@ -91,7 +45,7 @@ class HashingDecoder {
 class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
 
-  read(signing: Signing, hashing: Hashing) {
+  read(signing: SigningAlgo, hashing: Hashing) {
     const sigil = this.tape.readVarint<CANONICALIZATION>()
     switch (sigil) {
       case CANONICALIZATION.EIP712:

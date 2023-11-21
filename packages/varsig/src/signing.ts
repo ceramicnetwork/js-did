@@ -1,5 +1,5 @@
 import { BytesTape } from './bytes-tape.js'
-import { UnreacheableCaseError } from './unreachable-case-error'
+import { UnreacheableCaseError } from './unreachable-case-error.js'
 
 export enum SigningKind {
   RSA = 0x1205,
