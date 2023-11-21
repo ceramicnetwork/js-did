@@ -1,13 +1,13 @@
 import { test } from '@jest/globals'
 import * as varintes from 'varintes'
-import { CANONICALIZATION, SIGNING } from '../src/at0.js'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import { keccak_256 } from '@noble/hashes/sha3'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
-import { SigningAlgo, SigningDecoder } from '../src/signing.js'
+import { SigningAlgo, SigningDecoder, SigningKind } from '../src/signing.js'
 import { HashingAlgo, HashingDecoder } from '../src/hashing.js'
+import { CanonicalizationKind } from '../src/canonicalization.js'
 
 class UnreacheableCaseError extends Error {
   constructor(variant: never) {
@@ -19,11 +19,11 @@ class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
 
   read(signing: SigningAlgo, hashing: HashingAlgo) {
-    const sigil = this.tape.readVarint<CANONICALIZATION>()
+    const sigil = this.tape.readVarint<CanonicalizationKind>()
     switch (sigil) {
-      case CANONICALIZATION.EIP712:
+      case CanonicalizationKind.EIP712:
         throw new Error(`Not implemented: readCanonicalization: EIP712`)
-      case CANONICALIZATION.EIP191: {
+      case CanonicalizationKind.EIP191: {
         const signingInput = (message: Uint8Array) => {
           const m = uint8arrays.toString(message)
           return keccak_256(
@@ -31,7 +31,7 @@ class CanonicalizationDecoder {
           )
         }
         return {
-          signing: SIGNING.SECP256K1,
+          signing: SigningKind.SECP256K1,
           recoveryBit: signing.recoveryBit,
           signingInput: signingInput,
         }
@@ -67,11 +67,6 @@ class Decoder {
     if (sigil !== 0x34) throw new Error(`Not a varsig`)
     return sigil
   }
-
-  readSigningSigil() {
-    const sigil = this.#tape.readVarint()
-    return sigil as SIGNING
-  }
 }
 
 function eip191canonicalization(message: string) {
@@ -97,7 +92,7 @@ test('validate eip191', async () => {
     varintes.encode(0xe7)[0],
     signatureBytes.subarray(64),
     varintes.encode(0x1b)[0],
-    varintes.encode(CANONICALIZATION.EIP191)[0],
+    varintes.encode(CanonicalizationKind.EIP191)[0],
     signatureBytes.subarray(0, 64),
   ])
   // const a = decode(varsig)
