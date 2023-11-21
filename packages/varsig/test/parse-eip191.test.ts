@@ -137,9 +137,10 @@ class Decoder {
     this.#tape = tape
   }
 
-  decode() {
+  read() {
     this.readVarsigSigil()
-    const signing = SigningDecoder.read(this.#tape)
+    const signingDecoder = new SigningDecoder(this.#tape)
+    const signing = signingDecoder.read()
     const hashing = HashingDecoder.read(this.#tape)
     return new CanonicalizationDecoder(this.#tape).read(signing, hashing)
   }
@@ -183,7 +184,7 @@ test('validate eip191', async () => {
     signatureBytes.subarray(0, 64),
   ])
   // const a = decode(varsig)
-  const a = new Decoder(new BytesTape(varsig)).decode()
+  const a = new Decoder(new BytesTape(varsig)).read()
   const input = a.signingInput(eip191canonicalization('Hello World'))
   let sig = secp256k1.Signature.fromCompact(a.signature)
   if (a.recoveryBit) {
