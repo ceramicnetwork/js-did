@@ -21,6 +21,10 @@ export class BytesTape implements Tape<Uint8Array> {
     return n as T
   }
 
+  get remainder(): Uint8Array {
+    return this.input.subarray(this.position)
+  }
+
   get isEOF(): boolean {
     return this.position >= this.input.byteLength
   }
