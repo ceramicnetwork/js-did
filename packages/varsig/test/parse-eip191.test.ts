@@ -100,43 +100,23 @@ class HashingDecoder {
   }
 }
 
-class Decoder {
-  #tape: BytesTape
+class CanonicalizationDecoder {
+  constructor(private readonly tape: BytesTape) {}
 
-  constructor(tape: BytesTape) {
-    this.#tape = tape
-  }
-
-  readHashing(): Hashing {
-    const hashingSigil = this.#tape.readVarint<HASHING>()
-    switch (hashingSigil) {
-      case HASHING.SHA2_512:
-        throw new Error(`Not implemented: hashingSigil: SHA2_512`)
-      case HASHING.SHA2_256:
-        throw new Error(`Not implemented: hashingSigil: SHA2_256`)
-      case HASHING.KECCAK256:
-        return {
-          kind: HASHING.KECCAK256,
-        }
-      default:
-        throw new UnreacheableCaseError(hashingSigil)
-    }
-  }
-
-  readCanonicalization(signing: Signing, hashing: Hashing) {
-    const sigil = this.#tape.readVarint<CANONICALIZATION>()
-    const signingInput = (message: Uint8Array) => {
-      const m = uint8arrays.toString(message)
-      return keccak_256(
-        uint8arrays.fromString(`\x19Ethereum Signed Message:\n` + String(m.length) + m)
-      )
-    }
+  read(signing: Signing, hashing: Hashing) {
+    const sigil = this.tape.readVarint<CANONICALIZATION>()
     switch (sigil) {
       case CANONICALIZATION.EIP712:
         throw new Error(`Not implemented: readCanonicalization: EIP712`)
       case CANONICALIZATION.EIP191: {
         const signatureLen = signing.recoveryBit ? 65 : 64
-        const signature = this.#tape.read(signatureLen)
+        const signature = this.tape.read(signatureLen)
+        const signingInput = (message: Uint8Array) => {
+          const m = uint8arrays.toString(message)
+          return keccak_256(
+            uint8arrays.fromString(`\x19Ethereum Signed Message:\n` + String(m.length) + m)
+          )
+        }
         return {
           signing: SIGNING.SECP256K1,
           recoveryBit: signing.recoveryBit,
@@ -148,12 +128,20 @@ class Decoder {
         throw new UnreacheableCaseError(sigil)
     }
   }
+}
+
+class Decoder {
+  #tape: BytesTape
+
+  constructor(tape: BytesTape) {
+    this.#tape = tape
+  }
 
   decode() {
     this.readVarsigSigil()
     const signing = SigningDecoder.read(this.#tape)
     const hashing = HashingDecoder.read(this.#tape)
-    return this.readCanonicalization(signing, hashing)
+    return new CanonicalizationDecoder(this.#tape).read(signing, hashing)
   }
 
   readVarsigSigil() {
