@@ -573,6 +573,12 @@ importers:
 
   packages/varsig:
     dependencies:
+      '@noble/curves':
+        specifier: ^1.2.0
+        version: 1.2.0
+      '@noble/hashes':
+        specifier: ^1.3.2
+        version: 1.3.2
       '@types/node':
         specifier: ^20.2.3
         version: 20.2.3
