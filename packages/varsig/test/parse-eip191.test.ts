@@ -39,6 +39,11 @@ class BytesTape implements Tape<Uint8Array> {
   }
 }
 
+type Signing = {
+  kind: SIGNING.SECP256K1
+  recoveryBit: undefined | 27 | 28
+}
+
 class Decoder {
   #tape: BytesTape
 
@@ -46,7 +51,7 @@ class Decoder {
     this.#tape = tape
   }
 
-  readSigning() {
+  readSigning(): Signing {
     const signingSigil = this.#tape.readVarint<SIGNING>()
     switch (signingSigil) {
       case SIGNING.SECP256K1: {
@@ -55,7 +60,7 @@ class Decoder {
           throw new Error(`Wrong recovery bit`)
         }
         return {
-          signing: SIGNING.SECP256K1,
+          kind: SIGNING.SECP256K1,
           recoveryBit: recoveryBit || undefined,
         }
       }
@@ -68,22 +73,16 @@ class Decoder {
 
   decode() {
     this.readVarsigSigil()
-    const signingSigil = this.readSigningSigil()
-    switch (signingSigil) {
-      case SIGNING.RSA:
-        throw new Error(`Not implemented: signingSigil: RSA`)
+    const signing = this.readSigning()
+    switch (signing.kind) {
       case SIGNING.SECP256K1: {
-        const recoveryBit = this.#tape.readVarint()
-        if (!(recoveryBit === 27 || recoveryBit === 28)) {
-          throw new Error(`Wrong recovery bit`)
-        }
         const hashingSigil = this.#tape.readVarint<HASHING>()
         switch (hashingSigil) {
           case HASHING.KECCAK256: {
             const canonicalizationSigil = this.#tape.readVarint<CANONICALIZATION>()
             switch (canonicalizationSigil) {
               case CANONICALIZATION.EIP191: {
-                if (recoveryBit > 0) {
+                if (signing.recoveryBit) {
                   const signature = this.#tape.read(65)
                   const signingInput = (message: Uint8Array) => {
                     const m = uint8arrays.toString(message)
@@ -96,7 +95,7 @@ class Decoder {
                   // address
                   return {
                     signing: SIGNING.SECP256K1,
-                    recoveryBit: recoveryBit,
+                    recoveryBit: signing.recoveryBit,
                     signature: signature,
                     signingInput: signingInput,
                   }
@@ -134,7 +133,7 @@ class Decoder {
         }
       }
       default:
-        throw new UnreacheableCaseError(signingSigil)
+        throw new UnreacheableCaseError(signing.kind)
     }
   }
 
