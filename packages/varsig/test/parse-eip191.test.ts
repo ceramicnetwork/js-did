@@ -74,6 +74,20 @@ class SigningDecoder {
         throw new UnreacheableCaseError(signingSigil)
     }
   }
+
+  readSignature(signing: Signing): Uint8Array {
+    switch (signing.kind) {
+      case SIGNING.SECP256K1: {
+        if (signing.recoveryBit) {
+          return this.tape.read(65)
+        } else {
+          return this.tape.read(64)
+        }
+      }
+      default:
+        throw new UnreacheableCaseError(signing.kind)
+    }
+  }
 }
 
 class HashingDecoder {
@@ -109,8 +123,6 @@ class CanonicalizationDecoder {
       case CANONICALIZATION.EIP712:
         throw new Error(`Not implemented: readCanonicalization: EIP712`)
       case CANONICALIZATION.EIP191: {
-        const signatureLen = signing.recoveryBit ? 65 : 64
-        const signature = this.tape.read(signatureLen)
         const signingInput = (message: Uint8Array) => {
           const m = uint8arrays.toString(message)
           return keccak_256(
@@ -120,7 +132,6 @@ class CanonicalizationDecoder {
         return {
           signing: SIGNING.SECP256K1,
           recoveryBit: signing.recoveryBit,
-          signature: signature,
           signingInput: signingInput,
         }
       }
@@ -142,7 +153,12 @@ class Decoder {
     const signingDecoder = new SigningDecoder(this.#tape)
     const signing = signingDecoder.read()
     const hashing = HashingDecoder.read(this.#tape)
-    return new CanonicalizationDecoder(this.#tape).read(signing, hashing)
+    const canon = new CanonicalizationDecoder(this.#tape).read(signing, hashing)
+    const signature = signingDecoder.readSignature(signing)
+    return {
+      ...canon,
+      signature: signature,
+    }
   }
 
   readVarsigSigil() {
