@@ -48,18 +48,18 @@ type Hashing = {
   kind: HASHING.KECCAK256
 }
 
-class Decoder {
-  #tape: BytesTape
+class SigningDecoder {
+  constructor(private readonly tape: BytesTape) {}
 
-  constructor(tape: BytesTape) {
-    this.#tape = tape
+  static read(tape: BytesTape): Signing {
+    return new SigningDecoder(tape).read()
   }
 
-  readSigning(): Signing {
-    const signingSigil = this.#tape.readVarint<SIGNING>()
+  read(): Signing {
+    const signingSigil = this.tape.readVarint<SIGNING>()
     switch (signingSigil) {
       case SIGNING.SECP256K1: {
-        const recoveryBit = this.#tape.readVarint()
+        const recoveryBit = this.tape.readVarint()
         if (!(recoveryBit === 27 || recoveryBit === 28)) {
           throw new Error(`Wrong recovery bit`)
         }
@@ -73,6 +73,38 @@ class Decoder {
       default:
         throw new UnreacheableCaseError(signingSigil)
     }
+  }
+}
+
+class HashingDecoder {
+  constructor(private readonly tape: BytesTape) {}
+
+  static read(tape: BytesTape) {
+    return new HashingDecoder(tape).read()
+  }
+
+  read(): Hashing {
+    const hashingSigil = this.tape.readVarint<HASHING>()
+    switch (hashingSigil) {
+      case HASHING.SHA2_512:
+        throw new Error(`Not implemented: hashingSigil: SHA2_512`)
+      case HASHING.SHA2_256:
+        throw new Error(`Not implemented: hashingSigil: SHA2_256`)
+      case HASHING.KECCAK256:
+        return {
+          kind: HASHING.KECCAK256,
+        }
+      default:
+        throw new UnreacheableCaseError(hashingSigil)
+    }
+  }
+}
+
+class Decoder {
+  #tape: BytesTape
+
+  constructor(tape: BytesTape) {
+    this.#tape = tape
   }
 
   readHashing(): Hashing {
@@ -119,8 +151,8 @@ class Decoder {
 
   decode() {
     this.readVarsigSigil()
-    const signing = this.readSigning()
-    const hashing = this.readHashing()
+    const signing = SigningDecoder.read(this.#tape)
+    const hashing = HashingDecoder.read(this.#tape)
     return this.readCanonicalization(signing, hashing)
   }
 
