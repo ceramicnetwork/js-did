@@ -2,40 +2,14 @@ import { test } from '@jest/globals'
 import * as varintes from 'varintes'
 import { CANONICALIZATION, HASHING, SIGNING } from '../src/at0.js'
 import { secp256k1 } from '@noble/curves/secp256k1'
-import { sha256 } from '@noble/hashes/sha256'
 import { keccak_256 } from '@noble/hashes/sha3'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
-import { Tape } from 'codeco/linear'
+import { BytesTape } from '../src/bytes-tape.js'
 
 class UnreacheableCaseError extends Error {
   constructor(variant: never) {
     super(`Unreacheable case: ${String(variant)}`)
-  }
-}
-
-class BytesTape implements Tape<Uint8Array> {
-  position: number
-
-  constructor(readonly input: Uint8Array) {
-    this.position = 0
-  }
-
-  read(n: number): Uint8Array {
-    const result = this.input.subarray(this.position, this.position + n)
-    this.position += n
-    return result
-  }
-
-  readVarint<T extends number = number>(): T {
-    const bytes = this.read(10)
-    const [n, bytesRead] = varintes.decode(bytes)
-    this.position -= 10 - bytesRead
-    return n as T
-  }
-
-  get isEOF(): boolean {
-    return this.position >= this.input.byteLength
   }
 }
 
