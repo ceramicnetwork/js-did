@@ -27,15 +27,11 @@ class BytesTape implements Tape<Uint8Array> {
     return result
   }
 
-  back(n: number): void {
-    this.position -= n
-  }
-
-  readVarint(): number {
+  readVarint<T extends number = number>(): T {
     const bytes = this.read(10)
     const [n, bytesRead] = varintes.decode(bytes)
-    this.back(10 - bytesRead)
-    return n
+    this.position -= 10 - bytesRead
+    return n as T
   }
 
   get isEOF(): boolean {
@@ -61,10 +57,10 @@ class Decoder {
         if (!(recoveryBit === 27 || recoveryBit === 28)) {
           throw new Error(`Wrong recovery bit`)
         }
-        const hashingSigil = this.#tape.readVarint() as HASHING
+        const hashingSigil = this.#tape.readVarint<HASHING>()
         switch (hashingSigil) {
           case HASHING.KECCAK256: {
-            const canonicalizationSigil = this.#tape.readVarint() as CANONICALIZATION
+            const canonicalizationSigil = this.#tape.readVarint<CANONICALIZATION>()
             switch (canonicalizationSigil) {
               case CANONICALIZATION.EIP191: {
                 if (recoveryBit > 0) {
