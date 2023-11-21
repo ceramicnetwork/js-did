@@ -1,18 +1,17 @@
 import * as varintes from 'varintes'
 import * as uint8arrays from 'uint8arrays'
 
-
 interface Eip712Domain {
-  name: string,
-  version: string,
-  chainId: number,
+  name: string
+  version: string
+  chainId: number
   verifyingContract: string
 }
 
 type IpldNode = Record<string, any>
 
 interface Eip712TypeField {
-  name: string,
+  name: string
   type: string
 }
 
@@ -26,15 +25,14 @@ interface Eip712 {
 }
 
 type CompressedType = [string, string][]
-type CompressedTypes = Record<string, compressType>
+type CompressedTypes = Record<string, CompressedType>
 type CompressedDomain = [string, string, number, string]
 
-
-type Canonicalizer = (node: any) => Uint8Array;
+type Canonicalizer = (node: any) => Uint8Array
 
 interface CanonicalizerSetup {
-  remainder: Uint8Array,
-  params: any,
+  remainder: Uint8Array
+  params: any
   canonicalizer: Canonicalizer
 }
 
@@ -47,12 +45,12 @@ export function setupCanonicalizer(varsigReminder: Uint8Array): CanonicalizerSet
   const metadata = {
     types: decompressTypes(types),
     primaryType,
-    domain: decompressDomain(domain)
+    domain: decompressDomain(domain),
   }
   return {
     remainder: varsigReminder.subarray(read + metadataLength),
     params: metadata,
-    canonicalizer: parameterizeCanonicalizer(metadata)
+    canonicalizer: parameterizeCanonicalizer(metadata),
   }
 }
 
@@ -62,24 +60,31 @@ function parameterizeCanonicalizer({ types, primaryType, domain }: Eip712): Cano
   }
 }
 
-export function fromEip712({ types, domain, primaryType, message }: Eip712): ({ node: IpldEip712, params: Uint8Array }) {
-  const metadata = JSON.stringify([ compressTypes(types), primaryType, compressDomain(domain) ])
+export function fromEip712({ types, domain, primaryType, message }: Eip712): {
+  node: IpldEip712
+  params: Uint8Array
+} {
+  const metadata = JSON.stringify([compressTypes(types), primaryType, compressDomain(domain)])
   const metadataBytes = uint8arrays.fromString(metadata)
   const metadataLength = varintes.encode(metadataBytes.length)[0]
   return {
     node: messageToIpld(message, types, primaryType),
-    params: uint8arrays.concat([metadataLength, metadataBytes])
+    params: uint8arrays.concat([metadataLength, metadataBytes]),
   }
 }
 
-function messageToIpld(message: Record<string, any>, types: Eip712Types, selected: string): IpldNode {
+function messageToIpld(
+  message: Record<string, any>,
+  types: Eip712Types,
+  selected: string
+): IpldNode {
   const node = {}
   for (const [key, value] of Object.entries(message)) {
     const type = types[selected].find(({ name }) => name === key).type
     if (!type) throw new Error(`Type for ${key} not found`)
     if (type.startsWith('bytes')) {
       node[key] = uint8arrays.fromString(value.slice(2), 'base16')
-    // check if first characther is upper case
+      // check if first characther is upper case
     } else if (type[0] === type[0].toUpperCase()) {
       node[key] = messageToIpld(value, types, type)
     } else {
@@ -94,10 +99,10 @@ const EIP712_DOMAIN = [
   { name: 'version', type: 'string' },
   { name: 'chainId', type: 'uint256' },
   { name: 'verifyingContract', type: 'address' },
-];
+]
 
 function compressDomain(domain: Eip712Domain): CompressedDomain {
-  return [ domain.name, domain.version, domain.chainId, domain.verifyingContract ]
+  return [domain.name, domain.version, domain.chainId, domain.verifyingContract]
 }
 
 function decompressDomain(domain: CompressedDomain): Eip712Domain {
@@ -105,7 +110,7 @@ function decompressDomain(domain: CompressedDomain): Eip712Domain {
     name: domain[0],
     version: domain[1],
     chainId: domain[2],
-    verifyingContract: domain[3]
+    verifyingContract: domain[3],
   }
 }
 
@@ -116,18 +121,24 @@ function compressTypes(types: Eip712Types): CompressedTypes {
     compressed[key] = value.map(({ name, type }) => [
       name,
       type // TODO make this more resilient
-        .replace('uint', 'u').replace('int', 'i')
-        .replace('bytes', 'b').replace('string', 's')
-        .replace('address', 'a').replace('bool', 'o')
+        .replace('uint', 'u')
+        .replace('int', 'i')
+        .replace('bytes', 'b')
+        .replace('string', 's')
+        .replace('address', 'a')
+        .replace('bool', 'o'),
     ])
   }
   return compressed
 }
 
 const FULL_TYPES = {
-  'u': 'uint', 'i': 'int',
-  'b': 'bytes', 's': 'string',
-  'a': 'address', 'o': 'bool'
+  u: 'uint',
+  i: 'int',
+  b: 'bytes',
+  s: 'string',
+  a: 'address',
+  o: 'bool',
 }
 
 function decompressTypes(compressed: CompressedTypes): Eip712Types {
@@ -135,9 +146,8 @@ function decompressTypes(compressed: CompressedTypes): Eip712Types {
   for (const [key, value] of Object.entries(compressed)) {
     types[key] = value.map(([name, type]) => ({
       name,
-      type: FULL_TYPES[type] || type
+      type: FULL_TYPES[type] || type,
     }))
   }
   return types
 }
-
