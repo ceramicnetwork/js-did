@@ -46,6 +46,26 @@ class Decoder {
     this.#tape = tape
   }
 
+  readSigning() {
+    const signingSigil = this.#tape.readVarint<SIGNING>()
+    switch (signingSigil) {
+      case SIGNING.SECP256K1: {
+        const recoveryBit = this.#tape.readVarint()
+        if (!(recoveryBit === 27 || recoveryBit === 28)) {
+          throw new Error(`Wrong recovery bit`)
+        }
+        return {
+          signing: SIGNING.SECP256K1,
+          recoveryBit: recoveryBit || undefined,
+        }
+      }
+      case SIGNING.RSA:
+        throw new Error(`Not implemented: signingSigil: RSA`)
+      default:
+        throw new UnreacheableCaseError(signingSigil)
+    }
+  }
+
   decode() {
     this.readVarsigSigil()
     const signingSigil = this.readSigningSigil()
