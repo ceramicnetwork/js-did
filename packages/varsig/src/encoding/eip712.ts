@@ -1,5 +1,6 @@
 import * as varintes from 'varintes'
 import * as uint8arrays from 'uint8arrays'
+import { hashTypedData } from 'viem'
 
 interface Eip712Domain {
   name: string
@@ -28,20 +29,36 @@ type CompressedType = [string, string][]
 type CompressedTypes = Record<string, CompressedType>
 type CompressedDomain = [string, string, number, string]
 
-type Canonicalizer = (node: any) => Uint8Array
+interface CanonicalizerResult {
+  digest: Uint8Array
+  decoded: any
+}
+type Canonicalize = (node: IpldNode) => CanonicalizerResult
 
 interface CanonicalizerSetup {
   remainder: Uint8Array
-  params: any
-  canonicalizer: Canonicalizer
+  canonicalize: Canonicalize
 }
+
+const SUPPORTED_KEY_TYPES = [
+  0xe7, // secp256k1
+  0x1271 // eip1271 contract signature
+]
+const SUPPORTED_HASH_TYPE = 0x1b // keccak256
 
 export const CODEC = 0xe712 // TODO encode as varint
 
-export function setupCanonicalizer(varsigReminder: Uint8Array): CanonicalizerSetup {
+export function setupCanonicalizer(
+  varsigReminder: Uint8Array,
+  hasher: (data: Uint8Array) => Uint8Array,
+  hashType: number,
+  keyType: number
+): CanonicalizerSetup {
   const [metadataLength, read] = varintes.decode(varsigReminder)
   const metadataBytes = varsigReminder.subarray(read, read + metadataLength)
   const [types, primaryType, domain] = JSON.parse(uint8arrays.toString(metadataBytes))
+  if (SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
+  if (hashType === SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashType}`)
   const metadata = {
     types: decompressTypes(types),
     primaryType,
@@ -49,15 +66,33 @@ export function setupCanonicalizer(varsigReminder: Uint8Array): CanonicalizerSet
   }
   return {
     remainder: varsigReminder.subarray(read + metadataLength),
-    params: metadata,
-    canonicalizer: parameterizeCanonicalizer(metadata),
+    canonicalize: parameterizeCanonicalizer(metadata),
   }
 }
 
-function parameterizeCanonicalizer({ types, primaryType, domain }: Eip712): Canonicalizer {
-  return (node) => {
-    // TODO
+function parameterizeCanonicalizer({ types, primaryType, domain }: Eip712): Canonicalize {
+  return (node: IpldNode) => {
+    const message = ipldNodeToMessage(node)
+    const hexHash = hashTypedData({ types, primaryType, domain, message })
+    return {
+      digest: uint8arrays.fromString(hexHash.slice(2), 'base16'),
+      decoded: { types, primaryType, domain, message },
+    }
   }
+}
+
+function ipldNodeToMessage(node: IpldNode): Record<string, any> {
+  const message = {}
+  for (const [key, value] of Object.entries(node)) {
+    if (value instanceof Uint8Array) {
+      message[key] = `0x${uint8arrays.toString(value, 'base16')}`
+    } else if (typeof value === 'object') {
+      message[key] = ipldNodeToMessage(value)
+    } else {
+      message[key] = value
+    }
+  }
+  return message
 }
 
 export function fromEip712({ types, domain, primaryType, message }: Eip712): {
