@@ -91,66 +91,37 @@ class Decoder {
     }
   }
 
+  readCanonicalization(signing: Signing, hashing: Hashing) {
+    const sigil = this.#tape.readVarint<CANONICALIZATION>()
+    const signingInput = (message: Uint8Array) => {
+      const m = uint8arrays.toString(message)
+      return keccak_256(
+        uint8arrays.fromString(`\x19Ethereum Signed Message:\n` + String(m.length) + m)
+      )
+    }
+    switch (sigil) {
+      case CANONICALIZATION.EIP712:
+        throw new Error(`Not implemented: readCanonicalization: EIP712`)
+      case CANONICALIZATION.EIP191: {
+        const signatureLen = signing.recoveryBit ? 65 : 64
+        const signature = this.#tape.read(signatureLen)
+        return {
+          signing: SIGNING.SECP256K1,
+          recoveryBit: signing.recoveryBit,
+          signature: signature,
+          signingInput: signingInput,
+        }
+      }
+      default:
+        throw new UnreacheableCaseError(sigil)
+    }
+  }
+
   decode() {
     this.readVarsigSigil()
     const signing = this.readSigning()
     const hashing = this.readHashing()
-    switch (signing.kind) {
-      case SIGNING.SECP256K1: {
-        switch (hashing.kind) {
-          case HASHING.KECCAK256: {
-            const canonicalizationSigil = this.#tape.readVarint<CANONICALIZATION>()
-            switch (canonicalizationSigil) {
-              case CANONICALIZATION.EIP191: {
-                if (signing.recoveryBit) {
-                  const signature = this.#tape.read(65)
-                  const signingInput = (message: Uint8Array) => {
-                    const m = uint8arrays.toString(message)
-                    return keccak_256(
-                      uint8arrays.fromString(
-                        `\x19Ethereum Signed Message:\n` + String(m.length) + m
-                      )
-                    )
-                  }
-                  // address
-                  return {
-                    signing: SIGNING.SECP256K1,
-                    recoveryBit: signing.recoveryBit,
-                    signature: signature,
-                    signingInput: signingInput,
-                  }
-                } else {
-                  // public key
-                  const signature = this.#tape.read(64)
-                  const signingInput = (message: Uint8Array) => {
-                    const m = uint8arrays.toString(message)
-                    return keccak_256(
-                      uint8arrays.fromString(
-                        `\x19Ethereum Signed Message:\n` + String(m.length) + m
-                      )
-                    )
-                  }
-                  // address
-                  return {
-                    signing: SIGNING.SECP256K1,
-                    signature: signature,
-                    signingInput: signingInput,
-                  }
-                }
-              }
-              case CANONICALIZATION.EIP712:
-                throw new Error(`Not implemented: 712`)
-              default:
-                throw new UnreacheableCaseError(canonicalizationSigil)
-            }
-          }
-          default:
-            throw new UnreacheableCaseError(hashing.kind)
-        }
-      }
-      default:
-        throw new UnreacheableCaseError(signing.kind)
-    }
+    return this.readCanonicalization(signing, hashing)
   }
 
   readVarsigSigil() {
