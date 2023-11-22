@@ -81,17 +81,17 @@ ___
 
 ### generateP256KeyPair
 
-▸ **generateP256KeyPair**(): `Promise`\<`CryptoKeyPair`\>
+▸ **generateP256KeyPair**(): `Promise`<`CryptoKeyPair`\>
 
 #### Returns
 
-`Promise`\<`CryptoKeyPair`\>
+`Promise`<`CryptoKeyPair`\>
 
 ___
 
 ### getPublicKey
 
-▸ **getPublicKey**(`«destructured»`): `Promise`\<`Uint8Array`\>
+▸ **getPublicKey**(`«destructured»`): `Promise`<`Uint8Array`\>
 
 #### Parameters
 
@@ -101,4 +101,4 @@ ___
 
 #### Returns
 
-`Promise`\<`Uint8Array`\>
+`Promise`<`Uint8Array`\>

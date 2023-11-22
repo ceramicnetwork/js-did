@@ -129,7 +129,7 @@ await dids.verifyJWS(jws, { capability, verifiers, ...opts})
 
 | Name | Type |
 | :------ | :------ |
-| `getGenesisHash` | () => `Promise`\<`string`\> |
+| `getGenesisHash` | () => `Promise`<`string`\> |
 
 ___
 
@@ -141,7 +141,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `signMessage` | (`message`: `Uint8Array`, `type`: `string`) => `Promise`\<\{ `signature`: `Uint8Array`  }\> |
+| `signMessage` | (`message`: `Uint8Array`, `type`: `string`) => `Promise`<{ `signature`: `Uint8Array`  }\> |
 
 ## Variables
 
@@ -223,7 +223,7 @@ ___
 
 ### getAccountId
 
-▸ **getAccountId**(`solConnection`, `address`): `Promise`\<`AccountId`\>
+▸ **getAccountId**(`solConnection`, `address`): `Promise`<`AccountId`\>
 
 Helper function to get an accountId (CAIP10) for an Solana account by Solana Connection interface, Connection must implement 'getGenesisHash()'
 
@@ -236,7 +236,7 @@ Helper function to get an accountId (CAIP10) for an Solana account by Solana Con
 
 #### Returns
 
-`Promise`\<`AccountId`\>
+`Promise`<`AccountId`\>
 
 ___
 
@@ -273,7 +273,7 @@ ___
 
 ### requestChainId
 
-▸ **requestChainId**(`solConnection`): `Promise`\<`string`\>
+▸ **requestChainId**(`solConnection`): `Promise`<`string`\>
 
 #### Parameters
 
@@ -283,7 +283,7 @@ ___
 
 #### Returns
 
-`Promise`\<`string`\>
+`Promise`<`string`\>
 
 ___
 

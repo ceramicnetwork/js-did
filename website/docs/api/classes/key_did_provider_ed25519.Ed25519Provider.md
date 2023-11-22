@@ -26,7 +26,7 @@ custom_edit_url: null
 
 ### \_handle
 
-• **\_handle**: `SendRequestFunc`\<`DIDProviderMethods`\>
+• **\_handle**: `SendRequestFunc`<`DIDProviderMethods`\>
 
 ## Accessors
 
@@ -42,7 +42,7 @@ custom_edit_url: null
 
 ### send
 
-▸ **send**\<`Name`\>(`msg`): `Promise`\<``null`` \| `RPCResponse`\<`DIDProviderMethods`, `Name`\>\>
+▸ **send**<`Name`\>(`msg`): `Promise`<``null`` \| `RPCResponse`<`DIDProviderMethods`, `Name`\>\>
 
 #### Type parameters
 
@@ -54,11 +54,11 @@ custom_edit_url: null
 
 | Name | Type |
 | :------ | :------ |
-| `msg` | `RPCRequest`\<`DIDProviderMethods`, `Name`\> |
+| `msg` | `RPCRequest`<`DIDProviderMethods`, `Name`\> |
 
 #### Returns
 
-`Promise`\<``null`` \| `RPCResponse`\<`DIDProviderMethods`, `Name`\>\>
+`Promise`<``null`` \| `RPCResponse`<`DIDProviderMethods`, `Name`\>\>
 
 #### Implementation of
 

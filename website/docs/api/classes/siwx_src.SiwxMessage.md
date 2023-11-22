@@ -28,7 +28,7 @@ Parameters for SiwxMessage constructor.
 
 ### address
 
-• `Readonly` **address**: `string` & `WithOpaque`\<``"address"``\>
+• `Readonly` **address**: `string` & `WithOpaque`<``"address"``\>
 
 #### Implementation of
 
@@ -38,7 +38,7 @@ ___
 
 ### chainId
 
-• `Readonly` **chainId**: `string` & `WithOpaque`\<``"chain-id"``\>
+• `Readonly` **chainId**: `string` & `WithOpaque`<``"chain-id"``\>
 
 #### Implementation of
 
@@ -48,7 +48,7 @@ ___
 
 ### domain
 
-• `Readonly` **domain**: `string` & `WithOpaque`\<``"domain"``\>
+• `Readonly` **domain**: `string` & `WithOpaque`<``"domain"``\>
 
 #### Implementation of
 
@@ -58,7 +58,7 @@ ___
 
 ### expirationTime
 
-• `Optional` `Readonly` **expirationTime**: `string` & `WithOpaque`\<``"date-time"``\>
+• `Optional` `Readonly` **expirationTime**: `string` & `WithOpaque`<``"date-time"``\>
 
 #### Implementation of
 
@@ -68,7 +68,7 @@ ___
 
 ### issuedAt
 
-• `Readonly` **issuedAt**: `string` & `WithOpaque`\<``"date-time"``\>
+• `Readonly` **issuedAt**: `string` & `WithOpaque`<``"date-time"``\>
 
 #### Implementation of
 
@@ -78,7 +78,7 @@ ___
 
 ### network
 
-• `Readonly` **network**: `string` & `WithOpaque`\<``"network"``\>
+• `Readonly` **network**: `string` & `WithOpaque`<``"network"``\>
 
 #### Implementation of
 
@@ -88,7 +88,7 @@ ___
 
 ### nonce
 
-• `Readonly` **nonce**: `string` & `WithOpaque`\<``"nonce"``\>
+• `Readonly` **nonce**: `string` & `WithOpaque`<``"nonce"``\>
 
 #### Implementation of
 
@@ -98,7 +98,7 @@ ___
 
 ### notBefore
 
-• `Optional` `Readonly` **notBefore**: `string` & `WithOpaque`\<``"date-time"``\>
+• `Optional` `Readonly` **notBefore**: `string` & `WithOpaque`<``"date-time"``\>
 
 #### Implementation of
 
@@ -108,7 +108,7 @@ ___
 
 ### requestId
 
-• `Optional` `Readonly` **requestId**: `string` & `WithOpaque`\<``"non-empty"``\>
+• `Optional` `Readonly` **requestId**: `string` & `WithOpaque`<``"non-empty"``\>
 
 #### Implementation of
 
@@ -118,7 +118,7 @@ ___
 
 ### resources
 
-• `Optional` `Readonly` **resources**: `string` & `WithOpaque`\<``"URI"``\>[]
+• `Optional` `Readonly` **resources**: `string` & `WithOpaque`<``"URI"``\>[]
 
 #### Implementation of
 
@@ -128,7 +128,7 @@ ___
 
 ### statement
 
-• `Optional` `Readonly` **statement**: `string` & `WithOpaque`\<``"non-empty"``\>
+• `Optional` `Readonly` **statement**: `string` & `WithOpaque`<``"non-empty"``\>
 
 #### Implementation of
 
@@ -138,7 +138,7 @@ ___
 
 ### uri
 
-• `Readonly` **uri**: `string` & `WithOpaque`\<``"URI"``\>
+• `Readonly` **uri**: `string` & `WithOpaque`<``"URI"``\>
 
 #### Implementation of
 
@@ -148,7 +148,7 @@ ___
 
 ### version
 
-• `Readonly` **version**: ``"1"`` & `WithOpaque`\<``"version"``\>
+• `Readonly` **version**: ``"1"`` & `WithOpaque`<``"version"``\>
 
 #### Implementation of
 
@@ -166,6 +166,10 @@ ___
 
 Parse SIWx message string.
 
+**`Throws`**
+
+If invalid string passed.
+
 ##### Parameters
 
 | Name | Type |
@@ -176,19 +180,15 @@ Parse SIWx message string.
 
 [`SiwxMessage`](siwx_src.SiwxMessage.md)
 
-**`Throws`**
-
-If invalid string passed.
-
 ___
 
 ### fromStringSafe
 
-▪ `Static` **fromStringSafe**: (`input`: `string`) => `Maybe`\<[`SiwxMessage`](siwx_src.SiwxMessage.md)\> = `fromStringSafe`
+▪ `Static` **fromStringSafe**: (`input`: `string`) => `Maybe`<[`SiwxMessage`](siwx_src.SiwxMessage.md)\> = `fromStringSafe`
 
 #### Type declaration
 
-▸ (`input`): `Maybe`\<[`SiwxMessage`](siwx_src.SiwxMessage.md)\>
+▸ (`input`): `Maybe`<[`SiwxMessage`](siwx_src.SiwxMessage.md)\>
 
 Parse SIWx message string. Return `Maybe`, thus do not throw.
 
@@ -200,7 +200,7 @@ Parse SIWx message string. Return `Maybe`, thus do not throw.
 
 ##### Returns
 
-`Maybe`\<[`SiwxMessage`](siwx_src.SiwxMessage.md)\>
+`Maybe`<[`SiwxMessage`](siwx_src.SiwxMessage.md)\>
 
 ## Methods
 

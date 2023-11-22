@@ -171,7 +171,7 @@ ___
 
 ### createDIDCacao
 
-▸ **createDIDCacao**(`didKey`, `cacao`): `Promise`\<`DID`\>
+▸ **createDIDCacao**(`didKey`, `cacao`): `Promise`<`DID`\>
 
 #### Parameters
 
@@ -182,13 +182,13 @@ ___
 
 #### Returns
 
-`Promise`\<`DID`\>
+`Promise`<`DID`\>
 
 ___
 
 ### createDIDKey
 
-▸ **createDIDKey**(`seed?`): `Promise`\<`DID`\>
+▸ **createDIDKey**(`seed?`): `Promise`<`DID`\>
 
 #### Parameters
 
@@ -198,7 +198,7 @@ ___
 
 #### Returns
 
-`Promise`\<`DID`\>
+`Promise`<`DID`\>
 
 ___
 

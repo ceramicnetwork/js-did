@@ -10,7 +10,7 @@ custom_edit_url: null
 
 ### getAuthMethod
 
-▸ **getAuthMethod**(`solProvider`, `account`): `Promise`\<`AuthMethod`\>
+▸ **getAuthMethod**(`solProvider`, `account`): `Promise`<`AuthMethod`\>
 
 Get a configured authMethod for a Solana account in a web based environment
 
@@ -23,4 +23,4 @@ Get a configured authMethod for a Solana account in a web based environment
 
 #### Returns
 
-`Promise`\<`AuthMethod`\>
+`Promise`<`AuthMethod`\>

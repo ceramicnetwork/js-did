@@ -95,7 +95,7 @@ const dids = //configured dids instance
 
 | Name | Type |
 | :------ | :------ |
-| `signatureRequest` | (`payload`: `string`) => `Promise`\<[`SignatureData`](../interfaces/pkh_stacks.SignatureData.md)\> |
+| `signatureRequest` | (`payload`: `string`) => `Promise`<[`SignatureData`](../interfaces/pkh_stacks.SignatureData.md)\> |
 
 ## Variables
 

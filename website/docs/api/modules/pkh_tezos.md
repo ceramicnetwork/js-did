@@ -95,8 +95,8 @@ await dids.verifyJWS(jws, { capability, verifiers, ...opts})
 
 | Name | Type |
 | :------ | :------ |
-| `getActiveAccount` | () => `Promise`\<\{ `network`: \{ `type`: `TezosNetwork`  } ; `publicKey`: `string`  }\> |
-| `requestSignPayload` | (`opts`: \{ `payload`: `string` ; `signingType`: `string`  }) => `Promise`\<\{ `signature`: `string`  }\> |
+| `getActiveAccount` | () => `Promise`<{ `network`: { `type`: `TezosNetwork`  } ; `publicKey`: `string`  }\> |
+| `requestSignPayload` | (`opts`: { `payload`: `string` ; `signingType`: `string`  }) => `Promise`<{ `signature`: `string`  }\> |
 
 ## Variables
 
@@ -171,7 +171,7 @@ ___
 
 ### getAccountId
 
-▸ **getAccountId**(`tzProvider`, `address`): `Promise`\<`AccountId`\>
+▸ **getAccountId**(`tzProvider`, `address`): `Promise`<`AccountId`\>
 
 #### Parameters
 
@@ -182,7 +182,7 @@ ___
 
 #### Returns
 
-`Promise`\<`AccountId`\>
+`Promise`<`AccountId`\>
 
 ___
 
@@ -221,7 +221,7 @@ ___
 
 ### getPublicKey
 
-▸ **getPublicKey**(`tzProvider`): `Promise`\<`string`\>
+▸ **getPublicKey**(`tzProvider`): `Promise`<`string`\>
 
 #### Parameters
 
@@ -231,7 +231,7 @@ ___
 
 #### Returns
 
-`Promise`\<`string`\>
+`Promise`<`string`\>
 
 ___
 
@@ -247,7 +247,7 @@ ___
 
 ### requestChainId
 
-▸ **requestChainId**(`tzProvider`): `Promise`\<`string`\>
+▸ **requestChainId**(`tzProvider`): `Promise`<`string`\>
 
 #### Parameters
 
@@ -257,7 +257,7 @@ ___
 
 #### Returns
 
-`Promise`\<`string`\>
+`Promise`<`string`\>
 
 ___
 

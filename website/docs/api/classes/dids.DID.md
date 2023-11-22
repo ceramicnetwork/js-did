@@ -96,7 +96,7 @@ Get parent DID, parent DID is the capability issuer
 
 ### authenticate
 
-▸ **authenticate**(`«destructured»?`): `Promise`\<`string`\>
+▸ **authenticate**(`«destructured»?`): `Promise`<`string`\>
 
 Authenticate the user.
 
@@ -108,13 +108,13 @@ Authenticate the user.
 
 #### Returns
 
-`Promise`\<`string`\>
+`Promise`<`string`\>
 
 ___
 
 ### createDagJWE
 
-▸ **createDagJWE**(`cleartext`, `recipients`, `options?`): `Promise`\<`JWE`\>
+▸ **createDagJWE**(`cleartext`, `recipients`, `options?`): `Promise`<`JWE`\>
 
 Create an IPFS compatibe DagJWE encrypted to the given recipients.
 
@@ -122,19 +122,19 @@ Create an IPFS compatibe DagJWE encrypted to the given recipients.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `cleartext` | `Record`\<`string`, `any`\> | The cleartext to be encrypted, may include ipld links |
+| `cleartext` | `Record`<`string`, `any`\> | The cleartext to be encrypted, may include ipld links |
 | `recipients` | `string`[] | An array of DIDs |
 | `options` | [`CreateJWEOptions`](../modules/dids.md#createjweoptions) | Optional parameters |
 
 #### Returns
 
-`Promise`\<`JWE`\>
+`Promise`<`JWE`\>
 
 ___
 
 ### createDagJWS
 
-▸ **createDagJWS**(`payload`, `options?`): `Promise`\<[`DagJWSResult`](../modules/dids.md#dagjwsresult)\>
+▸ **createDagJWS**(`payload`, `options?`): `Promise`<[`DagJWSResult`](../modules/dids.md#dagjwsresult)\>
 
 Create an IPFS compatibe DagJWS encoded signature over the given payload.
 Will be signed by the currently authenticated DID.
@@ -143,18 +143,18 @@ Will be signed by the currently authenticated DID.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `payload` | `Record`\<`string`, `any`\> | The payload to sign, may include ipld links |
+| `payload` | `Record`<`string`, `any`\> | The payload to sign, may include ipld links |
 | `options` | [`CreateJWSOptions`](../modules/dids.md#createjwsoptions) | Optional parameters |
 
 #### Returns
 
-`Promise`\<[`DagJWSResult`](../modules/dids.md#dagjwsresult)\>
+`Promise`<[`DagJWSResult`](../modules/dids.md#dagjwsresult)\>
 
 ___
 
 ### createJWE
 
-▸ **createJWE**(`cleartext`, `recipients`, `options?`): `Promise`\<`JWE`\>
+▸ **createJWE**(`cleartext`, `recipients`, `options?`): `Promise`<`JWE`\>
 
 Create a JWE encrypted to the given recipients.
 
@@ -168,13 +168,13 @@ Create a JWE encrypted to the given recipients.
 
 #### Returns
 
-`Promise`\<`JWE`\>
+`Promise`<`JWE`\>
 
 ___
 
 ### createJWS
 
-▸ **createJWS**\<`T`\>(`payload`, `options?`): `Promise`\<[`DagJWS`](../modules/dids.md#dagjws-1)\>
+▸ **createJWS**<`T`\>(`payload`, `options?`): `Promise`<[`DagJWS`](../modules/dids.md#dagjws-1)\>
 
 Create a JWS encoded signature over the given payload.
 Will be signed by the currently authenticated DID.
@@ -183,7 +183,7 @@ Will be signed by the currently authenticated DID.
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends `string` \| `Record`\<`string`, `any`\> |
+| `T` | extends `string` \| `Record`<`string`, `any`\> |
 
 #### Parameters
 
@@ -194,13 +194,13 @@ Will be signed by the currently authenticated DID.
 
 #### Returns
 
-`Promise`\<[`DagJWS`](../modules/dids.md#dagjws-1)\>
+`Promise`<[`DagJWS`](../modules/dids.md#dagjws-1)\>
 
 ___
 
 ### decryptDagJWE
 
-▸ **decryptDagJWE**(`jwe`): `Promise`\<`Record`\<`string`, `any`\>\>
+▸ **decryptDagJWE**(`jwe`): `Promise`<`Record`<`string`, `any`\>\>
 
 Try to decrypt the given DagJWE with the currently authenticated user.
 
@@ -212,7 +212,7 @@ Try to decrypt the given DagJWE with the currently authenticated user.
 
 #### Returns
 
-`Promise`\<`Record`\<`string`, `any`\>\>
+`Promise`<`Record`<`string`, `any`\>\>
 
 An ipld object
 
@@ -220,7 +220,7 @@ ___
 
 ### decryptJWE
 
-▸ **decryptJWE**(`jwe`, `options?`): `Promise`\<`Uint8Array`\>
+▸ **decryptJWE**(`jwe`, `options?`): `Promise`<`Uint8Array`\>
 
 Try to decrypt the given JWE with the currently authenticated user.
 
@@ -233,13 +233,13 @@ Try to decrypt the given JWE with the currently authenticated user.
 
 #### Returns
 
-`Promise`\<`Uint8Array`\>
+`Promise`<`Uint8Array`\>
 
 ___
 
 ### resolve
 
-▸ **resolve**(`didUrl`): `Promise`\<`DIDResolutionResult`\>
+▸ **resolve**(`didUrl`): `Promise`<`DIDResolutionResult`\>
 
 Resolve the DID Document of the given DID.
 
@@ -251,7 +251,7 @@ Resolve the DID Document of the given DID.
 
 #### Returns
 
-`Promise`\<`DIDResolutionResult`\>
+`Promise`<`DIDResolutionResult`\>
 
 ___
 
@@ -295,7 +295,7 @@ ___
 
 ### verifyJWS
 
-▸ **verifyJWS**(`jws`, `options?`): `Promise`\<[`VerifyJWSResult`](../modules/dids.md#verifyjwsresult)\>
+▸ **verifyJWS**(`jws`, `options?`): `Promise`<[`VerifyJWSResult`](../modules/dids.md#verifyjwsresult)\>
 
 Verify a JWS. Uses the 'kid' in the header as the way to resolve
 the author public key.
@@ -309,7 +309,7 @@ the author public key.
 
 #### Returns
 
-`Promise`\<[`VerifyJWSResult`](../modules/dids.md#verifyjwsresult)\>
+`Promise`<[`VerifyJWSResult`](../modules/dids.md#verifyjwsresult)\>
 
 Information about the signed JWS
 

@@ -155,7 +155,7 @@ ___
 
 ### getAccountId
 
-▸ **getAccountId**(`ethProvider`, `address`): `Promise`\<`AccountId`\>
+▸ **getAccountId**(`ethProvider`, `address`): `Promise`<`AccountId`\>
 
 Helper function to get an accountId (CAIP10) for an Ethereum account, uses ethProvider to get chainId/network
 
@@ -168,7 +168,7 @@ Helper function to get an accountId (CAIP10) for an Ethereum account, uses ethPr
 
 #### Returns
 
-`Promise`\<`AccountId`\>
+`Promise`<`AccountId`\>
 
 ___
 
@@ -202,7 +202,7 @@ ___
 
 ### safeSend
 
-▸ **safeSend**(`provider`, `method`, `params?`): `Promise`\<`any`\>
+▸ **safeSend**(`provider`, `method`, `params?`): `Promise`<`any`\>
 
 #### Parameters
 
@@ -214,7 +214,7 @@ ___
 
 #### Returns
 
-`Promise`\<`any`\>
+`Promise`<`any`\>
 
 ___
 
