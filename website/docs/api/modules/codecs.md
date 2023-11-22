@@ -97,8 +97,9 @@ ___
 
 | Name | Type |
 | :------ | :------ |
+| `m?` | [`SignatureMeta`](codecs.md#signaturemeta) |
 | `s` | `string` |
-| `t` | ``"eip191"`` \| ``"eip1271"`` \| ``"solana:ed25519"`` \| ``"tezos:ed25519"`` \| ``"stacks:secp256k1"`` |
+| `t` | ``"eip191"`` \| ``"eip1271"`` \| ``"solana:ed25519"`` \| ``"tezos:ed25519"`` \| ``"stacks:secp256k1"`` \| ``"webauthn:p256"`` |
 
 ___
 
@@ -145,6 +146,12 @@ ___
 | :------ | :------ |
 | `protected` | `string` |
 | `signature` | `string` |
+
+___
+
+### SignatureMeta
+
+Ƭ **SignatureMeta**: `any`
 
 ___
 

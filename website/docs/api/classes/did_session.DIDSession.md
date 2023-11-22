@@ -175,6 +175,45 @@ Initialize a session from a serialized session string
 
 ___
 
+### get
+
+▸ `Static` **get**(`account`, `authMethod`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+
+Get a session for the given accountId, if one exists, otherwise creates a new one.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `account` | `AccountId` |
+| `authMethod` | `AuthMethod` |
+| `authOpts` | `AuthOpts` |
+
+#### Returns
+
+`Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+
+___
+
+### hasSessionFor
+
+▸ `Static` **hasSessionFor**(`account`, `resources`): `Promise`<`boolean`\>
+
+Check if there is an active session for a given account.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `account` | `AccountId` |
+| `resources` | `string`[] |
+
+#### Returns
+
+`Promise`<`boolean`\>
+
+___
+
 ### initDID
 
 ▸ `Static` **initDID**(`didKey`, `cacao`): `Promise`<`DID`\>
