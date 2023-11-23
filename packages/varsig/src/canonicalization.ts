@@ -4,6 +4,8 @@ import { HashingAlgo } from './hashing.js'
 import * as uint8arrays from 'uint8arrays'
 import { keccak_256 } from '@noble/hashes/sha3'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
+import { hashTypedData } from 'viem'
+import { decompressDomain, decompressTypes } from './encoding/eip712.js'
 
 export enum CanonicalizationKind {
   EIP712 = 0xe712,
@@ -23,8 +25,23 @@ export class CanonicalizationDecoder {
   read(signing: SigningAlgo, hashing: HashingAlgo): Canonicalization {
     const sigil = this.tape.readVarint<CanonicalizationKind>()
     switch (sigil) {
-      case CanonicalizationKind.EIP712:
-        throw new Error(`Not implemented: readCanonicalization: EIP712`)
+      case CanonicalizationKind.EIP712: {
+        const metadataLength = this.tape.readVarint()
+        const metadataBytes = this.tape.read(metadataLength)
+        const metadata = JSON.parse(uint8arrays.toString(metadataBytes))
+        const [types, primaryType, domain] = metadata
+        const signingInput = (message: any) => {
+          const digestHex = hashTypedData({
+            domain: decompressDomain(domain),
+            message: message,
+            primaryType: primaryType,
+            types: decompressTypes(types),
+          })
+          return uint8arrays.fromString(digestHex.toLowerCase().replace(/^0x/, ''), 'hex')
+        }
+        signingInput.kind = CanonicalizationKind.EIP712
+        return signingInput
+      }
       case CanonicalizationKind.EIP191: {
         const signingInput = (message: string) => {
           return keccak_256(

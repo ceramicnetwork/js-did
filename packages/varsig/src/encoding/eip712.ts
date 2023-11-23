@@ -152,7 +152,7 @@ function compressDomain(domain: Eip712Domain): CompressedDomain {
   return [domain.name, domain.version, domain.chainId, domain.verifyingContract]
 }
 
-function decompressDomain(domain: CompressedDomain): Eip712Domain {
+export function decompressDomain(domain: CompressedDomain): Eip712Domain {
   return {
     name: domain[0],
     version: domain[1],
@@ -189,7 +189,7 @@ const FULL_TYPES = {
   o: 'bool',
 }
 
-function decompressTypes(compressed: CompressedTypes): Eip712Types {
+export function decompressTypes(compressed: CompressedTypes): Eip712Types {
   const types = { EIP712Domain: EIP712_DOMAIN }
   for (const [key, value] of Object.entries(compressed)) {
     // @ts-ignore
