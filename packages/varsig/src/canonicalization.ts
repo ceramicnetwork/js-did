@@ -33,7 +33,7 @@ export class CanonicalizationDecoder {
         const metadataBytes = this.tape.read(metadataLength)
         const metadata = JSON.parse(uint8arrays.toString(metadataBytes))
         const [types, primaryType, domain] = metadata
-        const signingInput = (message: any) => {
+        const fn = (message: any) => {
           const digestHex = hashTypedData({
             domain: decompressDomain(domain as CompressedDomain),
             message: message,
@@ -42,19 +42,19 @@ export class CanonicalizationDecoder {
           })
           return uint8arrays.fromString(digestHex.toLowerCase().replace(/^0x/, ''), 'hex')
         }
-        signingInput.kind = CanonicalizationKind.EIP712
-        return signingInput
+        fn.kind = CanonicalizationKind.EIP712
+        return fn
       }
       case CanonicalizationKind.EIP191: {
-        const signingInput = (message: string) => {
+        const fn = (message: string) => {
           return keccak_256(
             uint8arrays.fromString(
               `\x19Ethereum Signed Message:\n` + String(message.length) + message
             )
           )
         }
-        signingInput.kind = CanonicalizationKind.EIP191
-        return signingInput
+        fn.kind = CanonicalizationKind.EIP191
+        return fn
       }
       default:
         throw new UnreacheableCaseError(sigil, 'canonicalization kind')
