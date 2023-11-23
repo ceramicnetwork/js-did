@@ -1,6 +1,6 @@
 import * as varintes from 'varintes'
 import * as uint8arrays from 'uint8arrays'
-import { hashTypedData } from 'viem'
+import { hashTypedData, Hex, TypedDataDomain } from 'viem'
 
 interface Eip712Domain {
   name: string
@@ -32,9 +32,9 @@ interface Eip712 {
   signature?: string | SignatureComponents
 }
 
-type CompressedType = [string, string][]
-type CompressedTypes = Record<string, CompressedType>
-type CompressedDomain = [string, string, number, string]
+export type CompressedType = Array<[string, string]>
+export type CompressedTypes = Record<string, CompressedType>
+export type CompressedDomain = [string, string, number, Hex]
 
 interface CanonicalizerResult {
   digest: Uint8Array
@@ -158,7 +158,7 @@ export function fromEip712A({ types, domain, primaryType, message }: Omit<Eip712
   const node = messageToIpld(message, types, primaryType)
   node._sig = varsig
   return {
-    params: varsig
+    params: varsig,
   }
 }
 
@@ -195,10 +195,10 @@ const EIP712_DOMAIN = [
 ]
 
 function compressDomain(domain: Eip712Domain): CompressedDomain {
-  return [domain.name, domain.version, domain.chainId, domain.verifyingContract]
+  return [domain.name, domain.version, domain.chainId, domain.verifyingContract as Hex]
 }
 
-export function decompressDomain(domain: CompressedDomain): Eip712Domain {
+export function decompressDomain(domain: CompressedDomain): TypedDataDomain {
   return {
     name: domain[0],
     version: domain[1],
