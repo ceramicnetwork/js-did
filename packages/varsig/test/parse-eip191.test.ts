@@ -1,46 +1,12 @@
 import { test } from '@jest/globals'
 import * as varintes from 'varintes'
 import { secp256k1 } from '@noble/curves/secp256k1'
-import { keccak_256 } from '@noble/hashes/sha3'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
-import { SigningAlgo, SigningDecoder, SigningKind } from '../src/signing.js'
-import { HashingAlgo, HashingDecoder } from '../src/hashing.js'
-import { CanonicalizationKind } from '../src/canonicalization.js'
-
-class UnreacheableCaseError extends Error {
-  constructor(variant: never) {
-    super(`Unreacheable case: ${String(variant)}`)
-  }
-}
-
-class CanonicalizationDecoder {
-  constructor(private readonly tape: BytesTape) {}
-
-  read(signing: SigningAlgo, hashing: HashingAlgo) {
-    const sigil = this.tape.readVarint<CanonicalizationKind>()
-    switch (sigil) {
-      case CanonicalizationKind.EIP712:
-        throw new Error(`Not implemented: readCanonicalization: EIP712`)
-      case CanonicalizationKind.EIP191: {
-        const signingInput = (message: Uint8Array) => {
-          const m = uint8arrays.toString(message)
-          return keccak_256(
-            uint8arrays.fromString(`\x19Ethereum Signed Message:\n` + String(m.length) + m)
-          )
-        }
-        return {
-          signing: SigningKind.SECP256K1,
-          recoveryBit: signing.recoveryBit,
-          signingInput: signingInput,
-        }
-      }
-      default:
-        throw new UnreacheableCaseError(sigil)
-    }
-  }
-}
+import { SigningDecoder } from '../src/signing.js'
+import { HashingDecoder } from '../src/hashing.js'
+import { CanonicalizationDecoder, CanonicalizationKind } from '../src/canonicalization.js'
 
 class Decoder {
   #tape: BytesTape
@@ -96,11 +62,11 @@ test('validate eip191', async () => {
     signatureBytes.subarray(0, 64),
   ])
   // const a = decode(varsig)
-  const a = new Decoder(new BytesTape(varsig)).read()
-  const input = a.signingInput(eip191canonicalization('Hello World'))
-  let sig = secp256k1.Signature.fromCompact(a.signature)
-  if (a.recoveryBit) {
-    sig = sig.addRecoveryBit(a.recoveryBit - 27)
+  const decoder = new Decoder(new BytesTape(varsig)).read()
+  const input = decoder.signingInput(eip191canonicalization('Hello World'))
+  let signature = secp256k1.Signature.fromCompact(decoder.signature)
+  if (decoder.recoveryBit) {
+    signature = signature.addRecoveryBit(decoder.recoveryBit - 27)
   }
-  console.log(sig.recoverPublicKey(input).toHex(false))
+  console.log(signature.recoverPublicKey(input).toHex(false))
 })
