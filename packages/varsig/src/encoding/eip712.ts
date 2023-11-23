@@ -214,13 +214,13 @@ function compressTypes(types: Eip712Types): CompressedTypes {
     // @ts-ignore
     compressed[key] = value.map(({ name, type }) => [
       name,
-      type // TODO make this more resilient
-        .replace('uint', 'u')
-        .replace('int', 'i')
-        .replace('bytes', 'b')
-        .replace('string', 's')
-        .replace('address', 'a')
-        .replace('bool', 'o'),
+      type
+        .replace(/^uint(\d{1,3})$/, 'u$1')
+        .replace(/^int(\d{1,3})$/, 'i$1')
+        .replace(/^bytes(\d{0,2})$/, 'b$1')
+        .replace(/^string$/, 's')
+        .replace(/^address$/, 'a')
+        .replace(/^bool$/, 'o'),
     ])
   }
   return compressed
