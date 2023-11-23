@@ -11,6 +11,8 @@ export enum CanonicalizationKind {
   EIP191 = 0xe191,
 }
 
+type IpldNode = Record<string, any>
+
 type CanonicalizationEIP191 = {
   kind: CanonicalizationKind.EIP191
   (message: string): Uint8Array
@@ -19,6 +21,7 @@ type CanonicalizationEIP191 = {
 type CanonicalizationEIP712 = {
   kind: CanonicalizationKind.EIP712
   (message: any): Uint8Array
+  original(node: IpldNode, signature: Uint8Array, recoveryBit: number): any
 }
 
 export type CanonicalizationAlgo = CanonicalizationEIP191 | CanonicalizationEIP712
@@ -37,7 +40,7 @@ export class CanonicalizationDecoder {
         return Eip712.prepareCanonicalization(this.tape, hashing, sigKind)
       case CanonicalizationKind.EIP191: {
         if (hashing !== HashingAlgo.KECCAK256) throw new Error(`EIP191 mandates use of KECCAK 256`)
-        const fn = (message: string) => {
+        const fn: CanonicalizationEIP191 = (message: string) => {
           return keccak_256(
             uint8arrays.fromString(
               `\x19Ethereum Signed Message:\n` + String(message.length) + message

@@ -4,6 +4,7 @@ import * as varintes from 'varintes'
 import * as uint8arrays from 'uint8arrays'
 import { hashTypedData, Hex, TypedDataDomain } from 'viem'
 import type { CanonicalizationAlgo } from '../canonicalization.js'
+import type { SigningKind } from '../signing.js'
 
 interface Eip712Domain {
   name: string
@@ -61,7 +62,7 @@ const SIGIL = 0xe712
 export function prepareCanonicalization(
   tape: BytesTape,
   hashType: HashingAlgo,
-  keyType: SignatureKind
+  keyType: SigningKind
 ): CanonicalizationAlgo {
   if (hashType !== SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashType}`)
   if (!SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
@@ -73,7 +74,7 @@ export function prepareCanonicalization(
     primaryType,
     domain: decompressDomain(domain),
   }
-  const can = (node: IpldNode) => {
+  const canonicalization = (node: IpldNode) => {
     const message = ipldNodeToMessage(node)
     // @ts-ignore
     const hexHash = hashTypedData({ ...metadata, message })
@@ -86,11 +87,9 @@ export function prepareCanonicalization(
     const sigHex = `0x${uint8arrays.toString(sigBytes, 'base16')}`
     return { ...metadata, message, signature: signHex }
   }
-  return {
-    kind: SIGIL,
-    canonicalization: can,
-    original,
-  }
+  canonicalization.kind = SIGIL
+  canonicalization.original = original
+  return canonicalization
 }
 
 export const Eip712 = { SIGIL, prepareCanonicalization }

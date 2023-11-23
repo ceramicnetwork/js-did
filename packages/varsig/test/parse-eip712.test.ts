@@ -111,6 +111,6 @@ test('712 flow', async () => {
   ])
   const decoder = new Decoder(new BytesTape(varsig)).read()
   if (decoder.canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error(`Not 712`)
-  const input = decoder.canonicalization.canonicalization(testData.message)
+  const input = decoder.canonicalization(testData.message)
   expect(await decoder.signing.verify(input, decoder.signature, account.address)).toBeTruthy()
 })
