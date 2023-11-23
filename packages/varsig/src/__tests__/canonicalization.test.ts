@@ -87,7 +87,11 @@ test('EIP712', () => {
   })
   const bytes = concat([encode(0xe712)[0], a.params])
   const tape = new BytesTape(bytes)
-  const canonicalization = CanonicalizationDecoder.read(tape, HashingAlgo.KECCAK256, SigningKind.SECP256K1)
+  const canonicalization = CanonicalizationDecoder.read(
+    tape,
+    HashingAlgo.KECCAK256,
+    SigningKind.SECP256K1
+  )
   expect(canonicalization.kind).toEqual(CanonicalizationKind.EIP712)
   if (canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error()
   const input = toString(canonicalization.canonicalization(TEST_DATA.message), 'hex')

@@ -26,7 +26,7 @@ export type CanonicalizationAlgo = CanonicalizationEIP191 | CanonicalizationEIP7
 export class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
 
-  static read(tape: BytesTape, hashing: HashingAlgo, sigKind: SigningKind) {
+  static read(tape: BytesTape, hashing: HashingAlgo, sigKind: SigningKind): CanonicalizationAlgo {
     return new CanonicalizationDecoder(tape).read(hashing, sigKind)
   }
 
