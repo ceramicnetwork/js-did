@@ -5,12 +5,8 @@ import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
 import { CanonicalizationKind } from '../src/canonicalization.js'
-import { keccak_256 } from '@noble/hashes/sha3'
 import { Decoder } from '../src/decoder.js'
-
-function hex(...numbers: Array<number>): Uint8Array {
-  return new Uint8Array(numbers)
-}
+import { hex } from '../src/__tests__/hex.util.js'
 
 test('validate eip191', async () => {
   const account = privateKeyToAccount(
