@@ -45,7 +45,8 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@stablelib/random": "^1.0.2"
+    "@stablelib/random": "^1.0.2",
+    "cartonne": "^2.2.0"
   },
   "dependencies": {
     "@noble/curves": "^1.2.0",

@@ -228,8 +228,11 @@ function compressTypes(types: Eip712Types): CompressedTypes {
 
 const FULL_TYPES = {
   u: 'uint',
+  u16: 'uint16',
+  u64: 'uint64',
   i: 'int',
   b: 'bytes',
+  b32: 'bytes32',
   s: 'string',
   a: 'address',
   o: 'bool',

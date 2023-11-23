@@ -12,7 +12,7 @@ export enum SigningKind {
 
 export type SigningSecp256k1 = {
   kind: SigningKind.SECP256K1
-  verify: (
+  verify(
     signature: Uint8Array,
     verificationKey: VerificationKey,
     digest: Uint8Array
@@ -38,7 +38,8 @@ export class SigningDecoder {
         }
         return {
           kind: SigningKind.SECP256K1,
-          verify: async () => Promise.resolve(false)
+          recoveryBit: recoveryBit || undefined,
+          verify: async () => Promise.resolve(false),
         }
       }
       case SigningKind.RSA:
