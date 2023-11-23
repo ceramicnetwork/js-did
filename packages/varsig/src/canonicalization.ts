@@ -1,5 +1,5 @@
 import { BytesTape } from './bytes-tape.js'
-import { SigningAlgo, SigningKind } from './signing.js'
+import { SigningAlgo } from './signing.js'
 import { HashingAlgo } from './hashing.js'
 import * as uint8arrays from 'uint8arrays'
 import { keccak_256 } from '@noble/hashes/sha3'
@@ -20,23 +20,21 @@ type Canonicalization = CanonicalizationEIP191
 export class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
 
-  read(signing: SigningAlgo, hashing: HashingAlgo) {
+  read(signing: SigningAlgo, hashing: HashingAlgo): Canonicalization {
     const sigil = this.tape.readVarint<CanonicalizationKind>()
     switch (sigil) {
       case CanonicalizationKind.EIP712:
         throw new Error(`Not implemented: readCanonicalization: EIP712`)
       case CanonicalizationKind.EIP191: {
-        const signingInput = (message: Uint8Array) => {
-          const m = uint8arrays.toString(message)
+        const signingInput = (message: string) => {
           return keccak_256(
-            uint8arrays.fromString(`\x19Ethereum Signed Message:\n` + String(m.length) + m)
+            uint8arrays.fromString(
+              `\x19Ethereum Signed Message:\n` + String(message.length) + message
+            )
           )
         }
-        return {
-          signing: SigningKind.SECP256K1,
-          recoveryBit: signing.recoveryBit,
-          signingInput: signingInput,
-        }
+        signingInput.kind = CanonicalizationKind.EIP191
+        return signingInput
       }
       default:
         throw new UnreacheableCaseError(sigil, 'canonicalization kind')

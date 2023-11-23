@@ -20,10 +20,12 @@ class Decoder {
     const signingDecoder = new SigningDecoder(this.#tape)
     const signing = signingDecoder.read()
     const hashing = HashingDecoder.read(this.#tape)
-    const canon = new CanonicalizationDecoder(this.#tape).read(signing, hashing)
+    const canonicalization = new CanonicalizationDecoder(this.#tape).read(signing, hashing)
     const signature = signingDecoder.readSignature(signing)
     return {
-      ...canon,
+      signing: signing,
+      hashing: hashing,
+      canonicalization: canonicalization,
       signature: signature,
     }
   }
@@ -63,10 +65,10 @@ test('validate eip191', async () => {
   ])
   // const a = decode(varsig)
   const decoder = new Decoder(new BytesTape(varsig)).read()
-  const input = decoder.signingInput(eip191canonicalization('Hello World'))
+  const input = decoder.canonicalization('Hello World')
   let signature = secp256k1.Signature.fromCompact(decoder.signature)
-  if (decoder.recoveryBit) {
-    signature = signature.addRecoveryBit(decoder.recoveryBit - 27)
+  if (decoder.signing.recoveryBit) {
+    signature = signature.addRecoveryBit(decoder.signing.recoveryBit - 27)
   }
   console.log(signature.recoverPublicKey(input).toHex(false))
 })
