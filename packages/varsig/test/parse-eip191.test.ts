@@ -37,5 +37,5 @@ test('validate eip191', async () => {
   if (decoder.signing.recoveryBit) {
     signature = signature.addRecoveryBit(decoder.signing.recoveryBit - 27)
   }
-  console.log(signature.recoverPublicKey(keccak_256(input)).toHex(false))
+  console.log(signature.recoverPublicKey(input).toHex(false))
 })

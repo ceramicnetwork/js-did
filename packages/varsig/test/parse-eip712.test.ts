@@ -4,14 +4,10 @@ import { secp256k1 } from '@noble/curves/secp256k1'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
-import { SigningAlgo, SigningDecoder } from '../src/signing.js'
-import { HashingAlgo, HashingDecoder } from '../src/hashing.js'
-import {
-  CanonicalizationAlgo,
-  CanonicalizationDecoder,
-  CanonicalizationKind,
-} from '../src/canonicalization.js'
+import { CanonicalizationKind } from '../src/canonicalization.js'
 import { fromEip712A } from '../src/encoding/eip712'
+import { Decoder } from '../src/decoder.js'
+import { hex } from '../src/__tests__/hex.util.js'
 
 const testData = {
   types: {
@@ -82,51 +78,6 @@ const testData = {
     attachment: '0xababababababababababa83459873459873459873498575986734359',
   },
 } as const
-
-const expectedHash = uint8arrays.fromString(
-  '703012a88c79c0ae106c7e0bd144d39d63304df1815e6d11b19189aff3dce0c4',
-  'base16'
-)
-
-type DecodedVarsig = {
-  signing: SigningAlgo
-  hashing: HashingAlgo
-  canonicalization: CanonicalizationAlgo
-  signature: Uint8Array
-}
-
-class Decoder {
-  #tape: BytesTape
-
-  constructor(tape: BytesTape) {
-    this.#tape = tape
-  }
-
-  read(): DecodedVarsig {
-    this.readVarsigSigil()
-    const signingDecoder = new SigningDecoder(this.#tape)
-    const signing = signingDecoder.read()
-    const hashing = HashingDecoder.read(this.#tape)
-    const canonicalization = new CanonicalizationDecoder(this.#tape).read(hashing)
-    const signature = signingDecoder.readSignature(signing)
-    return {
-      signing: signing,
-      hashing: hashing,
-      canonicalization: canonicalization,
-      signature: signature,
-    }
-  }
-
-  readVarsigSigil() {
-    const sigil = this.#tape.readVarint()
-    if (sigil !== 0x34) throw new Error(`Not a varsig`)
-    return sigil
-  }
-}
-
-function hex(...numbers: Array<number>): Uint8Array {
-  return new Uint8Array(numbers)
-}
 
 test('712 flow', async () => {
   const account = privateKeyToAccount(
