@@ -4,43 +4,9 @@ import { secp256k1 } from '@noble/curves/secp256k1'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
-import { SigningDecoder } from '../src/signing.js'
-import { HashingDecoder } from '../src/hashing.js'
-import { CanonicalizationDecoder, CanonicalizationKind } from '../src/canonicalization.js'
+import { CanonicalizationKind } from '../src/canonicalization.js'
 import { keccak_256 } from '@noble/hashes/sha3'
-
-class Decoder {
-  #tape: BytesTape
-
-  constructor(tape: BytesTape) {
-    this.#tape = tape
-  }
-
-  read() {
-    this.readVarsigSigil()
-    const signingDecoder = new SigningDecoder(this.#tape)
-    const signing = signingDecoder.read()
-    const hashing = HashingDecoder.read(this.#tape)
-    const canonicalization = new CanonicalizationDecoder(this.#tape).read(hashing)
-    const signature = signingDecoder.readSignature(signing)
-    return {
-      signing: signing,
-      hashing: hashing,
-      canonicalization: canonicalization,
-      signature: signature,
-    }
-  }
-
-  readVarsigSigil() {
-    const sigil = this.#tape.readVarint()
-    if (sigil !== 0x34) throw new Error(`Not a varsig`)
-    return sigil
-  }
-}
-
-function eip191canonicalization(message: string) {
-  return uint8arrays.fromString(message)
-}
+import { Decoder } from '../src/decoder.js'
 
 function hex(...numbers: Array<number>): Uint8Array {
   return new Uint8Array(numbers)
