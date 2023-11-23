@@ -36,25 +36,6 @@ export class CanonicalizationDecoder {
     switch (sigil) {
       case Eip712.SIGIL:
         return Eip712.prepareCanonicalization(this.tape, hashing, sigKind)
-      // case CanonicalizationKind.EIP712: {
-      //   if (hashing !== HashingAlgo.KECCAK256) throw new Error(`EIP712 mandates use of KECCAK 256`)
-      //   const metadataLength = this.tape.readVarint()
-      //   const metadataBytes = this.tape.read(metadataLength)
-      //   const metadata = JSON.parse(uint8arrays.toString(metadataBytes))
-      //   const [types, primaryType, domain] = metadata
-      //   const fn = (message: any) => {
-      //     const decoded = {
-      //       domain: decompressDomain(domain as CompressedDomain),
-      //       message: message,
-      //       primaryType: primaryType,
-      //       types: decompressTypes(types),
-      //     }
-      //     const digestHex = hashTypedData(decoded)
-      //     return uint8arrays.fromString(digestHex.toLowerCase().replace(/^0x/, ''), 'hex')
-      //   }
-      //   fn.kind = CanonicalizationKind.EIP712
-      //   return fn
-      // }
       case CanonicalizationKind.EIP191: {
         if (hashing !== HashingAlgo.KECCAK256) throw new Error(`EIP191 mandates use of KECCAK 256`)
         const fn = (message: string) => {
