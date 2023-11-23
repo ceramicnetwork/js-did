@@ -8,14 +8,20 @@ export class BytesTape implements Tape<Uint8Array> {
     this.position = 0
   }
 
-  read(n: number): Uint8Array {
+  read(n: number, exact = false): Uint8Array {
     const result = this.input.subarray(this.position, this.position + n)
+    if (exact && result.byteLength < n) {
+      throw new Error(`EOF reached while trying to read ${n} bytes`)
+    }
     this.position += n
     return result
   }
 
   readVarint<T extends number = number>(): T {
     const bytes = this.read(10)
+    if (bytes.byteLength === 0) {
+      throw new Error(`EOF reached while trying to get varint bytes`)
+    }
     const [n, bytesRead] = decode(bytes)
     this.position -= 10 - bytesRead
     return n as T

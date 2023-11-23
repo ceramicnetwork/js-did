@@ -1,4 +1,4 @@
-import { BytesTape } from './bytes-tape.js'
+import type { BytesTape } from './bytes-tape.js'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 
 export enum SigningKind {
@@ -25,7 +25,7 @@ export class SigningDecoder {
     switch (signingSigil) {
       case SigningKind.SECP256K1: {
         const recoveryBit = this.tape.readVarint()
-        if (!(recoveryBit === 27 || recoveryBit === 28)) {
+        if (recoveryBit && !(recoveryBit === 27 || recoveryBit === 28)) {
           throw new Error(`Wrong recovery bit`)
         }
         return {
