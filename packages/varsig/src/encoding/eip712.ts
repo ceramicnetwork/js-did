@@ -18,11 +18,18 @@ interface Eip712TypeField {
 
 type Eip712Types = Record<string, Array<Eip712TypeField>>
 
+interface SignatureComponents {
+  r: string
+  s: string
+  v: number
+}
+
 interface Eip712 {
   types: Eip712Types
   domain: Eip712Domain
   primaryType: string
   message?: Record<string, any>
+  signature?: string | SignatureComponents
 }
 
 type CompressedType = [string, string][]
@@ -100,20 +107,37 @@ function ipldNodeToMessage(node: IpldNode): Record<string, any> {
   return message
 }
 
-type IpldEip712 = any
+interface IpldEip712 {
+  _sig: Uint8Array
+  [key: string]: any
+}
 
-export function fromEip712({ types, domain, primaryType, message }: Eip712): {
+export function fromEip712({ types, domain, primaryType, message, signature }: Eip712): {
   node: IpldEip712
   params: Uint8Array
 } {
   const metadata = JSON.stringify([compressTypes(types), primaryType, compressDomain(domain)])
   const metadataBytes = uint8arrays.fromString(metadata)
   const metadataLength = varintes.encode(metadataBytes.length)[0]
-  return {
-    // @ts-ignore
-    node: messageToIpld(message, types, primaryType),
-    params: uint8arrays.concat([metadataLength, metadataBytes]),
-  }
+  const recoveryBit = signature.v ?
+    new Uint8Array([signature.v]) :
+    uint8arrays.fromString(signature.slice(-2), 'base16')
+  const signatureBytes = signature.r ?
+    uint8arrays.fromString(signature.r.slice(2) + signature.s.slice(2), 'base16') :
+    uint8arrays.fromString(signature.slice(2, -2), 'base16')
+  const varsig = uint8arrays.concat([
+    new Uint8Array([0x34]), // varsig sigil
+    varintes.encode(0xe7)[0], // key type
+    recoveryBit,
+    varintes.encode(0x1b)[0], // hash type
+    varintes.encode(0xe712)[0], // canonicalizer codec
+    metadataLength,
+    metadataBytes,
+    signatureBytes
+  ])
+  const node = messageToIpld(message, types, primaryType)
+  node._sig = varsig
+  return node
 }
 
 function messageToIpld(
