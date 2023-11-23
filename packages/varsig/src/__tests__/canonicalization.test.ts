@@ -90,7 +90,7 @@ test('EIP712', () => {
   const canonicalization = CanonicalizationDecoder.read(tape, HashingAlgo.KECCAK256, SigningKind.SECP256K1)
   expect(canonicalization.kind).toEqual(CanonicalizationKind.EIP712)
   if (canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error()
-  const input = toString(canonicalization(TEST_DATA.message), 'hex')
+  const input = toString(canonicalization.canonicalization(TEST_DATA.message), 'hex')
   expect(input).toEqual('703012a88c79c0ae106c7e0bd144d39d63304df1815e6d11b19189aff3dce0c4')
 })
 

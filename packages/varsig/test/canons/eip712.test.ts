@@ -111,7 +111,7 @@ test('Canonicalize ipld eip712 object', async () => {
   const can = prepareCanonicalization(tape, 0x1b, 0xe7)
   expect(tape.remainder.length).toEqual(64)
   delete node._sig
-  const sigInput = can(node)
+  const sigInput = can.canonicalization(node)
   expect(sigInput).toEqual(expectedHash)
 })
 

@@ -17,6 +17,7 @@ function prepareVerifier(tape: ByteTape): SigningAlgo {
   }
   return {
     kind: SIGIL,
+    recoveryBit: recoveryBit || undefined,
     verify: async (input, signature, verificationKey) => {
       let k1Sig = secp256k1.Signature.fromCompact(signature)
       if (recoveryBit) {

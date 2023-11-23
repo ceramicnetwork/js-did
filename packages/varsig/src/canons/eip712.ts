@@ -72,14 +72,24 @@ export function prepareCanonicalization(
     primaryType,
     domain: decompressDomain(domain),
   }
-  const fn = (node: IpldNode) => {
+  const can = (node: IpldNode) => {
     const message = ipldNodeToMessage(node)
     // @ts-ignore
     const hexHash = hashTypedData({ ...metadata, message })
     return uint8arrays.fromString(hexHash.slice(2), 'base16')
   }
-  fn.kind = SIGIL
-  return fn
+  const original = (node: IpldNode, signature: Uint8Array, recoveryBit: number) => {
+    const message = ipldNodeToMessage(node)
+
+    const sigBytes = uint8arrays.concat([signature, [recoveryBit]])
+    const sigHex = `0x${uint8arrays.toString(sigBytes, 'base16')}`
+    return { ...metadata, message, signature: signHex }
+  }
+  return {
+    kind: SIGIL,
+    canonicalization: can,
+    original,
+  }
 }
 
 export const Eip712 = { SIGIL, prepareCanonicalization }

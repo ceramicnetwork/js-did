@@ -24,7 +24,7 @@ test('eip712-secp256k1.car', async () => {
       const node = car.get(nodeCID)
       const varsig = new Decoder(new BytesTape(node._sig)).read()
       if (varsig.canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error(`Not 712`)
-      const input = varsig.canonicalization(data.message)
+      const input = varsig.canonicalization.canonicalization(data.message)
       let signature = secp256k1.Signature.fromCompact(varsig.signature)
       if (varsig.signing.recoveryBit) {
         signature = signature.addRecoveryBit(varsig.signing.recoveryBit - 27)

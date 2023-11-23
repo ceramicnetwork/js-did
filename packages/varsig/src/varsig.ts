@@ -16,14 +16,14 @@ export async function verify (
   const { canonicalization, signing, signature } = (new Decoder(node._sig)).read()
 
   delete node._sig
-  const signatureInput = canonicalization(node)
+  const signatureInput = canonicalization.canonicalization(node)
 
   return signing.verify(signatureInput, signature, verificationKey)
   }
 }
 
-// export async function toOriginal (node: VarsigNode): Promise<Decoded> {
-//   const { canonicalization } = (new Decoder(node._sig)).read()
-//   delete node._sig
-//   // return canonicalization(node)
-// }
+export async function toOriginal (node: VarsigNode): Promise<Decoded> {
+  const { canonicalization, signing, signature } = (new Decoder(node._sig)).read()
+  delete node._sig
+  return canonicalization.original(node, signature, signing.recoveryBig)
+}
