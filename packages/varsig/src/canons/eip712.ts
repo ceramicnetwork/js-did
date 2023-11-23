@@ -1,3 +1,5 @@
+import type { BytesTape } from '../bytes-tape.js'
+import type { HashingAlgo } from '../hashing.js'
 import * as varintes from 'varintes'
 import * as uint8arrays from 'uint8arrays'
 import { hashTypedData, Hex, TypedDataDomain } from 'viem'
@@ -40,7 +42,7 @@ interface CanonicalizerResult {
   digest: Uint8Array
   decoded: any
 }
-type Canonicalize = (node: IpldNode) => CanonicalizerResult
+type Canonicalization = (node: IpldNode) => Uint8Array
 
 interface CanonicalizerSetup {
   remainder: Uint8Array
@@ -49,46 +51,50 @@ interface CanonicalizerSetup {
 
 const SUPPORTED_KEY_TYPES = [
   0xe7, // secp256k1
-  0x1271, // eip1271 contract signature
+  // 0x1271, // eip1271 contract signature
 ]
 const SUPPORTED_HASH_TYPE = 0x1b // keccak256
 
-export const CODEC = 0xe712 // TODO encode as varint
+const SIGIL = 0xe712
 
-export function setupCanonicalizer(
-  varsigReminder: Uint8Array,
-  // @ts-ignore
-  hasher: (data: Uint8Array) => Uint8Array,
-  hashType: number,
-  keyType: number
-): CanonicalizerSetup {
-  const [metadataLength, read] = varintes.decode(varsigReminder)
-  const metadataBytes = varsigReminder.subarray(read, read + metadataLength)
+export function prepareCanonicalization(
+  tape: BytesTape,
+  hashType: HashingAlgo,
+  keyType: SignatureKind
+): Canonicalization {
+  if (hashType !== SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashType}`)
+  if (!SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
+  const metadataLength = tape.readVarint()
+  const metadataBytes = tape.read(metadataLength)
   const [types, primaryType, domain] = JSON.parse(uint8arrays.toString(metadataBytes))
-  if (SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
-  if (hashType === SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashType}`)
   const metadata = {
     types: decompressTypes(types),
     primaryType,
     domain: decompressDomain(domain),
   }
-  return {
-    remainder: varsigReminder.subarray(read + metadataLength),
-    canonicalize: parameterizeCanonicalizer(metadata),
-  }
-}
-
-function parameterizeCanonicalizer({ types, primaryType, domain }: Eip712): Canonicalize {
-  return (node: IpldNode) => {
+  const fn = (node: IpldNode) => {
     const message = ipldNodeToMessage(node)
     // @ts-ignore
-    const hexHash = hashTypedData({ types, primaryType, domain, message })
-    return {
-      digest: uint8arrays.fromString(hexHash.slice(2), 'base16'),
-      decoded: { types, primaryType, domain, message },
-    }
+    const hexHash = hashTypedData({ ...metadata, message })
+    return uint8arrays.fromString(hexHash.slice(2), 'base16')
   }
+  fn.kind = SIGIL
+  return fn
 }
+
+export const Eip712 = { SIGIL, prepareCanonicalization }
+
+// function parameterizeCanonicalizer({ types, primaryType, domain }: Eip712): Canonicalize {
+//   return (node: IpldNode) => {
+//     const message = ipldNodeToMessage(node)
+//     // @ts-ignore
+//     const hexHash = hashTypedData({ types, primaryType, domain, message })
+//     return {
+//       digest: uint8arrays.fromString(hexHash.slice(2), 'base16'),
+//       decoded: { types, primaryType, domain, message },
+//     }
+//   }
+// }
 
 function ipldNodeToMessage(node: IpldNode): Record<string, any> {
   const message = {}

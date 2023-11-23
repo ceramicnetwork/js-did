@@ -12,12 +12,14 @@ export enum SigningKind {
 
 export type SigningSecp256k1 = {
   kind: SigningKind.SECP256K1
-  verify(
-    signature: Uint8Array,
-    verificationKey: VerificationKey,
-    digest: Uint8Array
-  ): Promise<boolean>
+  verify: VerifySignatureFn
 }
+
+export type VerifySignatureFn = (
+  input: Uint8Array,
+  signature: Uint8Array,
+  verificationKey: VerificationKey
+) => Promise<boolean>
 
 export type SigningAlgo = SigningSecp256k1
 
@@ -32,14 +34,28 @@ export class SigningDecoder {
     const signingSigil = this.tape.readVarint<SigningKind>()
     switch (signingSigil) {
       case SigningKind.SECP256K1: {
-        const recoveryBit = this.tape.readVarint()
+        const recoveryBit = this.tape.read(1)[0]
         if (recoveryBit && !(recoveryBit === 27 || recoveryBit === 28)) {
           throw new Error(`Wrong recovery bit`)
         }
         return {
           kind: SigningKind.SECP256K1,
-          recoveryBit: recoveryBit || undefined,
-          verify: async () => Promise.resolve(false),
+          verify: async (input, signature, verificationKey) => {
+            let k1Sig = secp256k1.Signature.fromCompact(decoder.signature)
+            if (recoveryBit) {
+              k1Sig = k1Sig.addRecoveryBit(recoveryBit - 27)
+            }
+            const recoveredKey = k1Sig.recoverPublicKey(input)
+            // compare recoveredKey with verificationKey
+            if (verificationKey instanceof Uint8Array) {
+              return recoveredKey.toBytes().equals(verificationKey)
+            }
+            else if (typeof verificationKey === 'string') {
+              // convert recoveredKey to eth address
+              const recoveredAddress = '0x' + recoveredKey.toBytes().slice(-20).toString('hex')
+              return recoveredAddress === verificationKey
+            }
+          }
         }
       }
       case SigningKind.RSA:
@@ -52,11 +68,7 @@ export class SigningDecoder {
   readSignature(signing: SigningAlgo): Uint8Array {
     switch (signing.kind) {
       case SigningKind.SECP256K1: {
-        if (signing.recoveryBit) {
-          return this.tape.read(65)
-        } else {
-          return this.tape.read(64)
-        }
+        return this.tape.read(64)
       }
       default:
         throw new UnreacheableCaseError(signing.kind, 'signing kind')
