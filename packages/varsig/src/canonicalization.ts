@@ -27,7 +27,7 @@ type Canonicalization = CanonicalizationEIP191 | CanonicalizationEIP712
 export class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
 
-  read(signing: SigningAlgo, hashing: HashingAlgo): Canonicalization {
+  read(): Canonicalization {
     const sigil = this.tape.readVarint<CanonicalizationKind>()
     switch (sigil) {
       case CanonicalizationKind.EIP712: {

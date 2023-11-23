@@ -20,7 +20,7 @@ class Decoder {
     const signingDecoder = new SigningDecoder(this.#tape)
     const signing = signingDecoder.read()
     const hashing = HashingDecoder.read(this.#tape)
-    const canonicalization = new CanonicalizationDecoder(this.#tape).read(signing, hashing)
+    const canonicalization = new CanonicalizationDecoder(this.#tape).read()
     const signature = signingDecoder.readSignature(signing)
     return {
       signing: signing,
