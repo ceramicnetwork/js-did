@@ -7,6 +7,7 @@ import { BytesTape } from '../src/bytes-tape.js'
 import { SigningDecoder } from '../src/signing.js'
 import { HashingDecoder } from '../src/hashing.js'
 import { CanonicalizationDecoder, CanonicalizationKind } from '../src/canonicalization.js'
+import { keccak_256 } from '@noble/hashes/sha3'
 
 class Decoder {
   #tape: BytesTape
@@ -70,5 +71,5 @@ test('validate eip191', async () => {
   if (decoder.signing.recoveryBit) {
     signature = signature.addRecoveryBit(decoder.signing.recoveryBit - 27)
   }
-  console.log(signature.recoverPublicKey(input).toHex(false))
+  console.log(signature.recoverPublicKey(keccak_256(input)).toHex(false))
 })

@@ -1,6 +1,5 @@
 import { BytesTape } from './bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
-import { keccak_256 } from '@noble/hashes/sha3'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 import { hashTypedData } from 'viem'
 import { CompressedDomain, decompressDomain, decompressTypes } from './encoding/eip712.js'
@@ -25,6 +24,10 @@ export type CanonicalizationAlgo = CanonicalizationEIP191 | CanonicalizationEIP7
 export class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
 
+  static read(tape: BytesTape) {
+    return new CanonicalizationDecoder(tape).read()
+  }
+
   read(): CanonicalizationAlgo {
     const sigil = this.tape.readVarint<CanonicalizationKind>()
     switch (sigil) {
@@ -47,10 +50,8 @@ export class CanonicalizationDecoder {
       }
       case CanonicalizationKind.EIP191: {
         const fn = (message: string) => {
-          return keccak_256(
-            uint8arrays.fromString(
-              `\x19Ethereum Signed Message:\n` + String(message.length) + message
-            )
+          return uint8arrays.fromString(
+            `\x19Ethereum Signed Message:\n` + String(message.length) + message
           )
         }
         fn.kind = CanonicalizationKind.EIP191
