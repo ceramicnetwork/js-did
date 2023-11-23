@@ -1,4 +1,4 @@
-import { BytesTape } from './bytes-tape.js'
+import type { BytesTape } from './bytes-tape.js'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 
 export enum HashingAlgo {
@@ -18,9 +18,9 @@ export class HashingDecoder {
     const hashingSigil = this.tape.readVarint<HashingAlgo>()
     switch (hashingSigil) {
       case HashingAlgo.SHA2_512:
-        throw new Error(`Not implemented: hashingSigil: SHA2_512`)
+        return HashingAlgo.SHA2_512
       case HashingAlgo.SHA2_256:
-        throw new Error(`Not implemented: hashingSigil: SHA2_256`)
+        return HashingAlgo.SHA2_256
       case HashingAlgo.KECCAK256:
         return HashingAlgo.KECCAK256
       default:
