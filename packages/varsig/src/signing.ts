@@ -34,7 +34,7 @@ export class SigningDecoder {
     const signingSigil = this.tape.readVarint<SigningKind>()
     switch (signingSigil) {
       case SigningKind.SECP256K1: {
-        const recoveryBit = this.tape.readVarint()
+        const recoveryBit = this.tape.read(1)[0]
         if (recoveryBit && !(recoveryBit === 27 || recoveryBit === 28)) {
           throw new Error(`Wrong recovery bit`)
         }
@@ -68,11 +68,7 @@ export class SigningDecoder {
   readSignature(signing: SigningAlgo): Uint8Array {
     switch (signing.kind) {
       case SigningKind.SECP256K1: {
-        if (signing.recoveryBit) {
-          return this.tape.read(65)
-        } else {
-          return this.tape.read(64)
-        }
+        return this.tape.read(64)
       }
       default:
         throw new UnreacheableCaseError(signing.kind, 'signing kind')

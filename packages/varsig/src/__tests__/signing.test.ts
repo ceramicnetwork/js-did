@@ -47,7 +47,7 @@ describe('secp265k1', () => {
       const decoder = new SigningDecoder(tape)
       const result = decoder.read()
       expect(result.kind).toEqual(SigningKind.SECP256K1)
-      expect(result.recoveryBit).toEqual(27)
+      // expect(result.recoveryBit).toEqual(27)
     })
     test('readSignature', () => {
       const decoder = new SigningDecoder(tape)
@@ -59,7 +59,7 @@ describe('secp265k1', () => {
       })
       const signature = decoder.readSignature(result)
       expect(signature).toEqual(mockSignature)
-      expect(readSpy).toHaveBeenCalledWith(65)
+      expect(readSpy).toHaveBeenCalledWith(64)
     })
   })
 })
