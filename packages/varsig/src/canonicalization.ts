@@ -16,10 +16,9 @@ type CanonicalizationEIP191 = {
   (message: string): Uint8Array
 }
 
-type SignatureInput = Uint8Array
 type CanonicalizationEIP712 = {
   kind: CanonicalizationKind.EIP712
-  (message: any): SignatureInput
+  (message: any): Uint8Array
 }
 
 export type CanonicalizationAlgo = CanonicalizationEIP191 | CanonicalizationEIP712
@@ -34,7 +33,7 @@ export class CanonicalizationDecoder {
   read(hashing: HashingAlgo, sigKind: SigningKind): CanonicalizationAlgo {
     const sigil = this.tape.readVarint<CanonicalizationKind>()
     switch (sigil) {
-      case Eip712.SIGIL:
+      case CanonicalizationKind.EIP712:
         return Eip712.prepareCanonicalization(this.tape, hashing, sigKind)
       case CanonicalizationKind.EIP191: {
         if (hashing !== HashingAlgo.KECCAK256) throw new Error(`EIP191 mandates use of KECCAK 256`)

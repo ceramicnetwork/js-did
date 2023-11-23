@@ -3,6 +3,7 @@ import type { HashingAlgo } from '../hashing.js'
 import * as varintes from 'varintes'
 import * as uint8arrays from 'uint8arrays'
 import { hashTypedData, Hex, TypedDataDomain } from 'viem'
+import type { CanonicalizationAlgo } from '../canonicalization.js'
 
 interface Eip712Domain {
   name: string
@@ -61,7 +62,7 @@ export function prepareCanonicalization(
   tape: BytesTape,
   hashType: HashingAlgo,
   keyType: SignatureKind
-): Canonicalization {
+): CanonicalizationAlgo {
   if (hashType !== SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashType}`)
   if (!SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
   const metadataLength = tape.readVarint()
