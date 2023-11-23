@@ -5,7 +5,7 @@ import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../src/bytes-tape.js'
 import { CanonicalizationKind } from '../src/canonicalization.js'
-import { fromEip712A } from '../src/encoding/eip712'
+import { fromEip712A } from '../src/canons/eip712'
 import { Decoder } from '../src/decoder.js'
 import { hex } from '../src/__tests__/hex.util.js'
 
@@ -83,7 +83,6 @@ test('712 flow', async () => {
   const account = privateKeyToAccount(
     '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
   )
-  console.log('pub.0', account.publicKey)
   const stringSignature = await account.signTypedData({
     domain: { ...testData.domain, chainId: 1n },
     types: testData.types,
@@ -113,9 +112,5 @@ test('712 flow', async () => {
   const decoder = new Decoder(new BytesTape(varsig)).read()
   if (decoder.canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error(`Not 712`)
   const input = decoder.canonicalization(testData.message)
-  let signature = secp256k1.Signature.fromCompact(decoder.signature)
-  if (decoder.signing.recoveryBit) {
-    signature = signature.addRecoveryBit(decoder.signing.recoveryBit - 27)
-  }
-  console.log('pub.1', signature.recoverPublicKey(input).toHex(false))
+  expect(await decoder.signing.verify(input, decoder.signature, account.address)).toBeTruthy()
 })
