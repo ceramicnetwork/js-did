@@ -1,5 +1,8 @@
 import type { BytesTape } from './bytes-tape.js'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
+import { secp256k1 } from '@noble/curves/secp256k1'
+import * as uint8arrays from 'uint8arrays'
+import { keccak_256 } from '@noble/hashes/sha3'
 
 type EthAddress = `0x${string}`
 type PublicKey = Uint8Array
@@ -41,19 +44,23 @@ export class SigningDecoder {
         return {
           kind: SigningKind.SECP256K1,
           verify: async (input, signature, verificationKey) => {
-            let k1Sig = secp256k1.Signature.fromCompact(decoder.signature)
+            let k1Sig = secp256k1.Signature.fromCompact(signature)
             if (recoveryBit) {
               k1Sig = k1Sig.addRecoveryBit(recoveryBit - 27)
-            }
-            const recoveredKey = k1Sig.recoverPublicKey(input)
-            // compare recoveredKey with verificationKey
-            if (verificationKey instanceof Uint8Array) {
-              return recoveredKey.toBytes().equals(verificationKey)
-            }
-            else if (typeof verificationKey === 'string') {
-              // convert recoveredKey to eth address
-              const recoveredAddress = '0x' + recoveredKey.toBytes().slice(-20).toString('hex')
-              return recoveredAddress === verificationKey
+              const recoveredKey = k1Sig.recoverPublicKey(input).toRawBytes(false)
+              // compare recoveredKey with verificationKey
+              if (verificationKey instanceof Uint8Array) {
+                return uint8arrays.equals(recoveredKey, verificationKey)
+              }
+              // convert recoveredKey to eth address and compare
+              else if (typeof verificationKey === 'string') {
+                const recoveredAddress = `0x${uint8arrays.toString(
+                  keccak_256(recoveredKey.slice(1)) , 'base16'
+                ).slice(-40)}`
+                return recoveredAddress === verificationKey.toLowerCase()
+              }
+            } else {
+              return secp256k1.verify(signature, input, verificationKey)
             }
           }
         }
