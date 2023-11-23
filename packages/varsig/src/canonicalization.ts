@@ -13,11 +13,16 @@ export enum CanonicalizationKind {
 }
 
 type CanonicalizationEIP191 = {
-  kind: CanonicalizationKind
+  kind: CanonicalizationKind.EIP191
   (message: string): Uint8Array
 }
 
-type Canonicalization = CanonicalizationEIP191
+type CanonicalizationEIP712 = {
+  kind: CanonicalizationKind.EIP712
+  (message: string): Uint8Array
+}
+
+type Canonicalization = CanonicalizationEIP191 | CanonicalizationEIP712
 
 export class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
