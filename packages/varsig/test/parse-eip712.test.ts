@@ -7,7 +7,7 @@ import { BytesTape } from '../src/bytes-tape.js'
 import { SigningDecoder } from '../src/signing.js'
 import { HashingDecoder } from '../src/hashing.js'
 import { CanonicalizationDecoder, CanonicalizationKind } from '../src/canonicalization.js'
-import { fromEip712, setupCanonicalizer } from '../src/encoding/eip712'
+import {fromEip712, fromEip712A, setupCanonicalizer} from '../src/encoding/eip712'
 
 const testData = {
   types: {
@@ -190,7 +190,7 @@ test('712 flow', async () => {
     stringSignature.toLowerCase().replace(/^0x/, ''),
     'hex'
   )
-  const a = fromEip712({
+  const a = fromEip712A({
     // @ts-ignore
     types: testData.types,
     domain: testData.domain,
