@@ -3,9 +3,8 @@ import { test } from '@jest/globals'
 import { CARFactory } from 'cartonne'
 import { Decoder } from '../decoder'
 import { BytesTape } from '../bytes-tape'
-import {CanonicalizationKind} from "../canonicalization";
-import {decompressDomain, decompressTypes} from "../encoding/eip712";
-import {secp256k1} from "@noble/curves/secp256k1";
+import { CanonicalizationKind } from '../canonicalization'
+import { secp256k1 } from '@noble/curves/secp256k1'
 
 const factory = new CARFactory()
 
