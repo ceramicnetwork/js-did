@@ -9,22 +9,21 @@ type PublicKey = Uint8Array
 
 type Decoded = any
 
-interface VerificationResult {
-  valid: boolean
-  decoded: Decoded
-}
-
 export async function verify (
   node: VarsigNode,
   verificationKey: PublicKey | EthAddress
-): VerificationResult {
-  const { canoncalize, signing, signature } = (new Decoder(node._sig)).read()
+): Promise<boolean> {
+  const { canonicalization, signing, signature } = (new Decoder(node._sig)).read()
 
   delete node._sig
-  const { digest, decoded } = canoncalize(node)
+  const signatureInput = canonicalization(node)
 
-  return {
-    decoded,
-    valid: await signing.verify(signature, verificationKey, digest)
+  return signing.verify(signatureInput, signature, verificationKey)
   }
 }
+
+// export async function toOriginal (node: VarsigNode): Promise<Decoded> {
+//   const { canonicalization } = (new Decoder(node._sig)).read()
+//   delete node._sig
+//   // return canonicalization(node)
+// }

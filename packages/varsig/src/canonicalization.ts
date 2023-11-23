@@ -16,9 +16,10 @@ type CanonicalizationEIP191 = {
   (message: string): Uint8Array
 }
 
+type SignatureInput = Uint8Array
 type CanonicalizationEIP712 = {
   kind: CanonicalizationKind.EIP712
-  (message: any): Uint8Array
+  (message: any): SignatureInput
 }
 
 export type CanonicalizationAlgo = CanonicalizationEIP191 | CanonicalizationEIP712
@@ -40,12 +41,13 @@ export class CanonicalizationDecoder {
         const metadata = JSON.parse(uint8arrays.toString(metadataBytes))
         const [types, primaryType, domain] = metadata
         const fn = (message: any) => {
-          const digestHex = hashTypedData({
+          const decoded = {
             domain: decompressDomain(domain as CompressedDomain),
             message: message,
             primaryType: primaryType,
             types: decompressTypes(types),
-          })
+          }
+          const digestHex = hashTypedData(decoded)
           return uint8arrays.fromString(digestHex.toLowerCase().replace(/^0x/, ''), 'hex')
         }
         fn.kind = CanonicalizationKind.EIP712
