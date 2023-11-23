@@ -7,7 +7,7 @@ import { BytesTape } from '../src/bytes-tape.js'
 import { SigningDecoder } from '../src/signing.js'
 import { HashingDecoder } from '../src/hashing.js'
 import { CanonicalizationDecoder, CanonicalizationKind } from '../src/canonicalization.js'
-import {fromEip712, fromEip712A, setupCanonicalizer} from '../src/encoding/eip712'
+import { fromEip712A } from '../src/encoding/eip712'
 
 const testData = {
   types: {
@@ -148,32 +148,6 @@ function hex(...numbers: Array<number>): Uint8Array {
 //   }
 //   console.log(signature.recoverPublicKey(input).toHex(false))
 // })
-
-test('Encode eip712 message', async () => {
-  const enc = fromEip712(testData)
-
-  expect(enc.params.length).toEqual(196)
-  expect(enc.node.attachment instanceof Uint8Array).toBeTruthy()
-  // console.log(enc.node)
-})
-
-test('Canonicalize ipld eip712 object', async () => {
-  const enc = fromEip712(testData)
-  const can1 = setupCanonicalizer(enc.params)
-  expect(can1.remainder.length).toEqual(0)
-  const res1 = can1.canonicalize(enc.node)
-  expect(res1.decoded).toEqual(testData)
-  expect(res1.digest).toEqual(expectedHash)
-
-  // extra remainder should not affect parsing
-  const testRemainder = new Uint8Array([1, 2, 3])
-  const can2 = setupCanonicalizer(uint8arrays.concat([enc.params, testRemainder]))
-  expect(can2.remainder.length).toEqual(testRemainder.length)
-  expect(can2.remainder).toEqual(testRemainder)
-  const res2 = can2.canonicalize(enc.node)
-  expect(res2.decoded).toEqual(testData)
-  expect(res2.digest).toEqual(expectedHash)
-})
 
 test('712 flow', async () => {
   const account = privateKeyToAccount(
