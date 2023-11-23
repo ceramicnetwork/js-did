@@ -3,7 +3,7 @@ import * as uint8arrays from 'uint8arrays'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 import { hashTypedData } from 'viem'
 import { CompressedDomain, decompressDomain, decompressTypes } from './encoding/eip712.js'
-import { HashingAlgo } from './hashing'
+import { HashingAlgo } from './hashing.js'
 import { keccak_256 } from '@noble/hashes/sha3'
 
 export enum CanonicalizationKind {
