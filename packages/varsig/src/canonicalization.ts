@@ -1,10 +1,10 @@
 import { BytesTape } from './bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
-import { hashTypedData } from 'viem'
 import { Eip712 } from './canons/eip712.js'
 import { HashingAlgo } from './hashing.js'
 import { keccak_256 } from '@noble/hashes/sha3'
+import type { SigningKind } from './signing.js'
 
 export enum CanonicalizationKind {
   EIP712 = Eip712.SIGIL,
