@@ -12,12 +12,14 @@ export enum SigningKind {
 
 export type SigningSecp256k1 = {
   kind: SigningKind.SECP256K1
-  verify: (
-    signature: Uint8Array,
-    verificationKey: VerificationKey,
-    digest: Uint8Array
-  ): Promise<boolean>
+  verify: VerifySignatureFn
 }
+
+export type VerifySignatureFn = (
+  input: Uint8Array,
+  signature: Uint8Array,
+  verificationKey: VerificationKey
+) => Promise<boolean>
 
 export type SigningAlgo = SigningSecp256k1
 
@@ -38,7 +40,22 @@ export class SigningDecoder {
         }
         return {
           kind: SigningKind.SECP256K1,
-          verify: async () => Promise.resolve(false)
+          verify: async (input, signature, verificationKey) => {
+            let k1Sig = secp256k1.Signature.fromCompact(decoder.signature)
+            if (recoveryBit) {
+              k1Sig = k1Sig.addRecoveryBit(recoveryBit - 27)
+            }
+            const recoveredKey = k1Sig.recoverPublicKey(input)
+            // compare recoveredKey with verificationKey
+            if (verificationKey instanceof Uint8Array) {
+              return recoveredKey.toBytes().equals(verificationKey)
+            }
+            else if (typeof verificationKey === 'string') {
+              // convert recoveredKey to eth address
+              const recoveredAddress = '0x' + recoveredKey.toBytes().slice(-20).toString('hex')
+              return recoveredAddress === verificationKey
+            }
+          }
         }
       }
       case SigningKind.RSA:
