@@ -182,12 +182,12 @@ export function fromEip712A({ types, domain, primaryType, message }: Omit<Eip712
 function messageToIpld(
   message: Record<string, any>,
   types: Eip712Types,
-  selected: string
+  primaryType: string
 ): IpldNode {
   const node = {}
   for (const [key, value] of Object.entries(message)) {
     // @ts-ignore
-    const type = types[selected].find(({ name }) => name === key).type
+    const type = types[primaryType].find(({ name }) => name === key).type
     if (!type) throw new Error(`Type for ${key} not found`)
     if (type.startsWith('bytes')) {
       // @ts-ignore
@@ -246,12 +246,105 @@ function compressTypes(types: Eip712Types): CompressedTypes {
   return compressed
 }
 
-const FULL_TYPES = {
+const FULL_TYPES: Record<string, string | undefined> = {
   u: 'uint',
+  u8: 'uint8',
   u16: 'uint16',
+  u24: 'uint24',
+  u32: 'uint32',
+  u40: 'uint40',
+  u48: 'uint48',
+  u56: 'uint56',
   u64: 'uint64',
+  u72: 'uint72',
+  u80: 'uint80',
+  u88: 'uint88',
+  u96: 'uint96',
+  u104: 'uint104',
+  u112: 'uint112',
+  u120: 'uint120',
+  u128: 'uint128',
+  u136: 'uint136',
+  u144: 'uint144',
+  u152: 'uint152',
+  u160: 'uint160',
+  u168: 'uint168',
+  u176: 'uint176',
+  u184: 'uint184',
+  u192: 'uint192',
+  u200: 'uint200',
+  u208: 'uint208',
+  u216: 'uint216',
+  u224: 'uint224',
+  u232: 'uint232',
+  u240: 'uint240',
+  u248: 'uint248',
+  u256: 'uint256',
   i: 'int',
+  i8: 'int8',
+  i16: 'int16',
+  i24: 'int24',
+  i32: 'int32',
+  i40: 'int40',
+  i48: 'int48',
+  i56: 'int56',
+  i64: 'int64',
+  i72: 'int72',
+  i80: 'int80',
+  i88: 'int88',
+  i96: 'int96',
+  i104: 'int104',
+  i112: 'int112',
+  i120: 'int120',
+  i128: 'int128',
+  i136: 'int136',
+  i144: 'int144',
+  i152: 'int152',
+  i160: 'int160',
+  i168: 'int168',
+  i176: 'int176',
+  i184: 'int184',
+  i192: 'int192',
+  i200: 'int200',
+  i208: 'int208',
+  i216: 'int216',
+  i224: 'int224',
+  i232: 'int232',
+  i240: 'int240',
+  i248: 'int248',
+  i256: 'int256',
   b: 'bytes',
+  b1: 'bytes1',
+  b2: 'bytes2',
+  b3: 'bytes3',
+  b4: 'bytes4',
+  b5: 'bytes5',
+  b6: 'bytes6',
+  b7: 'bytes7',
+  b8: 'bytes8',
+  b9: 'bytes9',
+  b10: 'bytes10',
+  b11: 'bytes11',
+  b12: 'bytes12',
+  b13: 'bytes13',
+  b14: 'bytes14',
+  b15: 'bytes15',
+  b16: 'bytes16',
+  b17: 'bytes17',
+  b18: 'bytes18',
+  b19: 'bytes19',
+  b20: 'bytes20',
+  b21: 'bytes21',
+  b22: 'bytes22',
+  b23: 'bytes23',
+  b24: 'bytes24',
+  b25: 'bytes25',
+  b26: 'bytes26',
+  b27: 'bytes27',
+  b28: 'bytes28',
+  b29: 'bytes29',
+  b30: 'bytes30',
+  b31: 'bytes31',
   b32: 'bytes32',
   s: 'string',
   a: 'address',
@@ -259,15 +352,15 @@ const FULL_TYPES = {
 }
 
 export function decompressTypes(compressed: CompressedTypes): Eip712Types {
-  const types = { EIP712Domain: EIP712_DOMAIN }
+  const types: Eip712Types = { EIP712Domain: EIP712_DOMAIN }
   for (const [key, value] of Object.entries(compressed)) {
-    // @ts-ignore
-    types[key] = value.map(([name, type]) => ({
-      name,
-      // @ts-ignore
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      type: FULL_TYPES[type] || type,
-    }))
+    types[key] = value.map(([name, type]) => {
+      const decompressed = FULL_TYPES[type] || type
+      return {
+        name,
+        type: decompressed,
+      }
+    })
   }
   return types
 }
