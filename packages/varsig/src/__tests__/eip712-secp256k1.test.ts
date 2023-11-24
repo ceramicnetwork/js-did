@@ -39,7 +39,6 @@ test('eip712-secp256k1.car', async () => {
       originalKlone.signature =
         '0x' + uint8arrays.toString(uint8arrays.concat([r, s, [original.signature.v]]), 'hex')
     }
-    originalKlone.types['EIP712Domain'] = EIP712_DOMAIN
     await expect(toOriginal(node)).resolves.toEqual(originalKlone)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const varsig = new Decoder(new BytesTape(node._sig)).read()

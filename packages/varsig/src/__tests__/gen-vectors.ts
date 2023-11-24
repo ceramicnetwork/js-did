@@ -76,6 +76,12 @@ const EAS_DATA = {
       { name: 'refUID', type: 'bytes32' },
       { name: 'data', type: 'bytes' },
     ],
+    EIP712Domain: [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' },
+    ],
   },
   signature: {
     v: 27,
