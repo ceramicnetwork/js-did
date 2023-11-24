@@ -9,7 +9,7 @@ import type { SigningKind } from './signing.js'
 
 export enum CanonicalizationKind {
   EIP712 = MAGIC.EIP712,
-  EIP191 = MAGIC.EIP191
+  EIP191 = MAGIC.EIP191,
 }
 
 type IpldNode = Record<string, any>
