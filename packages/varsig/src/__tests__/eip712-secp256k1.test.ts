@@ -6,11 +6,12 @@ import { BytesTape } from '../bytes-tape'
 import { Decoder } from '../decoder'
 import * as uint8arrays from 'uint8arrays'
 import { CanonicalizationKind } from '../canonicalization.js'
+import { Eip712, fromOriginal } from '../canons/eip712.js'
 
 const factory = new CARFactory()
 
 test('eip712-secp256k1.car', async () => {
-  const carFilepath = new URL('./vectors/eip712-secp256k1.car', import.meta.url)
+  const carFilepath = new URL('./__vectors__/eip712-secp256k1.car', import.meta.url)
   const carBytes = await readFile(carFilepath)
   const car = factory.fromBytes(carBytes)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -22,16 +23,18 @@ test('eip712-secp256k1.car', async () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const entry = car.get(entryCID)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-    if (!entry['data']) continue
+    if (!entry.original) continue
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-    const data = car.get(entry.data)
+    const original = car.get(entry.original)
+    const recalculatedFromOriginal = fromOriginal(original as Eip712)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const node = car.get(entry.node)
+    expect(node).toEqual(recalculatedFromOriginal)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const varsig = new Decoder(new BytesTape(node._sig)).read()
     if (varsig.canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error(`Not 712`)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-    const input = varsig.canonicalization(data.message)
+    const input = varsig.canonicalization(original.message)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const signer = entry.signer
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment

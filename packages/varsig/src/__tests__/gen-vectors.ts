@@ -190,7 +190,7 @@ async function main() {
     { isRoot: true }
   )
 
-  const carFilepath = new URL('./vectors/eip712-secp256k1.car', import.meta.url)
+  const carFilepath = new URL('./__vectors__/eip712-secp256k1.car', import.meta.url)
   await pipeline(car, fs.createWriteStream(carFilepath))
 }
 

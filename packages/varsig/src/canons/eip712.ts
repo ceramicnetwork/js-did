@@ -5,6 +5,7 @@ import * as uint8arrays from 'uint8arrays'
 import { hashTypedData, Hex, TypedDataDomain } from 'viem'
 import type { CanonicalizationAlgo } from '../canonicalization.js'
 import type { SigningKind } from '../signing.js'
+import stringify from 'fast-json-stable-stringify'
 
 interface Eip712Domain {
   name: string
@@ -29,7 +30,7 @@ interface SignatureComponents {
   v: number
 }
 
-interface Eip712 {
+export interface Eip712 {
   types: Eip712Types
   domain: Eip712Domain
   primaryType: string
@@ -239,7 +240,7 @@ export function fromOriginal({
   message,
   signature,
 }: Eip712): IpldNodeSigned {
-  const metadata = JSON.stringify([compressTypes(types), primaryType, compressDomain(domain)])
+  const metadata = stringify([compressTypes(types), primaryType, compressDomain(domain)])
   const metadataBytes = uint8arrays.fromString(metadata)
   const metadataLength = varintes.encode(metadataBytes.length)[0]
   if (!signature) throw new Error(`No signature passed`)

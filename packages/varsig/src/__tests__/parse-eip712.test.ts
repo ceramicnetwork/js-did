@@ -1,12 +1,9 @@
 import { test } from '@jest/globals'
-import * as varintes from 'varintes'
-import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../bytes-tape.js'
 import { CanonicalizationKind } from '../canonicalization.js'
 import { fromOriginal } from '../canons/eip712'
 import { Decoder } from '../decoder.js'
-import { hex } from './hex.util.js'
 
 const testData = {
   types: {
@@ -94,7 +91,7 @@ test('712 flow', async () => {
     domain: testData.domain,
     primaryType: testData.primaryType,
     message: testData.message,
-    signature: stringSignature
+    signature: stringSignature,
   })
   const varsig = node._sig
   const decoder = new Decoder(new BytesTape(varsig)).read()

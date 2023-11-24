@@ -585,6 +585,9 @@ importers:
       codeco:
         specifier: ^1.1.0
         version: 1.1.0
+      fast-json-stable-stringify:
+        specifier: ^2.1.0
+        version: 2.1.0
       key-did-provider-ed25519:
         specifier: workspace:^
         version: link:../key-did-provider-ed25519
@@ -610,6 +613,9 @@ importers:
       cartonne:
         specifier: ^2.2.0
         version: 2.2.0
+      tsm:
+        specifier: ^2.3.0
+        version: 2.3.0
 
   website:
     dependencies:
