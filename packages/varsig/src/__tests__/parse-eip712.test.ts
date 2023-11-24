@@ -1,6 +1,5 @@
 import { test } from '@jest/globals'
 import * as varintes from 'varintes'
-import { secp256k1 } from '@noble/curves/secp256k1'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../bytes-tape.js'
