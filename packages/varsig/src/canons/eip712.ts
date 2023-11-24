@@ -13,7 +13,8 @@ interface Eip712Domain {
   verifyingContract: string
 }
 
-type IpldNode = Record<string, any> & { _sig: Uint8Array }
+type IpldNode = Record<string, any>
+type IpldNodeSigned = IpldNode & { _sig: Uint8Array }
 
 interface Eip712TypeField {
   name: string
@@ -243,7 +244,13 @@ function extractSignature(signature: string | SignatureComponents) {
   }
 }
 
-export function fromEip712({ types, domain, primaryType, message, signature }: Eip712): IpldNode {
+export function fromEip712({
+  types,
+  domain,
+  primaryType,
+  message,
+  signature,
+}: Eip712): IpldNodeSigned {
   const metadata = JSON.stringify([compressTypes(types), primaryType, compressDomain(domain)])
   const metadataBytes = uint8arrays.fromString(metadata)
   const metadataLength = varintes.encode(metadataBytes.length)[0]
@@ -264,7 +271,7 @@ export function fromEip712({ types, domain, primaryType, message, signature }: E
   if (!message) throw new Error(`Message is required`)
   const node = messageToIpld(message, types, primaryType)
   node._sig = varsig
-  return node
+  return node as IpldNodeSigned
 }
 
 export function fromEip712A({ types, domain, primaryType, message }: Omit<Eip712, 'signature'>): {
@@ -296,8 +303,7 @@ function messageToIpld(
 ): IpldNode {
   const node = {}
   for (const [key, value] of Object.entries(message)) {
-    // @ts-ignore
-    const type = types[primaryType].find(({ name }) => name === key).type
+    const type = types[primaryType].find(({ name }) => name === key)?.type
     if (!type) throw new Error(`Type for ${key} not found`)
     if (type.startsWith('bytes')) {
       // @ts-ignore
