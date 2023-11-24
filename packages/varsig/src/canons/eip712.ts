@@ -365,3 +365,5 @@ export function decompressTypes(compressed: CompressedTypes): Eip712Types {
   }
   return types
 }
+
+export type Signer = { publicKey: Uint8Array } | { address: Hex }

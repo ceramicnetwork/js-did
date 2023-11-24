@@ -1,8 +1,9 @@
 import * as fs from 'node:fs'
 import { pipeline } from 'node:stream/promises'
 import { CARFactory, type CAR } from 'cartonne'
-import { fromEip712 } from '../canons/eip712.js'
+import { fromEip712, Signer } from '../canons/eip712.js'
 import type { CID } from 'multiformats/cid'
+import { privateKeyToAccount } from 'viem/accounts'
 
 const TEST_DATA = {
   types: {
@@ -83,11 +84,16 @@ const EAS_DATA = {
   },
 }
 
-function putEntry(car: CAR, eip712: any, node: any, error?: string): CID {
+const ACCOUNT = privateKeyToAccount(
+  '0x9727992a9c7d4e4b7c3b2d8d3c4b5b2e9d6e9c0a3a0e0d0c0b0a090807060504'
+)
+
+function putEntry(car: CAR, eip712: any, node: any, signer: Signer, error?: string): CID {
   const entry: Record<string, any> = {
-    valid: error ? false : true,
+    valid: !error,
     data: eip712 ? car.put(eip712) : null,
     node: node ? car.put(node) : null,
+    signer: signer,
   }
   if (error) entry['error'] = error
   return car.put(entry)
@@ -97,29 +103,73 @@ async function main() {
   const car = new CARFactory().build()
   const entries = []
   // @ts-expect-error
-  entries.push(putEntry(car, TEST_DATA, fromEip712(TEST_DATA)))
-  entries.push(putEntry(car, EAS_DATA, fromEip712(EAS_DATA)))
+  entries.push(putEntry(car, TEST_DATA, fromEip712(TEST_DATA), { publicKey: ACCOUNT.publicKey }))
+  entries.push(
+    putEntry(car, EAS_DATA, fromEip712(EAS_DATA), {
+      address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
+    })
+  )
   // invalid stuff
   const invalidData1 = {
     ...TEST_DATA,
     signature:
       '0x0c095239e4d3d2cc0b7aa28110f42abcdefe47656bbde7048244471e701331ec3f94adfe7959b0ed0efec533d511f9e1e1187623487682341870dc31fbc2146d1b',
   }
-  // @ts-expect-error
-  entries.push(putEntry(car, invalidData1, fromEip712(invalidData1), 'Invalid signature'))
+  entries.push(
+    putEntry(
+      car,
+      invalidData1,
+      // @ts-expect-error
+      fromEip712(invalidData1),
+      {
+        address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
+      },
+      'Invalid signature'
+    )
+  )
 
   // @ts-expect-error
   const invalidNode1 = fromEip712(TEST_DATA)
   invalidNode1._sig.set([0xec], 1)
-  entries.push(putEntry(car, null, invalidNode1, 'Unsupported key type'))
+  entries.push(
+    putEntry(
+      car,
+      null,
+      invalidNode1,
+      {
+        address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
+      },
+      'Unsupported key type'
+    )
+  )
   // @ts-expect-error
   const invalidNode2 = fromEip712(TEST_DATA)
   invalidNode2._sig.set([0x00], 2)
-  entries.push(putEntry(car, null, invalidNode2, 'Missing recovery bit'))
+  entries.push(
+    putEntry(
+      car,
+      null,
+      invalidNode2,
+      {
+        address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
+      },
+      'Missing recovery bit'
+    )
+  )
   // @ts-expect-error
   const invalidNode3 = fromEip712(TEST_DATA)
   invalidNode3._sig.set([0x12], 3)
-  entries.push(putEntry(car, null, invalidNode3, 'Unsupported hash type'))
+  entries.push(
+    putEntry(
+      car,
+      null,
+      invalidNode3,
+      {
+        address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
+      },
+      'Unsupported hash type'
+    )
+  )
 
   car.put(
     {
