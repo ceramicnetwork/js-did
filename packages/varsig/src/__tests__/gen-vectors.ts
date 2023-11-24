@@ -106,7 +106,7 @@ async function main() {
   entries.push(putEntry(car, TEST_DATA, fromEip712(TEST_DATA), { publicKey: ACCOUNT.publicKey }))
   entries.push(
     putEntry(car, EAS_DATA, fromEip712(EAS_DATA), {
-      address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
+      address: '0x3e95B8E249c4536FE1db2E4ce5476010767C0A05',
     })
   )
   // invalid stuff
