@@ -6,7 +6,7 @@ import { BytesTape } from '../bytes-tape'
 import { Decoder } from '../decoder'
 import * as uint8arrays from 'uint8arrays'
 import { CanonicalizationKind } from '../canonicalization.js'
-import { Eip712, EIP712_DOMAIN, fromOriginal } from '../canons/eip712.js'
+import { Eip712, fromOriginal } from '../canons/eip712.js'
 import { verify, toOriginal } from '../varsig.js'
 import { klona } from 'klona'
 
