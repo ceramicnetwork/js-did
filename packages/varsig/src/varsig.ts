@@ -23,11 +23,12 @@ export async function verify(
   // @ts-ignore
   const { canonicalization, signing, signature } = new Decoder(tape).read()
 
+  const toCanonicalize = klona(node)
   // @ts-ignore
-  delete node._sig
+  delete toCanonicalize._sig
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const signatureInput = canonicalization(node)
+  const signatureInput = canonicalization(toCanonicalize)
 
   // @ts-ignore
   return signing.verify(signatureInput, signature, verificationKey)

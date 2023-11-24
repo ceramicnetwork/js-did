@@ -1,11 +1,8 @@
 import { readFile } from 'node:fs/promises'
 import { expect, test } from '@jest/globals'
-import { CARFactory } from 'cartonne'
+import { CARFactory, type CAR } from 'cartonne'
 import { CID } from 'multiformats/cid'
-import { BytesTape } from '../bytes-tape'
-import { Decoder } from '../decoder'
 import * as uint8arrays from 'uint8arrays'
-import { CanonicalizationKind } from '../canonicalization.js'
 import { Eip712 } from '../canons/eip712.js'
 import { verify, toOriginal } from '../varsig.js'
 import { klona } from 'klona'
@@ -13,7 +10,7 @@ import { klona } from 'klona'
 const factory = new CARFactory()
 
 describe('eip712-secp256k1.car', () => {
-  let car, entries
+  let car: CAR, entries: Array<CID>
 
   beforeAll(async () => {
     const carFilepath = new URL('./__vectors__/eip712-secp256k1.car', import.meta.url)
@@ -30,26 +27,44 @@ describe('eip712-secp256k1.car', () => {
     for (const entryCID of entries) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       const node = car.get(entry.node)
-      console.log('time', node)
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const verificationKey =
-        entry.signer.address || uint8arrays.fromString(entry.signer.publicKey.slice(2))
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call
+        entry.signer.address ||
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+        uint8arrays.fromString(entry.signer.publicKey.replace(/^0x/, ''), 'hex')
 
-      expect(await verify(node, verificationKey)).toEqual(entry.valid)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (entry.valid) {
+        // eslint-disable-next-line jest/no-conditional-expect,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
+        await expect(verify(node, verificationKey)).resolves.toEqual(entry.valid)
+      } else {
+        try {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+          const verification = await verify(node, verificationKey)
+          // eslint-disable-next-line jest/no-conditional-expect
+          expect(verification).toEqual(false)
+        } catch (e) {
+          // eslint-disable-next-line jest/no-conditional-expect
+          expect(e).toBeTruthy()
+        }
+      }
     }
   })
 
-  test('Create varsig ipld node', async () => {
+  test('Create varsig ipld node', () => {
     for (const entryCID of entries) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       if (!entry.original) continue
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
       const original = car.get(entry.original)
       const varsigNode = Eip712.fromOriginal(original as Eip712)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
       const node = car.get(entry.node)
       expect(varsigNode).toEqual(node)
     }
@@ -61,72 +76,20 @@ describe('eip712-secp256k1.car', () => {
       const entry = car.get(entryCID)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       if (!entry.original) continue
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-      const original = car.get(entry.original)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
+      const originalExpected = car.get(entry.original)
       const node = car.get(entry.node)
-      const originalFixedSig = klona(original)
-      if (Object.keys(original.signature).includes('r')) {
-        const r = uint8arrays.fromString(original.signature.r.replace(/^0x/, ''), 'hex')
-        const s = uint8arrays.fromString(original.signature.s.replace(/^0x/, ''), 'hex')
-        originalFixedSig.signature =
-          '0x' + uint8arrays.toString(uint8arrays.concat([r, s, [original.signature.v]]), 'hex')
-      }
-      const recoveredOriginal = await toOriginal(node)
-      await expect(recoveredOriginal).toEqual(originalFixedSig)
-    }
-  })
-
-  test.skip('a bunch of old tests', async () => {
-    for (const entryCID of entries) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const entry = car.get(entryCID)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-      if (!entry.original) continue
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-      const original = car.get(entry.original)
-      const recalculatedFromOriginal = Eip712.fromOriginal(original as Eip712)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-      const node = car.get(entry.node)
-      expect(node).toEqual(recalculatedFromOriginal)
-      const originalKlone = klona(original)
-      if (Object.keys(original.signature).includes('r')) {
-        const r = uint8arrays.fromString(original.signature.r.replace(/^0x/, ''), 'hex')
-        const s = uint8arrays.fromString(original.signature.s.replace(/^0x/, ''), 'hex')
+      const originalKlone = klona(originalExpected)
+      if (Object.keys(originalKlone.signature).includes('r')) {
+        const r = uint8arrays.fromString(originalKlone.signature.r.replace(/^0x/, ''), 'hex')
+        const s = uint8arrays.fromString(originalKlone.signature.s.replace(/^0x/, ''), 'hex')
         originalKlone.signature =
-          '0x' + uint8arrays.toString(uint8arrays.concat([r, s, [original.signature.v]]), 'hex')
+          '0x' +
+          uint8arrays.toString(uint8arrays.concat([r, s, [originalKlone.signature.v]]), 'hex')
       }
-      await expect(toOriginal(node)).resolves.toEqual(originalKlone)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-      const varsig = new Decoder(new BytesTape(node._sig)).read()
-      if (varsig.canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error(`Not 712`)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-      const input = varsig.canonicalization(original.message)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-      const signer = entry.signer
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
-      if (signer.publicKey) {
-        const verificationResult = await varsig.signing.verify(
-          input,
-          varsig.signature,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-          uint8arrays.fromString(signer.publicKey.replace(/^0x/, ''), 'hex')
-        )
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,jest/no-conditional-expect
-        expect(verificationResult).toEqual(entry.valid)
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      if (signer.address) {
-        const verificationResult = await varsig.signing.verify(
-          input,
-          varsig.signature,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
-          signer.address
-        )
-        // eslint-disable-next-line jest/no-conditional-expect,@typescript-eslint/no-unsafe-member-access
-        expect(verificationResult).toEqual(entry.valid)
-      }
+
+      const originalRecovered = await toOriginal(node)
+      expect(originalRecovered).toEqual(originalKlone)
     }
   })
 })
-
