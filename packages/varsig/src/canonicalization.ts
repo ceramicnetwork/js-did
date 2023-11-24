@@ -1,3 +1,4 @@
+import { MAGIC } from './magic.js'
 import { BytesTape } from './bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
