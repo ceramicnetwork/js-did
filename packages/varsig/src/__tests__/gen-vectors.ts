@@ -1,7 +1,7 @@
 import * as fs from 'node:fs'
 import { pipeline } from 'node:stream/promises'
 import { CARFactory, type CAR } from 'cartonne'
-import { fromEip712, Signer } from '../canons/eip712.js'
+import { fromOriginal, Signer } from '../canons/eip712.js'
 import type { CID } from 'multiformats/cid'
 import { privateKeyToAccount } from 'viem/accounts'
 
@@ -91,7 +91,7 @@ const ACCOUNT = privateKeyToAccount(
 function putEntry(car: CAR, eip712: any, node: any, signer: Signer, error?: string): CID {
   const entry: Record<string, any> = {
     valid: !error,
-    data: eip712 ? car.put(eip712) : null,
+    original: eip712 ? car.put(eip712) : null,
     node: node ? car.put(node) : null,
     signer: signer,
   }
@@ -103,9 +103,11 @@ async function main() {
   const car = new CARFactory().build()
   const entries = []
   // @ts-expect-error
-  entries.push(putEntry(car, TEST_DATA, fromEip712(TEST_DATA), { publicKey: ACCOUNT.publicKey }))
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  entries.push(putEntry(car, TEST_DATA, fromOriginal(TEST_DATA), { publicKey: ACCOUNT.publicKey }))
   entries.push(
-    putEntry(car, EAS_DATA, fromEip712(EAS_DATA), {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    putEntry(car, EAS_DATA, fromOriginal(EAS_DATA), {
       address: '0x3e95B8E249c4536FE1db2E4ce5476010767C0A05',
     })
   )
@@ -120,7 +122,8 @@ async function main() {
       car,
       invalidData1,
       // @ts-expect-error
-      fromEip712(invalidData1),
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      fromOriginal(invalidData1),
       {
         address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
       },
@@ -129,7 +132,9 @@ async function main() {
   )
 
   // @ts-expect-error
-  const invalidNode1 = fromEip712(TEST_DATA)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
+  const invalidNode1 = fromOriginal(TEST_DATA)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
   invalidNode1._sig.set([0xec], 1)
   entries.push(
     putEntry(
@@ -143,7 +148,9 @@ async function main() {
     )
   )
   // @ts-expect-error
-  const invalidNode2 = fromEip712(TEST_DATA)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
+  const invalidNode2 = fromOriginal(TEST_DATA)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
   invalidNode2._sig.set([0x00], 2)
   entries.push(
     putEntry(
@@ -157,7 +164,9 @@ async function main() {
     )
   )
   // @ts-expect-error
-  const invalidNode3 = fromEip712(TEST_DATA)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
+  const invalidNode3 = fromOriginal(TEST_DATA)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
   invalidNode3._sig.set([0x12], 3)
   entries.push(
     putEntry(
