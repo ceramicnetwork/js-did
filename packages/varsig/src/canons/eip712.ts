@@ -252,7 +252,7 @@ export function fromOriginal({
     varintes.encode(0xe7)[0], // key type
     recoveryBit,
     varintes.encode(0x1b)[0], // hash type
-    varintes.encode(0xe712)[0], // canonicalizer codec
+    varintes.encode(SIGIL)[0], // canonicalizer codec
     metadataLength,
     metadataBytes,
     signatureBytes,
