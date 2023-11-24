@@ -196,19 +196,7 @@ export function prepareCanonicalization(
   return canonicalization
 }
 
-export const Eip712 = { SIGIL, prepareCanonicalization }
-
-// function parameterizeCanonicalizer({ types, primaryType, domain }: Eip712): Canonicalize {
-//   return (node: IpldNode) => {
-//     const message = ipldNodeToMessage(node)
-//     // @ts-ignore
-//     const hexHash = hashTypedData({ types, primaryType, domain, message })
-//     return {
-//       digest: uint8arrays.fromString(hexHash.slice(2), 'base16'),
-//       decoded: { types, primaryType, domain, message },
-//     }
-//   }
-// }
+export const Eip712 = { SIGIL, prepareCanonicalization, fromOriginal }
 
 function ipldNodeToMessage(node: IpldNode): Record<string, any> {
   const message = {}
@@ -244,7 +232,7 @@ function extractSignature(signature: string | SignatureComponents) {
   }
 }
 
-export function fromEip712({
+export function fromOriginal({
   types,
   domain,
   primaryType,
@@ -272,28 +260,6 @@ export function fromEip712({
   const node = messageToIpld(message, types, primaryType)
   node._sig = varsig
   return node as IpldNodeSigned
-}
-
-export function fromEip712A({ types, domain, primaryType, message }: Omit<Eip712, 'signature'>): {
-  params: Uint8Array
-} {
-  const metadata = JSON.stringify([compressTypes(types), primaryType, compressDomain(domain)])
-  const metadataBytes = uint8arrays.fromString(metadata)
-  const metadataLength = varintes.encode(metadataBytes.length)[0]
-  const varsig = uint8arrays.concat([
-    // new Uint8Array([0x34]), // varsig sigil
-    // varintes.encode(0xe7)[0], // key type
-    // varintes.encode(0x1b)[0], // hash type
-    // varintes.encode(0xe712)[0], // canonicalizer codec
-    metadataLength,
-    metadataBytes,
-  ])
-  if (!message) throw new Error(`No message passsed`)
-  const node = messageToIpld(message, types, primaryType)
-  node._sig = varsig
-  return {
-    params: varsig,
-  }
 }
 
 function messageToIpld(

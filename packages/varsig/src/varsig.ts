@@ -1,5 +1,7 @@
 import { Decoder } from './decoder'
 
+export { Eip712 } from './canons/eip712'
+
 interface VarsigNode {
   _sig: Uint8Array
   [key: string]: any

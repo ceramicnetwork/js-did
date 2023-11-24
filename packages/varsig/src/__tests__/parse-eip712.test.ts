@@ -4,7 +4,7 @@ import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
 import { BytesTape } from '../bytes-tape.js'
 import { CanonicalizationKind } from '../canonicalization.js'
-import { fromEip712A } from '../canons/eip712'
+import { fromOriginal } from '../canons/eip712'
 import { Decoder } from '../decoder.js'
 import { hex } from './hex.util.js'
 
@@ -88,26 +88,15 @@ test('712 flow', async () => {
     primaryType: testData.primaryType,
     message: testData.message,
   })
-  const signatureBytes = uint8arrays.fromString(
-    stringSignature.toLowerCase().replace(/^0x/, ''),
-    'hex'
-  )
-  const a = fromEip712A({
+  const node = fromOriginal({
     // @ts-ignore
     types: testData.types,
     domain: testData.domain,
     primaryType: testData.primaryType,
     message: testData.message,
+    signature: stringSignature
   })
-  const varsig = uint8arrays.concat([
-    hex(0x34),
-    varintes.encode(0xe7)[0],
-    signatureBytes.subarray(64),
-    varintes.encode(0x1b)[0],
-    varintes.encode(CanonicalizationKind.EIP712)[0],
-    a.params,
-    signatureBytes.subarray(0, 64),
-  ])
+  const varsig = node._sig
   const decoder = new Decoder(new BytesTape(varsig)).read()
   if (decoder.canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error(`Not 712`)
   const input = decoder.canonicalization(testData.message)

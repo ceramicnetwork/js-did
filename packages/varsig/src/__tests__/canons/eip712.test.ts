@@ -1,4 +1,4 @@
-import { fromEip712, prepareCanonicalization } from '../../canons/eip712.js'
+import { fromOriginal, prepareCanonicalization } from '../../canons/eip712.js'
 import { BytesTape } from '../../bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
@@ -95,17 +95,17 @@ const easData = {
   },
 }
 
-test('Encode eip712 message', () => {
+test('Encode eip712 message', async () => {
   // @ts-ignore
-  const node = fromEip712(testData)
+  const node = fromOriginal(testData)
 
   expect(node._sig.length).toEqual(268)
   expect(node.attachment instanceof Uint8Array).toBeTruthy()
 })
 
-test('Canonicalize ipld eip712 object', () => {
+test('Canonicalize ipld eip712 object', async () => {
   // @ts-ignore
-  const node = fromEip712(testData)
+  const node = fromOriginal(testData)
   const tape = new BytesTape(node._sig)
   tape.readVarint() // skip sigil
   tape.readVarint() // skip key type
@@ -139,9 +139,9 @@ test.skip('Generate test vectors', async () => {
   const car = new CARFactory().build()
   const entries = []
   // @ts-ignore
-  entries.push(putEntry(car, testData, fromEip712(testData)))
+  entries.push(putEntry(car, testData, fromOriginal(testData)))
   // @ts-ignore
-  entries.push(putEntry(car, easData, fromEip712(easData)))
+  entries.push(putEntry(car, easData, fromOriginal(easData)))
   // invalid stuff
   const invalidData1 = {
     ...testData,
@@ -149,18 +149,18 @@ test.skip('Generate test vectors', async () => {
       '0x0c095239e4d3d2cc0b7aa28110f42abcdefe47656bbde7048244471e701331ec3f94adfe7959b0ed0efec533d511f9e1e1187623487682341870dc31fbc2146d1b',
   }
   // @ts-ignore
-  entries.push(putEntry(car, invalidData1, fromEip712(invalidData1), 'Invalid signature'))
+  entries.push(putEntry(car, invalidData1, fromOriginal(invalidData1), 'Invalid signature'))
 
   // @ts-ignore
-  const invalidNode1 = fromEip712(testData)
+  const invalidNode1 = fromOriginal(testData)
   invalidNode1._sig.set([0xec], 1)
   entries.push(putEntry(car, null, invalidNode1, 'Unsupported key type'))
   // @ts-ignore
-  const invalidNode2 = fromEip712(testData)
+  const invalidNode2 = fromOriginal(testData)
   invalidNode2._sig.set([0x00], 2)
   entries.push(putEntry(car, null, invalidNode2, 'Missing recovery bit'))
   // @ts-ignore
-  const invalidNode3 = fromEip712(testData)
+  const invalidNode3 = fromOriginal(testData)
   invalidNode3._sig.set([0x12], 3)
   entries.push(putEntry(car, null, invalidNode3, 'Unsupported hash type'))
 

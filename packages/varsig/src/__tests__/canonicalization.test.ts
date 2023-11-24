@@ -5,7 +5,7 @@ import { concat, toString } from 'uint8arrays'
 import { encode } from 'varintes/encode'
 import { HashingAlgo } from '../hashing.js'
 import { SigningKind } from '../signing.js'
-import { fromEip712A } from '../canons/eip712.js'
+import { fromOriginal } from '../canons/eip712.js'
 
 const TEST_DATA = {
   types: {
@@ -75,18 +75,24 @@ const TEST_DATA = {
     contents: 'Hello, Bob!',
     attachment: '0xababababababababababa83459873459873459873498575986734359',
   },
+  signature:
+    '0x0c095239e4d3d2cc0b7aa28110f42abcdefe47656bbde7048244471e701331ec3f94adfe7959b0ed0efec533d511f9e1e11b3e47242d82341870dc31fbc2146d1b',
 } as const
 
 test('EIP712', () => {
-  const a = fromEip712A({
+  const node = fromOriginal({
     // @ts-ignore
     types: TEST_DATA.types,
     domain: TEST_DATA.domain,
     primaryType: TEST_DATA.primaryType,
     message: TEST_DATA.message,
+    signature: TEST_DATA.signature,
   })
-  const bytes = concat([encode(0xe712)[0], a.params])
-  const tape = new BytesTape(bytes)
+  const tape = new BytesTape(node._sig)
+  tape.readVarint() // skip varsig sigil
+  tape.readVarint() // skip key sigil
+  tape.read(1)
+  tape.readVarint() // skip hash sigil
   const canonicalization = CanonicalizationDecoder.read(
     tape,
     HashingAlgo.KECCAK256,
