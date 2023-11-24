@@ -40,17 +40,6 @@ export type CompressedType = Array<[string, string]>
 export type CompressedTypes = Record<string, CompressedType>
 export type CompressedDomain = [string, string, number, Hex]
 
-interface CanonicalizerResult {
-  digest: Uint8Array
-  decoded: any
-}
-type Canonicalization = (node: IpldNode) => Uint8Array
-
-interface CanonicalizerSetup {
-  remainder: Uint8Array
-  canonicalize: Canonicalize
-}
-
 const SUPPORTED_KEY_TYPES = [
   0xe7, // secp256k1
   // 0x1271, // eip1271 contract signature
@@ -68,10 +57,14 @@ export function prepareCanonicalization(
   if (!SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
   const metadataLength = tape.readVarint()
   const metadataBytes = tape.read(metadataLength)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const [types, primaryType, domain] = JSON.parse(uint8arrays.toString(metadataBytes))
   const metadata = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     types: decompressTypes(types),
-    primaryType,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    primaryType: primaryType,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     domain: decompressDomain(domain),
   }
   const canonicalization = (node: IpldNode) => {
@@ -85,7 +78,7 @@ export function prepareCanonicalization(
 
     const sigBytes = uint8arrays.concat([signature, [recoveryBit]])
     const sigHex = `0x${uint8arrays.toString(sigBytes, 'base16')}`
-    return { ...metadata, message, signature: signHex }
+    return { ...metadata, message, signature: sigHex }
   }
   canonicalization.kind = SIGIL
   canonicalization.original = original
@@ -114,33 +107,40 @@ function ipldNodeToMessage(node: IpldNode): Record<string, any> {
       message[key] = `0x${uint8arrays.toString(value, 'base16')}`
     } else if (typeof value === 'object') {
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       message[key] = ipldNodeToMessage(value)
     } else {
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       message[key] = value
     }
   }
   return message
 }
 
-interface IpldEip712 {
-  _sig: Uint8Array
-  [key: string]: any
+function extractSignature(signature: string | SignatureComponents) {
+  if (typeof signature === 'string') {
+    const recoveryBit = uint8arrays.fromString(signature.slice(-2), 'hex')
+    const signatureBytes = uint8arrays.fromString(signature.slice(2, -2), 'base16')
+    return { recoveryBit: recoveryBit, bytes: signatureBytes }
+  } else {
+    const recoveryBit = new Uint8Array([signature.v])
+    const signatureBytes = uint8arrays.fromString(
+      signature.r.slice(2) + signature.s.slice(2),
+      'base16'
+    )
+    return { recoveryBit: recoveryBit, bytes: signatureBytes }
+  }
 }
 
-export function fromEip712({ types, domain, primaryType, message, signature }: Eip712): {
-  node: IpldEip712
-  params: Uint8Array
-} {
+export function fromEip712({ types, domain, primaryType, message, signature }: Eip712): IpldNode {
   const metadata = JSON.stringify([compressTypes(types), primaryType, compressDomain(domain)])
   const metadataBytes = uint8arrays.fromString(metadata)
   const metadataLength = varintes.encode(metadataBytes.length)[0]
-  const recoveryBit = signature.v
-    ? new Uint8Array([signature.v])
-    : uint8arrays.fromString(signature.slice(-2), 'base16')
-  const signatureBytes = signature.r
-    ? uint8arrays.fromString(signature.r.slice(2) + signature.s.slice(2), 'base16')
-    : uint8arrays.fromString(signature.slice(2, -2), 'base16')
+  if (!signature) throw new Error(`No signature passed`)
+  const extracted = extractSignature(signature)
+  const recoveryBit = extracted.recoveryBit
+  const signatureBytes = extracted.bytes
   const varsig = uint8arrays.concat([
     new Uint8Array([0x34]), // varsig sigil
     varintes.encode(0xe7)[0], // key type
@@ -151,13 +151,13 @@ export function fromEip712({ types, domain, primaryType, message, signature }: E
     metadataBytes,
     signatureBytes,
   ])
+  if (!message) throw new Error(`Message is required`)
   const node = messageToIpld(message, types, primaryType)
   node._sig = varsig
   return node
 }
 
 export function fromEip712A({ types, domain, primaryType, message }: Omit<Eip712, 'signature'>): {
-  node: IpldEip712
   params: Uint8Array
 } {
   const metadata = JSON.stringify([compressTypes(types), primaryType, compressDomain(domain)])
@@ -171,6 +171,7 @@ export function fromEip712A({ types, domain, primaryType, message }: Omit<Eip712
     metadataLength,
     metadataBytes,
   ])
+  if (!message) throw new Error(`No message passsed`)
   const node = messageToIpld(message, types, primaryType)
   node._sig = varsig
   return {
@@ -190,13 +191,16 @@ function messageToIpld(
     if (!type) throw new Error(`Type for ${key} not found`)
     if (type.startsWith('bytes')) {
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       node[key] = uint8arrays.fromString(value.slice(2), 'base16')
       // check if first characther is upper case
     } else if (type[0] === type[0].toUpperCase()) {
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       node[key] = messageToIpld(value, types, type)
     } else {
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       node[key] = value
     }
   }
@@ -261,6 +265,7 @@ export function decompressTypes(compressed: CompressedTypes): Eip712Types {
     types[key] = value.map(([name, type]) => ({
       name,
       // @ts-ignore
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       type: FULL_TYPES[type] || type,
     }))
   }

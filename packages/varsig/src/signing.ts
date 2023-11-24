@@ -22,7 +22,6 @@ export type VerifySignatureFn = (
   verificationKey: VerificationKey
 ) => Promise<boolean>
 
-
 export class SigningDecoder {
   constructor(private readonly tape: BytesTape) {}
 
@@ -47,6 +46,9 @@ export class SigningDecoder {
     switch (signing.kind) {
       case SigningKind.SECP256K1: {
         return Secp256k1.readSignature(this.tape)
+      }
+      case SigningKind.RSA: {
+        throw new Error(`Not supported: RSA`)
       }
       default:
         throw new UnreacheableCaseError(signing.kind, 'signing kind')
