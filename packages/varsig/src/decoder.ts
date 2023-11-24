@@ -1,3 +1,4 @@
+import { MAGIC } from './magic.js'
 import type { BytesTape } from './bytes-tape.js'
 import { SigningDecoder, type SigningAlgo } from './signing.js'
 import { HashingDecoder, type HashingAlgo } from './hashing.js'
@@ -34,7 +35,7 @@ export class Decoder {
 
   readVarsigSigil() {
     const sigil = this.#tape.readVarint()
-    if (sigil !== 0x34) throw new Error(`Not a varsig`)
+    if (sigil !== MAGIC.VARSIG) throw new Error(`Not a varsig`)
     return sigil
   }
 }

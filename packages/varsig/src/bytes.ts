@@ -1,4 +1,5 @@
 import * as varintes from 'varintes'
+import { MAGIC } from './magic.js'
 
 type VarsigBytes = {
   encoding: number
@@ -7,7 +8,7 @@ type VarsigBytes = {
   signature: Uint8Array
 }
 
-const VARSIG_SIGIL = 0x34
+const VARSIG_SIGIL = MAGIC.VARSIG
 const VARSIG_SIGIL_BYTES = new Uint8Array([VARSIG_SIGIL])
 
 export function fromBytes(bytes: Uint8Array): VarsigBytes {

@@ -1,3 +1,4 @@
+import { MAGIC } from './magic.js'
 import type { BytesTape } from './bytes-tape.js'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 import { Secp256k1 } from './signing/secp256k1.js'
@@ -7,8 +8,8 @@ type PublicKey = Uint8Array
 type VerificationKey = PublicKey | EthAddress
 
 export enum SigningKind {
-  RSA = 0x1205,
-  SECP256K1 = Secp256k1.SIGIL,
+  RSA = MAGIC.RSA,
+  SECP256K1 = MAGIC.SECP256K1,
 }
 
 export type SigningAlgo = {

@@ -3,6 +3,7 @@ import type { HashingAlgo } from '../hashing.js'
 import * as varintes from 'varintes'
 import * as uint8arrays from 'uint8arrays'
 import { hashTypedData, Hex, TypedDataDomain } from 'viem'
+import { MAGIC } from '../magic.js'
 import type { CanonicalizationAlgo } from '../canonicalization.js'
 import type { SigningKind } from '../signing.js'
 import stringify from 'fast-json-stable-stringify'
@@ -153,12 +154,12 @@ const SOLIDITY_TO_COMPRESSED = Object.fromEntries(
 )
 
 const SUPPORTED_KEY_TYPES = [
-  0xe7, // secp256k1
-  // 0x1271, // eip1271 contract signature
+  MAGIC.SECP256K1,
+  // MAGIC.EIP1271,
 ]
-const SUPPORTED_HASH_TYPE = 0x1b // keccak256
+const SUPPORTED_HASH_TYPE = MAGIC.KECCAK_256
 
-const SIGIL = 0xe712
+const SIGIL = MAGIC.EIP712
 
 export function prepareCanonicalization(
   tape: BytesTape,
@@ -248,10 +249,10 @@ export function fromOriginal({
   const recoveryBit = extracted.recoveryBit
   const signatureBytes = extracted.bytes
   const varsig = uint8arrays.concat([
-    new Uint8Array([0x34]), // varsig sigil
-    varintes.encode(0xe7)[0], // key type
+    new Uint8Array([MAGIC.VARSIG]), // varsig sigil
+    varintes.encode(MAGIC.SECP256K1)[0], // key type
     recoveryBit,
-    varintes.encode(0x1b)[0], // hash type
+    varintes.encode(MAGIC.KECCAK_256)[0], // hash type
     varintes.encode(SIGIL)[0], // canonicalizer codec
     metadataLength,
     metadataBytes,

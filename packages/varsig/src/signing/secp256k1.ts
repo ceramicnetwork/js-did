@@ -1,10 +1,11 @@
+import { MAGIC } from '../magic.js'
 import { SigningAlgo } from '../signing.js'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import * as uint8arrays from 'uint8arrays'
 import { keccak_256 } from '@noble/hashes/sha3'
 import type { BytesTape } from '../bytes-tape.js'
 
-const SIGIL = 0xe7
+const SIGIL = MAGIC.SECP256K1
 
 function prepareVerifier(tape: BytesTape): SigningAlgo {
   const recoveryBit = tape.read(1)[0]

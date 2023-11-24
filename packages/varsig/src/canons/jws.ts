@@ -1,3 +1,4 @@
+import { MAGIC } from '../magic.js'
 import { CanonicalizationAlgo } from '../canonicalization.js'
 import { BytesTape } from '../bytes-tape.js'
 import { HashingAlgo } from '../hashing'
@@ -10,22 +11,22 @@ type IpldNode = Record<string, any>
 type IpldNodeSigned = IpldNode & { _sig: Uint8Array }
 
 const KEY_TYPE_BY_ALG_CRV: Record<string, Record<string, number>> = {
-  ES256: { default: 0x1200 },
-  EdDSA: { ed448: 0x1203, ed25519: 0xec, default: 0xec },
-  ES256K: { default: 0xe7 },
+  ES256: { default: MAGIC.ES256 },
+  EdDSA: { ed448: MAGIC.ED448, ed25519: MAGIC.ED25519, default: MAGIC.ED25519 },
+  ES256K: { default: MAGIC.SECP256K1 },
 }
 const HASH_BY_KEY_TYPE: Record<number, number> = {
-  0x1200: 0x12,
-  0xe7: 0x12,
-  0xec: 0x12,
-  0x1203: 0x19,
+  [MAGIC.ES256]: MAGIC.SHA2_256,
+  [MAGIC.SECP256K1]: MAGIC.SHA2_256,
+  [MAGIC.ED25519]: MAGIC.SHA2_256,
+  [MAGIC.ED448]: MAGIC.SHAKE_256,
 }
 
 const toB64u = (bytes: Uint8Array) => uint8arrays.toString(bytes, 'base64url')
 const fromB64u = (b64u: string) => uint8arrays.fromString(b64u, 'base64url')
 
 
-const SIGIL = 0x7053 // jose
+const SIGIL = MAGIC.JOSE // jose
 
 export const JWS = { SIGIL, prepareCanonicalization, fromOriginal }
 
@@ -71,7 +72,7 @@ export function fromOriginal(jws: string): IpldNodeSigned {
 
   // TODO - this doesn't currently support RSA signatures
   const varsig = uint8arrays.concat([
-    new Uint8Array([0x34]), // varsig sigil
+    new Uint8Array([MAGIC.VARSIG]), // varsig sigil
     varintes.encode(keyType)[0], // key type
     varintes.encode(hashType)[0], // hash type
     varintes.encode(SIGIL)[0], // canonicalizer codec
