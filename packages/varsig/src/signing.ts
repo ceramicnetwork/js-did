@@ -13,6 +13,7 @@ export enum SigningKind {
 
 export type SigningAlgo = {
   kind: SigningKind
+  recoveryBit?: number
   verify: VerifySignatureFn
 }
 
@@ -32,9 +33,8 @@ export class SigningDecoder {
   read(): SigningAlgo {
     const signingSigil = this.tape.readVarint<SigningKind>()
     switch (signingSigil) {
-      case SigningKind.SECP256K1: {
+      case SigningKind.SECP256K1:
         return Secp256k1.prepareVerifier(this.tape)
-      }
       case SigningKind.RSA:
         throw new Error(`Not implemented: signingSigil: RSA`)
       default:
@@ -44,9 +44,8 @@ export class SigningDecoder {
 
   readSignature(signing: SigningAlgo): Uint8Array {
     switch (signing.kind) {
-      case SigningKind.SECP256K1: {
+      case SigningKind.SECP256K1:
         return Secp256k1.readSignature(this.tape)
-      }
       case SigningKind.RSA: {
         throw new Error(`Not supported: RSA`)
       }

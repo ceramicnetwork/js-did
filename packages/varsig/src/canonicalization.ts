@@ -21,7 +21,7 @@ type CanonicalizationEIP191 = {
 type CanonicalizationEIP712 = {
   kind: CanonicalizationKind.EIP712
   (message: any): Uint8Array
-  original(node: IpldNode, signature: Uint8Array, recoveryBit: number): any
+  original(node: IpldNode, signature: Uint8Array, recoveryBit: number | undefined): any
 }
 
 export type CanonicalizationAlgo = CanonicalizationEIP191 | CanonicalizationEIP712

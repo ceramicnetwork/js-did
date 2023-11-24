@@ -1,4 +1,5 @@
 import { Decoder } from './decoder'
+import { CanonicalizationKind } from './canonicalization'
 
 export { Eip712 } from './canons/eip712'
 
@@ -35,6 +36,8 @@ export async function toOriginal(node: VarsigNode): Promise<Decoded> {
   const { canonicalization, signing, signature } = new Decoder(node._sig).read()
   // @ts-ignore
   delete node._sig
-  // @ts-ignore
-  return canonicalization.original(node, signature, signing.recoveryBig)
+  if (canonicalization.kind !== CanonicalizationKind.EIP712)
+    throw new Error(`Supported just for EIP712`)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return canonicalization.original(node, signature, signing.recoveryBit)
 }

@@ -50,7 +50,7 @@ const expectedHash = uint8arrays.fromString(
   'base16'
 )
 
-test('Encode eip712 message', async () => {
+test('Encode eip712 message', () => {
   // @ts-ignore
   const node = fromOriginal(testData)
 
@@ -58,7 +58,7 @@ test('Encode eip712 message', async () => {
   expect(node.attachment instanceof Uint8Array).toBeTruthy()
 })
 
-test('Canonicalize ipld eip712 object', async () => {
+test('Canonicalize ipld eip712 object', () => {
   // @ts-ignore
   const node = fromOriginal(testData)
   const tape = new BytesTape(node._sig)

@@ -13,6 +13,7 @@ function prepareVerifier(tape: BytesTape): SigningAlgo {
   }
   return {
     kind: SIGIL,
+    recoveryBit: recoveryBit,
     // eslint-disable-next-line @typescript-eslint/require-await
     verify: async (input, signature, verificationKey): Promise<boolean> => {
       let k1Sig = secp256k1.Signature.fromCompact(signature)

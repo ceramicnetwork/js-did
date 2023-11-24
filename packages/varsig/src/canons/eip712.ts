@@ -185,10 +185,10 @@ export function prepareCanonicalization(
     const hexHash = hashTypedData({ ...metadata, message })
     return uint8arrays.fromString(hexHash.slice(2), 'base16')
   }
-  const original = (node: IpldNode, signature: Uint8Array, recoveryBit: number) => {
+  const original = (node: IpldNode, signature: Uint8Array, recoveryBit: number | undefined) => {
     const message = ipldNodeToMessage(node)
 
-    const sigBytes = uint8arrays.concat([signature, [recoveryBit]])
+    const sigBytes = recoveryBit ? uint8arrays.concat([signature, [recoveryBit]]) : signature
     const sigHex = `0x${uint8arrays.toString(sigBytes, 'base16')}`
     return { ...metadata, message, signature: sigHex }
   }
