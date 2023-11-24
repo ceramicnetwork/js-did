@@ -36,8 +36,10 @@ export function prepareCanonicalization(
 ): CanonicalizationAlgo {
   const protectedLength = tape.readVarint()
   const protectedBytes = tape.read(protectedLength)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const protected1 = JSON.parse(uint8arrays.toString(protectedBytes))
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const keyTypeFromProtected = findKeyType(protected1)
   if (keyType !== keyTypeFromProtected)
     throw new Error(`Key type missmatch: ${keyType}, ${keyTypeFromProtected}`)
@@ -62,12 +64,14 @@ export function prepareCanonicalization(
 
 export function fromOriginal(jws: string): IpldNodeSigned {
   const [protectedB64u, payloadB64u, signatureB64u] = jws.split('.')
-  const node = decode(fromB64u(payloadB64u))
+  const node = decode<Record<string, any>>(fromB64u(payloadB64u))
   const protectedBytes = fromB64u(protectedB64u)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const protected1 = JSON.parse(uint8arrays.toString(protectedBytes))
   const protectedLength = varintes.encode(protectedBytes.length)[0]
   const signature = fromB64u(signatureB64u)
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   const keyType = findKeyType(protected1)
   const hashType = HASH_BY_KEY_TYPE[keyType]
 
@@ -81,6 +85,7 @@ export function fromOriginal(jws: string): IpldNodeSigned {
     protectedBytes,
     signature,
   ])
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return { ...node, _sig: varsig }
 }
 
@@ -92,6 +97,6 @@ interface ProtectedHeader {
 function findKeyType({ alg, crv }: ProtectedHeader): number {
   if (!alg) throw new Error(`Missing alg in protected header`)
   const keyType = KEY_TYPE_BY_ALG_CRV[alg][crv || 'default']
-  if (!keyType) throw new Error(`Unsupported alg: ${alg}, or crv: ${crv}`)
+  if (!keyType) throw new Error(`Unsupported alg: ${alg}, or crv: ${String(crv)}`)
   return keyType
 }
