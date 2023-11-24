@@ -1,5 +1,7 @@
-import { Decoder } from './decoder'
-import { CanonicalizationKind } from './canonicalization'
+import { Decoder } from './decoder.js'
+import { CanonicalizationKind } from './canonicalization.js'
+import { BytesTape } from './bytes-tape.js'
+import { klona } from 'klona'
 
 export { Eip712 } from './canons/eip712'
 
@@ -32,12 +34,13 @@ export async function verify(
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function toOriginal(node: VarsigNode): Promise<Decoded> {
+  if (!node._sig || node._sig.length === 0) throw new Error(`No signature passed`)
+  const { canonicalization, signing, signature } = new Decoder(new BytesTape(node._sig)).read()
+  const clone = klona(node)
   // @ts-ignore
-  const { canonicalization, signing, signature } = new Decoder(node._sig).read()
-  // @ts-ignore
-  delete node._sig
+  delete clone._sig
   if (canonicalization.kind !== CanonicalizationKind.EIP712)
     throw new Error(`Supported just for EIP712`)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return canonicalization.original(node, signature, signing.recoveryBit)
+  return canonicalization.original(clone, signature, signing.recoveryBit)
 }

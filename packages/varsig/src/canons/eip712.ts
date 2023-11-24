@@ -291,7 +291,7 @@ function messageToIpld(
   return node as IpldNode
 }
 
-const EIP712_DOMAIN = [
+export const EIP712_DOMAIN = [
   { name: 'name', type: 'string' },
   { name: 'version', type: 'string' },
   { name: 'chainId', type: 'uint256' },

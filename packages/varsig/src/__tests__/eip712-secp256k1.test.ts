@@ -6,7 +6,9 @@ import { BytesTape } from '../bytes-tape'
 import { Decoder } from '../decoder'
 import * as uint8arrays from 'uint8arrays'
 import { CanonicalizationKind } from '../canonicalization.js'
-import { Eip712, fromOriginal } from '../canons/eip712.js'
+import { Eip712, EIP712_DOMAIN, fromOriginal } from '../canons/eip712.js'
+import { toOriginal } from '../varsig.js'
+import { klona } from 'klona'
 
 const factory = new CARFactory()
 
@@ -30,6 +32,15 @@ test('eip712-secp256k1.car', async () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const node = car.get(entry.node)
     expect(node).toEqual(recalculatedFromOriginal)
+    let originalKlone = klona(original)
+    if (Object.keys(original.signature).includes('r')) {
+      const r = uint8arrays.fromString(original.signature.r.replace(/^0x/, ''), 'hex')
+      const s = uint8arrays.fromString(original.signature.s.replace(/^0x/, ''), 'hex')
+      originalKlone.signature =
+        '0x' + uint8arrays.toString(uint8arrays.concat([r, s, [original.signature.v]]), 'hex')
+    }
+    originalKlone.types['EIP712Domain'] = EIP712_DOMAIN
+    await expect(toOriginal(node)).resolves.toEqual(originalKlone)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
     const varsig = new Decoder(new BytesTape(node._sig)).read()
     if (varsig.canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error(`Not 712`)

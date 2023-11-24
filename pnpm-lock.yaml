@@ -597,6 +597,9 @@ importers:
       key-did-resolver:
         specifier: workspace:^
         version: link:../key-did-resolver
+      klona:
+        specifier: ^2.0.6
+        version: 2.0.6
       multiformats:
         specifier: ^11.0.2
         version: 11.0.2
@@ -13987,6 +13990,11 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
     dev: true
+
+  /klona@2.0.6:
+    resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
+    engines: {node: '>= 8'}
+    dev: false
 
   /knex@2.4.2(pg@8.11.0)(sqlite3@5.1.6):
     resolution: {integrity: sha512-tMI1M7a+xwHhPxjbl/H9K1kHX+VncEYcvCx5K00M16bWvpYPKAZd6QrCu68PtHAdIZNQPWZn0GVhqVBEthGWCg==}
