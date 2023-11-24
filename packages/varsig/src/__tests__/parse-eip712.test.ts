@@ -3,11 +3,11 @@ import * as varintes from 'varintes'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
-import { BytesTape } from '../src/bytes-tape.js'
-import { CanonicalizationKind } from '../src/canonicalization.js'
-import { fromEip712A } from '../src/canons/eip712'
-import { Decoder } from '../src/decoder.js'
-import { hex } from '../src/__tests__/hex.util.js'
+import { BytesTape } from '../bytes-tape.js'
+import { CanonicalizationKind } from '../canonicalization.js'
+import { fromEip712A } from '../canons/eip712'
+import { Decoder } from '../decoder.js'
+import { hex } from './hex.util.js'
 
 const testData = {
   types: {

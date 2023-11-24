@@ -3,10 +3,10 @@ import * as varintes from 'varintes'
 import { secp256k1 } from '@noble/curves/secp256k1'
 import * as uint8arrays from 'uint8arrays'
 import { privateKeyToAccount } from 'viem/accounts'
-import { BytesTape } from '../src/bytes-tape.js'
-import { CanonicalizationKind } from '../src/canonicalization.js'
-import { Decoder } from '../src/decoder.js'
-import { hex } from '../src/__tests__/hex.util.js'
+import { BytesTape } from '../bytes-tape.js'
+import { CanonicalizationKind } from '../canonicalization.js'
+import { Decoder } from '../decoder.js'
+import { hex } from './hex.util.js'
 
 test('validate eip191', async () => {
   const account = privateKeyToAccount(

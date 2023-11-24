@@ -1,5 +1,5 @@
-import { fromEip712, prepareCanonicalization } from '../../src/canons/eip712.js'
-import { BytesTape } from '../../src/bytes-tape.js'
+import { fromEip712, prepareCanonicalization } from '../../canons/eip712.js'
+import { BytesTape } from '../../bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
 import { createWalletClient, custom } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
