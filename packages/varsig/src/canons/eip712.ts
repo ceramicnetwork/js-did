@@ -13,7 +13,7 @@ interface Eip712Domain {
   verifyingContract: string
 }
 
-type IpldNode = Record<string, any>
+type IpldNode = Record<string, any> & { _sig: Uint8Array }
 
 interface Eip712TypeField {
   name: string
@@ -314,7 +314,7 @@ function messageToIpld(
       node[key] = value
     }
   }
-  return node
+  return node as IpldNode
 }
 
 const EIP712_DOMAIN = [
