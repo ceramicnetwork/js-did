@@ -25,7 +25,6 @@ const HASH_BY_KEY_TYPE: Record<number, number> = {
 const toB64u = (bytes: Uint8Array) => uint8arrays.toString(bytes, 'base64url')
 const fromB64u = (b64u: string) => uint8arrays.fromString(b64u, 'base64url')
 
-
 const SIGIL = MAGIC.JOSE // jose
 
 export const JWS = { SIGIL, prepareCanonicalization, fromOriginal }
@@ -40,8 +39,10 @@ export function prepareCanonicalization(
   const protected1 = JSON.parse(uint8arrays.toString(protectedBytes))
 
   const keyTypeFromProtected = findKeyType(protected1)
-  if (keyType !== keyTypeFromProtected) throw new Error(`Key type missmatch: ${keyType}, ${keyTypeFromProtected}`)
-  if (hashType !== HASH_BY_KEY_TYPE[keyType]) throw new Error(`Hash type missmatch: ${hashType}, ${HASH_BY_KEY_TYPE[keyType]}`)
+  if (keyType !== keyTypeFromProtected)
+    throw new Error(`Key type missmatch: ${keyType}, ${keyTypeFromProtected}`)
+  if (hashType !== HASH_BY_KEY_TYPE[keyType])
+    throw new Error(`Hash type missmatch: ${hashType}, ${HASH_BY_KEY_TYPE[keyType]}`)
 
   const can = (node: IpldNode) => {
     // encode node using dag-json from multiformats
@@ -61,7 +62,7 @@ export function prepareCanonicalization(
 
 export function fromOriginal(jws: string): IpldNodeSigned {
   const [protectedB64u, payloadB64u, signatureB64u] = jws.split('.')
-  const node = decode(fromB64u(payloadB64u)) as IpldNode
+  const node = decode(fromB64u(payloadB64u))
   const protectedBytes = fromB64u(protectedB64u)
   const protected1 = JSON.parse(uint8arrays.toString(protectedBytes))
   const protectedLength = varintes.encode(protectedBytes.length)[0]

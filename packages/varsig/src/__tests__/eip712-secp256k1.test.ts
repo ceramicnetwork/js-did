@@ -78,16 +78,24 @@ describe('eip712-secp256k1.car', () => {
       if (!entry.original) continue
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
       const originalExpected = car.get(entry.original)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       const node = car.get(entry.node)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const originalKlone = klona(originalExpected)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       if (Object.keys(originalKlone.signature).includes('r')) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         const r = uint8arrays.fromString(originalKlone.signature.r.replace(/^0x/, ''), 'hex')
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         const s = uint8arrays.fromString(originalKlone.signature.s.replace(/^0x/, ''), 'hex')
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         originalKlone.signature =
           '0x' +
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
           uint8arrays.toString(uint8arrays.concat([r, s, [originalKlone.signature.v]]), 'hex')
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument
       const originalRecovered = await toOriginal(node)
       expect(originalRecovered).toEqual(originalKlone)
     }
