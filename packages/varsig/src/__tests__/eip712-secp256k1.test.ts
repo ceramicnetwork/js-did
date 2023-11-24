@@ -6,7 +6,7 @@ import { BytesTape } from '../bytes-tape'
 import { Decoder } from '../decoder'
 import * as uint8arrays from 'uint8arrays'
 import { CanonicalizationKind } from '../canonicalization.js'
-import { Eip712, fromOriginal } from '../canons/eip712.js'
+import { Eip712 } from '../canons/eip712.js'
 import { verify, toOriginal } from '../varsig.js'
 import { klona } from 'klona'
 
@@ -40,7 +40,36 @@ describe('eip712-secp256k1.car', () => {
     }
   })
 
-  test('everything old', async () => {
+  test('Create varsig ipld node', async () => {
+    for (const entryCID of entries) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const entry = car.get(entryCID)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      if (!entry.original) continue
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      const original = car.get(entry.original)
+      const varsigNode = Eip712.fromOriginal(original as Eip712)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      const node = car.get(entry.node)
+      expect(varsigNode).toEqual(node)
+    }
+  })
+
+  test('Recover original from ipld node', async () => {
+    for (const entryCID of entries) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const entry = car.get(entryCID)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      if (!entry.original) continue
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      const original = car.get(entry.original)
+      const varsigNode = Eip712.fromOriginal(original as Eip712)
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
+      const node = car.get(entry.node)
+    }
+  })
+
+  test('a bunch of old tests', async () => {
     for (const entryCID of entries) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
@@ -48,7 +77,7 @@ describe('eip712-secp256k1.car', () => {
       if (!entry.original) continue
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
       const original = car.get(entry.original)
-      const recalculatedFromOriginal = fromOriginal(original as Eip712)
+      const recalculatedFromOriginal = Eip712.fromOriginal(original as Eip712)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
       const node = car.get(entry.node)
       expect(node).toEqual(recalculatedFromOriginal)
