@@ -42,15 +42,10 @@ describe('eip712-secp256k1.car', () => {
         // eslint-disable-next-line jest/no-conditional-expect,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         await expect(verify(node, verificationKey)).resolves.toEqual(entry.valid)
       } else {
-        try {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          const verification = await verify(node, verificationKey)
-          // eslint-disable-next-line jest/no-conditional-expect
-          expect(verification).toEqual(false)
-        } catch (e) {
-          // eslint-disable-next-line jest/no-conditional-expect
-          expect(e).toBeTruthy()
-        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        const verificationP = verify(node, verificationKey).catch(() => false)
+        // eslint-disable-next-line jest/no-conditional-expect
+        await expect(verificationP).resolves.toEqual(false)
       }
     }
   })
