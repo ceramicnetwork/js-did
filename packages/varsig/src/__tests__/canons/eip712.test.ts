@@ -128,7 +128,7 @@ test.skip('Generate test vectors', async () => {
 
   function putEntry(car: CAR, eip712: any, node: any, error?: string) {
     const entry: Record<string, any> = {
-      valid: error ? false : true,
+      valid: !error,
       data: eip712 ? car.put(eip712) : null,
       node: node ? car.put(node) : null,
     }
