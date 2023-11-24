@@ -1,18 +1,15 @@
 import { fromEip712, prepareCanonicalization } from '../../canons/eip712.js'
 import { BytesTape } from '../../bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
-import { createWalletClient, custom } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import * as fs from 'node:fs'
 import { pipeline } from 'node:stream/promises'
-import { CARFactory, CarBlock } from 'cartonne'
+import { CARFactory, type CAR } from 'cartonne'
+import { CanonicalizationKind } from '../../canonicalization.js'
 
-const walletClient = createWalletClient({
-  account: privateKeyToAccount(
-    '0x9727992a9c7d4e4b7c3b2d8d3c4b5b2e9d6e9c0a3a0e0d0c0b0a090807060504'
-  ),
-  transport: custom({ request: async () => {} }),
-})
+const account = privateKeyToAccount(
+  '0x9727992a9c7d4e4b7c3b2d8d3c4b5b2e9d6e9c0a3a0e0d0c0b0a090807060504'
+)
 
 const testData = {
   types: {
@@ -54,7 +51,8 @@ const testData = {
   },
   signature:
     '0x0c095239e4d3d2cc0b7aa28110f42abcdefe47656bbde7048244471e701331ec3f94adfe7959b0ed0efec533d511f9e1e11b3e47242d82341870dc31fbc2146d1b',
-}
+} as const
+
 const expectedHash = uint8arrays.fromString(
   '703012a88c79c0ae106c7e0bd144d39d63304df1815e6d11b19189aff3dce0c4',
   'base16'
@@ -97,14 +95,16 @@ const easData = {
   },
 }
 
-test('Encode eip712 message', async () => {
+test('Encode eip712 message', () => {
+  // @ts-ignore
   const node = fromEip712(testData)
 
   expect(node._sig.length).toEqual(268)
   expect(node.attachment instanceof Uint8Array).toBeTruthy()
 })
 
-test('Canonicalize ipld eip712 object', async () => {
+test('Canonicalize ipld eip712 object', () => {
+  // @ts-ignore
   const node = fromEip712(testData)
   const tape = new BytesTape(node._sig)
   tape.readVarint() // skip sigil
@@ -113,18 +113,21 @@ test('Canonicalize ipld eip712 object', async () => {
   tape.readVarint() // skip hash type
   tape.readVarint() // skip canonicalizer codec
   const can = prepareCanonicalization(tape, 0x1b, 0xe7)
+  if (can.kind !== CanonicalizationKind.EIP712) throw new Error(`Nope`)
   expect(tape.remainder.length).toEqual(64)
+  // @ts-ignore
   delete node._sig
   const sigInput = can(node)
   expect(sigInput).toEqual(expectedHash)
 })
 
 test.skip('Generate test vectors', async () => {
-  const signature = await walletClient.signTypedData(testData)
+  // @ts-ignore
+  const signature = await account.signTypedData(testData)
   console.log('sig', signature)
 
-  function putEntry(car, eip712, node, error) {
-    const entry = {
+  function putEntry(car: CAR, eip712: any, node: any, error?: string) {
+    const entry: Record<string, any> = {
       valid: error ? false : true,
       data: eip712 ? car.put(eip712) : null,
       node: node ? car.put(node) : null,
@@ -135,7 +138,9 @@ test.skip('Generate test vectors', async () => {
 
   const car = new CARFactory().build()
   const entries = []
+  // @ts-ignore
   entries.push(putEntry(car, testData, fromEip712(testData)))
+  // @ts-ignore
   entries.push(putEntry(car, easData, fromEip712(easData)))
   // invalid stuff
   const invalidData1 = {
@@ -143,14 +148,18 @@ test.skip('Generate test vectors', async () => {
     signature:
       '0x0c095239e4d3d2cc0b7aa28110f42abcdefe47656bbde7048244471e701331ec3f94adfe7959b0ed0efec533d511f9e1e1187623487682341870dc31fbc2146d1b',
   }
+  // @ts-ignore
   entries.push(putEntry(car, invalidData1, fromEip712(invalidData1), 'Invalid signature'))
 
+  // @ts-ignore
   const invalidNode1 = fromEip712(testData)
   invalidNode1._sig.set([0xec], 1)
   entries.push(putEntry(car, null, invalidNode1, 'Unsupported key type'))
+  // @ts-ignore
   const invalidNode2 = fromEip712(testData)
   invalidNode2._sig.set([0x00], 2)
   entries.push(putEntry(car, null, invalidNode2, 'Missing recovery bit'))
+  // @ts-ignore
   const invalidNode3 = fromEip712(testData)
   invalidNode3._sig.set([0x12], 3)
   entries.push(putEntry(car, null, invalidNode3, 'Unsupported hash type'))
