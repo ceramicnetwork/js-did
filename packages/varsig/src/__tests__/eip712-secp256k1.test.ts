@@ -7,7 +7,7 @@ import { Decoder } from '../decoder'
 import * as uint8arrays from 'uint8arrays'
 import { CanonicalizationKind } from '../canonicalization.js'
 import { Eip712, EIP712_DOMAIN, fromOriginal } from '../canons/eip712.js'
-import { toOriginal } from '../varsig.js'
+import { verify, toOriginal } from '../varsig.js'
 import { klona } from 'klona'
 
 const factory = new CARFactory()
@@ -69,5 +69,26 @@ test('eip712-secp256k1.car', async () => {
       // eslint-disable-next-line jest/no-conditional-expect,@typescript-eslint/no-unsafe-member-access
       expect(verificationResult).toEqual(entry.valid)
     }
+  }
+})
+
+test('eip712-secp256k1.car verify signature', async () => {
+  const carFilepath = new URL('./__vectors__/eip712-secp256k1.car', import.meta.url)
+  const carBytes = await readFile(carFilepath)
+  const car = factory.fromBytes(carBytes)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const root = car.get(car.roots[0])
+  if (!root) throw new Error(`Empty root`)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  const entries = root.entries as Array<CID>
+  for (const entryCID of entries) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const entry = car.get(entryCID)
+    const node = car.get(entry.node)
+    console.log('time', node)
+
+    const verificationKey = entry.signer.address || uint8arrays.fromString(entry.signer.publicKey.slice(2))
+
+    expect(await verify(node, verificationKey)).toEqual(entry.valid)
   }
 })

@@ -1,6 +1,6 @@
 import { Decoder } from './decoder.js'
-import { CanonicalizationKind } from './canonicalization.js'
 import { BytesTape } from './bytes-tape.js'
+import { CanonicalizationKind } from './canonicalization.js'
 import { klona } from 'klona'
 
 export { Eip712 } from './canons/eip712'
@@ -19,8 +19,9 @@ export async function verify(
   node: VarsigNode,
   verificationKey: PublicKey | EthAddress
 ): Promise<boolean> {
+  const tape = new BytesTape(node._sig)
   // @ts-ignore
-  const { canonicalization, signing, signature } = new Decoder(node._sig).read()
+  const { canonicalization, signing, signature } = new Decoder(tape).read()
 
   // @ts-ignore
   delete node._sig
