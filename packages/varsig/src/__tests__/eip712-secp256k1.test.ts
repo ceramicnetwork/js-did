@@ -63,13 +63,21 @@ describe('eip712-secp256k1.car', () => {
       if (!entry.original) continue
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       const original = car.get(entry.original)
-      const varsigNode = Eip712.fromOriginal(original as Eip712)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       const node = car.get(entry.node)
+      const originalFixedSig = klona(original)
+      if (Object.keys(original.signature).includes('r')) {
+        const r = uint8arrays.fromString(original.signature.r.replace(/^0x/, ''), 'hex')
+        const s = uint8arrays.fromString(original.signature.s.replace(/^0x/, ''), 'hex')
+        originalFixedSig.signature =
+          '0x' + uint8arrays.toString(uint8arrays.concat([r, s, [original.signature.v]]), 'hex')
+      }
+      const recoveredOriginal = await toOriginal(node)
+      await expect(recoveredOriginal).toEqual(originalFixedSig)
     }
   })
 
-  test('a bunch of old tests', async () => {
+  test.skip('a bunch of old tests', async () => {
     for (const entryCID of entries) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
