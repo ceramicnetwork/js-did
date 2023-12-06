@@ -84,7 +84,7 @@ const sign = async (
   payload: Record<string, any> | string,
   did: string,
   secretKey: Uint8Array,
-  protectedHeader: Record<string, any> = {}
+  protectedHeader: Record<string, any> = {},
 ) => {
   const kid = `${did}#${did.split(':')[2]}`
   const signer = ES256KSigner(secretKey)
@@ -104,7 +104,7 @@ const didMethods: HandlerMethods<Context, DIDProviderMethods> = {
         exp: Math.floor(Date.now() / 1000) + 600, // expires 10 min from now
       },
       did,
-      secretKey
+      secretKey,
     )
     return toGeneralJWS(response)
   },
@@ -134,7 +134,7 @@ export class Secp256k1Provider implements DIDProvider {
   }
 
   async send<Name extends DIDMethodName>(
-    msg: RPCRequest<DIDProviderMethods, Name>
+    msg: RPCRequest<DIDProviderMethods, Name>,
   ): Promise<RPCResponse<DIDProviderMethods, Name> | null> {
     return await this._handle(msg)
   }

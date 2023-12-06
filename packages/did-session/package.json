@@ -1,6 +1,6 @@
 {
   "name": "did-session",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Manage user DIDs in a web environment",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
@@ -40,30 +40,30 @@
     "prepublishOnly": "package-check"
   },
   "dependencies": {
-    "@ceramicnetwork/stream-tile": "^2.21.0",
-    "@didtools/key-webcrypto": "workspace:^0.1.1",
+    "@didtools/key-webcrypto": "workspace:^0.1.2",
     "@stablelib/random": "^1.0.1",
     "caip": "^1.1.0",
     "dids": "workspace:^4.0.3",
     "key-did-provider-ed25519": "workspace:^3.0.1",
     "key-did-resolver": "workspace:^3.0.0",
-    "uint8arrays": "^4.0.3"
+    "uint8arrays": "^4.0.9"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^2.25.0",
-    "@ceramicnetwork/stream-model": "^1.7.0",
-    "@ceramicnetwork/stream-model-instance": "^1.7.0",
-    "@ceramicnetwork/streamid": "^2.14.0",
+    "@ceramicnetwork/common": "^3.0.5",
+    "@ceramicnetwork/stream-model": "^2.0.5",
+    "@ceramicnetwork/stream-model-instance": "^2.0.5",
+    "@ceramicnetwork/stream-tile": "^3.0.5",
+    "@ceramicnetwork/streamid": "^3.0.5",
     "@didtools/cacao": "workspace:^2.1.0",
     "@didtools/pkh-ethereum": "workspace:^0.4.0",
     "@didtools/pkh-solana": "workspace:^0.1.1",
     "@ethersproject/wallet": "^5.6.2",
-    "@jest/globals": "^29.5.0",
-    "@noble/curves": "^1.1.0",
-    "@types/create-hash": "^1.2.2",
+    "@jest/globals": "^29.7.0",
+    "@noble/curves": "^1.2.0",
+    "@types/create-hash": "^1.2.6",
     "ajv-formats": "^2.1.1",
     "caip": "^1.1.0",
-    "fake-indexeddb": "^4.0.2",
+    "fake-indexeddb": "^5.0.1",
     "jest-environment-ceramic": "workspace:^0.17.0"
   },
   "jest": {

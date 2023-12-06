@@ -74,13 +74,13 @@ export async function getPublicKey({ publicKey }: CryptoKeyPair): Promise<Uint8A
   // convert raw key with x,y to a compressed key
   const compressedKey = ecPointCompress(
     new Uint8Array(rawKey.slice(1, 33)),
-    new Uint8Array(rawKey.slice(33, 65))
+    new Uint8Array(rawKey.slice(33, 65)),
   )
   return compressedKey
 }
 
 export function encodeDIDFromPub(publicKey: Uint8Array): string {
-  const CODE = varint.encode(0x1200) // p-256 multicodec
+  const CODE = new Uint8Array(varint.encode(0x1200)) // p-256 multicodec
   const bytes = u8a.concat([CODE, publicKey])
   return `did:key:z${u8a.toString(bytes, 'base58btc')}`
 }
@@ -93,7 +93,7 @@ export async function generateP256KeyPair(): Promise<CryptoKeyPair> {
       namedCurve: 'P-256',
     },
     false, // not extractable
-    ['sign']
+    ['sign'],
   )
   return { privateKey, publicKey }
 }
@@ -118,7 +118,7 @@ const sign = async (
   payload: Record<string, any> | string,
   did: string,
   cryptoKeyPair: CryptoKeyPair,
-  protectedHeader: Record<string, any> = {}
+  protectedHeader: Record<string, any> = {},
 ) => {
   const kid = `${did}#${did.split(':')[2]}`
   const header = toStableObject(Object.assign(protectedHeader, { kid, alg: 'ES256' }))
@@ -133,7 +133,7 @@ const sign = async (
       hash: 'SHA-256',
     },
     cryptoKeyPair.privateKey,
-    u8a.fromString(data)
+    u8a.fromString(data),
   )
   const encodedSignature = u8a.toString(new Uint8Array(signature), 'base64url')
   return `${data}.${encodedSignature}`
@@ -151,7 +151,7 @@ const didMethods: HandlerMethods<Context, DIDProviderMethods> = {
         exp: Math.floor(Date.now() / 1000) + 600, // expires 10 min from now
       },
       did,
-      keyPair
+      keyPair,
     )
     return toGeneralJWS(response)
   },
@@ -181,7 +181,7 @@ export class WebcryptoProvider implements DIDProvider {
   }
 
   async send<Name extends DIDMethodName>(
-    msg: RPCRequest<DIDProviderMethods, Name>
+    msg: RPCRequest<DIDProviderMethods, Name>,
   ): Promise<RPCResponse<DIDProviderMethods, Name> | null> {
     return await this._handle(msg)
   }

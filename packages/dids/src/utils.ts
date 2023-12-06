@@ -44,7 +44,7 @@ export function didWithTime(did: string, atTime?: Date): string {
  * Potentially it can be an empty array.
  */
 export function extractControllers(
-  controllerProperty: string | Array<string> | undefined
+  controllerProperty: string | Array<string> | undefined,
 ): Array<string> {
   if (controllerProperty) {
     if (Array.isArray(controllerProperty)) {

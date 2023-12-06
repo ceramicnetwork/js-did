@@ -45,11 +45,11 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
-    "codeco": "^1.1.0",
-    "multiformats": "^11.0.1",
-    "uint8arrays": "^4.0.3"
+    "codeco": "^1.2.0",
+    "multiformats": "^12.1.3",
+    "uint8arrays": "^4.0.9"
   },
   "devDependencies": {
-    "ts-essentials": "^9.3.2"
+    "ts-essentials": "^9.4.1"
   }
 }

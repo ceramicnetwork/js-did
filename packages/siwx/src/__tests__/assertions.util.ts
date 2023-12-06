@@ -5,7 +5,7 @@ import { StringTape, type Combinator } from 'codeco/linear'
 export function assertParse<TValue>(
   actual: string,
   combinator: Combinator<TValue, string>,
-  expected: TValue | string = actual
+  expected: TValue | string = actual,
 ) {
   const result = combinator(new StringTape(String(actual)))
   if (isLeft(result)) throw result.left

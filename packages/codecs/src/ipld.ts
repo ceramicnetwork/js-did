@@ -22,7 +22,7 @@ export const cid = new Type<CID, CID, unknown>(
       return context.failure()
     }
   },
-  (cid) => cid
+  (cid) => cid,
 )
 
 /**
@@ -45,5 +45,5 @@ export const cidAsString = new Type<CID, string, string>(
       return context.failure()
     }
   },
-  (cid) => cid.toString()
+  (cid) => cid.toString(),
 )

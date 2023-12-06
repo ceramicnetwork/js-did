@@ -37,7 +37,7 @@ function readVector(filename: URL): ChainVector {
 }
 
 const ethereumVectors = readVector(
-  new URL('../../data/vectors/ethereum-messages.json', import.meta.url)
+  new URL('../../data/vectors/ethereum-messages.json', import.meta.url),
 )
 
 for (const [name, entry] of Object.entries(ethereumVectors)) {
