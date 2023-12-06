@@ -17,7 +17,7 @@ export const CacaoPayload = sparse(
     requestId: optional(string),
     resources: optional(array(string)),
   },
-  'CacaoPayload'
+  'CacaoPayload',
 )
 export type CacaoPayload = {
   domain: string
@@ -44,19 +44,25 @@ export const CacaoSignature = strict(
     }),
     s: string,
   },
-  'CacaoSignature'
+  'CacaoSignature',
 )
 
 export type CacaoSignature = {
-  t: 'eip191' | 'eip1271' | 'solana:ed25519' | 'tezos:ed25519' | 'stacks:secp256k1' | 'webauthn:p256'
-  s: string,
+  t:
+    | 'eip191'
+    | 'eip1271'
+    | 'solana:ed25519'
+    | 'tezos:ed25519'
+    | 'stacks:secp256k1'
+    | 'webauthn:p256'
+  s: string
   m?: SignatureMeta
 }
 export type SignatureMeta = any // TODO: add runtime guard against primitives in encoders, obj/struct is expected: https://chainagnostic.org/CAIPs/caip-74#specification
 
 export const Cacao = sparse(
   { h: CacaoHeader, p: CacaoPayload, s: optional(CacaoSignature) },
-  'Cacao'
+  'Cacao',
 )
 export type Cacao = {
   h: CacaoHeader
@@ -66,7 +72,7 @@ export type Cacao = {
 
 export const SignedCacao = strict(
   { h: CacaoHeader, p: CacaoPayload, s: CacaoSignature },
-  'SignedCacao'
+  'SignedCacao',
 )
 export type SignedCacao = {
   h: CacaoHeader

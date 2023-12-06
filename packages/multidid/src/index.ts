@@ -122,7 +122,11 @@ export class Multidid {
    * @param {Uint8Array} url - DID Method url portion
    *
    */
-  constructor(private code: number, private id: Uint8Array, private url: Uint8Array) {
+  constructor(
+    private code: number,
+    private id: Uint8Array,
+    private url: Uint8Array,
+  ) {
     this.mdBytes = null
   }
 

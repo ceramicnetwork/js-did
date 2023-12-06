@@ -1,6 +1,6 @@
 {
   "name": "@didtools/key-webcrypto",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Joel Thorstensson",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -44,15 +44,15 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@types/varint": "^6.0.1",
-    "did-jwt": "^7.2.0",
+    "@types/varint": "^6.0.3",
+    "did-jwt": "^7.4.5",
     "dids": "workspace:^4.0.1",
-    "jest-environment-jsdom": "^29.5.0"
+    "jest-environment-jsdom": "^29.7.0"
   },
   "dependencies": {
     "fast-json-stable-stringify": "^2.1.0",
     "rpc-utils": "^0.6.2",
-    "uint8arrays": "^4.0.3",
+    "uint8arrays": "^4.0.9",
     "varint": "^6.0.0"
   }
 }
