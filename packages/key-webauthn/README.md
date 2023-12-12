@@ -60,6 +60,7 @@ import { WebauthnAuth } from '@didtools/key-webauthn'
 
 const authMethod = WebauthnAuth.getAuthMethod({ did: 'did:key:zDn...' })
 ```
+
 #### Option 2. Probe
 
 Probe the authenticator for public keys by asking user to sign a nonce:
@@ -91,6 +92,13 @@ const selectDIDs = async (did1, did2) {
 
 const authMethod = WebauthnAuth.getAuthMethod({ selectDIDs })
 ```
+
+## Compatibility Chart
+
+| Browser | Version   | OS    | Device  | NFC | Authenticator |
+|---------|-----------|-------|---------|-----|---------------|
+| Chrome  | 116.0.0.0 | Linux | Desktop |     | Yubikey v5    |
+| Firefox | 115.0     | Linux | Desktop |     | Yubikey v5    |
 
 ## License
 
