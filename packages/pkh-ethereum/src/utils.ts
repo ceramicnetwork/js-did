@@ -12,7 +12,7 @@ export function safeSend(provider: any, method: string, params?: Array<any>): Pr
       (response: any) => response,
       (error: any) => {
         throw error
-      }
+      },
     )
   } else if (provider.sendAsync || provider.send) {
     const sendFunc = (provider.sendAsync ? provider.sendAsync : provider.send).bind(provider)
@@ -33,7 +33,7 @@ export function safeSend(provider: any, method: string, params?: Array<any>): Pr
     })
   } else {
     throw new Error(
-      `Unsupported provider; provider must implement one of the following methods: send, sendAsync, request`
+      `Unsupported provider; provider must implement one of the following methods: send, sendAsync, request`,
     )
   }
 }

@@ -17,7 +17,7 @@ export const uint8array = new TrivialCodec('Uint8Array', isUint8Array)
  * Factory for codeco codec for Uint8Array as encoded string.
  */
 export function createUint8ArrayAsString(
-  encoding: SupportedEncodings
+  encoding: SupportedEncodings,
 ): Type<Uint8Array, string, string> {
   return new Type<Uint8Array, string, string>(
     `Uint8Array-as-${String(encoding)}`,
@@ -29,7 +29,7 @@ export function createUint8ArrayAsString(
         return context.failure()
       }
     },
-    (value: Uint8Array): string => toString(value, encoding)
+    (value: Uint8Array): string => toString(value, encoding),
   )
 }
 

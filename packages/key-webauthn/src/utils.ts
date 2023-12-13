@@ -200,7 +200,7 @@ export function decodePubFromDID(did: string): Uint8Array{
 }
 
 export function encodeDIDFromPub(publicKey: Uint8Array): string {
-  const CODE = varint.encode(0x1200) // p-256 multicodec
+  const CODE = new Uint8Array(varint.encode(0x1200)) // p-256 multicodec
   const bytes = u8a.concat([CODE, publicKey])
   return `did:key:z${u8a.toString(bytes, 'base58btc')}`
 }

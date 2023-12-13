@@ -153,7 +153,7 @@ test('vanilla version 0', async () => {
   did.resolve = () => Promise.resolve(VERSION_0_VANILLA)
   const { kid } = await did.verifyJWS(jwsV0)
   expect(kid).toEqual(
-    'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv'
+    'did:3:kjzl6cwe1jw14ah8wjy8grgzl52sl18sbyirgi9bqy9yzu28kbxvjmhip99r14k?version-id=0#7wYNHm3nGoNA3Kv',
   )
 })
 
@@ -170,7 +170,7 @@ describe('rotatedKey', () => {
 
   test('throw', async () => {
     await expect(did.verifyJWS(jwsV0)).rejects.toThrow(
-      /invalid_jws: signature authored with a revoked DID version/
+      /invalid_jws: signature authored with a revoked DID version/,
     )
   })
 
@@ -196,7 +196,7 @@ describe('atTime', () => {
   const beforeRotation = new Date('2021-07-07T08:00:19Z')
   const afterRotation = new Date('2021-07-07T08:40:19Z')
   const timeKeysRotatedInSec = Math.floor(
-    new Date(VERSION_0_ROTATED.didDocumentMetadata.nextUpdate).valueOf() / 1000
+    new Date(VERSION_0_ROTATED.didDocumentMetadata.nextUpdate).valueOf() / 1000,
   )
 
   test('ok before rotation', async () => {
@@ -205,12 +205,12 @@ describe('atTime', () => {
   })
   test('fail after rotation', async () => {
     await expect(did.verifyJWS(jwsV0, { atTime: afterRotation })).rejects.toThrow(
-      /invalid_jws: signature authored with a revoked DID version/
+      /invalid_jws: signature authored with a revoked DID version/,
     )
   })
   test('ok after rotation if timecheck disabled', async () => {
     await expect(
-      did.verifyJWS(jwsV0, { atTime: afterRotation, disableTimecheck: true })
+      did.verifyJWS(jwsV0, { atTime: afterRotation, disableTimecheck: true }),
     ).resolves.toBeTruthy()
   })
   test('ok after rotation if within revocation phase out period', async () => {
@@ -222,7 +222,7 @@ describe('atTime', () => {
       did.verifyJWS(jwsV0, {
         atTime: new Date(afterRotationBeforePhaseOut * 1000),
         revocationPhaseOutSecs,
-      })
+      }),
     ).resolves.toBeTruthy()
   })
   test('fail after rotation if not within revocation phase out period', async () => {
@@ -234,21 +234,21 @@ describe('atTime', () => {
       did.verifyJWS(jwsV0, {
         atTime: new Date(afterRotationAfterPhaseOut * 1000),
         revocationPhaseOutSecs,
-      })
+      }),
     ).rejects.toThrow(/invalid_jws: signature authored with a revoked DID version/)
   })
 
   test('before DID version available', async () => {
     did.resolve = () => Promise.resolve(VERSION_NEXT)
     await expect(did.verifyJWS(jwsVNext, { atTime: beforeRotation })).rejects.toThrow(
-      /invalid_jws: signature authored before creation/
+      /invalid_jws: signature authored before creation/,
     )
   })
   test('before DID version available if timecheck disabled', async () => {
     did.resolve = () => Promise.resolve(VERSION_NEXT)
     // Have lost keys for the old DID, so here is a new one.
     await expect(
-      did.verifyJWS(jwsVNext, { atTime: beforeRotation, disableTimecheck: true })
+      did.verifyJWS(jwsVNext, { atTime: beforeRotation, disableTimecheck: true }),
     ).resolves.toBeTruthy()
   })
   test('before DID available for v0', async () => {
@@ -297,7 +297,7 @@ describe('issuer', () => {
   test('does not include signer as controller', async () => {
     const issuer = COMPOSITE_ISSUER_EMPTY.didDocument.id
     await expect(did.verifyJWS(jwsV0, { issuer: issuer })).rejects.toThrow(
-      /invalid_jws: not a valid verificationMethod for issuer/
+      /invalid_jws: not a valid verificationMethod for issuer/,
     )
   })
 })

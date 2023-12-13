@@ -32,7 +32,7 @@ const MESSAGE_PREFIX = '\x19Ethereum Signed Message:\n'
 function verifyMessage(message: Uint8Array | string, signature: string): string {
   const effectiveMessage = typeof message === 'string' ? utf8ToBytes(message) : message
   const digest = keccak_256(
-    concatBytes(utf8ToBytes(MESSAGE_PREFIX), utf8ToBytes(String(message.length)), effectiveMessage)
+    concatBytes(utf8ToBytes(MESSAGE_PREFIX), utf8ToBytes(String(message.length)), effectiveMessage),
   )
   const signatureBytes = hexToBytes(signature.replace(/^0x/, ''))
   let v = signatureBytes[64]
@@ -56,7 +56,7 @@ export function verifyEIP191Signature(cacao: Cacao, options: VerifyOptions) {
   if (Date.parse(cacao.p.iat) <= LEGACY_CHAIN_ID_REORG_DATE) {
     const legacyChainIdRecoveredAddress = verifyMessage(
       asLegacyChainIdString(SiweMessage.fromCacao(cacao), 'Ethereum'),
-      cacao.s.s
+      cacao.s.s,
     )
     recoveredAddresses.push(legacyChainIdRecoveredAddress)
   }

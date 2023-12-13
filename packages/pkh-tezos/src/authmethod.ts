@@ -44,7 +44,7 @@ export function assertSupportedProvider(tzProvider: any): asserts tzProvider is 
 }
 
 export function assertSupportedConnection(
-  tzProvider: any
+  tzProvider: any,
 ): asserts tzProvider is SupportedProvider {
   const c = tzProvider as SupportedProvider
   if (c.getActiveAccount === null || c.getActiveAccount === undefined) {
@@ -64,7 +64,7 @@ async function sign(tzProvider: any, message: string) {
 async function createCACAO(
   opts: AuthMethodOpts,
   tzProvider: any,
-  account: AccountId
+  account: AccountId,
 ): Promise<Cacao> {
   const now = new Date()
   const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)

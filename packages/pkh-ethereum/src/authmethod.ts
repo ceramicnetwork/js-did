@@ -42,11 +42,11 @@ export namespace EthereumNodeAuth {
   export async function getAuthMethod(
     ethProvider: any,
     account: AccountId,
-    appName: string
+    appName: string,
   ): Promise<AuthMethod> {
     if (!appName)
       throw new Error(
-        'Node Auth method requires an application name gethAuthMethod(ethProvider, account, appName)'
+        'Node Auth method requires an application name gethAuthMethod(ethProvider, account, appName)',
       )
 
     return async (opts: AuthMethodOpts): Promise<Cacao> => {
@@ -59,7 +59,7 @@ export namespace EthereumNodeAuth {
 async function createCACAO(
   opts: AuthMethodOpts,
   ethProvider: any,
-  account: AccountId
+  account: AccountId,
 ): Promise<Cacao> {
   const now = new Date()
   const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
