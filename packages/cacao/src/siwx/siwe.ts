@@ -1,4 +1,5 @@
 import { SignatureType, SiwxMessage } from './siwx.js'
+import { checksumAddress } from 'viem'
 
 export class SiweMessage extends SiwxMessage {
   /**
@@ -13,22 +14,30 @@ export class SiweMessage extends SiwxMessage {
     return super.toMessage('Ethereum')
   }
 
+  toMessageEip55(): string {
+    const tmpAddress = this.address
+    this.address = checksumAddress(this.address as `0x${string}`)
+    const msg = super.toMessage('Ethereum')
+    this.address = tmpAddress
+    return msg
+  }
+
   /**
    * This method parses all the fields in the object and creates a sign
    * message according with the type defined.
    * @returns {string} Returns a message ready to be signed according with the
    * type defined in the object.
    */
-  signMessage(): string {
+  signMessage(eip55?: boolean): string {
     let message: string
     switch (this.type) {
       case SignatureType.PERSONAL_SIGNATURE: {
-        message = this.toMessage()
+        message = eip55 ? this.toMessageEip55() : this.toMessage()
         break
       }
 
       default: {
-        message = this.toMessage()
+        message = eip55 ? this.toMessageEip55() : this.toMessage()
         break
       }
     }
