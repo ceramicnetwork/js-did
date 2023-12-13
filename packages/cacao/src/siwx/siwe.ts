@@ -29,6 +29,7 @@ export class SiweMessage extends SiwxMessage {
    * type defined in the object.
    */
   signMessage(eip55?: boolean): string {
+    // TODO - switch to eip55 by default when the verification change has been roled out
     let message: string
     switch (this.type) {
       case SignatureType.PERSONAL_SIGNATURE: {
