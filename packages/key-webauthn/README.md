@@ -93,12 +93,29 @@ const selectDIDs = async (did1, did2) {
 const authMethod = WebauthnAuth.getAuthMethod({ selectDIDs })
 ```
 
-## Compatibility Chart
+## Compatibility
 
-| Browser | Version   | OS    | Device  | NFC | Authenticator |
-|---------|-----------|-------|---------|-----|---------------|
-| Chrome  | 116.0.0.0 | Linux | Desktop |     | Yubikey v5    |
-| Firefox | 115.0     | Linux | Desktop |     | Yubikey v5    |
+Tests done via [demo](https://didtoolswn.surge.sh/).
+
+| Browser       | Version | OS             | Device  | Authenticator      | Works | Remark     |
+|---------------|---------|----------------|---------|--------------------|-------|------------|
+| Chrome        | 116     | Linux          | Desktop | Yubikey v5         | ✅    |            |
+| Firefox       | 115     | Linux          | Desktop | Yubikey v5         | ✅    |            |
+| Chrome        | 107     | Mac OS 10.15.7 | Desktop | Yubikey v5 (USB-C) | ✅    |            |
+| Safari        | 15.6    | Mac OS 10.15.7 | Desktop | Yubikey v5 (USB-C) | ✅    |            |
+| Safari        | 15.6    | Mac OS 10.15.7 | Desktop | OS-Authenticator   | ✅    |            |
+| Mobile Safari | 16.6    | iOS 16.6       | Mobile  | Yubikey v5 (USB-C) | ✅    |            |
+| Mobile Safari | 16.6    | iOS 16.6       | Mobile  | OS-Authenticator   | ✅    |            |
+| Brave         | 119     | Mac OS 10.15.7 | Desktop | 1password          | ✅    |            |
+| Chrome        | 122     | Windows 10     | Desktop | Yubikey v5         | ✅    |            |
+| Chrome        | 122     | Windows 10     | Desktop | GPM+Android device | ❌    | Timeout    |
+| Firefox       | 84      | Windows 10     | Desktop | Yubikey v5         | ❌    | e1         |
+| Firefox       | 120     | Windows 10     | Desktop | Yubikey v5         | ✅    |            |
+| Chrome        | 120     | Android 10     | mobile  | Yubikey v5         | ✅    | OTG/no-NFC |
+| Firefox       | 114     | Android 10     | mobile  | Yubikey v5         | ✅    | OTG/no-NFC |
+
+`e1` - An attempt was made to use an object that is not, or is no longer available
+
 
 ## License
 

@@ -1,9 +1,20 @@
-import Tonic from './tonic.js'
 import { DIDSession } from 'did-session'
 import { WebauthnAuth } from '../src/index'
+import Tonic from 'https://unpkg.com/@socketsupply/tonic@15.1.2/index.js'
 import 'https://unpkg.com/ua-parser-js@1.0.35/src/ua-parser.js'
-
 const { createDID, probeDIDs } = WebauthnAuth
+
+// Register global error handlers
+window.addEventListener('error', ev => {
+  ev.preventDefault()
+  handleError(ev.error)
+})
+window.addEventListener('unhandledrejection', ev => {
+  ev.preventDefault()
+  handleError(ev.reason)
+})
+
+const UA = new globalThis.UAParser().getResult()
 
 class CompatChecker extends Tonic {
   step = 0
@@ -19,7 +30,7 @@ class CompatChecker extends Tonic {
   async click (ev: Event) {
     if (Tonic.match(ev.target, '#create')) {
       try {
-      const did = await createDID('demoapp-user')
+      const did = await createDID('demouser-v2')
       setDIDs(did)
       this.step++
       this.reRender()
@@ -48,13 +59,13 @@ class CompatChecker extends Tonic {
       } catch (err) {
         if (err.message === 'PublicKeySelectionFailed') {
           handleError(err, this.html`
-             <p>
-              The identity you chose seem to be different from the one created|recovered in step 1.<br/>
+            <p>
+              The identity you chose seem to be different from the one received in step 1.<br/>
               <br/>
               Please try again!
               <br/>
               <pre><code>Expected\n${dids.join('\n')}\nReceived:\n${seen.join('\n')}</code></pre>
-             <p>
+            <p>
           `)
         } else handleError(err, 'Authentication Failed')
       }
@@ -87,19 +98,18 @@ class CompatChecker extends Tonic {
         Help appreciated.
       </p>
 
-      <h3>Step 1: Acquire Key</h3>
+      <h3>Step 1: Acquire DID</h3>
 
       Choose <strong>Create Identity</strong> if this is your first visit.<br/>
       If you have a key created from another browser or device, select <strong>Recover Identity</strong>.<br/>
       <br/>
+      <!--<input type="text" id="key-label" placeholder="Key Label" value="demo-user"/>-->
       <button id="create">Create Identity</button>
       <button id="recover">Recover Identity</button>
     `
 
     // Wizard screen 2: Login
     if (this.step === 1) {
-      const { error, seen, expected } = this.props
-      console.log('This.props', this.props)
       fragment = this.html`
         <h3>Step 2: Authenticate</h3>
         <p>
@@ -114,7 +124,7 @@ class CompatChecker extends Tonic {
     // Wizard screen 3: Export Result
     if (this.step === 2) {
       fragment = this.html`
-        <h3>Step 3: Result</h3>
+        <h3>Step 3: All done!</h3>
         <result-formatter></result-formatter>
         <p style="text-align:center">Thanks! ✨</p>
       `
@@ -127,9 +137,6 @@ class CompatChecker extends Tonic {
       ? this.html`Current Session<pre>${dids.join('\n')}</pre>`
       : ''
 
-    // @ts-ignore
-    const ua = new window.UAParser().getResult()
-
     return this.html`
       <main class="container">
         <h2><samp>@didtools/key-webauthn</samp></h2>
@@ -139,13 +146,16 @@ class CompatChecker extends Tonic {
 
         ${fragment}
 
+        <h1>&nbsp;</h1>
         <hr>
         <button id="purge" class="secondary outline">Forget everything &amp; Restart</button>
         <details>
           <summary><code>Debug Info</code></summary>
           ${currentIdentity}
+          RP/ID: <code>${globalThis.location.hostname}</code>
+          <br/>
           User Agent:
-          <pre>${JSON.stringify(ua, null, 2)}</pre>
+          <pre>${JSON.stringify(UA, null, 2)}</pre>
           <button id="btn-pop-last">Show last error</button>
         </details>
         <error-dialog id="dlg-error"></error-dialog>
@@ -182,7 +192,7 @@ class ResultFormatter extends Tonic {
 
   render () {
     // @ts-ignore
-    const { browser, os, device, cpu } = new window.UAParser().getResult()
+    const { browser, os, device, cpu } = UA
     console.info({ browser, os, device, cpu })
     const o = `${os.name} ${os.version}`
     const options = [
@@ -191,16 +201,16 @@ class ResultFormatter extends Tonic {
       'OS-Authenticator',
       'Other'
     ].map(v => this.html(`<option value="${v}" ${v === this.fob ? 'selected' : ''}>${v}</option>`))
-    const dev = device?.type || 'desktop'
+    const dev = device?.type || 'Desktop'
     return this.html`
       <select id="select-fob">${options}</select>
-      <label for="used-nfc">
+      <!--<label for="used-nfc">
         <input id="used-nfc" name="used-nfc" type="checkbox" ${this.nfc ? 'checked' : ''}/>
         Used NFC/Contactless-blip login?
-      </label>
+      </label>-->
       <br/>
       <p>Please share this result with us:</p>
-      <textarea id="result">|${browser.name}|${browser.version}|${o}|${dev}|${this.nfc ? 'x' : ' '}|${this.fob}|</textarea>
+      <textarea id="result">|${browser.name}|${browser.version}|${o}|${dev}|${this.fob}|</textarea>
       <div style="text-align: right">
         <a role="button" id="copy" href="#/">Copy to clipboard</a>
       </div>
@@ -209,11 +219,6 @@ class ResultFormatter extends Tonic {
   }
 }
 Tonic.add(ResultFormatter)
-
-function handleError(error?: Error, view?: any) {
-  const dlg = document.getElementById('dlg-error') as unknown as ErrorDialog
-  dlg.show(error, view)
-}
 
 class ErrorDialog extends Tonic {
   open = false
@@ -275,10 +280,13 @@ class ErrorDialog extends Tonic {
 }
 Tonic.add(ErrorDialog)
 
-/*
-function getDID () { return window.localStorage.getItem('did') }
-function setDID (did: string) { window.localStorage.setItem('did', did) }
-*/
+// -- Error Handler
+function handleError(error?: Error, view?: any) {
+  const dlg = document.getElementById('dlg-error') as unknown as ErrorDialog
+  if (!dlg) throw error // fallback to unhandled error
+  dlg.show(error, view)
+}
+
 function getDIDs () {
   return JSON.parse(window.localStorage.getItem('dids') || '[]')
 }
