@@ -177,10 +177,14 @@ export function recoverPublicKeys (
   clientDataJSON: Uint8Array
   // credentialId?: Uint8Array // Yubikey v5 USB-A contains a public key hint.
 ) : [Uint8Array, Uint8Array] {
+  // normalize to u8
+  signature = assertU8(signature)
+  authenticatorData = assertU8(authenticatorData)
+  clientDataJSON = assertU8(clientDataJSON)
+
   const hash = (b: string|Uint8Array) => p256.CURVE.hash(b)
   const msg = u8a.concat([authenticatorData, hash(clientDataJSON)])
   const msgHash = hash(msg)
-  signature = assertU8(signature) // normalize to u8
   return [0, 1].map(rBit => p256.Signature.fromDER(signature)
     .addRecoveryBit(rBit)
     .recoverPublicKey(msgHash)
