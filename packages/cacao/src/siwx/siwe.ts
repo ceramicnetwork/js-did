@@ -15,11 +15,8 @@ export class SiweMessage extends SiwxMessage {
   }
 
   toMessageEip55(): string {
-    const tmpAddress = this.address
-    this.address = checksumAddress(this.address as `0x${string}`)
-    const msg = super.toMessage('Ethereum')
-    this.address = tmpAddress
-    return msg
+    const address = checksumAddress(this.address as `0x${string}`)
+    return super.toMessage('Ethereum', address)
   }
 
   /**
@@ -28,7 +25,7 @@ export class SiweMessage extends SiwxMessage {
    * @returns {string} Returns a message ready to be signed according with the
    * type defined in the object.
    */
-  signMessage(eip55?: boolean): string {
+  signMessage({ eip55 }: { eip55?: boolean } = {}): string {
     // TODO - switch to eip55 by default when the verification change has been roled out
     let message: string
     switch (this.type) {

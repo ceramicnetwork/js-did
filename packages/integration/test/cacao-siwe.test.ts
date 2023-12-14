@@ -40,7 +40,7 @@ test('create and verify Cacao Block for Ethereum', async () => {
 
 test('create and verify Cacao Block for Ethereum (eip55)', async () => {
   const msg = new SiweMessage(SIWE_MESSAGE_PARAMS)
-  msg.signature = await ETHEREUM_WALLET.signMessage(msg.signMessage(true))
+  msg.signature = await ETHEREUM_WALLET.signMessage(msg.signMessage({ eip55: true }))
 
   const cacao = Cacao.fromSiweMessage(msg)
   const block = await CacaoBlock.fromCacao(cacao)
