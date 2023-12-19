@@ -370,7 +370,7 @@ describe('`createDagJWS method`', () => {
     const res = await did.createDagJWS(data)
     const encPayload = await encodePayload(data)
 
-    expect(did.parent).toBe(`did:pkh:eip155:1:${wallet.address}`)
+    expect(did.parent).toBe(`did:pkh:eip155:1:${wallet.address.toLowerCase()}`)
     expect(did.hasParent).toBe(true)
     expect(did.hasCapability).toBe(true)
 

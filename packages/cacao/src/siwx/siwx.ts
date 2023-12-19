@@ -110,8 +110,8 @@ export class SiwxMessage {
     return siwx
   }
 
-  toMessage(chain: string): string {
-    return asString(this, chain)
+  toMessage(chain: string, address?: string): string {
+    return asString(this, chain, address)
   }
 }
 
@@ -166,10 +166,10 @@ export function asLegacyChainIdString(message: SiwxMessage, chainName: string): 
   return [prefix, suffix].join('\n\n')
 }
 
-export function asString(message: SiwxMessage, chainName: string): string {
+export function asString(message: SiwxMessage, chainName: string, address?: string): string {
   const header = `${message.domain} wants you to sign in with your ${chainName} account:`
   const uriField = `URI: ${message.uri}`
-  let prefix = [header, message.address].join('\n')
+  let prefix = [header, address || message.address].join('\n')
   const versionField = `Version: ${message.version}`
 
   if (!message.nonce) {

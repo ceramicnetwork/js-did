@@ -130,6 +130,10 @@ export class DID {
     if (capability) {
       this._capability = capability
       this._parentId = this._capability.p.iss
+      if (this._parentId.startsWith('did:pkh:eip155:1:')) {
+        // Lower case ethereum address for compatibility with Ceramic
+        this._parentId = this._parentId.toLowerCase()
+      }
       if (parent && this._parentId !== parent)
         throw new Error('Capability issuer and parent not equal')
     } else if (parent) {
