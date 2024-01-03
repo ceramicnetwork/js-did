@@ -54,6 +54,6 @@
     "@noble/hashes": "^1.3.2",
     "@stablelib/random": "^1.0.2",
     "caip": "^1.1.0",
-    "uint8arrays": "^4.0.9"
+    "uint8arrays": "^5.0.1"
   }
 }
