@@ -81,11 +81,11 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       multiformats:
-        specifier: ^12.1.3
-        version: 12.1.3
+        specifier: ^13.0.0
+        version: 13.0.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
       viem:
         specifier: ^1.19.13
         version: 1.19.13(typescript@5.3.2)
@@ -106,11 +106,11 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       multiformats:
-        specifier: ^12.1.3
-        version: 12.1.3
+        specifier: ^13.0.0
+        version: 13.0.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       ts-essentials:
         specifier: ^9.4.1
@@ -137,8 +137,8 @@ importers:
         specifier: workspace:^3.0.0
         version: link:../key-did-resolver
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       '@ceramicnetwork/common':
         specifier: ^3.0.5
@@ -204,8 +204,8 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       dag-jose-utils:
-        specifier: ^3.0.0
-        version: 3.0.0
+        specifier: ^4.0.0
+        version: 4.0.0
       did-jwt:
         specifier: ^7.4.5
         version: 7.4.5
@@ -213,14 +213,14 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       multiformats:
-        specifier: ^12.1.3
-        version: 12.1.3
+        specifier: ^13.0.0
+        version: 13.0.0
       rpc-utils:
         specifier: ^0.6.1
         version: 0.6.2
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       '@noble/curves':
         specifier: ^1.2.0
@@ -259,11 +259,11 @@ importers:
         specifier: ^3.4.4
         version: 3.4.4
       multiformats:
-        specifier: ^12.1.3
-        version: 12.1.3
+        specifier: ^13.0.0
+        version: 13.0.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
 
   packages/jest-environment-ceramic:
     dependencies:
@@ -298,8 +298,8 @@ importers:
         specifier: ^0.6.2
         version: 0.6.2
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       '@stablelib/random':
         specifier: ^1.0.2
@@ -323,8 +323,8 @@ importers:
         specifier: ^0.6.2
         version: 0.6.2
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       '@stablelib/random':
         specifier: ^1.0.2
@@ -339,8 +339,8 @@ importers:
         specifier: ^0.6.2
         version: 0.6.2
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
       varint:
         specifier: ^6.0.0
         version: 6.0.0
@@ -364,11 +364,11 @@ importers:
         specifier: ^1.2.0
         version: 1.2.0
       multiformats:
-        specifier: ^12.1.3
-        version: 12.1.3
+        specifier: ^13.0.0
+        version: 13.0.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
       varint:
         specifier: ^6.0.0
         version: 6.0.0
@@ -398,11 +398,11 @@ importers:
         specifier: ^4.0.5
         version: 4.0.5
       multiformats:
-        specifier: ^12.1.3
-        version: 12.1.3
+        specifier: ^13.0.0
+        version: 13.0.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
       varint:
         specifier: ^6.0.0
         version: 6.0.0
@@ -429,11 +429,11 @@ importers:
   packages/multidid:
     dependencies:
       multiformats:
-        specifier: ^12.1.3
-        version: 12.1.3
+        specifier: ^13.0.0
+        version: 13.0.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       '@stablelib/random':
         specifier: ^1.0.2
@@ -486,8 +486,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       typescript:
         specifier: ^5.3.2
@@ -539,8 +539,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       uint8arrays:
-        specifier: ^4.0.9
-        version: 4.0.9
+        specifier: ^5.0.1
+        version: 5.0.1
     devDependencies:
       '@taquito/signer':
         specifier: ^17.4.0
@@ -4283,6 +4283,14 @@ packages:
     dependencies:
       cborg: 4.0.5
       multiformats: 12.1.3
+
+  /@ipld/dag-cbor@9.0.7:
+    resolution: {integrity: sha512-bZMZWTtrJnIm2YjWijIB2EIGdba8kZRO55i+7RMnCHkazQ5hCqif3RrywIjDmnACSBvkhIPuQkefvxlxzogIEQ==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+    dependencies:
+      cborg: 4.0.5
+      multiformats: 13.0.0
+    dev: false
 
   /@ipld/dag-json@10.1.5:
     resolution: {integrity: sha512-AIIDRGPgIqVG2K1O42dPDzNOfP0YWV/suGApzpF+YWZLwkwdGVsxjmXcJ/+rwOhRGdjpuq/xQBKPCu1Ao6rdOQ==}
@@ -9468,6 +9476,13 @@ packages:
     dependencies:
       '@ipld/dag-cbor': 7.0.3
       multiformats: 11.0.2
+
+  /dag-jose-utils@4.0.0:
+    resolution: {integrity: sha512-bmmXtVdEKp/zYH8El4GGkMREJioUztz8fzOErfy5dTbyKIVOF61C5sfsZLYCB/wiT/I9+SPNrQeo/Cx6Ik3wJQ==}
+    dependencies:
+      '@ipld/dag-cbor': 9.0.7
+      multiformats: 13.0.0
+    dev: false
 
   /dag-jose@4.0.0:
     resolution: {integrity: sha512-tw595L3UYoOUT9dSJPbBEG/qpRpw24kRZxa5SLRnlnr+g5L7O8oEs1d3W5TiVA1oJZbthVsf0Vi3zFN66qcEBA==}
@@ -15119,6 +15134,9 @@ packages:
     resolution: {integrity: sha512-eajQ/ZH7qXZQR2AgtfpmSMizQzmyYVmCql7pdhldPuYQi4atACekbJaQplk6dWyIi10jCaFnd6pqvcEFXjbaJw==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
 
+  /multiformats@13.0.0:
+    resolution: {integrity: sha512-xiIB0p7EKmETm3wyKedOg/xuyQ18PoWwXCzzgpZAiDxL9ktl3XTh8AqoDT5kAqRg+DU48XAGPsUJL2Rn6Bx3Lw==}
+
   /multiformats@9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}
 
@@ -18919,6 +18937,11 @@ packages:
     resolution: {integrity: sha512-iHU8XJJnfeijILZWzV7RgILdPHqe0mjJvyzY4mO8aUUtHsDbPa2Gc8/02Kc4zeokp2W6Qq8z9Ap1xkQ1HfbKwg==}
     dependencies:
       multiformats: 12.1.3
+
+  /uint8arrays@5.0.1:
+    resolution: {integrity: sha512-ND5RpJAnPgHmZT7hWD/2T4BwRp04j8NLKvMKC/7bhiEwEjUMkQ4kvBKiH6hOqbljd6qJ2xS8reL3vl1e33grOQ==}
+    dependencies:
+      multiformats: 13.0.0
 
   /unbox-primitive@1.0.2:
     resolution: {integrity: sha512-61pPlCD9h51VoreyJ0BReideM3MDKMKnh6+V9L08331ipq6Q8OFXZYiqP6n/tbHx4s5I9uRhcye6BrbkizkBDw==}

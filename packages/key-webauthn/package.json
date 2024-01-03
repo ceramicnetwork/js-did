@@ -62,8 +62,8 @@
     "@noble/curves": "^1.2.0",
     "caip": "^1.1.0",
     "cborg": "^4.0.5",
-    "multiformats": "^12.1.3",
-    "uint8arrays": "^4.0.9",
+    "multiformats":"^13.0.0",
+    "uint8arrays": "^5.0.1",
     "varint": "^6.0.0"
   }
 }

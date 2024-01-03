@@ -48,12 +48,12 @@
     "@didtools/pkh-ethereum": "workspace:^0.4.1",
     "@stablelib/random": "^1.0.1",
     "codeco": "^1.2.0",
-    "dag-jose-utils": "^3.0.0",
+    "dag-jose-utils": "^4.0.0",
     "did-jwt": "^7.4.5",
     "did-resolver": "^4.1.0",
-    "multiformats": "^12.1.3",
+    "multiformats":"^13.0.0",
     "rpc-utils": "^0.6.1",
-    "uint8arrays": "^4.0.9"
+    "uint8arrays": "^5.0.1"
   },
   "devDependencies": {
     "@noble/curves": "^1.2.0",

@@ -46,7 +46,7 @@
     "dids": "workspace:^4.0.3",
     "key-did-provider-ed25519": "workspace:^3.0.1",
     "key-did-resolver": "workspace:^3.0.0",
-    "uint8arrays": "^4.0.9"
+    "uint8arrays": "^5.0.1"
   },
   "devDependencies": {
     "@ceramicnetwork/common": "^3.0.5",
