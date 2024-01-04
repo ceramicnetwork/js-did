@@ -1,4 +1,4 @@
-# @didtools/codecs
+# @didtools/key-webauthn
 
 ## 2.0.0
 
@@ -6,8 +6,7 @@
 
 - Upgrade to multiformats 13 and related packages impacted
 
-## 1.0.1
-
 ### Patch Changes
 
-- Add new codecs package
+- Updated dependencies
+  - @didtools/cacao@3.0.0
