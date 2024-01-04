@@ -376,6 +376,7 @@ export class DID {
     const signerDid = didResolutionResult.didDocument?.id
     if (
       options.issuer &&
+      options.capability &&
       issuerEquals(options.issuer, options.capability?.p.iss) &&
       signerDid === options.capability.p.aud
     ) {
