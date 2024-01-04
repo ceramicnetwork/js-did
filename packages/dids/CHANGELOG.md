@@ -1,5 +1,11 @@
 ## v2.4.0 (2021-07-12)
 
+## 5.0.2
+
+### Patch Changes
+
+- Verify eip55 formatted CACAOs correctly
+
 ## 5.0.1
 
 ### Patch Changes
