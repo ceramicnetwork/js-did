@@ -1,5 +1,17 @@
 # @didtools/cacao
 
+## 3.0.0
+
+### Major Changes
+
+- Upgrade to multiformats 13 and related packages impacted
+
+### Patch Changes
+
+- Updated dependencies
+  - @didtools/codecs@2.0.0
+  - @didtools/siwx@2.0.0
+
 ## 2.1.0
 
 ### Minor Changes

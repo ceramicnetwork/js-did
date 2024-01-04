@@ -1,5 +1,16 @@
 # key-did-provider-ed25519
 
+## 4.0.0
+
+### Major Changes
+
+- Upgrade to multiformats 13 and related packages impacted
+
+### Patch Changes
+
+- Updated dependencies
+  - dids@5.0.0
+
 ## 3.0.2
 
 ### Patch Changes

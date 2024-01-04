@@ -1,6 +1,6 @@
 {
   "name": "@didtools/key-webcrypto",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "author": "Joel Thorstensson",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/varint": "^6.0.3",
     "did-jwt": "^7.4.5",
-    "dids": "workspace:^4.0.1",
+    "dids": "workspace:^5.0.0",
     "jest-environment-jsdom": "^29.7.0"
   },
   "dependencies": {
