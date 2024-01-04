@@ -1,5 +1,13 @@
 ## v2.4.0 (2021-07-12)
 
+## 5.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @didtools/codecs@3.0.0
+  - @didtools/cacao@3.0.1
+
 ## 5.0.0
 
 ### Major Changes
