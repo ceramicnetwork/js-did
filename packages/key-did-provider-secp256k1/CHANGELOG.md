@@ -1,5 +1,12 @@
 # @didtools/key-secp256k1
 
+## 0.3.2
+
+### Patch Changes
+
+- Updated dependencies
+  - dids@5.0.2
+
 ## 0.3.1
 
 ### Patch Changes
