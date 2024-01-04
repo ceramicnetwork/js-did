@@ -113,6 +113,14 @@ function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver
   return 'registry' in resolver && 'cache' in resolver
 }
 
+function issuerEquals(dida: string, didb: string): boolean {
+  if (dida === didb) return true
+  if (dida.startsWith('did:pkh:eip155:1:')) {
+    return dida.toLowerCase() === didb.toLowerCase()
+  }
+  return false
+}
+
 /**
  * Interact with DIDs.
  */
@@ -368,7 +376,7 @@ export class DID {
     const signerDid = didResolutionResult.didDocument?.id
     if (
       options.issuer &&
-      options.issuer === options.capability?.p.iss &&
+      issuerEquals(options.issuer, options.capability?.p.iss) &&
       signerDid === options.capability.p.aud
     ) {
       if (!options.verifiers) throw new Error('Registered verifiers needed for CACAO')

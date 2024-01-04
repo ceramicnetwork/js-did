@@ -375,9 +375,10 @@ describe('`createDagJWS method`', () => {
     expect(did.hasCapability).toBe(true)
 
     // Valid capability
+    // Ceramic always uses lower case DID PKH for eip155
     await expect(
       did.verifyJWS(res.jws, {
-        issuer: `did:pkh:eip155:1:${wallet.address}`,
+        issuer: `did:pkh:eip155:1:${wallet.address.toLowerCase()}`,
         capability: cacao,
         atTime: new Date('2021-10-30T16:25:24.000Z'),
       }),
