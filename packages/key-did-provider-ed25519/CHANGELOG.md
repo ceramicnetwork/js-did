@@ -1,5 +1,11 @@
 # key-did-provider-ed25519
 
+## 4.0.1
+
+### Patch Changes
+
+- dids@5.0.1
+
 ## 4.0.0
 
 ### Major Changes

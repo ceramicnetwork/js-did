@@ -1,5 +1,12 @@
 # did-session
 
+## 3.0.1
+
+### Patch Changes
+
+- dids@5.0.1
+- key-did-provider-ed25519@4.0.1
+
 ## 3.0.0
 
 ### Major Changes

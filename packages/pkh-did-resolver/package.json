@@ -23,6 +23,10 @@
   "engines": {
     "node": ">=14.14"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceramicnetwork/js-did.git"
+  },
   "sideEffects": false,
   "scripts": {
     "build:clean": "del dist",

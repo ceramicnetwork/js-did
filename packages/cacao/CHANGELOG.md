@@ -1,5 +1,12 @@
 # @didtools/cacao
 
+## 3.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @didtools/codecs@3.0.0
+
 ## 3.0.0
 
 ### Major Changes

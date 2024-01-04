@@ -1,6 +1,6 @@
 {
   "name": "did-session",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Manage user DIDs in a web environment",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
