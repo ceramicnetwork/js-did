@@ -219,7 +219,7 @@ export function getResolver(): ResolverRegistry {
       parsed: ParsedDID,
       // @ts-ignore
       r: Resolver,
-      options: DIDResolutionOptions
+      options: DIDResolutionOptions,
     ): Promise<DIDResolutionResult> => {
       const contentType = options.accept || DID_JSON
       const response: DIDResolutionResult = {

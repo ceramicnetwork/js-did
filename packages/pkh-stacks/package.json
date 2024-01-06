@@ -1,6 +1,6 @@
 {
   "name": "@didtools/pkh-stacks",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
   "main": "dist/index.js",
@@ -43,14 +43,14 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "typescript": "^5.0.4"
+    "typescript": "^5.3.2"
   },
   "dependencies": {
-    "@didtools/cacao": "workspace:^2.0.0",
+    "@didtools/cacao": "workspace:^3.0.0",
     "@stablelib/random": "^1.0.2",
-    "@stacks/common": "^6.5.2",
-    "@stacks/encryption": "^6.5.4",
-    "@stacks/transactions": "^6.5.4",
+    "@stacks/common": "^6.10.0",
+    "@stacks/encryption": "^6.10.0",
+    "@stacks/transactions": "^6.10.0",
     "caip": "^1.1.0",
     "jsontokens": "^4.0.1"
   }

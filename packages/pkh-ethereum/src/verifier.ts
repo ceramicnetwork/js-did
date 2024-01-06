@@ -32,7 +32,7 @@ const MESSAGE_PREFIX = '\x19Ethereum Signed Message:\n'
 function verifyMessage(message: Uint8Array | string, signature: string): string {
   const effectiveMessage = typeof message === 'string' ? utf8ToBytes(message) : message
   const digest = keccak_256(
-    concatBytes(utf8ToBytes(MESSAGE_PREFIX), utf8ToBytes(String(message.length)), effectiveMessage)
+    concatBytes(utf8ToBytes(MESSAGE_PREFIX), utf8ToBytes(String(message.length)), effectiveMessage),
   )
   const signatureBytes = hexToBytes(signature.replace(/^0x/, ''))
   let v = signatureBytes[64]
@@ -49,20 +49,25 @@ function verifyMessage(message: Uint8Array | string, signature: string): string 
 export function verifyEIP191Signature(cacao: Cacao, options: VerifyOptions) {
   assertSigned(cacao)
   verifyTimeChecks(cacao, options)
+  const issuer = AccountId.parse(cacao.p.iss.replace('did:pkh:', '')).address.toLowerCase()
 
-  const recoveredAddress = verifyMessage(SiweMessage.fromCacao(cacao).toMessage(), cacao.s.s)
-  const recoveredAddresses = [recoveredAddress]
+  // assume the message doesn't use eip55 for the ethereum address
+  let recovered = verifyMessage(SiweMessage.fromCacao(cacao).toMessage(), cacao.s.s)
 
-  if (Date.parse(cacao.p.iat) <= LEGACY_CHAIN_ID_REORG_DATE) {
-    const legacyChainIdRecoveredAddress = verifyMessage(
-      asLegacyChainIdString(SiweMessage.fromCacao(cacao), 'Ethereum'),
-      cacao.s.s
-    )
-    recoveredAddresses.push(legacyChainIdRecoveredAddress)
+  if (recovered !== issuer) {
+    // try to verify signature using eip55 address
+    recovered = verifyMessage(SiweMessage.fromCacao(cacao).toMessageEip55(), cacao.s.s)
   }
 
-  const issuerAddress = AccountId.parse(cacao.p.iss.replace('did:pkh:', '')).address.toLowerCase()
-  if (!recoveredAddresses.includes(issuerAddress)) {
+  if (recovered !== issuer && Date.parse(cacao.p.iat) <= LEGACY_CHAIN_ID_REORG_DATE) {
+    // might be an old CACAOv1 format
+    recovered = verifyMessage(
+      asLegacyChainIdString(SiweMessage.fromCacao(cacao), 'Ethereum'),
+      cacao.s.s,
+    )
+  }
+
+  if (recovered !== issuer) {
     throw new Error(`Signature does not belong to issuer`)
   }
 }

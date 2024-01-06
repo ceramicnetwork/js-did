@@ -8,6 +8,7 @@ custom_edit_url: null
 ## Modules
 
 - [@didtools/key-secp256k1](modules/didtools_key_secp256k1.md)
+- [@didtools/key-webcrypto](modules/didtools_key_webcrypto.md)
 - [@didtools/multidid](modules/didtools_multidid.md)
 - [codecs](modules/codecs.md)
 - [did-session](modules/did_session.md)
@@ -19,3 +20,4 @@ custom_edit_url: null
 - [pkh-solana](modules/pkh_solana.md)
 - [pkh-stacks](modules/pkh_stacks.md)
 - [pkh-tezos](modules/pkh_tezos.md)
+- [siwx/src](modules/siwx_src.md)

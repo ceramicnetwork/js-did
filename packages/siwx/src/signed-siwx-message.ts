@@ -11,5 +11,8 @@ export interface ISignedSiwxMessage {
 }
 
 export class SignedSiwxMessage implements ISignedSiwxMessage {
-  constructor(readonly message: SiwxMessage, readonly signature: Signature) {}
+  constructor(
+    readonly message: SiwxMessage,
+    readonly signature: Signature,
+  ) {}
 }

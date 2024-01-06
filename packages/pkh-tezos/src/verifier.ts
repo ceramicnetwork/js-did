@@ -42,7 +42,7 @@ export function getPkhfromPk(publicKey: string): string {
 function verifyEdSignature(
   decodedSig: Uint8Array,
   bytesHash: Uint8Array,
-  decodedPublicKey: Uint8Array
+  decodedPublicKey: Uint8Array,
 ) {
   try {
     return ed25519.verify(decodedSig, bytesHash, decodedPublicKey)

@@ -1,5 +1,32 @@
 ## v2.4.0 (2021-07-12)
 
+## 5.0.2
+
+### Patch Changes
+
+- Verify eip55 formatted CACAOs correctly
+
+## 5.0.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @didtools/codecs@3.0.0
+  - @didtools/cacao@3.0.1
+
+## 5.0.0
+
+### Major Changes
+
+- Upgrade to multiformats 13 and related packages impacted
+
+### Patch Changes
+
+- Updated dependencies
+  - @didtools/codecs@2.0.0
+  - @didtools/cacao@3.0.0
+  - @didtools/pkh-ethereum@0.5.0
+
 ## 4.0.4
 
 ### Patch Changes

@@ -254,7 +254,7 @@ export class DIDSession {
   static async get(
     account: AccountId,
     authMethod: AuthMethod,
-    authOpts: AuthOpts = {}
+    authOpts: AuthOpts = {},
   ): Promise<DIDSession> {
     if (!authOpts.resources || authOpts.resources.length === 0)
       throw new Error('Required: resource argument option when authorizing')
@@ -287,7 +287,7 @@ export class DIDSession {
    */
   static async hasSessionFor(account: AccountId, resources: Array<string>): Promise<boolean> {
     const store = await SessionStore.create()
-    const { cacao } = (await store.get(account)) || {} as { cacao: Cacao }
+    const { cacao } = (await store.get(account)) || ({} as { cacao: Cacao })
     return cacao && cacaoContainsResources(cacao, resources)
   }
 

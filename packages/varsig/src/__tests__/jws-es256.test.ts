@@ -3,12 +3,12 @@ import { expect, test } from '@jest/globals'
 import { CARFactory, type CAR } from 'cartonne'
 import { CID } from 'multiformats/cid'
 import * as uint8arrays from 'uint8arrays'
-import { JWS } from '../canons/jws.js'
+// import { JWS } from '../canons/jws.js'
 import { verify, toOriginal } from '../varsig.js'
-import { MAGIC } from '../magic.js'
-import { BytesTape } from '../bytes-tape.js'
+// import { MAGIC } from '../magic.js'
+// import { BytesTape } from '../bytes-tape.js'
 import { klona } from 'klona'
-import * as varintes from 'varintes'
+// import * as varintes from 'varintes'
 
 
 const factory = new CARFactory()
@@ -56,18 +56,18 @@ describe('jws.car', () => {
   })
 
   test.skip('Create varsig ipld node', () => {
-    for (const entryCID of entries) {
+//     for (const entryCID of entries) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const entry = car.get(entryCID)
+//       const entry = car.get(entryCID)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
-      if (!entry.original) continue
+//       if (!entry.original) continue
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
-      const original = car.get(entry.original)
-      const varsigNode = Eip712.fromOriginal(original as Eip712)
+//       const original = car.get(entry.original)
+  //     const varsigNode = Eip712.fromOriginal(original as Eip712)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
-      const node = car.get(entry.node)
-      expect(varsigNode).toEqual(node)
-    }
+//       const node = car.get(entry.node)
+//       expect(varsigNode).toEqual(node)
+//     }
   })
 
   test.skip('Recover original from ipld node', async () => {

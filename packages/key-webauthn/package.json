@@ -1,6 +1,6 @@
 {
   "name": "@didtools/key-webauthn",
-  "version": "1.0.0",
+  "version": "2.0.1",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -28,7 +28,9 @@
     "prepare": "pnpm run build",
     "prepublishOnly": "package-check",
     "size": "./node_modules/.bin/size-limit",
-    "analyze": "./node_modules/.bin/size-limit --why"
+    "analyze": "./node_modules/.bin/size-limit --why",
+    "demo": "esbuild --bundle --format=esm --outfile=sample/build.js sample/index.ts --servedir=sample/",
+    "publish:demo": "esbuild --bundle --format=esm --outfile=sample/build.js sample/index.ts && surge sample/ didtoolswn.surge.sh"
   },
   "repository": {
     "type": "git",
@@ -47,20 +49,21 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "dids": "workspace:*",
+    "@types/varint": "^6.0.3",
+    "did-jwt": "^7.4.5",
     "did-session": "workspace:*",
-    "did-jwt": "^7.2.0",
-    "typescript": "^5.0.4",
-    "@types/varint": "^6.0.1"
+    "dids": "workspace:*",
+    "esbuild": "^0.19.9",
+    "typescript": "^5.3.2"
   },
   "dependencies": {
     "@didtools/cacao": "workspace:*",
-    "@ipld/dag-cbor": "^9.0.1",
-    "multiformats": "^11.0.2",
-    "cborg": "^4.0.3",
+    "@ipld/dag-cbor": "^9.0.6",
+    "@noble/curves": "^1.2.0",
     "caip": "^1.1.0",
-    "uint8arrays": "^4.0.3",
-    "@noble/curves": "^1.1.0",
+    "cborg": "^4.0.5",
+    "multiformats": "^13.0.0",
+    "uint8arrays": "^5.0.1",
     "varint": "^6.0.0"
   }
 }

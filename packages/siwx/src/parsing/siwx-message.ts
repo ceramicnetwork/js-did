@@ -13,7 +13,7 @@ const wantLine = seq(
   domain,
   literal(' wants you to sign in with your '),
   network,
-  literal(' account:')
+  literal(' account:'),
 )
 export const wantClause = map(wantLine, (line) => {
   return {
@@ -96,7 +96,7 @@ const mandatoryFields = map(
       nonce: clauses[3],
       issuedAt: clauses[4],
     }
-  }
+  },
 )
 
 const optionalExpirationTime = option(seq(LF, expirationTimeClause), undefined)
@@ -114,7 +114,7 @@ const optionalFields = map(
       requestId: fields[2],
       resources: fields[3],
     }
-  }
+  },
 )
 
 const siwxMessageRaw = seq(headerClause, LF, statementClause, LF, mandatoryFields, optionalFields)

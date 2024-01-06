@@ -1,6 +1,6 @@
 {
   "name": "jest-environment-ceramic",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "description": "Ceramic environment for Jest",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
@@ -21,9 +21,9 @@
     "lint": "eslint index.js --fix"
   },
   "dependencies": {
-    "@ceramicnetwork/core": "^2.32.0",
-    "ipfs-core": "^0.18.0",
-    "jest-environment-node": "^29.5.0",
+    "@ceramicnetwork/core": "^3.2.0",
+    "ipfs-core": "^0.18.1",
+    "jest-environment-node": "^29.7.0",
     "tmp-promise": "^3.0.3"
   }
 }

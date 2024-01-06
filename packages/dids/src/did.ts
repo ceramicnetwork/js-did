@@ -113,6 +113,14 @@ function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver
   return 'registry' in resolver && 'cache' in resolver
 }
 
+function issuerEquals(dida: string, didb: string): boolean {
+  if (dida === didb) return true
+  if (dida.startsWith('did:pkh:eip155:1:')) {
+    return dida.toLowerCase() === didb.toLowerCase()
+  }
+  return false
+}
+
 /**
  * Interact with DIDs.
  */
@@ -130,6 +138,10 @@ export class DID {
     if (capability) {
       this._capability = capability
       this._parentId = this._capability.p.iss
+      if (this._parentId.startsWith('did:pkh:eip155:1:')) {
+        // Lower case ethereum address for compatibility with Ceramic
+        this._parentId = this._parentId.toLowerCase()
+      }
       if (parent && this._parentId !== parent)
         throw new Error('Capability issuer and parent not equal')
     } else if (parent) {
@@ -215,7 +227,7 @@ export class DID {
       this._client = new RPCClient(provider)
     } else if (this._client.connection !== provider) {
       throw new Error(
-        'A different provider is already set, create a new DID instance to use another provider'
+        'A different provider is already set, create a new DID instance to use another provider',
       )
     }
   }
@@ -265,7 +277,7 @@ export class DID {
    */
   async createJWS<T extends string | Record<string, any>>(
     payload: T,
-    options: CreateJWSOptions = {}
+    options: CreateJWSOptions = {},
   ): Promise<DagJWS> {
     if (this._client == null) throw new Error('No provider available')
     if (this._id == null) throw new Error('DID is not authenticated')
@@ -278,7 +290,7 @@ export class DID {
       const capCID = CID.asCID(cacaoBlock.cid)
       if (!capCID) {
         throw new Error(
-          `Capability CID of the JWS cannot be set to the capability payload cid as they are incompatible`
+          `Capability CID of the JWS cannot be set to the capability payload cid as they are incompatible`,
         )
       }
       options.protected = options.protected || {}
@@ -301,7 +313,7 @@ export class DID {
    */
   async createDagJWS(
     payload: Record<string, any>,
-    options: CreateJWSOptions = {}
+    options: CreateJWSOptions = {},
   ): Promise<DagJWSResult> {
     const { cid, linkedBlock } = await encodePayload(payload)
     const payloadCid = encodeBase64Url(cid.bytes)
@@ -311,7 +323,7 @@ export class DID {
     const compatibleCID = CID.asCID(cid)
     if (!compatibleCID) {
       throw new Error(
-        'CID of the JWS cannot be set to the encoded payload cid as they are incompatible'
+        'CID of the JWS cannot be set to the encoded payload cid as they are incompatible',
       )
     }
     jws.link = compatibleCID
@@ -364,7 +376,8 @@ export class DID {
     const signerDid = didResolutionResult.didDocument?.id
     if (
       options.issuer &&
-      options.issuer === options.capability?.p.iss &&
+      options.capability &&
+      issuerEquals(options.issuer, options.capability?.p.iss) &&
       signerDid === options.capability.p.aud
     ) {
       if (!options.verifiers) throw new Error('Registered verifiers needed for CACAO')
@@ -420,7 +433,7 @@ export class DID {
   async createJWE(
     cleartext: Uint8Array,
     recipients: Array<string>,
-    options: CreateJWEOptions = {}
+    options: CreateJWEOptions = {},
   ): Promise<JWE> {
     const encrypters = await resolveX25519Encrypters(recipients, this._resolver)
     return createJWE(cleartext, encrypters, options.protectedHeader, options.aad)
@@ -436,7 +449,7 @@ export class DID {
   async createDagJWE(
     cleartext: Record<string, any>,
     recipients: Array<string>,
-    options: CreateJWEOptions = {}
+    options: CreateJWEOptions = {},
   ): Promise<JWE> {
     const preparedCleartext = await prepareCleartext(cleartext)
     return this.createJWE(preparedCleartext, recipients, options)

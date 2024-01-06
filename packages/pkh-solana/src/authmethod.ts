@@ -42,7 +42,7 @@ export namespace SolanaNodeAuth {
   export async function getAuthMethod(
     ethProvider: any,
     account: AccountId,
-    appName: string
+    appName: string,
   ): Promise<AuthMethod> {
     const domain = appName
 
@@ -62,7 +62,7 @@ export type SupportedConnection = {
 }
 
 export function assertSupportedProvider(
-  solProvider: any
+  solProvider: any,
 ): asserts solProvider is SupportedProvider {
   const p = solProvider as SupportedProvider
   if (p.signMessage === null || p.signMessage === undefined) {
@@ -71,7 +71,7 @@ export function assertSupportedProvider(
 }
 
 export function assertSupportedConnection(
-  solConnection: any
+  solConnection: any,
 ): asserts solConnection is SupportedConnection {
   const c = solConnection as SupportedConnection
   if (c.getGenesisHash === null || c.getGenesisHash === undefined) {
@@ -88,7 +88,7 @@ async function sign(solProvider: any, message: Uint8Array) {
 async function createCACAO(
   opts: AuthMethodOpts,
   solProvider: any,
-  account: AccountId
+  account: AccountId,
 ): Promise<Cacao> {
   const now = new Date()
   const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)

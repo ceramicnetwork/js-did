@@ -1,6 +1,6 @@
 {
   "name": "@didtools/pkh-tezos",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
   "main": "dist/index.js",
@@ -43,17 +43,17 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "devDependencies": {
-    "@taquito/signer": "^16.1.2",
-    "@taquito/taquito": "^16.1.2",
-    "@taquito/utils": "^16.1.2",
-    "typescript": "^5.0.4"
+    "@taquito/signer": "^17.4.0",
+    "@taquito/taquito": "^17.4.0",
+    "@taquito/utils": "^17.4.0",
+    "typescript": "^5.3.2"
   },
   "dependencies": {
-    "@didtools/cacao": "workspace:^2.0.0",
-    "@noble/curves": "^1.0.0",
-    "@noble/hashes": "^1.3.0",
+    "@didtools/cacao": "workspace:^3.0.0",
+    "@noble/curves": "^1.2.0",
+    "@noble/hashes": "^1.3.2",
     "@stablelib/random": "^1.0.2",
     "caip": "^1.1.0",
-    "uint8arrays": "^4.0.3"
+    "uint8arrays": "^5.0.1"
   }
 }

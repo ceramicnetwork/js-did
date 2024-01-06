@@ -216,7 +216,7 @@ export namespace WebauthnAuth {
       },
       s: {
         t: 'webauthn:p256',
-        s: u8a.toString(signature, 'base64url'),
+        s: u8a.toString(assertU8(signature), 'base64url'),
         m: { aad }
       }
     }

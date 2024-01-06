@@ -1,6 +1,6 @@
 {
   "name": "@didtools/codecs",
-  "version": "1.0.1",
+  "version": "3.0.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -45,11 +45,11 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
-    "codeco": "^1.1.0",
-    "multiformats": "^11.0.1",
-    "uint8arrays": "^4.0.3"
+    "codeco": "^1.2.0",
+    "multiformats": "^13.0.0",
+    "uint8arrays": "^5.0.1"
   },
   "devDependencies": {
-    "ts-essentials": "^9.3.2"
+    "ts-essentials": "^9.4.1"
   }
 }

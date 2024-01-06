@@ -4,11 +4,10 @@
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
 import { EventEmitter } from 'events'
-import { Wallet as EthereumWallet } from '@ethersproject/wallet'
+import { Wallet as EthereumWallet, Wallet } from '@ethersproject/wallet'
 import { fromString, toString } from 'uint8arrays'
 import { DIDSession, createDIDKey, createDIDCacao } from '../src'
 import { jest } from '@jest/globals'
-import { Wallet } from '@ethersproject/wallet'
 import { SiweMessage, Cacao, AuthMethod } from '@didtools/cacao'
 import { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
@@ -21,7 +20,7 @@ import { DID } from 'dids'
 import { getResolver } from 'key-did-resolver'
 
 const getModelDef = (name: string): ModelDefinition => ({
-  version: Model.VERSION,
+  version: '1.0',
   name: name,
   accountRelation: { type: 'list' },
   schema: {
@@ -54,7 +53,7 @@ class EthereumProvider extends EventEmitter {
 
   send(
     request: { method: string; params: Array<any> },
-    callback: (err: Error | null | undefined, res?: any) => void
+    callback: (err: Error | null | undefined, res?: any) => void,
   ): void {
     if (request.method === 'eth_chainId') {
       callback(null, { result: '1' })
@@ -122,7 +121,7 @@ describe('did-session', () => {
   })
 
   const wallet = Wallet.fromMnemonic(
-    'despair voyage estate pizza main slice acquire mesh polar short desk lyrics'
+    'despair voyage estate pizza main slice acquire mesh polar short desk lyrics',
   )
   const address = wallet.address
 
@@ -147,7 +146,7 @@ describe('did-session', () => {
       {
         anchor: false,
         publish: false,
-      }
+      },
     )
     expect(doc.content).toEqual({ foo: 'bar' })
 
@@ -169,7 +168,7 @@ describe('did-session', () => {
       {
         anchor: false,
         publish: false,
-      }
+      },
     )
     expect(doc.content).toEqual({ foo: 'bar' })
 
@@ -203,7 +202,7 @@ describe('did-session', () => {
       {
         anchor: false,
         publish: false,
-      }
+      },
     )
     expect(doc.content).toEqual({ foo: 'bar' })
 
@@ -382,7 +381,7 @@ describe('did-session', () => {
 
 const solanaSecretKey = fromString(
   '92e08e39aee87d53fe263913bf9df6615c1c909860a1d3ad57bd0e6e2e507161ecbf1e2d9da80d3ae09de54ce71cbff723e291e7a4b133ce10993be5edfaca50',
-  'hex'
+  'hex',
 )
 
 function createSolanaAuthMethod(key?: Uint8Array): Promise<AuthMethod> {
@@ -437,7 +436,7 @@ describe('did-session Solana Authmethod', () => {
       {
         anchor: false,
         publish: false,
-      }
+      },
     )
     expect(doc.content).toEqual({ foo: 'bar' })
 
@@ -459,7 +458,7 @@ describe('did-session Solana Authmethod', () => {
       {
         anchor: false,
         publish: false,
-      }
+      },
     )
     expect(doc.content).toEqual({ foo: 'bar' })
 

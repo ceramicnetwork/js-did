@@ -20,7 +20,7 @@ export namespace StacksWebAuth {
   // eslint-disable-next-line @typescript-eslint/require-await
   export async function getAuthMethod(
     stacksProvider: any,
-    account: AccountId
+    account: AccountId,
   ): Promise<AuthMethod> {
     if (typeof window === 'undefined')
       throw new Error('Web Auth method requires browser environment')
@@ -43,7 +43,7 @@ export type SupportedProvider = {
 }
 
 export function assertSupportedProvider(
-  stacksProvider: any
+  stacksProvider: any,
 ): asserts stacksProvider is SupportedProvider {
   const p = stacksProvider as SupportedProvider
   if (p.signatureRequest === null || p.signatureRequest === undefined) {
@@ -61,7 +61,7 @@ async function sign(stacksProvider: any, message: string) {
 async function createCACAO(
   opts: AuthMethodOpts,
   stacksProvider: any,
-  account: AccountId
+  account: AccountId,
 ): Promise<Cacao> {
   const now = new Date()
   const oneWeekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)

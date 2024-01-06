@@ -31,7 +31,7 @@ test('fromString', () => {
   assert.equal(message.address, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2')
   assert.equal(
     message.statement,
-    'I accept the ServiceOrg Terms of Service: https://service.invalid/tos'
+    'I accept the ServiceOrg Terms of Service: https://service.invalid/tos',
   )
   assert.equal(message.uri, 'https://service.invalid/login')
   assert.equal(message.version, '1')
@@ -51,7 +51,7 @@ test('fromString resources', () => {
   assert.equal(message.address, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2')
   assert.equal(
     message.statement,
-    'I accept the ServiceOrg Terms of Service: https://service.org/tos'
+    'I accept the ServiceOrg Terms of Service: https://service.org/tos',
   )
   assert.equal(message.uri, 'https://service.org/login')
   assert.equal(message.version, '1')

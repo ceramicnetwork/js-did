@@ -1,6 +1,6 @@
 {
   "name": "key-did-resolver",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Ceramic did:key method resolver",
   "keywords": [
     "ceramic",
@@ -45,13 +45,13 @@
     "analyze": "./node_modules/.bin/size-limit --why"
   },
   "dependencies": {
-    "@noble/curves": "^1.1.0",
-    "multiformats": "^11.0.2",
-    "uint8arrays": "^4.0.3",
+    "@noble/curves": "^1.2.0",
+    "multiformats": "^13.0.0",
+    "uint8arrays": "^5.0.1",
     "varint": "^6.0.0"
   },
   "devDependencies": {
-    "@types/varint": "^6.0.1",
+    "@types/varint": "^6.0.3",
     "did-resolver": "^4.1.0"
   }
 }

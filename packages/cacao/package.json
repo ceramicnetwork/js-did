@@ -1,6 +1,6 @@
 {
   "name": "@didtools/cacao",
-  "version": "2.1.0",
+  "version": "3.0.1",
   "description": "Typescript library for Ceramic OCAP",
   "author": "Haardik <hhaardik@uwaterloo.ca>",
   "license": "(Apache-2.0 OR MIT)",
@@ -43,16 +43,17 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
-    "@didtools/codecs": "workspace:^1.0.1",
+    "@didtools/codecs": "workspace:^",
     "@didtools/siwx": "workspace:*",
-    "@ipld/dag-cbor": "^9.0.1",
+    "@ipld/dag-cbor": "^9.0.7",
     "caip": "^1.1.0",
-    "multiformats": "^11.0.2",
-    "uint8arrays": "^4.0.3"
+    "multiformats": "^13.0.0",
+    "uint8arrays": "^5.0.1",
+    "viem": "^1.21.4"
   },
   "devDependencies": {
-    "@types/luxon": "^3.3.0",
-    "@types/node": "^20.2.3",
-    "luxon": "^3.3.0"
+    "@types/luxon": "^3.3.7",
+    "@types/node": "^20.10.6",
+    "luxon": "^3.4.4"
   }
 }

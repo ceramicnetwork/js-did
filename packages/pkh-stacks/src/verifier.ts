@@ -34,7 +34,7 @@ export function verifyStacksSignature(cacao: Cacao, options: VerifyOptions) {
 
   const recoveredPublicKey = publicKeyFromSignatureRsv(
     bytesToHex(hashMessage(message)),
-    createMessageSignature(signature)
+    createMessageSignature(signature),
   )
   const recoveredAddress = getAddressFromPublicKey(recoveredPublicKey)
 

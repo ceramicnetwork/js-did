@@ -1,6 +1,6 @@
 {
   "name": "@didtools/multidid",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": "3Box Labs",
   "license": "(Apache-2.0 OR MIT)",
   "type": "module",
@@ -48,7 +48,7 @@
     "@stablelib/random": "^1.0.2"
   },
   "dependencies": {
-    "multiformats": "^11.0.2",
-    "uint8arrays": "^4.0.3"
+    "multiformats": "^13.0.0",
+    "uint8arrays": "^5.0.1"
   }
 }

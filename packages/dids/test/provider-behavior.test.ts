@@ -370,17 +370,18 @@ describe('`createDagJWS method`', () => {
     const res = await did.createDagJWS(data)
     const encPayload = await encodePayload(data)
 
-    expect(did.parent).toBe(`did:pkh:eip155:1:${wallet.address}`)
+    expect(did.parent).toBe(`did:pkh:eip155:1:${wallet.address.toLowerCase()}`)
     expect(did.hasParent).toBe(true)
     expect(did.hasCapability).toBe(true)
 
     // Valid capability
+    // Ceramic always uses lower case DID PKH for eip155
     await expect(
       did.verifyJWS(res.jws, {
-        issuer: `did:pkh:eip155:1:${wallet.address}`,
+        issuer: `did:pkh:eip155:1:${wallet.address.toLowerCase()}`,
         capability: cacao,
         atTime: new Date('2021-10-30T16:25:24.000Z'),
-      })
+      }),
     ).resolves.not.toThrow()
 
     // Expired
@@ -389,7 +390,7 @@ describe('`createDagJWS method`', () => {
         issuer: `did:pkh:eip155:1:${wallet.address}`,
         capability: cacao,
         atTime: new Date('2023-10-30T16:25:24.000Z'),
-      })
+      }),
     ).rejects.toThrow()
 
     // Valid: Expiration not checked
@@ -399,7 +400,7 @@ describe('`createDagJWS method`', () => {
         capability: cacao,
         disableTimecheck: true,
         atTime: new Date('2023-10-30T16:25:24.000Z'),
-      })
+      }),
     ).resolves.not.toThrow()
 
     expect(res).toEqual({

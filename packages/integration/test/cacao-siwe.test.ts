@@ -38,6 +38,17 @@ test('create and verify Cacao Block for Ethereum', async () => {
   expect(() => Cacao.verify(cacao, { verifiers })).not.toThrow()
 })
 
+test('create and verify Cacao Block for Ethereum (eip55)', async () => {
+  const msg = new SiweMessage(SIWE_MESSAGE_PARAMS)
+  msg.signature = await ETHEREUM_WALLET.signMessage(msg.signMessage({ eip55: true }))
+
+  const cacao = Cacao.fromSiweMessage(msg)
+  const block = await CacaoBlock.fromCacao(cacao)
+  expect(block).toMatchSnapshot()
+
+  expect(() => Cacao.verify(cacao, { verifiers })).not.toThrow()
+})
+
 test('convert between Cacao and SiweMessage', () => {
   const msg = new SiweMessage(SIWE_MESSAGE_PARAMS)
 

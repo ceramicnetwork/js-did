@@ -1,6 +1,6 @@
 {
   "name": "pkh-did-resolver",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "did:pkh method resolver",
   "keywords": [
     "ceramic",
@@ -22,6 +22,10 @@
   ],
   "engines": {
     "node": ">=14.14"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceramicnetwork/js-did.git"
   },
   "sideEffects": false,
   "scripts": {
