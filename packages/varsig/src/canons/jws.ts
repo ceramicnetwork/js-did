@@ -48,7 +48,7 @@ export function prepareCanonicalization(
 
   const can = (node: IpldNode) => {
     // encode node using dag-json from multiformats
-    const payloadB64u = toB64u(uint8arrays.fromString(JSON.stringify(encode(node))))
+    const payloadB64u = toB64u(encode(node))
     const protectedB64u = toB64u(protectedBytes)
     return uint8arrays.fromString(`${protectedB64u}.${payloadB64u}`)
   }
@@ -96,7 +96,7 @@ interface ProtectedHeader {
 
 function findKeyType({ alg, crv }: ProtectedHeader): number {
   if (!alg) throw new Error(`Missing alg in protected header`)
-  const keyType = KEY_TYPE_BY_ALG_CRV[alg][crv || 'default']
+  const keyType = KEY_TYPE_BY_ALG_CRV[alg]?.[crv || 'default']
   if (!keyType) throw new Error(`Unsupported alg: ${alg}, or crv: ${String(crv)}`)
   return keyType
 }
