@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/varint": "^6.0.3",
     "did-jwt": "^7.4.5",
-    "dids": "workspace:^5.0.0",
+    "dids": "workspace:^5.1.0-next.0",
     "jest-environment-jsdom": "^29.7.0"
   },
   "dependencies": {

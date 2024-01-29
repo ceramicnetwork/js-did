@@ -1,5 +1,18 @@
 # did-session
 
+## 3.1.0-next.0
+
+### Minor Changes
+
+- Expose DIDs functionality to allow threaded signing and verification
+
+### Patch Changes
+
+- Updated dependencies
+  - key-did-provider-ed25519@4.1.0-next.0
+  - dids@5.1.0-next.0
+  - @didtools/key-webcrypto@0.2.0
+
 ## 3.0.2
 
 ### Patch Changes

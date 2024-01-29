@@ -352,7 +352,7 @@ importers:
         specifier: ^7.4.5
         version: 7.4.5
       dids:
-        specifier: workspace:^5.0.0
+        specifier: workspace:^5.1.0-next.0
         version: link:../dids
       jest-environment-jsdom:
         specifier: ^29.7.0

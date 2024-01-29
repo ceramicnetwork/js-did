@@ -1,0 +1,28 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@didtools/cacao": "3.0.1",
+    "@didtools/codecs": "3.0.0",
+    "did-session": "3.0.2",
+    "dids": "5.0.2",
+    "integration": "0.0.1",
+    "jest-environment-ceramic": "0.18.0",
+    "key-did-provider-ed25519": "4.0.2",
+    "@didtools/key-secp256k1": "0.3.2",
+    "@didtools/key-webcrypto": "0.2.0",
+    "key-did-resolver": "4.0.0",
+    "@didtools/key-webauthn": "2.0.1",
+    "@didtools/multidid": "0.1.0",
+    "pkh-did-resolver": "2.0.0",
+    "@didtools/pkh-ethereum": "0.5.0",
+    "@didtools/pkh-solana": "0.2.0",
+    "@didtools/pkh-stacks": "0.2.0",
+    "@didtools/pkh-tezos": "0.3.0",
+    "@didtools/siwx": "2.0.0",
+    "website": "0.0.0"
+  },
+  "changesets": [
+    "dull-jokes-teach"
+  ]
+}
