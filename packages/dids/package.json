@@ -1,6 +1,6 @@
 {
   "name": "dids",
-  "version": "5.0.2",
+  "version": "5.1.0-next.0",
   "description": "Typescript library for interacting with DIDs",
   "author": "Joel Thorstensson <oed@3box.io>",
   "license": "(Apache-2.0 OR MIT)",

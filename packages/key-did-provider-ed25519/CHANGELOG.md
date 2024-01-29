@@ -1,5 +1,16 @@
 # key-did-provider-ed25519
 
+## 4.1.0-next.0
+
+### Minor Changes
+
+- Expose DIDs functionality to allow threaded signing and verification
+
+### Patch Changes
+
+- Updated dependencies
+  - dids@5.1.0-next.0
+
 ## 4.0.2
 
 ### Patch Changes

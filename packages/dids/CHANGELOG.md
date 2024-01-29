@@ -1,5 +1,11 @@
 ## v2.4.0 (2021-07-12)
 
+## 5.1.0-next.0
+
+### Minor Changes
+
+- Expose DIDs functionality to allow threaded signing and verification
+
 ## 5.0.2
 
 ### Patch Changes
