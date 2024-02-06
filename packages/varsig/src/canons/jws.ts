@@ -31,7 +31,7 @@ export const JWS = { SIGIL, prepareCanonicalization, fromOriginal }
 
 export function prepareCanonicalization(
   tape: BytesTape,
-  hashType: HashingAlgo,
+  hashing: HashingAlgo,
   keyType: SigningKind
 ): CanonicalizationAlgo {
   const protectedLength = tape.readVarint()
@@ -43,14 +43,15 @@ export function prepareCanonicalization(
   const keyTypeFromProtected = findKeyType(protected1)
   if (keyType !== keyTypeFromProtected)
     throw new Error(`Key type missmatch: ${keyType}, ${keyTypeFromProtected}`)
-  if (hashType !== HASH_BY_KEY_TYPE[keyType])
-    throw new Error(`Hash type missmatch: ${hashType}, ${HASH_BY_KEY_TYPE[keyType]}`)
+  if (hashing.kind !== HASH_BY_KEY_TYPE[keyType])
+    throw new Error(`Hash type missmatch: ${hashing.kind}, ${HASH_BY_KEY_TYPE[keyType]}`)
 
   const can = (node: IpldNode) => {
     // encode node using dag-json from multiformats
     const payloadB64u = toB64u(encode(node))
     const protectedB64u = toB64u(protectedBytes)
-    return uint8arrays.fromString(`${protectedB64u}.${payloadB64u}`)
+    const input = uint8arrays.fromString(`${protectedB64u}.${payloadB64u}`)
+    return hashing.digest(input)
   }
   can.kind = SIGIL
   can.original = (node: IpldNode, signature: Uint8Array) => {

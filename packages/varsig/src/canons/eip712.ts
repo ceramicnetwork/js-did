@@ -163,10 +163,10 @@ const SIGIL = MAGIC.EIP712
 
 export function prepareCanonicalization(
   tape: BytesTape,
-  hashType: HashingAlgo,
+  hashing: HashingAlgo,
   keyType: SigningKind
 ): CanonicalizationAlgo {
-  if (hashType !== SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashType}`)
+  if (hashing.kind !== SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashing}`)
   if (!SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
   const metadataLength = tape.readVarint()
   const metadataBytes = tape.read(metadataLength)

@@ -4,7 +4,7 @@ import * as uint8arrays from 'uint8arrays'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 import { Eip712 } from './canons/eip712.js'
 import { JWS } from './canons/jws.js'
-import { HashingAlgo } from './hashing.js'
+import { HashingAlgo, HashingKind } from './hashing.js'
 import { keccak_256 } from '@noble/hashes/sha3'
 import type { SigningKind } from './signing.js'
 
@@ -44,7 +44,7 @@ export class CanonicalizationDecoder {
       case CanonicalizationKind.EIP712:
         return Eip712.prepareCanonicalization(this.tape, hashing, sigKind)
       case CanonicalizationKind.EIP191: {
-        if (hashing !== HashingAlgo.KECCAK256) throw new Error(`EIP191 mandates use of KECCAK 256`)
+        if (hashing.kind !== HashingKind.KECCAK256) throw new Error(`EIP191 mandates use of KECCAK 256`)
         const fn: CanonicalizationEIP191 = (message: string) => {
           return keccak_256(
             uint8arrays.fromString(
