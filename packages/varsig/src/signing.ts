@@ -2,6 +2,7 @@ import { MAGIC } from './magic.js'
 import type { BytesTape } from './bytes-tape.js'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 import { Secp256k1 } from './signing/secp256k1.js'
+import { P256 } from './signing/p256.js'
 
 type EthAddress = `0x${string}`
 type PublicKey = Uint8Array
@@ -10,6 +11,7 @@ type VerificationKey = PublicKey | EthAddress
 export enum SigningKind {
   RSA = MAGIC.RSA,
   SECP256K1 = MAGIC.SECP256K1,
+  P256 = MAGIC.ES256,
 }
 
 export type SigningAlgo = {
@@ -36,6 +38,8 @@ export class SigningDecoder {
     switch (signingSigil) {
       case SigningKind.SECP256K1:
         return Secp256k1.prepareVerifier(this.tape)
+      case SigningKind.P256:
+        return P256.prepareVerifier(this.tape)
       case SigningKind.RSA:
         throw new Error(`Not implemented: signingSigil: RSA`)
       default:
@@ -47,6 +51,8 @@ export class SigningDecoder {
     switch (signing.kind) {
       case SigningKind.SECP256K1:
         return Secp256k1.readSignature(this.tape)
+      case SigningKind.P256:
+        return P256.readSignature(this.tape)
       case SigningKind.RSA: {
         throw new Error(`Not supported: RSA`)
       }

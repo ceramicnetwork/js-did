@@ -3,6 +3,7 @@ import { BytesTape } from './bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
 import { UnreacheableCaseError } from './unreachable-case-error.js'
 import { Eip712 } from './canons/eip712.js'
+import { JWS } from './canons/jws.js'
 import { HashingAlgo } from './hashing.js'
 import { keccak_256 } from '@noble/hashes/sha3'
 import type { SigningKind } from './signing.js'
@@ -38,6 +39,8 @@ export class CanonicalizationDecoder {
   read(hashing: HashingAlgo, sigKind: SigningKind): CanonicalizationAlgo {
     const sigil = this.tape.readVarint<CanonicalizationKind>()
     switch (sigil) {
+      case CanonicalizationKind.JWS:
+        return JWS.prepareCanonicalization(this.tape, hashing, sigKind)
       case CanonicalizationKind.EIP712:
         return Eip712.prepareCanonicalization(this.tape, hashing, sigKind)
       case CanonicalizationKind.EIP191: {
