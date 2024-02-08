@@ -22,7 +22,7 @@ describe('jws.car', () => {
     entries = root.entries as Array<CID>
   })
 
-  // test('GenerateVectors', async () => {
+  // test.skip('GenerateVectors', async () => {
   //   await createVectors()
   // })
 
@@ -77,7 +77,7 @@ describe('jws.car', () => {
     }
   })
 
-  test.skip('Recover original from ipld node', async () => {
+  test('Recover original from ipld node', async () => {
     for (const entryCID of entries) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
@@ -89,16 +89,22 @@ describe('jws.car', () => {
       const node = car.get(entry.node)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const originalKlone = klona(originalExpected)
-      console.log('ori', originalKlone)
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument
       if (entry.valid) {
         const originalRecovered = await toOriginal(node)
-        console.log('rec', originalRecovered)
         expect(originalRecovered).toEqual(originalKlone)
       } else {
-        console.log(entry)
-        expect(toOriginal(node)).rejects.toThrow()
+        if (entry.error === 'Invalid hash code') {
+          expect(toOriginal(node)).rejects.toThrow(/Hash type missmatch/)
+        } else if (entry.error === 'Missing alg in protected header') {
+          expect(toOriginal(node)).rejects.toThrow('Missing alg in protected header')
+        } else if (entry.error === 'Invalid signature') {
+          const originalRecovered = await toOriginal(node)
+          expect(originalRecovered).toEqual(originalKlone)
+        } else {
+          throw new Error('Unknown error')
+        }
       }
     }
   })
@@ -132,14 +138,14 @@ describe('jws.car', () => {
 //     signature: ['es256', 'secp256k1', 'ed25519', 'ed448']
 //   }, { isRoot: true })
 //
-//   await pipeline(car, fs.createWriteStream("./jws.car"));
+//   await pipeline(car, fs.createWriteStream("./src/__tests__/__vectors__/jws.car"));
 //
 //   async function gen(name, opt, alg, crv) {
 //     const kp = generateKeyPairSync(name, opt)
 //     const {x, y } = kp.publicKey.export({ format: 'jwk' })
 //     const verificationKey = y ?
 //       uint8arrays.concat([
-//         [0x04],
+//         new Uint8Array([0x04]),
 //         uint8arrays.fromString(x, 'base64url'),
 //         uint8arrays.fromString(y, 'base64url')
 //       ]) :
@@ -162,17 +168,25 @@ describe('jws.car', () => {
 //     // await expect(verify(node, verificationKey)).resolves.toEqual(true)
 //     // console.log('passed one')
 //
+//     // contruct valid node
 //     const entry1 = car.put({
 //       valid: true,
 //       signer: { verificationKey },
 //       node: car.put(node),
 //       original: car.put(jwt)
 //     })
+//
+//     // contruct node with incorrect hash kind
 //     const nodeKeccak = klona(node)
 //     let tape = new BytesTape(nodeKeccak._sig)
-//     tape.read(1); tape.readVarint();
+//     tape.read(1);
+//     let sigKind = tape.readVarint();
+//     if (sigKind === MAGIC.SECP256K1) {
+//       // skip recovery bit for secp256k1
+//       tape.read(1)
+//     }
 //     const hashPosition = tape.position
-//     nodeKeccak._sig.set([MAGIC.KECCAK_256], hashPosition) // TODO - fix
+//     nodeKeccak._sig.set([MAGIC.KECCAK_256], hashPosition)
 //     const entry2 = car.put({
 //       valid: false,
 //       error: 'Invalid hash code',
@@ -180,6 +194,8 @@ describe('jws.car', () => {
 //       node: car.put(nodeKeccak),
 //       original: car.put(jwt)
 //     })
+//
+//     // contruct node with invalid signature
 //     const jwtInvalid = jwt.substring(0, jwt.length - 10) + 'abc' + jwt.substring(jwt.length - 7)
 //     const entry3 = car.put({
 //       valid: false,
@@ -188,13 +204,22 @@ describe('jws.car', () => {
 //       node: car.put(JWS.fromOriginal(jwtInvalid)),
 //       original: car.put(jwtInvalid)
 //     })
+//
+//     // construct node with missing alg
 //     const invalidProtectedBytes = uint8arrays.fromString(JSON.stringify({}))
 //     const invalidProtected = uint8arrays.toString(invalidProtectedBytes, 'base64url')
 //     const jwtMissingAlg = invalidProtected + jwt.substring(jwt.indexOf('.'))
 //     const nodeMissingAlg = klona(node)
 //     const protectedLength = varintes.encode(invalidProtectedBytes.length)[0]
 //     tape = new BytesTape(nodeKeccak._sig)
-//     tape.read(1); tape.readVarint(); tape.readVarint(); tape.readVarint();
+//     tape.read(1);
+//     sigKind = tape.readVarint();
+//     if (sigKind === MAGIC.SECP256K1) {
+//       // skip recovery bit for secp256k1
+//       tape.read(1)
+//     }
+//     // skip hash and canon sigils
+//     tape.readVarint(); tape.readVarint();
 //     const protLenPos = tape.position
 //     const klonLength = tape.readVarint()
 //     const signature = nodeMissingAlg._sig.slice(tape.position + klonLength)
@@ -204,6 +229,7 @@ describe('jws.car', () => {
 //       invalidProtectedBytes,
 //       signature
 //     ])
+//     console.log('nv', newVarsig)
 //     nodeMissingAlg._sig = newVarsig
 //     const entry4 = car.put({
 //       valid: false,
