@@ -166,7 +166,8 @@ export function prepareCanonicalization(
   hashing: HashingAlgo,
   keyType: SigningKind,
 ): CanonicalizationAlgo {
-  if (hashing.kind !== SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashing}`)
+  if (hashing.kind !== SUPPORTED_HASH_TYPE)
+    throw new Error(`Unsupported hash type: ${hashing.kind}`)
   if (!SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
   const metadataLength = tape.readVarint()
   const metadataBytes = tape.read(metadataLength)
@@ -189,7 +190,9 @@ export function prepareCanonicalization(
   const original = (node: IpldNode, signature: Uint8Array, recoveryBit: number | undefined) => {
     const message = ipldNodeToMessage(node)
 
-    const sigBytes = recoveryBit ? uint8arrays.concat([signature, new Uint8Array([recoveryBit])]) : signature
+    const sigBytes = recoveryBit
+      ? uint8arrays.concat([signature, new Uint8Array([recoveryBit])])
+      : signature
     const sigHex = `0x${uint8arrays.toString(sigBytes, 'base16')}`
     return { ...metadata, message, signature: sigHex }
   }

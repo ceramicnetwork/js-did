@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { readFile } from 'node:fs/promises'
 import { expect, test } from '@jest/globals'
 import { CARFactory, type CAR } from 'cartonne'
@@ -15,10 +16,8 @@ describe('jws.car', () => {
     const carFilepath = new URL('./__vectors__/jws.car', import.meta.url)
     const carBytes = await readFile(carFilepath)
     car = factory.fromBytes(carBytes)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const root = car.get(car.roots[0])
     if (!root) throw new Error(`Empty root`)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     entries = root.entries as Array<CID>
   })
 
@@ -28,22 +27,15 @@ describe('jws.car', () => {
 
   test('Verify signatures', async () => {
     for (const entryCID of entries) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       const node = car.get(entry.node)
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const verificationKey = entry.signer.verificationKey
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (entry.valid) {
-        // eslint-disable-next-line jest/no-conditional-expect,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
         await expect(verify(node, verificationKey)).resolves.toEqual(entry.valid)
       } else {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         const verificationP = verify(node, verificationKey).catch(() => false)
-        // eslint-disable-next-line jest/no-conditional-expect
         await expect(verificationP).resolves.toEqual(false)
       }
     }
@@ -51,13 +43,9 @@ describe('jws.car', () => {
 
   test('Create varsig ipld node', () => {
     for (const entryCID of entries) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       if (!entry.original) continue
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
       const original = car.get(entry.original)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
       const node = car.get(entry.node)
       if (entry.valid) {
         const varsigNode = JWS.fromOriginal(original)
@@ -79,18 +67,12 @@ describe('jws.car', () => {
 
   test('Recover original from ipld node', async () => {
     for (const entryCID of entries) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
       if (!entry.original) continue
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-argument
       const originalExpected = car.get(entry.original)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       const node = car.get(entry.node)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const originalKlone = klona(originalExpected)
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument
       if (entry.valid) {
         const originalRecovered = await toOriginal(node)
         expect(originalRecovered).toEqual(originalKlone)

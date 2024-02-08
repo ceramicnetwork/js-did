@@ -86,8 +86,11 @@ describe('eip712-secp256k1.car', () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
         originalKlone.signature =
           '0x' +
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
-          uint8arrays.toString(uint8arrays.concat([r, s, new Uint8Array([originalKlone.signature.v])]), 'hex')
+          uint8arrays.toString(
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+            uint8arrays.concat([r, s, new Uint8Array([originalKlone.signature.v])]),
+            'hex',
+          )
       }
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument

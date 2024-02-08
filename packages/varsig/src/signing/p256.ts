@@ -5,8 +5,7 @@ import type { BytesTape } from '../bytes-tape.js'
 
 const SIGIL = MAGIC.ES256
 
-// @ts-ignore
-function prepareVerifier(tape: BytesTape): SigningAlgo {
+function prepareVerifier(_: BytesTape): SigningAlgo {
   return {
     kind: SIGIL,
     // eslint-disable-next-line @typescript-eslint/require-await
