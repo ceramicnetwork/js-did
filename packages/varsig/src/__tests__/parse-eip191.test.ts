@@ -9,13 +9,13 @@ import { hex } from './hex.util.js'
 
 test('validate eip191', async () => {
   const account = privateKeyToAccount(
-    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
   )
   const verificationKey = uint8arrays.fromString(account.publicKey.slice(2), 'base16')
   const stringSignature = await account.signMessage({ message: 'Hello World' })
   const signatureBytes = uint8arrays.fromString(
     stringSignature.toLowerCase().replace(/^0x/, ''),
-    'hex'
+    'hex',
   )
   const varsig = uint8arrays.concat([
     hex(0x34),
@@ -35,18 +35,18 @@ test('validate eip191', async () => {
 
 test('validate eip191, no recovery bit', async () => {
   const account = privateKeyToAccount(
-    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+    '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
   )
   const verificationKey = uint8arrays.fromString(account.publicKey.slice(2), 'base16')
   const stringSignature = await account.signMessage({ message: 'Hello World' })
   const signatureBytes = uint8arrays.fromString(
     stringSignature.toLowerCase().replace(/^0x/, ''),
-    'hex'
+    'hex',
   )
   const varsig = uint8arrays.concat([
     hex(0x34),
     varintes.encode(0xe7)[0],
-    [0x00],
+    new Uint8Array([0x00]),
     varintes.encode(0x1b)[0],
     varintes.encode(CanonicalizationKind.EIP191)[0],
     signatureBytes.subarray(0, 64),

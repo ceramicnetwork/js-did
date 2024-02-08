@@ -34,7 +34,7 @@ export function toBytes(varsig: VarsigBytes): Uint8Array {
   const hashingLen = varintes.encodingLength(varsig.hashing)
   const signingLen = varintes.encodingLength(varsig.signing)
   const result = new Uint8Array(
-    1 + encodingLen + hashingLen + signingLen + varsig.signature.byteLength
+    1 + encodingLen + hashingLen + signingLen + varsig.signature.byteLength,
   )
   result.set(VARSIG_SIGIL_BYTES, 0)
   varintes.encode(varsig.encoding, result, 1)

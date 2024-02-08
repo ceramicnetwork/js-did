@@ -91,7 +91,7 @@ const EAS_DATA = {
 }
 
 const ACCOUNT = privateKeyToAccount(
-  '0x9727992a9c7d4e4b7c3b2d8d3c4b5b2e9d6e9c0a3a0e0d0c0b0a090807060504'
+  '0x9727992a9c7d4e4b7c3b2d8d3c4b5b2e9d6e9c0a3a0e0d0c0b0a090807060504',
 )
 
 function putEntry(car: CAR, eip712: any, node: any, signer: Signer, error?: string): CID {
@@ -115,7 +115,7 @@ async function main() {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     putEntry(car, EAS_DATA, fromOriginal(EAS_DATA), {
       address: '0x3e95B8E249c4536FE1db2E4ce5476010767C0A05',
-    })
+    }),
   )
   // invalid stuff
   const invalidData1 = {
@@ -133,8 +133,8 @@ async function main() {
       {
         address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
       },
-      'Invalid signature'
-    )
+      'Invalid signature',
+    ),
   )
 
   // @ts-expect-error
@@ -150,8 +150,8 @@ async function main() {
       {
         address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
       },
-      'Unsupported key type'
-    )
+      'Unsupported key type',
+    ),
   )
   // @ts-expect-error
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
@@ -166,8 +166,8 @@ async function main() {
       {
         address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
       },
-      'Missing recovery bit'
-    )
+      'Missing recovery bit',
+    ),
   )
   // @ts-expect-error
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
@@ -182,8 +182,8 @@ async function main() {
       {
         address: '0x7821B4697401EdC27aB2719FF4d7a6A7737D28C3',
       },
-      'Unsupported hash type'
-    )
+      'Unsupported hash type',
+    ),
   )
 
   car.put(
@@ -193,7 +193,7 @@ async function main() {
       hash: 'keccak256',
       entries,
     },
-    { isRoot: true }
+    { isRoot: true },
   )
 
   const carFilepath = new URL('./__vectors__/eip712-secp256k1.car', import.meta.url)

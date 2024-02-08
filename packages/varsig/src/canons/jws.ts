@@ -32,7 +32,7 @@ export const JWS = { SIGIL, prepareCanonicalization, fromOriginal }
 export function prepareCanonicalization(
   tape: BytesTape,
   hashing: HashingAlgo,
-  keyType: SigningKind
+  keyType: SigningKind,
 ): CanonicalizationAlgo {
   const protectedLength = tape.readVarint()
   const protectedBytes = tape.read(protectedLength)
@@ -51,6 +51,10 @@ export function prepareCanonicalization(
     const payloadB64u = toB64u(encode(node))
     const protectedB64u = toB64u(protectedBytes)
     const input = uint8arrays.fromString(`${protectedB64u}.${payloadB64u}`)
+    if (keyType === MAGIC.ED25519) {
+      // ed25519 includes hashing as part of the signature validation, so we need to skip it here
+      return input
+    }
     return hashing.digest(input)
   }
   can.kind = SIGIL
@@ -67,7 +71,11 @@ export function fromOriginal(jws: string): IpldNodeSigned {
   const [protectedB64u, payloadB64u, signatureB64u] = jws.split('.')
   const node = decode<Record<string, any>>(fromB64u(payloadB64u))
   if (toB64u(encode(node)) !== payloadB64u) {
-    throw new Error(`Invalid JOSE payload: Varsig only supports JSON with ordered keys, got "${JSON.stringify(node)}"`)
+    throw new Error(
+      `Invalid JOSE payload: Varsig only supports JSON with ordered keys, got "${JSON.stringify(
+        node,
+      )}"`,
+    )
   }
   const protectedBytes = fromB64u(protectedB64u)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

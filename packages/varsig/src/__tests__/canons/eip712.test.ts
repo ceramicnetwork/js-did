@@ -48,7 +48,7 @@ const testData = {
 
 const expectedHash = uint8arrays.fromString(
   '703012a88c79c0ae106c7e0bd144d39d63304df1815e6d11b19189aff3dce0c4',
-  'base16'
+  'base16',
 )
 
 test('Encode eip712 message', () => {

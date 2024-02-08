@@ -11,9 +11,7 @@ export enum HashingKind {
   KECCAK256 = MAGIC.KECCAK_256,
 }
 
-export type HashFn = (
-  input: Uint8Array
-) => Uint8Array
+export type HashFn = (input: Uint8Array) => Uint8Array
 
 export type HashingAlgo = {
   kind: HashingKind
@@ -25,17 +23,17 @@ export function hashingAlgoByKind(kind: HashingKind): HashingAlgo {
     case HashingKind.SHA2_512:
       return {
         kind: HashingKind.SHA2_512,
-        digest: sha512
+        digest: sha512,
       }
     case HashingKind.SHA2_256:
       return {
         kind: HashingKind.SHA2_256,
-        digest: sha256
+        digest: sha256,
       }
     case HashingKind.KECCAK256:
       return {
         kind: HashingKind.KECCAK256,
-        digest: keccak_256
+        digest: keccak_256,
       }
     default:
       throw new UnreacheableCaseError(kind, 'hashing algo')

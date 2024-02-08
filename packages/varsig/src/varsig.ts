@@ -1,6 +1,5 @@
 import { Decoder } from './decoder.js'
 import { BytesTape } from './bytes-tape.js'
-import { CanonicalizationKind } from './canonicalization.js'
 import { klona } from 'klona'
 
 export { Eip712 } from './canons/eip712'
@@ -17,7 +16,7 @@ type Decoded = any
 
 export async function verify(
   node: VarsigNode,
-  verificationKey: PublicKey | EthAddress
+  verificationKey: PublicKey | EthAddress,
 ): Promise<boolean> {
   const tape = new BytesTape(node._sig)
   // @ts-ignore
@@ -41,8 +40,6 @@ export async function toOriginal(node: VarsigNode): Promise<Decoded> {
   const clone = klona(node)
   // @ts-ignore
   delete clone._sig
-  if (canonicalization.kind !== CanonicalizationKind.EIP712)
-    throw new Error(`Supported just for EIP712`)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return canonicalization.original(clone, signature, signing.recoveryBit)
 }

@@ -150,7 +150,7 @@ const COMPRESSED_TO_SOLIDITY: Record<string, string> = {
 const SOLIDITY_TO_COMPRESSED = Object.fromEntries(
   Object.entries(COMPRESSED_TO_SOLIDITY).map(([k, v]) => {
     return [v, k]
-  })
+  }),
 )
 
 const SUPPORTED_KEY_TYPES = [
@@ -164,7 +164,7 @@ const SIGIL = MAGIC.EIP712
 export function prepareCanonicalization(
   tape: BytesTape,
   hashing: HashingAlgo,
-  keyType: SigningKind
+  keyType: SigningKind,
 ): CanonicalizationAlgo {
   if (hashing.kind !== SUPPORTED_HASH_TYPE) throw new Error(`Unsupported hash type: ${hashing}`)
   if (!SUPPORTED_KEY_TYPES.includes(keyType)) throw new Error(`Unsupported key type: ${keyType}`)
@@ -189,7 +189,7 @@ export function prepareCanonicalization(
   const original = (node: IpldNode, signature: Uint8Array, recoveryBit: number | undefined) => {
     const message = ipldNodeToMessage(node)
 
-    const sigBytes = recoveryBit ? uint8arrays.concat([signature, [recoveryBit]]) : signature
+    const sigBytes = recoveryBit ? uint8arrays.concat([signature, new Uint8Array([recoveryBit])]) : signature
     const sigHex = `0x${uint8arrays.toString(sigBytes, 'base16')}`
     return { ...metadata, message, signature: sigHex }
   }
@@ -228,7 +228,7 @@ function extractSignature(signature: string | SignatureComponents) {
     const recoveryBit = new Uint8Array([signature.v])
     const signatureBytes = uint8arrays.fromString(
       signature.r.slice(2) + signature.s.slice(2),
-      'base16'
+      'base16',
     )
     return { recoveryBit: recoveryBit, bytes: signatureBytes }
   }
@@ -267,7 +267,7 @@ export function fromOriginal({
 function messageToIpld(
   message: Record<string, any>,
   types: Eip712Types,
-  primaryType: string
+  primaryType: string,
 ): IpldNode {
   const node = {}
   for (const [key, value] of Object.entries(message)) {

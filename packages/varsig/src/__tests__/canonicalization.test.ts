@@ -96,7 +96,7 @@ test('EIP712', () => {
   const canonicalization = CanonicalizationDecoder.read(
     tape,
     hashingAlgoByKind(HashingKind.KECCAK256),
-    SigningKind.SECP256K1
+    SigningKind.SECP256K1,
   )
   expect(canonicalization.kind).toEqual(CanonicalizationKind.EIP712)
   if (canonicalization.kind !== CanonicalizationKind.EIP712) throw new Error()
@@ -107,7 +107,11 @@ test('EIP712', () => {
 test('EIP191', () => {
   const bytes = concat([encode(0xe191)[0]])
   const tape = new BytesTape(bytes)
-  const result = CanonicalizationDecoder.read(tape, hashingAlgoByKind(HashingKind.KECCAK256), SigningKind.SECP256K1)
+  const result = CanonicalizationDecoder.read(
+    tape,
+    hashingAlgoByKind(HashingKind.KECCAK256),
+    SigningKind.SECP256K1,
+  )
   expect(result.kind).toEqual(CanonicalizationKind.EIP191)
   const canonicalized = toString(result('Hello'), 'hex')
   expect(canonicalized).toEqual('aa744ba2ca576ec62ca0045eca00ad3917fdf7ffa34fbbae50828a5a69c1580e')

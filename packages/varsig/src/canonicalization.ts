@@ -19,6 +19,7 @@ type IpldNode = Record<string, any>
 type CanonicalizationEIP191 = {
   kind: CanonicalizationKind.EIP191
   (message: string): Uint8Array
+  original(): any
 }
 
 type CanonicalizationEIP712 = {
@@ -27,7 +28,16 @@ type CanonicalizationEIP712 = {
   original(node: IpldNode, signature: Uint8Array, recoveryBit: number | undefined): any
 }
 
-export type CanonicalizationAlgo = CanonicalizationEIP191 | CanonicalizationEIP712
+type CanonicalizationJWS = {
+  kind: CanonicalizationKind.JWS
+  (message: any): Uint8Array
+  original(node: IpldNode, signature: Uint8Array): any
+}
+
+export type CanonicalizationAlgo =
+  | CanonicalizationEIP191
+  | CanonicalizationEIP712
+  | CanonicalizationJWS
 
 export class CanonicalizationDecoder {
   constructor(private readonly tape: BytesTape) {}
@@ -44,15 +54,17 @@ export class CanonicalizationDecoder {
       case CanonicalizationKind.EIP712:
         return Eip712.prepareCanonicalization(this.tape, hashing, sigKind)
       case CanonicalizationKind.EIP191: {
-        if (hashing.kind !== HashingKind.KECCAK256) throw new Error(`EIP191 mandates use of KECCAK 256`)
+        if (hashing.kind !== HashingKind.KECCAK256)
+          throw new Error(`EIP191 mandates use of KECCAK 256`)
         const fn: CanonicalizationEIP191 = (message: string) => {
           return keccak_256(
             uint8arrays.fromString(
-              `\x19Ethereum Signed Message:\n` + String(message.length) + message
-            )
+              `\x19Ethereum Signed Message:\n` + String(message.length) + message,
+            ),
           )
         }
         fn.kind = CanonicalizationKind.EIP191
+        fn.original = () => {}
         return fn
       }
       default:
