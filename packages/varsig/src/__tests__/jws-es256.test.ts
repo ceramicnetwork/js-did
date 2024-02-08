@@ -27,12 +27,12 @@ describe('jws.car', () => {
     entries = root.entries as Array<CID>
   })
 
-  test.skip('GenerateVectors', async () => {
+  test('GenerateVectors', async () => {
     await createVectors()
   })
 
 
-  test('Verify signatures', async () => {
+  test.skip('Verify signatures', async () => {
     for (const entryCID of entries) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const entry = car.get(entryCID)
@@ -141,16 +141,22 @@ async function createVectors() {
       ]) :
       uint8arrays.fromString(x, 'base64url')
 
-    const payload = JSON.parse(uint8arrays.toString(encode({ testLink: CID.parse('bafyqacnbmrqxgzdgdeaui') })))
+    const payload = JSON.parse(uint8arrays.toString(encode({
+      testLink: CID.parse('bafyqacnbmrqxgzdgdeaui'),
+      iat:1707403055,
+      aud:"urn:example:audience",
+      exp:1707410255
+    })))
     const jwt = await new jose.SignJWT(payload)
       .setProtectedHeader({ alg })
-      .setIssuedAt()
-      .setAudience('urn:example:audience')
-      .setExpirationTime('2h')
       .sign(kp.privateKey)
 
 
+    console.log('test: jwt', jwt)
     const node = JWS.fromOriginal(jwt)
+
+    await expect(verify(node, verificationKey)).resolves.toEqual(true)
+    console.log('passed one')
 
     const entry1 = car.put({
       valid: true,

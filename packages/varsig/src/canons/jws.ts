@@ -66,6 +66,9 @@ export function prepareCanonicalization(
 export function fromOriginal(jws: string): IpldNodeSigned {
   const [protectedB64u, payloadB64u, signatureB64u] = jws.split('.')
   const node = decode<Record<string, any>>(fromB64u(payloadB64u))
+  if (toB64u(encode(node)) !== payloadB64u) {
+    throw new Error(`Invalid JOSE payload: Varsig only supports JSON with ordered keys, got "${JSON.stringify(node)}"`)
+  }
   const protectedBytes = fromB64u(protectedB64u)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const protected1 = JSON.parse(uint8arrays.toString(protectedBytes))

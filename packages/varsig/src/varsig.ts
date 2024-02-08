@@ -26,6 +26,7 @@ export async function verify(
   const toCanonicalize = klona(node)
   // @ts-ignore
   delete toCanonicalize._sig
+  console.log('vars: jwt', canonicalization.original(toCanonicalize, signature))
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const signatureInput = canonicalization(toCanonicalize)

@@ -1,6 +1,7 @@
 import { fromOriginal, prepareCanonicalization } from '../../canons/eip712.js'
 import { BytesTape } from '../../bytes-tape.js'
 import * as uint8arrays from 'uint8arrays'
+import { HashingDecoder } from '../../hashing.js'
 import { CanonicalizationKind } from '../../canonicalization.js'
 
 const testData = {
@@ -65,9 +66,9 @@ test('Canonicalize ipld eip712 object', () => {
   tape.readVarint() // skip sigil
   tape.readVarint() // skip key type
   tape.read(1) // skip recovery bit
-  tape.readVarint() // skip hash type
+  const hashing = HashingDecoder.read(tape) // read hash type
   tape.readVarint() // skip canonicalizer codec
-  const can = prepareCanonicalization(tape, 0x1b, 0xe7)
+  const can = prepareCanonicalization(tape, hashing, 0xe7)
   if (can.kind !== CanonicalizationKind.EIP712) throw new Error(`Nope`)
   expect(tape.remainder.length).toEqual(64)
   // @ts-ignore
