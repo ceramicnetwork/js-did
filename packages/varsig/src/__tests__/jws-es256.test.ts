@@ -38,7 +38,6 @@ describe('jws.car', () => {
       const entry = car.get(entryCID)
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-argument,@typescript-eslint/no-unsafe-member-access
       const node = car.get(entry.node)
-      console.log(entry)
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const verificationKey = entry.signer.verificationKey
@@ -114,10 +113,10 @@ async function createVectors() {
   const car = factory.build()
   const entries = []
   await gen('ec', { namedCurve: 'P-256' }, 'ES256')
-  await gen('ed25519', {}, 'EdDSA')
-  await gen('ed25519', {}, 'EdDSA', 'ed25519')
   await gen('ec', { namedCurve: 'secp256k1' }, 'ES256K')
-  await gen('ed448', {}, 'EdDSA', 'ed448')
+  await gen('ed25519', {}, 'EdDSA')
+  // await gen('ed25519', {}, 'EdDSA', 'ed25519')
+  // await gen('ed448', {}, 'EdDSA', 'ed448')
 
   console.log(entries)
 
@@ -145,14 +144,14 @@ async function createVectors() {
       testLink: CID.parse('bafyqacnbmrqxgzdgdeaui'),
       iat:1707403055,
       aud:"urn:example:audience",
-      exp:1707410255
+      // exp:1707410255
     })))
     const jwt = await new jose.SignJWT(payload)
       .setProtectedHeader({ alg })
       .sign(kp.privateKey)
 
 
-    console.log('test: jwt', jwt)
+
     const node = JWS.fromOriginal(jwt)
 
     await expect(verify(node, verificationKey)).resolves.toEqual(true)

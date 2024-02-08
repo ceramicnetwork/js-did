@@ -3,7 +3,7 @@ import { BytesTape } from '../bytes-tape.js'
 import { CanonicalizationDecoder, CanonicalizationKind } from '../canonicalization.js'
 import { concat, toString } from 'uint8arrays'
 import { encode } from 'varintes/encode'
-import { HashingAlgo } from '../hashing.js'
+import { HashingKind, hashingAlgoByKind } from '../hashing.js'
 import { SigningKind } from '../signing.js'
 import { fromOriginal } from '../canons/eip712.js'
 
@@ -95,7 +95,7 @@ test('EIP712', () => {
   tape.readVarint() // skip hash sigil
   const canonicalization = CanonicalizationDecoder.read(
     tape,
-    HashingAlgo.KECCAK256,
+    hashingAlgoByKind(HashingKind.KECCAK256),
     SigningKind.SECP256K1
   )
   expect(canonicalization.kind).toEqual(CanonicalizationKind.EIP712)
@@ -107,7 +107,7 @@ test('EIP712', () => {
 test('EIP191', () => {
   const bytes = concat([encode(0xe191)[0]])
   const tape = new BytesTape(bytes)
-  const result = CanonicalizationDecoder.read(tape, HashingAlgo.KECCAK256, SigningKind.SECP256K1)
+  const result = CanonicalizationDecoder.read(tape, hashingAlgoByKind(HashingKind.KECCAK256), SigningKind.SECP256K1)
   expect(result.kind).toEqual(CanonicalizationKind.EIP191)
   const canonicalized = toString(result('Hello'), 'hex')
   expect(canonicalized).toEqual('aa744ba2ca576ec62ca0045eca00ad3917fdf7ffa34fbbae50828a5a69c1580e')

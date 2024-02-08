@@ -83,6 +83,7 @@ export function fromOriginal(jws: string): IpldNodeSigned {
   const varsig = uint8arrays.concat([
     new Uint8Array([MAGIC.VARSIG]), // varsig sigil
     varintes.encode(keyType)[0], // key type
+    ...(keyType === MAGIC.SECP256K1 ? [new Uint8Array([0])] : []), // recovery bit not included (only for secp256k1)
     varintes.encode(hashType)[0], // hash type
     varintes.encode(SIGIL)[0], // canonicalizer codec
     protectedLength,

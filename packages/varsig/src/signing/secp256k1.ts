@@ -34,7 +34,10 @@ function prepareVerifier(tape: BytesTape): SigningAlgo {
         }
         return false
       } else {
-        return secp256k1.verify(signature, input, verificationKey)
+        // In Bitcoin only low S is allowed to prevent problems with malleability
+        // However, outside of bitcoin low S is not enforced when creating signatures
+        // so we need to be able to validate both low and non-low S values.
+        return secp256k1.verify(signature, input, verificationKey, { lowS: false })
       }
     },
   }

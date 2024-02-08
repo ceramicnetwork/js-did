@@ -11,10 +11,6 @@ function prepareVerifier(tape: BytesTape): SigningAlgo {
     kind: SIGIL,
     // eslint-disable-next-line @typescript-eslint/require-await
     verify: async (input, signature, verificationKey): Promise<boolean> => {
-      // let k1Sig = p256.Signature.fromCompact(signature)
-      // return p256.verify(signature, input, verificationKey)
-      console.log(input, signature, verificationKey.slice(1))
-      console.log(p256.verify(signature, input, verificationKey))
       return p256.verify(signature, input, verificationKey)
     },
   }

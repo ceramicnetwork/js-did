@@ -20,6 +20,28 @@ export type HashingAlgo = {
   digest: HashFn
 }
 
+export function hashingAlgoByKind(kind: HashingKind): HashingAlgo {
+  switch (kind) {
+    case HashingKind.SHA2_512:
+      return {
+        kind: HashingKind.SHA2_512,
+        digest: sha512
+      }
+    case HashingKind.SHA2_256:
+      return {
+        kind: HashingKind.SHA2_256,
+        digest: sha256
+      }
+    case HashingKind.KECCAK256:
+      return {
+        kind: HashingKind.KECCAK256,
+        digest: keccak_256
+      }
+    default:
+      throw new UnreacheableCaseError(kind, 'hashing algo')
+  }
+}
+
 export class HashingDecoder {
   constructor(private readonly tape: BytesTape) {}
 
@@ -29,24 +51,25 @@ export class HashingDecoder {
 
   read(): HashingAlgo {
     const hashingSigil = this.tape.readVarint<HashingKind>()
-    switch (hashingSigil) {
-      case HashingKind.SHA2_512:
-        return {
-          kind: HashingKind.SHA2_512,
-          digest: sha512
-        }
-      case HashingKind.SHA2_256:
-        return {
-          kind: HashingKind.SHA2_256,
-          digest: sha256
-        }
-      case HashingKind.KECCAK256:
-        return {
-          kind: HashingKind.KECCAK256,
-          digest: keccak_256
-        }
-      default:
-        throw new UnreacheableCaseError(hashingSigil, 'hashing algo')
-    }
+    return hashingAlgoByKind(hashingSigil)
+    // switch (hashingSigil) {
+    //   case HashingKind.SHA2_512:
+    //     return {
+    //       kind: HashingKind.SHA2_512,
+    //       digest: sha512
+    //     }
+    //   case HashingKind.SHA2_256:
+    //     return {
+    //       kind: HashingKind.SHA2_256,
+    //       digest: sha256
+    //     }
+    //   case HashingKind.KECCAK256:
+    //     return {
+    //       kind: HashingKind.KECCAK256,
+    //       digest: keccak_256
+    //     }
+    //   default:
+    //     throw new UnreacheableCaseError(hashingSigil, 'hashing algo')
+    // }
   }
 }
