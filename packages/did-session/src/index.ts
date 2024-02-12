@@ -202,6 +202,11 @@ export function cacaoContainsResources(cacao: Cacao, resources: Array<string>): 
   return resources.every((res) => cacao.p.resources?.includes(res))
 }
 
+function isExpired(expTime?: string): boolean {
+  if (!expTime) return false
+  return Date.parse(expTime) < Date.now()
+}
+
 /**
  * DID Session
  *
@@ -261,12 +266,17 @@ export class DIDSession {
     const store = await SessionStore.create()
     const result = (await store.get(account)) || {}
     let { cacao, keypair } = result as { cacao: Cacao; keypair: CryptoKeyPair }
-    if (cacao && keypair && cacaoContainsResources(cacao, authOpts.resources)) {
+    if (
+      cacao &&
+      keypair &&
+      cacaoContainsResources(cacao, authOpts.resources) &&
+      !isExpired(cacao.p.exp)
+    ) {
       const provider = new WebcryptoProvider(keypair)
       const did = new DID({ provider, resolver: KeyDidResolver.getResolver(), capability: cacao })
       await did.authenticate()
       const session = new DIDSession({ cacao, did })
-      if (!session.isExpired) return session
+      return session
     }
     // create a new DID instance using the WebcryptoProvider
     keypair = await generateP256KeyPair()
@@ -275,6 +285,11 @@ export class DIDSession {
     await didKey.authenticate()
     const authMethodOpts: AuthMethodOpts = authOpts
     authMethodOpts.uri = didKey.id
+    if (authOpts.expiresInSecs) {
+      const exp = new Date(Date.now() + authOpts.expiresInSecs * 1000)
+      authMethodOpts.expirationTime = exp.toISOString()
+    }
+
     cacao = await authMethod(authMethodOpts)
     const did = await createDIDCacao(didKey, cacao)
     await store.set(account, { cacao, keypair })
@@ -283,12 +298,22 @@ export class DIDSession {
   }
 
   /**
+   * Removes a session from storage for a given account (if created using `DIDSession.get`)
+   */
+  static async remove(account: AccountId): Promise<void> {
+    const store = await SessionStore.create()
+    await store.remove(account)
+    store.close()
+  }
+
+  /**
    * Check if there is an active session for a given account.
    */
   static async hasSessionFor(account: AccountId, resources: Array<string>): Promise<boolean> {
     const store = await SessionStore.create()
     const { cacao } = (await store.get(account)) || ({} as { cacao: Cacao })
-    return cacao && cacaoContainsResources(cacao, resources)
+    store.close()
+    return cacao && cacaoContainsResources(cacao, resources) && !isExpired(cacao.p.exp)
   }
 
   /**
@@ -329,9 +354,7 @@ export class DIDSession {
    * Determine if a session is expired or not
    */
   get isExpired(): boolean {
-    const expTime = this.#cacao.p.exp
-    if (!expTime) return false
-    return Date.parse(expTime) < Date.now()
+    return isExpired(this.#cacao.p.exp)
   }
 
   /**

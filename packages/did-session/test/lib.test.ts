@@ -125,223 +125,230 @@ describe('did-session', () => {
   )
   const address = wallet.address
 
-  test('authorize, with streamid resources', async () => {
-    const streamId = `ceramic://z6MkhZCWzHtPFmpNupVPuHA6svtpKKY9RUpgf9uohnhFMNvj`
-    const session = await DIDSession.authorize(authMethod, {
-      resources: [streamId],
+  describe('DIDSession.get', () => {
+    afterEach(async () => {
+      // make sure each test starts with a clean slate
+      await DIDSession.remove(account)
     })
-    const did = session.did
-    expect(did.capability.p.resources.includes(streamId)).toBe(true)
+
+    test('get and create/update streams from persisted session', async () => {
+      const authMock = jest.fn(authMethod)
+      const resources = [`ceramic://*`]
+      expect(await DIDSession.hasSessionFor(account, resources)).toBeFalsy()
+
+      await DIDSession.get(account, authMock, {
+        resources,
+      })
+      // auth was used
+      expect(authMock).toHaveBeenCalledTimes(1)
+      expect(await DIDSession.hasSessionFor(account, resources)).toBeTruthy()
+
+      const session = await DIDSession.get(account, authMethod, {
+        resources,
+      })
+      // indicates that we loaded auth from session storage
+      expect(authMock).toHaveBeenCalledTimes(1)
+
+      ceramic.did = session.did
+      const doc = await TileDocument.create(
+        ceramic,
+        { foo: 'bar' },
+        {},
+        {
+          anchor: false,
+          publish: false,
+        },
+      )
+      expect(doc.content).toEqual({ foo: 'bar' })
+
+      await doc.update({ foo: 'boo' })
+      expect(doc.content).toEqual({ foo: 'boo' })
+    })
+
+    test('Properly removes persisted sessions', async () => {
+      await DIDSession.get(account, authMethod, {
+        resources: testResources,
+      })
+
+      expect(await DIDSession.hasSessionFor(account, testResources)).toBeTruthy()
+
+      await DIDSession.remove(account)
+
+      expect(await DIDSession.hasSessionFor(account, testResources)).toBeFalsy()
+    })
+
+    test('isAuthorized/isExpired, with valid session and resources', async () => {
+      const session = await DIDSession.get(account, authMethod, {
+        resources: testResources,
+      })
+      // Any session authorized and valid, true
+      expect(session.isAuthorized()).toBe(true)
+      expect(session.isExpired).toBe(false)
+      // Authorized for given resources, true
+      expect(session.isAuthorized(testResources)).toBe(true)
+      // Authorized for wildcard resource, false
+      expect(session.isAuthorized([`ceramic://*`])).toBe(false)
+    })
+
+    test('Creates a new session if persisted one is expired', async () => {
+      let session = await DIDSession.get(account, authMethod, {
+        resources: testResources,
+        expiresInSecs: -1,
+      })
+
+      expect(session.isExpired).toBeTruthy()
+      expect(await DIDSession.hasSessionFor(account, testResources)).toBeFalsy()
+
+      session = await DIDSession.get(account, authMethod, {
+        resources: testResources,
+      })
+
+      expect(session.isExpired).toBeFalsy()
+      expect(await DIDSession.hasSessionFor(account, testResources)).toBeTruthy()
+    })
+
+    test('pass expiresInSecs option for custom time, override default 1 day', async () => {
+      const oneWeek = 60 * 60 * 24 * 7
+      const session = await DIDSession.get(account, authMethod, {
+        resources: testResources,
+        expiresInSecs: oneWeek,
+      })
+      expect(session.expireInSecs > oneWeek - 5 && session.expireInSecs <= oneWeek).toBe(true)
+    })
+
+    test('throws if resources not given', async () => {
+      await expect(DIDSession.get(account, authMethod, {})).rejects.toThrow(/Required:/)
+      await expect(DIDSession.get(account, authMethod, { resources: [] })).rejects.toThrow(
+        /Required:/,
+      )
+    })
   })
 
-  test('authorize and create/update streams', async () => {
-    const session = await DIDSession.authorize(authMethod, {
-      resources: [`ceramic://*`],
+  describe('DIDSession.authorize', () => {
+    test('authorize, with streamid resources', async () => {
+      const streamId = `ceramic://z6MkhZCWzHtPFmpNupVPuHA6svtpKKY9RUpgf9uohnhFMNvj`
+      const session = await DIDSession.authorize(authMethod, {
+        resources: [streamId],
+      })
+      const did = session.did
+      expect(did.capability.p.resources.includes(streamId)).toBe(true)
     })
-    ceramic.did = session.did
-    const doc = await TileDocument.create(
-      ceramic,
-      { foo: 'bar' },
-      {},
-      {
-        anchor: false,
-        publish: false,
-      },
-    )
-    expect(doc.content).toEqual({ foo: 'bar' })
 
-    await doc.update({ foo: 'boo' })
-    expect(doc.content).toEqual({ foo: 'boo' })
+    test('authorize and create/update streams', async () => {
+      const session = await DIDSession.authorize(authMethod, {
+        resources: [`ceramic://*`],
+      })
+      ceramic.did = session.did
+      const doc = await TileDocument.create(
+        ceramic,
+        { foo: 'bar' },
+        {},
+        {
+          anchor: false,
+          publish: false,
+        },
+      )
+      expect(doc.content).toEqual({ foo: 'bar' })
+
+      await doc.update({ foo: 'boo' })
+      expect(doc.content).toEqual({ foo: 'boo' })
+    })
+
+    test('authorize and create/update streams from serialized session', async () => {
+      const session = await DIDSession.authorize(authMethod, {
+        resources: [`ceramic://*`],
+      })
+      const sessionStr = session.serialize()
+      const session2 = await DIDSession.fromSession(sessionStr)
+      ceramic.did = session2.did
+      const doc = await TileDocument.create(
+        ceramic,
+        { foo: 'bar' },
+        {},
+        {
+          anchor: false,
+          publish: false,
+        },
+      )
+      expect(doc.content).toEqual({ foo: 'bar' })
+
+      await doc.update({ foo: 'boo' })
+      expect(doc.content).toEqual({ foo: 'boo' })
+    })
+
+    test('can create and update model instance stream', async () => {
+      const session = await DIDSession.authorize(authMethod, {
+        resources: [`ceramic://*?model=${model.id.toString()}`],
+      })
+      ceramic.did = session.did
+
+      const doc = await ModelInstanceDocument.create(ceramic, CONTENT0, {
+        model: model.id,
+      })
+
+      expect(doc.content).toEqual(CONTENT0)
+      expect(doc.metadata.model.toString()).toEqual(model.id.toString())
+
+      await doc.replace(CONTENT1)
+      expect(doc.content).toEqual(CONTENT1)
+    })
+
+    test('pass expiresInSecs option for custom time, override default 1 day', async () => {
+      const oneWeek = 60 * 60 * 24 * 7
+      const session = await DIDSession.authorize(authMethod, {
+        resources: testResources,
+        expiresInSecs: oneWeek,
+      })
+      expect(session.expireInSecs > oneWeek - 5 && session.expireInSecs <= oneWeek).toBe(true)
+    })
+
+    test('throws if resources not given', async () => {
+      await expect(DIDSession.authorize(authMethod, {})).rejects.toThrow(/Required:/)
+      await expect(DIDSession.authorize(authMethod, { resources: [] })).rejects.toThrow(/Required:/)
+    })
+
+    describe('Manage session state', () => {
+      test('serializes', async () => {
+        const msg = new SiweMessage({
+          domain: 'service.org',
+          address: address,
+          statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
+          uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+          version: '1',
+          nonce: '32891757',
+          issuedAt: '2021-09-30T16:25:24.000Z',
+          chainId: '1',
+          resources: testResources,
+        })
+
+        const signature = await wallet.signMessage(msg.toMessage())
+        msg.signature = signature
+        const cacao = Cacao.fromSiweMessage(msg)
+
+        const keySeed = new Uint8Array(bytes32)
+        const didKey = await createDIDKey(keySeed)
+        const did = await createDIDCacao(didKey, cacao)
+
+        const session = new DIDSession({ cacao, keySeed, did })
+        const sessionStr = session.serialize()
+        expect(sessionStr).toMatchSnapshot()
+      })
+
+      test('roundtrip serialization, fromSession', async () => {
+        const session = await DIDSession.authorize(authMethod, {
+          resources: [`ceramic://*`],
+        })
+        const sessionStr = session.serialize()
+        const session2 = await DIDSession.fromSession(sessionStr)
+        const sessionStr2 = session2.serialize()
+        expect(sessionStr).toEqual(sessionStr2)
+      })
+    })
   })
 
-  test('authorize and create/update streams from serialized session', async () => {
-    const session = await DIDSession.authorize(authMethod, {
-      resources: [`ceramic://*`],
-    })
-    const sessionStr = session.serialize()
-    const session2 = await DIDSession.fromSession(sessionStr)
-    ceramic.did = session2.did
-    const doc = await TileDocument.create(
-      ceramic,
-      { foo: 'bar' },
-      {},
-      {
-        anchor: false,
-        publish: false,
-      },
-    )
-    expect(doc.content).toEqual({ foo: 'bar' })
-
-    await doc.update({ foo: 'boo' })
-    expect(doc.content).toEqual({ foo: 'boo' })
-  })
-
-  test('get and create/update streams from persisted session', async () => {
-    const authMock = jest.fn(authMethod)
-    const resources = [`ceramic://*`]
-    expect(await DIDSession.hasSessionFor(account, resources)).toBeFalsy()
-
-    await DIDSession.get(account, authMock, {
-      resources,
-    })
-    // auth was used
-    expect(authMock).toHaveBeenCalledTimes(1)
-    expect(await DIDSession.hasSessionFor(account, resources)).toBeTruthy()
-
-    const session = await DIDSession.get(account, authMethod, {
-      resources,
-    })
-    // indicates that we loaded auth from session storage
-    expect(authMock).toHaveBeenCalledTimes(1)
-
-    ceramic.did = session.did
-    const doc = await TileDocument.create(
-      ceramic,
-      { foo: 'bar' },
-      {},
-      {
-        anchor: false,
-        publish: false,
-      },
-    )
-    expect(doc.content).toEqual({ foo: 'bar' })
-
-    await doc.update({ foo: 'boo' })
-    expect(doc.content).toEqual({ foo: 'boo' })
-  })
-
-  test('can create and update model instance stream', async () => {
-    const session = await DIDSession.authorize(authMethod, {
-      resources: [`ceramic://*?model=${model.id.toString()}`],
-    })
-    ceramic.did = session.did
-
-    const doc = await ModelInstanceDocument.create(ceramic, CONTENT0, {
-      model: model.id,
-    })
-
-    expect(doc.content).toEqual(CONTENT0)
-    expect(doc.metadata.model.toString()).toEqual(model.id.toString())
-
-    await doc.replace(CONTENT1)
-    expect(doc.content).toEqual(CONTENT1)
-  })
-
-  test('isAuthorized/isExpired, with valid session and resources', async () => {
-    const session = await DIDSession.authorize(authMethod, {
-      resources: testResources,
-    })
-    // Any session authorized and valid, true
-    expect(session.isAuthorized()).toBe(true)
-    expect(session.isExpired).toBe(false)
-    // Authorized for given resources, true
-    expect(session.isAuthorized(testResources)).toBe(true)
-    // Authorized for wildcard resource, false
-    expect(session.isAuthorized([`ceramic://*`])).toBe(false)
-  })
-
-  test('pass expiresInSecs option for custom time, override default 1 day', async () => {
-    const oneWeek = 60 * 60 * 24 * 7
-    const session = await DIDSession.authorize(authMethod, {
-      resources: testResources,
-      expiresInSecs: oneWeek,
-    })
-    expect(session.expireInSecs > oneWeek - 5 && session.expireInSecs <= oneWeek).toBe(true)
-  })
-
-  test('throws if resources not given', async () => {
-    await expect(DIDSession.authorize(authMethod, {})).rejects.toThrow(/Required:/)
-    await expect(DIDSession.authorize(authMethod, { resources: [] })).rejects.toThrow(/Required:/)
-  })
-
-  test('isAuthorized/isExpired, with expired session', async () => {
-    // Expired 5 min ago
-    const msg = new SiweMessage({
-      domain: 'service.org',
-      address: address,
-      statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
-      uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
-      version: '1',
-      nonce: '32891757',
-      issuedAt: '2021-09-30T16:25:24.000Z',
-      expirationTime: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      chainId: '1',
-      resources: testResources,
-    })
-
-    const signature = await wallet.signMessage(msg.toMessage())
-    msg.signature = signature
-    const cacao = Cacao.fromSiweMessage(msg)
-
-    const keySeed = new Uint8Array(bytes32)
-    const didKey = await createDIDKey(keySeed)
-    const did = await createDIDCacao(didKey, cacao)
-
-    const session = new DIDSession({ cacao, keySeed, did })
-    expect(session.isExpired).toBe(true)
-    expect(session.isAuthorized()).toBe(false)
-  })
-
-  test('expiresInSecs, when session valid', async () => {
-    // Expires in 5 mins
-    const msg = new SiweMessage({
-      domain: 'service.org',
-      address: address,
-      statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
-      uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
-      version: '1',
-      nonce: '32891757',
-      issuedAt: '2021-09-30T16:25:24.000Z',
-      expirationTime: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
-      chainId: '1',
-      resources: testResources,
-    })
-
-    const signature = await wallet.signMessage(msg.toMessage())
-    msg.signature = signature
-    const cacao = Cacao.fromSiweMessage(msg)
-
-    const keySeed = new Uint8Array(bytes32)
-    const didKey = await createDIDKey(keySeed)
-    const did = await createDIDCacao(didKey, cacao)
-
-    const session = new DIDSession({ cacao, keySeed, did })
-
-    // 5 sec buffer
-    expect(session.expireInSecs).toBeGreaterThan(60 * 5 - 5)
-    expect(session.expireInSecs).toBeLessThan(60 * 5 + 5)
-  })
-
-  test('expiresInSecs, when session expired', async () => {
-    // Expired 5 min ago
-    const msg = new SiweMessage({
-      domain: 'service.org',
-      address: address,
-      statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
-      uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
-      version: '1',
-      nonce: '32891757',
-      issuedAt: '2021-09-30T16:25:24.000Z',
-      expirationTime: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      chainId: '1',
-      resources: testResources,
-    })
-
-    const signature = await wallet.signMessage(msg.toMessage())
-    msg.signature = signature
-    const cacao = Cacao.fromSiweMessage(msg)
-
-    const keySeed = new Uint8Array(bytes32)
-    const didKey = await createDIDKey(keySeed)
-    const did = await createDIDCacao(didKey, cacao)
-
-    const session = new DIDSession({ cacao, keySeed, did })
-
-    expect(session.expireInSecs).toEqual(0)
-  })
-
-  describe('Manage session state', () => {
-    test('serializes', async () => {
+  describe('Expiration properties', () => {
+    test('isAuthorized/isExpired, with expired session', async () => {
+      // Expired 5 min ago
       const msg = new SiweMessage({
         domain: 'service.org',
         address: address,
@@ -350,6 +357,7 @@ describe('did-session', () => {
         version: '1',
         nonce: '32891757',
         issuedAt: '2021-09-30T16:25:24.000Z',
+        expirationTime: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
         chainId: '1',
         resources: testResources,
       })
@@ -363,18 +371,66 @@ describe('did-session', () => {
       const did = await createDIDCacao(didKey, cacao)
 
       const session = new DIDSession({ cacao, keySeed, did })
-      const sessionStr = session.serialize()
-      expect(sessionStr).toMatchSnapshot()
+      expect(session.isExpired).toBe(true)
+      expect(session.isAuthorized()).toBe(false)
     })
 
-    test('roundtrip serialization, fromSession', async () => {
-      const session = await DIDSession.authorize(authMethod, {
-        resources: [`ceramic://*`],
+    test('expiresInSecs, when session valid', async () => {
+      // Expires in 5 mins
+      const msg = new SiweMessage({
+        domain: 'service.org',
+        address: address,
+        statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
+        uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+        version: '1',
+        nonce: '32891757',
+        issuedAt: '2021-09-30T16:25:24.000Z',
+        expirationTime: new Date(Date.now() + 1000 * 60 * 5).toISOString(),
+        chainId: '1',
+        resources: testResources,
       })
-      const sessionStr = session.serialize()
-      const session2 = await DIDSession.fromSession(sessionStr)
-      const sessionStr2 = session2.serialize()
-      expect(sessionStr).toEqual(sessionStr2)
+
+      const signature = await wallet.signMessage(msg.toMessage())
+      msg.signature = signature
+      const cacao = Cacao.fromSiweMessage(msg)
+
+      const keySeed = new Uint8Array(bytes32)
+      const didKey = await createDIDKey(keySeed)
+      const did = await createDIDCacao(didKey, cacao)
+
+      const session = new DIDSession({ cacao, keySeed, did })
+
+      // 5 sec buffer
+      expect(session.expireInSecs).toBeGreaterThan(60 * 5 - 5)
+      expect(session.expireInSecs).toBeLessThan(60 * 5 + 5)
+    })
+
+    test('expiresInSecs, when session expired', async () => {
+      // Expired 5 min ago
+      const msg = new SiweMessage({
+        domain: 'service.org',
+        address: address,
+        statement: 'I accept the ServiceOrg Terms of Service: https://service.org/tos',
+        uri: 'did:key:z6MkrBdNdwUPnXDVD1DCxedzVVBpaGi8aSmoXFAeKNgtAer8',
+        version: '1',
+        nonce: '32891757',
+        issuedAt: '2021-09-30T16:25:24.000Z',
+        expirationTime: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
+        chainId: '1',
+        resources: testResources,
+      })
+
+      const signature = await wallet.signMessage(msg.toMessage())
+      msg.signature = signature
+      const cacao = Cacao.fromSiweMessage(msg)
+
+      const keySeed = new Uint8Array(bytes32)
+      const didKey = await createDIDKey(keySeed)
+      const did = await createDIDCacao(didKey, cacao)
+
+      const session = new DIDSession({ cacao, keySeed, did })
+
+      expect(session.expireInSecs).toEqual(0)
     })
   })
 })

@@ -47,6 +47,15 @@ export class SessionStore {
     })
   }
 
+  async remove(accountId: AccountId): Promise<void> {
+    const store = this.#db.transaction('sessions', 'readwrite').objectStore('sessions')
+    const request = store.delete(accountId.toString())
+    return new Promise((resolve, reject) => {
+      request.onsuccess = () => resolve()
+      request.onerror = () => reject(request.error)
+    })
+  }
+
   close() {
     this.#db.close()
   }
