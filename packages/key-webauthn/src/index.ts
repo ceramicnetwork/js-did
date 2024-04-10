@@ -109,7 +109,7 @@ import {
   assertU8,
   randomBytes,
   encodeDIDFromPub
-} from './utils'
+} from './utils.js'
 import {
   AuthMethod,
   AuthMethodOpts,
