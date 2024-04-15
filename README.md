@@ -17,16 +17,21 @@ This monorepo uses [pnpm](https://pnpm.io/), make sure to install it first if yo
 
 ## Packages
 
-| Name                                            | Description                                                                                               | Version                                                                      |
-| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [`dids`](./packages/dids)                       | [Interact with DIDs](https://developers.ceramic.network/docs/dids/guides/using-with-composedb-client)                         | ![npm version](https://img.shields.io/npm/v/dids.svg)             |
-| [`did-session`](./packages/did-session)         | [Manages user DID in web based environments](https://did.js.org/docs/api/modules/did_session)   | ![npm version](https://img.shields.io/npm/v/did-session.svg)        |
-| [`@didtools/cacao`](./packages/cacao)           | Chain-Agnostic Object Capabilities                     | ![npm version](https://img.shields.io/npm/v/@didtools/cacao.svg)         |
-| [`@didtools/pkh-ethereum`](./packages/pkh-ethereum) | DID PKH Ethereum                                   | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-ethereum.svg)  |
-| [`@didtools/pkh-solana`](./packages/pkh-solana)     | DID PKH Solana                                     | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-solana.svg)    |
-| [`@didtools/pkh-tezos`](./packages/pkh-tezos)       | DID PKH Tezos                                      | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-tezos.svg)     |
-| [`key-did-resolver`](./packages/key-did-resolver)   | DID Key Resolver                                   | ![npm version](https://img.shields.io/npm/v/key-did-resolver.svg)        |
-| [`pkh-did-resolver`](./packages/pkh-did-resolver)   | DID PKH Resolver                                   | ![npm version](https://img.shields.io/npm/v/pkh-did-resolver.svg)        |
+| Name                                                | Description                                                                                           | Version                                                                 |
+|-----------------------------------------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| [`dids`](./packages/dids)                           | [Interact with DIDs](https://developers.ceramic.network/docs/dids/guides/using-with-composedb-client) | ![npm version](https://img.shields.io/npm/v/dids.svg)                   |
+| [`did-session`](./packages/did-session)             | [Manages user DID in web based environments](https://did.js.org/docs/api/modules/did_session)         | ![npm version](https://img.shields.io/npm/v/did-session.svg)            |
+| [`@didtools/cacao`](./packages/cacao)               | Chain-Agnostic Object Capabilities                                                                    | ![npm version](https://img.shields.io/npm/v/@didtools/cacao.svg)        |
+| [`@didtools/codecs`](./packages/codecs)             | Common codecs for DID packages                                                                        | ![npm version](https://img.shields.io/npm/v/@didtools/codecs.svg)       |
+| [`@didtools/key-webauthn`](./packages/key-webauthn) | Webauthn AuthMethod and Verifier                                                                      | ![npm version](https://img.shields.io/npm/v/@didtools/key-webauthn.svg) |
+| [`@didtools/key-webcrypto`](./packages/key-webcrypto) | did:key using webcrypto and non-extractable keys, P-256 only                                          | ![npm version](https://img.shields.io/npm/v/@didtools/key-webcrypto.svg) |
+| [`@didtools/key-secp256k1`](./packages/key-secp256k1) | did:key provider for secp256k1 keys                                                                   | ![npm version](https://img.shields.io/npm/v/@didtools/key-secp256k1.svg) |
+| [`@didtools/pkh-ethereum`](./packages/pkh-ethereum) | DID PKH Ethereum                                                                                      | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-ethereum.svg) |
+| [`@didtools/pkh-solana`](./packages/pkh-solana)     | DID PKH Solana                                                                                        | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-solana.svg)   |
+| [`@didtools/pkh-tezos`](./packages/pkh-tezos)       | DID PKH Tezos                                                                                         | ![npm version](https://img.shields.io/npm/v/@didtools/pkh-tezos.svg)    |
+| [`key-did-provider-ed25519`](./packages/key-did-provider-ed25519)   | Ed25519 key did provider                                                                              | ![npm version](https://img.shields.io/npm/v/key-did-provider-ed25519.svg)       |
+| [`key-did-resolver`](./packages/key-did-resolver)   | DID Key Resolver                                                                                      | ![npm version](https://img.shields.io/npm/v/key-did-resolver.svg)       |
+| [`pkh-did-resolver`](./packages/pkh-did-resolver)   | DID PKH Resolver                                                                                      | ![npm version](https://img.shields.io/npm/v/pkh-did-resolver.svg)       |
 
 
 
