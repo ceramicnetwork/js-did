@@ -18,7 +18,7 @@
   "sideEffects": false,
   "scripts": {
     "build:clean": "del dist",
-    "build:js": "swc src -d ./dist --config-file ../../.swcrc",
+    "build:js": "npx swc src -d ./dist --config-file ../../.swcrc",
     "build:types": "tsc --emitDeclarationOnly --skipLibCheck",
     "build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
     "lint": "eslint src --fix",
