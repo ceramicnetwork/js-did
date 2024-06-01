@@ -11,6 +11,18 @@ import * as u8a from 'uint8arrays'
 import { blake2b } from '@noble/hashes/blake2b'
 import { sha256 } from '@noble/hashes/sha256'
 import { ed25519 } from '@noble/curves/ed25519'
+import { secp256k1 } from '@noble/curves/secp256k1'
+import { p256 } from '@noble/curves/p256'
+
+// SECP256K1
+const TZ2Prefix = new Uint8Array([6, 161, 161]);
+const SPPKPrefix = new Uint8Array([3, 254, 226, 86]);
+const SPSIGPrefix = new Uint8Array([13, 115, 101, 19, 63]);
+
+// P256
+const TZ3Prefix = new Uint8Array([6, 161, 164]);
+const P2PKPrefix = new Uint8Array([3, 178, 139, 127]);
+const P2SIGPrefix = new Uint8Array([54, 240, 44, 52]);
 
 // ED
 const TZ1Prefix = new Uint8Array([6, 161, 159])
@@ -26,18 +38,63 @@ export function getTezosVerifier(): Verifiers {
     'tezos:ed25519': async (cacao: Cacao, opts: VerifyOptions): Promise<void> => {
       verifyTezosSignature(cacao, opts)
     },
+    'tezos:secp256k1': async (cacao: Cacao, opts: VerifyOptions): Promise<void> => {
+      verifyTezosSignature(cacao, opts)
+    },
+    'tezos:p256': async (cacao: Cacao, opts: VerifyOptions): Promise<void> => {
+      verifyTezosSignature(cacao, opts)
+    },
   }
 }
 
-export function getPkhfromPk(publicKey: string): string {
-  const pkPrefix = publicKey.substring(0, 4)
-  if (pkPrefix !== 'edpk')
-    throw new Error('Tezos Signature type not supported, only type tezos:ed25519')
-  const decoded = b58cdecode(publicKey, EDPKPrefix)
-  const hashed = blake2b(decoded, { dkLen: TZ1Length })
-  const result = b58cencode(hashed, TZ1Prefix)
-  return result
+
+function getPkhfromPk(publicKey: string): string {
+  const pkPrefix = publicKey.substring(0, 4);
+  let prefix;
+  let hashFn;
+
+  switch (pkPrefix) {
+    case 'edpk':
+      prefix = TZ1Prefix;
+      hashFn = blake2b;
+      break;
+    case 'sppk':
+      prefix = TZ2Prefix;
+      hashFn = blake2b;
+      break;
+    case 'p2pk':
+      prefix = TZ3Prefix;
+      hashFn = blake2b;
+      break;
+    default:
+      throw new Error('Unsupported Tezos key type');
+  }
+  const decoded = b58cdecode(publicKey, getPrefix(pkPrefix, 'pk'));
+  const hashed = hashFn(decoded, { dkLen: 20 });
+  const result = b58cencode(hashed, prefix);
+  return result;
 }
+
+function getPrefix(type: string, kind: 'pk' | 'sig') {
+  switch (kind) {
+    case 'pk':
+      switch (type) {
+        case 'edpk': return EDPKPrefix;
+        case 'sppk': return SPPKPrefix;
+        case 'p2pk': return P2PKPrefix;
+      }
+      break;
+    case 'sig':
+      switch (type) {
+        case 'edsig': case 'sig': return EDSIGPrefix;
+        case 'spsig': return SPSIGPrefix;
+        case 'p2sig': return P2SIGPrefix;
+      }
+      break;
+  }
+  throw new Error('Unsupported Tezos type or kind');
+}
+
 
 function verifyEdSignature(
   decodedSig: Uint8Array,
@@ -48,6 +105,22 @@ function verifyEdSignature(
     return ed25519.verify(decodedSig, bytesHash, decodedPublicKey)
   } catch (e) {
     return false
+  }
+}
+
+function verifySecp256k1Signature(decodedSig: Uint8Array, bytesHash: Uint8Array, decodedPublicKey: Uint8Array): boolean {
+  try {
+    return secp256k1.verify(decodedSig, bytesHash, decodedPublicKey);
+  } catch (e) {
+    return false;
+  }
+}
+
+function verifyP256Signature(decodedSig: Uint8Array, bytesHash: Uint8Array, decodedPublicKey: Uint8Array): boolean {
+  try {
+    return p256.verify(decodedSig, bytesHash, decodedPublicKey);
+  } catch (e) {
+    return false;
   }
 }
 
@@ -74,18 +147,27 @@ function getCheckSum(u8a: Uint8Array): Uint8Array {
   return hashed.slice(0, 4)
 }
 
-export function verifySignature(payload: string, publicKey: string, signature: string): boolean {
-  const pkPrefix = publicKey.substring(0, 4)
-  const sigPrefix = signature.startsWith('sig') ? signature.substr(0, 3) : signature.substr(0, 5)
 
-  if (pkPrefix !== 'edpk' || !(sigPrefix === 'edsig' || sigPrefix === 'sig'))
-    throw new Error('Tezos Signature type not supported, only type tezos:ed25519')
+function verifySignature(payload: string, publicKey: string, signature: string): boolean {
+  const pkPrefix = publicKey.substring(0, 4);
+  const sigPrefix = signature.startsWith('sig') ? signature.substr(0, 3) : signature.substr(0, 5);
 
-  const decodedPublicKey = b58cdecode(publicKey, EDPKPrefix)
-  const decodedSig = b58cdecode(signature, sigPrefix === 'edsig' ? EDSIGPrefix : SIGPrefix)
-  const bytesHash = blake2b(u8a.fromString(payload, 'base16'), { dkLen: 32 })
-  return verifyEdSignature(decodedSig, bytesHash, decodedPublicKey)
+  const decodedPublicKey = b58cdecode(publicKey, getPrefix(pkPrefix, 'pk'));
+  const decodedSig = b58cdecode(signature, getPrefix(sigPrefix, 'sig'));
+  const bytesHash = blake2b(u8a.fromString(payload, 'base16'), { dkLen: 32 });
+
+  switch (pkPrefix) {
+    case 'edpk':
+      return verifyEdSignature(decodedSig, bytesHash, decodedPublicKey);
+    case 'sppk':
+      return verifySecp256k1Signature(decodedSig, bytesHash, decodedPublicKey);
+    case 'p2pk':
+      return verifyP256Signature(decodedSig, bytesHash, decodedPublicKey);
+  }
+
+  throw new Error('Tezos Signature type not supported');
 }
+
 
 export function verifyTezosSignature(cacao: Cacao, options: VerifyOptions) {
   assertSigned(cacao)
