@@ -103,8 +103,8 @@ importers:
   packages/codecs:
     dependencies:
       codeco:
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.3
+        version: 1.2.3
       multiformats:
         specifier: ^13.0.0
         version: 13.0.0
@@ -158,6 +158,9 @@ importers:
       '@didtools/cacao':
         specifier: workspace:^
         version: link:../cacao
+      '@didtools/codecs':
+        specifier: workspace:^
+        version: link:../codecs
       '@didtools/pkh-ethereum':
         specifier: workspace:^
         version: link:../pkh-ethereum
@@ -179,12 +182,24 @@ importers:
       ajv-formats:
         specifier: ^2.1.1
         version: 2.1.1(ajv@8.12.0)
+      cartonne:
+        specifier: ^3.0.1
+        version: 3.0.1
+      codeco:
+        specifier: ^1.2.3
+        version: 1.2.3
       fake-indexeddb:
         specifier: ^5.0.2
         version: 5.0.2
+      fast-json-stable-stringify:
+        specifier: ^2.1.0
+        version: 2.1.0
       jest-environment-ceramic:
         specifier: workspace:^
         version: link:../jest-environment-ceramic
+      multiformats:
+        specifier: ^13.1.1
+        version: 13.1.1
 
   packages/dids:
     dependencies:
@@ -201,8 +216,8 @@ importers:
         specifier: ^1.0.2
         version: 1.0.2
       codeco:
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.3
+        version: 1.2.3
       dag-jose-utils:
         specifier: ^4.0.0
         version: 4.0.0
@@ -558,8 +573,8 @@ importers:
   packages/siwx:
     dependencies:
       codeco:
-        specifier: ^1.2.0
-        version: 1.2.0
+        specifier: ^1.2.3
+        version: 1.2.3
     devDependencies:
       '@types/node':
         specifier: ^20.10.3
@@ -4071,6 +4086,9 @@ packages:
   cartonne@2.2.0:
     resolution: {integrity: sha512-O1rA2AQKnposZJ7oT+GtCQpcv4kfs+gqkCs5rFLBfegP3K0nWNmHj5q4d8NlUxqe3EHvAddCci6WO+ogupl3MA==}
 
+  cartonne@3.0.1:
+    resolution: {integrity: sha512-Y8DH//DthEUbfvOMGYj/9K3F1RcWkiVu2dB9tGkiBnMqojAXTpu+TUs9FNNx202H0TQdJgbPsQl7Q6NuJ48dCw==}
+
   catering@2.1.1:
     resolution: {integrity: sha512-K7Qy8O9p76sL3/3m7/zLKbRkyOlSZAgzEaLhyj2mXS8PsCud2Eo4hAb8aLtZqHh0QGqLcb9dlJSu6lHRVENm1w==}
     engines: {node: '>=6'}
@@ -4196,8 +4214,8 @@ packages:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
     engines: {iojs: '>= 1.0.0', node: '>= 0.12.0'}
 
-  codeco@1.2.0:
-    resolution: {integrity: sha512-SHTBW7QsiDtHGqEyhX10gZesmWlWV00gXteFyU2xLqyZmy658/+HlPyXG5EvY05+csQNWjBIfGg2mZrklR1RtQ==}
+  codeco@1.2.3:
+    resolution: {integrity: sha512-nbj0SrL3Cr5nWRwStBDYkA/lEJ9xm9TOjKk7Fo4rEspEC/fb9k3N9MvoK/ygTInBh5dqjsFGC9Bd6AE3GnAyxg==}
 
   collapse-white-space@1.0.6:
     resolution: {integrity: sha512-jEovNnrhMuqyCcjfEJA56v0Xq8SkIoPKDyaHahwo3POf4qcSXqMYuwNcOTzp74vTsR9Tn08z4MxWqAhcekogkQ==}
@@ -7313,11 +7331,17 @@ packages:
   multiformats@13.0.0:
     resolution: {integrity: sha512-xiIB0p7EKmETm3wyKedOg/xuyQ18PoWwXCzzgpZAiDxL9ktl3XTh8AqoDT5kAqRg+DU48XAGPsUJL2Rn6Bx3Lw==}
 
+  multiformats@13.1.1:
+    resolution: {integrity: sha512-JiptvwMmlxlzIlLLwhCi/srf/nk409UL0eUBr0kioRJq15hqqKyg68iftrBvhCRjR6Rw4fkNnSc4ZJXJDuta/Q==}
+
   multiformats@9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}
 
   multihashes-sync@1.1.3:
     resolution: {integrity: sha512-996qBYdXxol6Pjjw++lsdgrEMI/6S6Su4bt0D/vb5TGpJsqicVxkramwIbuRaJU4WYUTytYPGRru2s626Qkzlw==}
+
+  multihashes-sync@2.0.0:
+    resolution: {integrity: sha512-hoBamCqXuVmeo4NAY52dbYuUIKHy3/FcqxyKZSbhqicR2SbUjgiY4FoDvE8BV40dPfAJTT6pQpqYeuKxqKwOLQ==}
 
   murmurhash3js-revisited@3.0.0:
     resolution: {integrity: sha512-/sF3ee6zvScXMb1XFJ8gDsSnY+X8PbOyjIuBhtgis10W2Jx4ZjIhikUCIF9c4gpJxVnQIsPAFrSwTCuAjicP6g==}
@@ -11247,7 +11271,7 @@ snapshots:
     dependencies:
       '@ceramicnetwork/streamid': 3.2.0
       cartonne: 2.2.0
-      codeco: 1.2.0
+      codeco: 1.2.3
       dag-jose: 4.0.0
       multiformats: 11.0.2
       uint8arrays: 4.0.10
@@ -11307,7 +11331,7 @@ snapshots:
       ajv-formats: 2.1.1(ajv@8.12.0)
       await-semaphore: 0.1.3
       cartonne: 2.2.0
-      codeco: 1.2.0
+      codeco: 1.2.3
       dag-jose: 4.0.0
       dids: 4.0.4
       it-all: 3.0.4
@@ -11491,7 +11515,7 @@ snapshots:
       '@stablelib/random': 1.0.2
       ajv: 8.12.0
       ajv-formats: 2.1.1(ajv@8.12.0)
-      codeco: 1.2.0
+      codeco: 1.2.3
       fast-json-patch: 3.1.1
       json-schema-typed: 8.0.1
       multiformats: 11.0.2
@@ -11766,7 +11790,7 @@ snapshots:
 
   '@didtools/codecs@1.0.1':
     dependencies:
-      codeco: 1.2.0
+      codeco: 1.2.3
       multiformats: 11.0.2
       uint8arrays: 4.0.10
 
@@ -11816,7 +11840,7 @@ snapshots:
 
   '@didtools/siwx@1.0.0':
     dependencies:
-      codeco: 1.2.0
+      codeco: 1.2.3
 
   '@discoveryjs/json-ext@0.5.7': {}
 
@@ -12827,7 +12851,7 @@ snapshots:
     dependencies:
       '@ipld/dag-cbor': 9.0.7
       cborg: 4.0.5
-      multiformats: 13.0.0
+      multiformats: 13.1.1
       varint: 6.0.0
 
   '@ipld/dag-cbor@7.0.3':
@@ -12848,11 +12872,11 @@ snapshots:
   '@ipld/dag-json@10.1.6':
     dependencies:
       cborg: 4.0.5
-      multiformats: 13.0.0
+      multiformats: 13.1.1
 
   '@ipld/dag-pb@4.0.7':
     dependencies:
-      multiformats: 13.0.0
+      multiformats: 13.1.1
 
   '@istanbuljs/load-nyc-config@1.1.0':
     dependencies:
@@ -13350,7 +13374,7 @@ snapshots:
       '@multiformats/multiaddr': 12.1.12
       it-pushable: 3.2.3
       it-stream-types: 2.0.1
-      multiformats: 13.0.0
+      multiformats: 13.1.1
       progress-events: 1.0.0
       uint8arraylist: 2.4.8
     transitivePeerDependencies:
@@ -13433,7 +13457,7 @@ snapshots:
       '@multiformats/multiaddr': 12.1.12
       debug: 4.3.4
       interface-datastore: 8.2.10
-      multiformats: 13.0.0
+      multiformats: 13.1.1
     transitivePeerDependencies:
       - supports-color
 
@@ -13829,7 +13853,7 @@ snapshots:
       '@chainsafe/netmask': 2.0.0
       '@libp2p/interface': 1.1.0
       dns-over-http-resolver: 3.0.0
-      multiformats: 13.0.0
+      multiformats: 13.1.1
       uint8-varint: 2.0.3
       uint8arrays: 5.0.1
     transitivePeerDependencies:
@@ -13837,7 +13861,7 @@ snapshots:
 
   '@multiformats/murmur3@2.1.8':
     dependencies:
-      multiformats: 13.0.0
+      multiformats: 13.1.1
       murmurhash3js-revisited: 3.0.0
 
   '@noble/ciphers@0.4.1': {}
@@ -15933,6 +15957,13 @@ snapshots:
       multihashes-sync: 1.1.3
       varintes: 2.0.5
 
+  cartonne@3.0.1:
+    dependencies:
+      '@ipld/dag-cbor': 9.0.7
+      multiformats: 13.1.1
+      multihashes-sync: 2.0.0
+      varintes: 2.0.5
+
   catering@2.1.1: {}
 
   cborg@1.10.2: {}
@@ -16064,7 +16095,7 @@ snapshots:
 
   co@4.6.0: {}
 
-  codeco@1.2.0: {}
+  codeco@1.2.3: {}
 
   collapse-white-space@1.0.6: {}
 
@@ -16424,7 +16455,7 @@ snapshots:
   dag-jose-utils@4.0.0:
     dependencies:
       '@ipld/dag-cbor': 9.0.7
-      multiformats: 13.0.0
+      multiformats: 13.1.1
 
   dag-jose@4.0.0:
     dependencies:
@@ -16668,7 +16699,7 @@ snapshots:
       '@didtools/codecs': 1.0.1
       '@didtools/pkh-ethereum': 0.4.1
       '@stablelib/random': 1.0.2
-      codeco: 1.2.0
+      codeco: 1.2.3
       dag-jose-utils: 3.0.0
       did-jwt: 7.4.7
       did-resolver: 4.1.0
@@ -20109,12 +20140,19 @@ snapshots:
 
   multiformats@13.0.0: {}
 
+  multiformats@13.1.1: {}
+
   multiformats@9.9.0: {}
 
   multihashes-sync@1.1.3:
     dependencies:
       '@noble/hashes': 1.3.3
       multiformats: 11.0.2
+
+  multihashes-sync@2.0.0:
+    dependencies:
+      '@noble/hashes': 1.3.3
+      multiformats: 13.1.1
 
   murmurhash3js-revisited@3.0.0: {}
 

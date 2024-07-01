@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/ceramicnetwork/js-did#readme",
   "dependencies": {
-    "codeco": "^1.2.0",
+    "codeco": "^1.2.3",
     "multiformats": "^13.0.0",
     "uint8arrays": "^5.0.1"
   },

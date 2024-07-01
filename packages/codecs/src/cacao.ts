@@ -41,6 +41,8 @@ export const CacaoSignature = strict(
       'solana:ed25519': null,
       'tezos:ed25519': null,
       'stacks:secp256k1': null,
+      'webauthn:p256': null,
+      jws: null,
     }),
     s: string,
   },
@@ -55,6 +57,7 @@ export type CacaoSignature = {
     | 'tezos:ed25519'
     | 'stacks:secp256k1'
     | 'webauthn:p256'
+    | 'jws'
   s: string
   m?: SignatureMeta
 }

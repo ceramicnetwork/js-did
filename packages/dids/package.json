@@ -47,7 +47,7 @@
     "@didtools/codecs": "workspace:^",
     "@didtools/pkh-ethereum": "workspace:^",
     "@stablelib/random": "^1.0.2",
-    "codeco": "^1.2.0",
+    "codeco": "^1.2.3",
     "dag-jose-utils": "^4.0.0",
     "did-jwt": "^8.0.4",
     "did-resolver": "^4.1.0",
