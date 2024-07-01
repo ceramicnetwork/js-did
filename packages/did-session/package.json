@@ -65,25 +65,5 @@
     "caip": "^1.1.0",
     "fake-indexeddb": "^5.0.2",
     "jest-environment-ceramic": "workspace:^"
-  },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "<rootDir>/setup.jest.js"
-    ],
-    "extensionsToTreatAsEsm": [
-      ".ts"
-    ],
-    "moduleNameMapper": {
-      "^(\\.{1,2}/.*)\\.js$": "$1"
-    },
-    "transform": {
-      "^.+\\.(t|j)s$": [
-        "@swc/jest",
-        {
-          "root": "../.."
-        }
-      ]
-    }
   }
 }

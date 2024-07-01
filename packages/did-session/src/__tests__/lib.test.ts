@@ -3,21 +3,20 @@
  */
 import type { CeramicApi } from '@ceramicnetwork/common'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
-import { EventEmitter } from 'events'
-import { Wallet as EthereumWallet, Wallet } from '@ethersproject/wallet'
+import { Wallet } from '@ethersproject/wallet'
 import { fromString, toString } from 'uint8arrays'
 import { DIDSession, createDIDKey, createDIDCacao } from '../index.js'
 import { jest } from '@jest/globals'
 import { SiweMessage, Cacao, AuthMethod } from '@didtools/cacao'
 import { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
 import { ModelInstanceDocument } from '@ceramicnetwork/stream-model-instance'
-import { EthereumNodeAuth } from '@didtools/pkh-ethereum'
 import { SolanaNodeAuth, getAccountIdByNetwork } from '@didtools/pkh-solana'
 import { AccountId } from 'caip'
 import { ed25519 } from '@noble/curves/ed25519'
 import { Ed25519Provider } from 'key-did-provider-ed25519'
 import { DID } from 'dids'
 import { getResolver } from 'key-did-resolver'
+import { createEthereumAuthMethod } from './create-ethereum-auth-method.js'
 
 const getModelDef = (name: string): ModelDefinition => ({
   version: '1.0',
@@ -42,50 +41,6 @@ const CONTENT0 = { myData: 0 }
 const CONTENT1 = { myData: 1 }
 
 const MODEL_DEFINITION = getModelDef('MyModel')
-
-class EthereumProvider extends EventEmitter {
-  wallet: EthereumWallet
-
-  constructor(wallet: EthereumWallet) {
-    super()
-    this.wallet = wallet
-  }
-
-  send(
-    request: { method: string; params: Array<any> },
-    callback: (err: Error | null | undefined, res?: any) => void,
-  ): void {
-    if (request.method === 'eth_chainId') {
-      callback(null, { result: '1' })
-    } else if (request.method === 'personal_sign') {
-      let message = request.params[0] as string
-      if (message.startsWith('0x')) {
-        message = toString(fromString(message.slice(2), 'base16'), 'utf8')
-      }
-      callback(null, { result: this.wallet.signMessage(message) })
-    } else {
-      callback(new Error(`Unsupported method: ${request.method}`))
-    }
-  }
-}
-
-interface AuthAndAccount {
-  authMethod: AuthMethod
-  account: AccountId
-}
-
-async function createEthereumAuthMethod(mnemonic?: string): Promise<AuthAndAccount> {
-  const wallet = mnemonic ? EthereumWallet.fromMnemonic(mnemonic) : EthereumWallet.createRandom()
-  const provider = new EthereumProvider(wallet)
-  const accountId = new AccountId({
-    address: wallet.address.toLowerCase(),
-    chainId: { namespace: 'eip155', reference: '1' },
-  })
-  return {
-    account: accountId,
-    authMethod: await EthereumNodeAuth.getAuthMethod(provider, accountId, 'testapp'),
-  }
-}
 
 const bytes32 = [
   64, 168, 135, 95, 204, 113, 52, 90, 66, 192, 219, 241, 34, 128, 184, 176, 36, 249, 191, 223, 108,

@@ -49,7 +49,7 @@
     "@stablelib/random": "^1.0.2",
     "codeco": "^1.2.0",
     "dag-jose-utils": "^4.0.0",
-    "did-jwt": "^7.4.7",
+    "did-jwt": "^8.0.4",
     "did-resolver": "^4.1.0",
     "multiformats": "^13.0.0",
     "rpc-utils": "^0.6.2",
