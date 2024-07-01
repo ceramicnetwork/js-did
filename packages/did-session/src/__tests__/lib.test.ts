@@ -6,7 +6,7 @@ import { TileDocument } from '@ceramicnetwork/stream-tile'
 import { EventEmitter } from 'events'
 import { Wallet as EthereumWallet, Wallet } from '@ethersproject/wallet'
 import { fromString, toString } from 'uint8arrays'
-import { DIDSession, createDIDKey, createDIDCacao } from '../src'
+import { DIDSession, createDIDKey, createDIDCacao } from '../index.js'
 import { jest } from '@jest/globals'
 import { SiweMessage, Cacao, AuthMethod } from '@didtools/cacao'
 import { Model, ModelDefinition } from '@ceramicnetwork/stream-model'
@@ -231,7 +231,7 @@ describe('did-session', () => {
         resources: [streamId],
       })
       const did = session.did
-      expect(did.capability.p.resources.includes(streamId)).toBe(true)
+      expect(did.capability.p.resources!.includes(streamId)).toBe(true)
     })
 
     test('authorize and create/update streams', async () => {
@@ -477,7 +477,7 @@ describe('did-session Solana Authmethod', () => {
       resources: [streamId],
     })
     const did = session.did
-    expect(did.capability.p.resources.includes(streamId)).toBe(true)
+    expect(did.capability.p.resources!.includes(streamId)).toBe(true)
   })
 
   test('authorize and create/update streams', async () => {
