@@ -12,13 +12,17 @@ Interact with DIDs.
 
 ### constructor
 
-• **new DID**(`«destructured»?`)
+• **new DID**(`«destructured»?`): [`DID`](dids.DID.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `«destructured»` | [`DIDOptions`](../modules/dids.md#didoptions) |
+
+#### Returns
+
+[`DID`](dids.DID.md)
 
 ## Accessors
 

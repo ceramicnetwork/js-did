@@ -171,49 +171,49 @@ ___
 
 ### Cacao
 
-• `Const` **Cacao**: `SparseCodec`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` = null; `eip4361`: ``null`` = null }\>  }\>\> = CacaoHeader; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> = string; `domain`: `TrivialCodec`<`string`\> = string; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> = string; `iss`: `TrivialCodec`<`string`\> = string; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> = string; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & {}\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\> = string }\> = CacaoPayload; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> = string; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` = null; `eip191`: ``null`` = null; `solana:ed25519`: ``null`` = null; `stacks:secp256k1`: ``null`` = null; `tezos:ed25519`: ``null`` = null }\>  }\>\>\>  }\>
+• `Const` **Cacao**: `SparseCodec`<\{ `h`: `ExactCodec`<`TypeCodec`<\{ `t`: `KeyOfCodec`<\{ `caip122`: ``null`` = null; `eip4361`: ``null`` = null }\>  }\>\> = CacaoHeader; `p`: `SparseCodec`<\{ `aud`: `TrivialCodec`<`string`\> = string; `domain`: `TrivialCodec`<`string`\> = string; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> = string; `iss`: `TrivialCodec`<`string`\> = string; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> = string; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & {}\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\> = string }\> = CacaoPayload; `s`: `OptionalCodec`<`ExactCodec`<`TypeCodec`<\{ `s`: `TrivialCodec`<`string`\> = string; `t`: `KeyOfCodec`<\{ `eip1271`: ``null`` = null; `eip191`: ``null`` = null; `solana:ed25519`: ``null`` = null; `stacks:secp256k1`: ``null`` = null; `tezos:ed25519`: ``null`` = null }\>  }\>\>\>  }\>
 
 ___
 
 ### CacaoHeader
 
-• `Const` **CacaoHeader**: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` = null; `eip4361`: ``null`` = null }\>  }\>\>
+• `Const` **CacaoHeader**: `ExactCodec`<`TypeCodec`<\{ `t`: `KeyOfCodec`<\{ `caip122`: ``null`` = null; `eip4361`: ``null`` = null }\>  }\>\>
 
 ___
 
 ### CacaoPayload
 
-• `Const` **CacaoPayload**: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> = string; `domain`: `TrivialCodec`<`string`\> = string; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> = string; `iss`: `TrivialCodec`<`string`\> = string; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> = string; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & {}\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\> = string }\>
+• `Const` **CacaoPayload**: `SparseCodec`<\{ `aud`: `TrivialCodec`<`string`\> = string; `domain`: `TrivialCodec`<`string`\> = string; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> = string; `iss`: `TrivialCodec`<`string`\> = string; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> = string; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & {}\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\> = string }\>
 
 ___
 
 ### CacaoSignature
 
-• `Const` **CacaoSignature**: `ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> = string; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` = null; `eip191`: ``null`` = null; `solana:ed25519`: ``null`` = null; `stacks:secp256k1`: ``null`` = null; `tezos:ed25519`: ``null`` = null }\>  }\>\>
+• `Const` **CacaoSignature**: `ExactCodec`<`TypeCodec`<\{ `s`: `TrivialCodec`<`string`\> = string; `t`: `KeyOfCodec`<\{ `eip1271`: ``null`` = null; `eip191`: ``null`` = null; `solana:ed25519`: ``null`` = null; `stacks:secp256k1`: ``null`` = null; `tezos:ed25519`: ``null`` = null }\>  }\>\>
 
 ___
 
 ### DagJWS
 
-• `Const` **DagJWS**: `SparseCodec`<{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> = string; `signatures`: `Codec`<`MapIn`<{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$TypeOf`\>[], `MapIn`<{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$OutputOf`\>[], `unknown`\> & {}  }\>
+• `Const` **DagJWS**: `SparseCodec`<\{ `link`: `OptionalCodec`<`Type`<`CID`<`unknown`, `number`, `number`, `Version`\>, `string`, `string`\>\> ; `payload`: `TrivialCodec`<`string`\> = string; `signatures`: `Codec`<`MapIn`<\{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$TypeOf`\>[], `MapIn`<\{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$OutputOf`\>[], `unknown`\> & {}  }\>
 
 ___
 
 ### GeneralJWS
 
-• `Const` **GeneralJWS**: `ExactCodec`<`TypeCodec`<{ `payload`: `TrivialCodec`<`string`\> = string; `signatures`: `Codec`<`MapIn`<{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$TypeOf`\>[], `MapIn`<{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$OutputOf`\>[], `unknown`\> & {}  }\>\>
+• `Const` **GeneralJWS**: `ExactCodec`<`TypeCodec`<\{ `payload`: `TrivialCodec`<`string`\> = string; `signatures`: `Codec`<`MapIn`<\{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$TypeOf`\>[], `MapIn`<\{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }, `$OutputOf`\>[], `unknown`\> & {}  }\>\>
 
 ___
 
 ### JWSSignature
 
-• `Const` **JWSSignature**: `ExactCodec`<`TypeCodec`<{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }\>\>
+• `Const` **JWSSignature**: `ExactCodec`<`TypeCodec`<\{ `protected`: `TrivialCodec`<`string`\> = string; `signature`: `TrivialCodec`<`string`\> = string }\>\>
 
 ___
 
 ### SignedCacao
 
-• `Const` **SignedCacao**: `ExactCodec`<`TypeCodec`<{ `h`: `ExactCodec`<`TypeCodec`<{ `t`: `KeyOfCodec`<{ `caip122`: ``null`` = null; `eip4361`: ``null`` = null }\>  }\>\> = CacaoHeader; `p`: `SparseCodec`<{ `aud`: `TrivialCodec`<`string`\> = string; `domain`: `TrivialCodec`<`string`\> = string; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> = string; `iss`: `TrivialCodec`<`string`\> = string; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> = string; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & {}\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\> = string }\> = CacaoPayload; `s`: `ExactCodec`<`TypeCodec`<{ `s`: `TrivialCodec`<`string`\> = string; `t`: `KeyOfCodec`<{ `eip1271`: ``null`` = null; `eip191`: ``null`` = null; `solana:ed25519`: ``null`` = null; `stacks:secp256k1`: ``null`` = null; `tezos:ed25519`: ``null`` = null }\>  }\>\> = CacaoSignature }\>\>
+• `Const` **SignedCacao**: `ExactCodec`<`TypeCodec`<\{ `h`: `ExactCodec`<`TypeCodec`<\{ `t`: `KeyOfCodec`<\{ `caip122`: ``null`` = null; `eip4361`: ``null`` = null }\>  }\>\> = CacaoHeader; `p`: `SparseCodec`<\{ `aud`: `TrivialCodec`<`string`\> = string; `domain`: `TrivialCodec`<`string`\> = string; `exp`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `iat`: `TrivialCodec`<`string`\> = string; `iss`: `TrivialCodec`<`string`\> = string; `nbf`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `nonce`: `TrivialCodec`<`string`\> = string; `requestId`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `resources`: `OptionalCodec`<`Codec`<`string`[], `string`[], `unknown`\> & {}\> ; `statement`: `OptionalCodec`<`TrivialCodec`<`string`\>\> ; `version`: `TrivialCodec`<`string`\> = string }\> = CacaoPayload; `s`: `ExactCodec`<`TypeCodec`<\{ `s`: `TrivialCodec`<`string`\> = string; `t`: `KeyOfCodec`<\{ `eip1271`: ``null`` = null; `eip191`: ``null`` = null; `solana:ed25519`: ``null`` = null; `stacks:secp256k1`: ``null`` = null; `tezos:ed25519`: ``null`` = null }\>  }\>\> = CacaoSignature }\>\>
 
 ___
 

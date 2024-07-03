@@ -16,13 +16,17 @@ Parameters for SiwxMessage constructor.
 
 ### constructor
 
-• **new SiwxMessage**(`fields`)
+• **new SiwxMessage**(`fields`): [`SiwxMessage`](siwx_src.SiwxMessage.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `fields` | [`SiwxMessageFields`](../interfaces/siwx_src.SiwxMessageFields.md) |
+
+#### Returns
+
+[`SiwxMessage`](siwx_src.SiwxMessage.md)
 
 ## Properties
 
@@ -166,10 +170,6 @@ ___
 
 Parse SIWx message string.
 
-**`Throws`**
-
-If invalid string passed.
-
 ##### Parameters
 
 | Name | Type |
@@ -179,6 +179,10 @@ If invalid string passed.
 ##### Returns
 
 [`SiwxMessage`](siwx_src.SiwxMessage.md)
+
+**`Throws`**
+
+If invalid string passed.
 
 ___
 

@@ -141,7 +141,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `signMessage` | (`message`: `Uint8Array`, `type`: `string`) => `Promise`<{ `signature`: `Uint8Array`  }\> |
+| `signMessage` | (`message`: `Uint8Array`, `type`: `string`) => `Promise`<\{ `signature`: `Uint8Array`  }\> |
 
 ## Variables
 

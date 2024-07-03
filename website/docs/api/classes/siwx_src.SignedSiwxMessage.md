@@ -14,7 +14,7 @@ custom_edit_url: null
 
 ### constructor
 
-• **new SignedSiwxMessage**(`message`, `signature`)
+• **new SignedSiwxMessage**(`message`, `signature`): [`SignedSiwxMessage`](siwx_src.SignedSiwxMessage.md)
 
 #### Parameters
 
@@ -22,6 +22,10 @@ custom_edit_url: null
 | :------ | :------ |
 | `message` | [`SiwxMessage`](siwx_src.SiwxMessage.md) |
 | `signature` | [`Signature`](../modules/siwx_src.md#signature) |
+
+#### Returns
+
+[`SignedSiwxMessage`](siwx_src.SignedSiwxMessage.md)
 
 ## Properties
 

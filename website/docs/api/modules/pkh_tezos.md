@@ -95,8 +95,8 @@ await dids.verifyJWS(jws, { capability, verifiers, ...opts})
 
 | Name | Type |
 | :------ | :------ |
-| `getActiveAccount` | () => `Promise`<{ `network`: { `type`: `TezosNetwork`  } ; `publicKey`: `string`  }\> |
-| `requestSignPayload` | (`opts`: { `payload`: `string` ; `signingType`: `string`  }) => `Promise`<{ `signature`: `string`  }\> |
+| `getActiveAccount` | () => `Promise`<\{ `network`: \{ `type`: `TezosNetwork`  } ; `publicKey`: `string`  }\> |
+| `requestSignPayload` | (`opts`: \{ `payload`: `string` ; `signingType`: `string`  }) => `Promise`<\{ `signature`: `string`  }\> |
 
 ## Variables
 

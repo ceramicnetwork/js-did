@@ -14,13 +14,17 @@ custom_edit_url: null
 
 ### constructor
 
-• **new WebcryptoProvider**(`keyPair`)
+• **new WebcryptoProvider**(`keyPair`): [`WebcryptoProvider`](didtools_key_webcrypto.WebcryptoProvider.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `keyPair` | `CryptoKeyPair` |
+
+#### Returns
+
+[`WebcryptoProvider`](didtools_key_webcrypto.WebcryptoProvider.md)
 
 ## Properties
 

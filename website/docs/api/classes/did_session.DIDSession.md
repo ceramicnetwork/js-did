@@ -16,13 +16,17 @@ import { DIDSession } from 'did-session'
 
 ### constructor
 
-• **new DIDSession**(`params`)
+• **new DIDSession**(`params`): [`DIDSession`](did_session.DIDSession.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `params` | [`SessionParams`](../modules/did_session.md#sessionparams) |
+
+#### Returns
+
+[`DIDSession`](did_session.DIDSession.md)
 
 ## Accessors
 
@@ -140,7 +144,7 @@ ___
 
 ### authorize
 
-▸ `Static` **authorize**(`authMethod`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+▸ **authorize**(`authMethod`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
 
 Request authorization for session
 
@@ -159,7 +163,7 @@ ___
 
 ### fromSession
 
-▸ `Static` **fromSession**(`session`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+▸ **fromSession**(`session`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
 
 Initialize a session from a serialized session string
 
@@ -177,7 +181,7 @@ ___
 
 ### get
 
-▸ `Static` **get**(`account`, `authMethod`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
+▸ **get**(`account`, `authMethod`, `authOpts?`): `Promise`<[`DIDSession`](did_session.DIDSession.md)\>
 
 Get a session for the given accountId, if one exists, otherwise creates a new one.
 
@@ -197,7 +201,7 @@ ___
 
 ### hasSessionFor
 
-▸ `Static` **hasSessionFor**(`account`, `resources`): `Promise`<`boolean`\>
+▸ **hasSessionFor**(`account`, `resources`): `Promise`<`boolean`\>
 
 Check if there is an active session for a given account.
 
@@ -216,7 +220,7 @@ ___
 
 ### initDID
 
-▸ `Static` **initDID**(`didKey`, `cacao`): `Promise`<`DID`\>
+▸ **initDID**(`didKey`, `cacao`): `Promise`<`DID`\>
 
 #### Parameters
 
@@ -228,3 +232,21 @@ ___
 #### Returns
 
 `Promise`<`DID`\>
+
+___
+
+### remove
+
+▸ **remove**(`account`): `Promise`<`void`\>
+
+Removes a session from storage for a given account (if created using `DIDSession.get`)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `account` | `AccountId` |
+
+#### Returns
+
+`Promise`<`void`\>
