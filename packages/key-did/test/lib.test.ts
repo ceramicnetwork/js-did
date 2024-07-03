@@ -1,8 +1,12 @@
+import { webcrypto } from 'node:crypto'
+
 import {
   createDID,
   generatePrivateKey,
   getAuthenticatedDID,
 } from '../src'
+
+globalThis.crypto = webcrypto
 
 describe('createDID()', () => {
   test('creates a DID with no provider by default', async () => {
