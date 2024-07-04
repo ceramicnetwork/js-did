@@ -1,24 +1,19 @@
----
-id: "index"
-title: "DIDs API"
-hide_table_of_contents: true
-custom_edit_url: null
----
+# DIDs API
 
 ## Modules
 
-- [@didtools/key-secp256k1](modules/didtools_key_secp256k1.md)
-- [@didtools/key-webcrypto](modules/didtools_key_webcrypto.md)
-- [@didtools/multidid](modules/didtools_multidid.md)
-- [codecs](modules/codecs.md)
-- [did-session](modules/did_session.md)
-- [dids](modules/dids.md)
-- [key-did](modules/key_did.md)
-- [key-did-provider-ed25519](modules/key_did_provider_ed25519.md)
-- [key-did-resolver](modules/key_did_resolver.md)
-- [pkh-did-resolver](modules/pkh_did_resolver.md)
-- [pkh-ethereum](modules/pkh_ethereum.md)
-- [pkh-solana](modules/pkh_solana.md)
-- [pkh-stacks](modules/pkh_stacks.md)
-- [pkh-tezos](modules/pkh_tezos.md)
-- [siwx/src](modules/siwx_src.md)
+- [codecs](codecs/index.md)
+- [did-session](did-session/index.md)
+- [dids](dids/index.md)
+- [key-did](key-did/index.md)
+- [key-did-provider-ed25519](key-did-provider-ed25519/index.md)
+- [key-did-resolver](key-did-resolver/index.md)
+- [key-secp256k1](key-secp256k1/index.md)
+- [key-webcrypto](key-webcrypto/index.md)
+- [multidid](multidid/index.md)
+- [pkh-did-resolver](pkh-did-resolver/index.md)
+- [pkh-ethereum](pkh-ethereum/index.md)
+- [pkh-solana](pkh-solana/index.md)
+- [pkh-stacks](pkh-stacks/index.md)
+- [pkh-tezos](pkh-tezos/index.md)
+- [siwx](siwx/index.md)

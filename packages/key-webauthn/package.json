@@ -54,7 +54,7 @@
     "did-session": "workspace:*",
     "dids": "workspace:*",
     "esbuild": "^0.19.9",
-    "typescript": "^5.3.2"
+    "typescript": "^5.5.3"
   },
   "dependencies": {
     "@didtools/cacao": "workspace:*",

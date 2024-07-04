@@ -1,5 +1,4 @@
 /**
- * # ed25519 key did provider
  * This is a DID Provider which implements [EIP2844](https://eips.ethereum.org/EIPS/eip-2844) for `did:key:` using ed25519. It also supports decryption using x25519.
  *
  * ## Installation

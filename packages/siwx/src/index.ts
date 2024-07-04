@@ -1,3 +1,7 @@
+/**
+ * @module siwx
+ */
+
 export {
   SiwxMessage,
   toString,

@@ -4,7 +4,7 @@ A suite of tools and APIs to interact with and manage decentralized identifiers 
 
 
 
-### [API Reference →](./api/modules/dids) 
+### [API Reference →](./api/dids/index.md) 
 Check out the detailed API reference.
 
 ### [Installation guide →](https://developers.ceramic.network/docs/dids/installation) 

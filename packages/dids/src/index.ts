@@ -1,6 +1,4 @@
 /**
- * # DID
- *
  * A simple library to interact with DIDs that conform to the DID-provider interface.
  *
  * ## Installation
