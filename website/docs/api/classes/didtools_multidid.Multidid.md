@@ -10,7 +10,7 @@ custom_edit_url: null
 
 ### constructor
 
-• **new Multidid**(`code`, `id`, `url`)
+• **new Multidid**(`code`, `id`, `url`): [`Multidid`](didtools_multidid.Multidid.md)
 
 #### Parameters
 
@@ -19,6 +19,10 @@ custom_edit_url: null
 | `code` | `number` | DID Method Codec |
 | `id` | `Uint8Array` | DID method id |
 | `url` | `Uint8Array` | DID Method url portion |
+
+#### Returns
+
+[`Multidid`](didtools_multidid.Multidid.md)
 
 ## Methods
 
@@ -78,7 +82,7 @@ ___
 
 ### fromBytes
 
-▸ `Static` **fromBytes**(`bytes`): [`Multidid`](didtools_multidid.Multidid.md)
+▸ **fromBytes**(`bytes`): [`Multidid`](didtools_multidid.Multidid.md)
 
 Decoded a multidid from its binary representation
 
@@ -96,7 +100,7 @@ ___
 
 ### fromMultibase
 
-▸ `Static` **fromMultibase**(`multidid`): [`Multidid`](didtools_multidid.Multidid.md)
+▸ **fromMultibase**(`multidid`): [`Multidid`](didtools_multidid.Multidid.md)
 
 Decode multibase multidid string into instance, expects multibase prefix
 
@@ -114,7 +118,7 @@ ___
 
 ### fromString
 
-▸ `Static` **fromString**(`did`): [`Multidid`](didtools_multidid.Multidid.md)
+▸ **fromString**(`did`): [`Multidid`](didtools_multidid.Multidid.md)
 
 Decode multidid instance from a did string
 

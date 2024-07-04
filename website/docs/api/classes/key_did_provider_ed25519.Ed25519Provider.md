@@ -14,13 +14,17 @@ custom_edit_url: null
 
 ### constructor
 
-• **new Ed25519Provider**(`seed`)
+• **new Ed25519Provider**(`seed`): [`Ed25519Provider`](key_did_provider_ed25519.Ed25519Provider.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `seed` | `Uint8Array` |
+
+#### Returns
+
+[`Ed25519Provider`](key_did_provider_ed25519.Ed25519Provider.md)
 
 ## Properties
 

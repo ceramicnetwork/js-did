@@ -1,0 +1,46 @@
+{
+	"name": "@didtools/key-did",
+	"version": "1.0.0",
+	"description": "Ceramic did:key utilities",
+	"keywords": [
+		"ceramic",
+		"did:key",
+		"did",
+		"key"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ceramicnetwork/js-did.git"
+	},
+	"author": "3Box Labs",
+	"license": "(Apache-2.0 OR MIT)",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"files": [
+		"dist"
+	],
+	"engines": {
+		"node": ">=14.14"
+	},
+	"sideEffects": false,
+	"scripts": {
+		"build:clean": "del dist",
+		"build:js": "swc src -d ./dist --config-file ../../.swcrc",
+		"build:types": "tsc --emitDeclarationOnly --skipLibCheck",
+		"build": "pnpm run build:clean && pnpm run build:types && pnpm run build:js",
+		"lint": "eslint src --fix",
+		"test": "node --experimental-vm-modules ../../node_modules/jest/bin/jest.js",
+		"test:ci": "pnpm run test --ci --coverage",
+		"prepare": "pnpm run build",
+		"prepublishOnly": "package-check"
+	},
+	"dependencies": {
+		"dids": "workspace:^",
+		"key-did-provider-ed25519": "workspace:^",
+		"key-did-resolver": "workspace:^"
+	}
+}

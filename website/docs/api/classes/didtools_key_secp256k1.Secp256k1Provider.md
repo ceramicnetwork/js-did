@@ -14,13 +14,17 @@ custom_edit_url: null
 
 ### constructor
 
-• **new Secp256k1Provider**(`seed`)
+• **new Secp256k1Provider**(`seed`): [`Secp256k1Provider`](didtools_key_secp256k1.Secp256k1Provider.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `seed` | `Uint8Array` |
+
+#### Returns
+
+[`Secp256k1Provider`](didtools_key_secp256k1.Secp256k1Provider.md)
 
 ## Properties
 

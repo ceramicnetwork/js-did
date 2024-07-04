@@ -38,7 +38,7 @@
  *
  * Additional helper functions are available to help you manage a session lifecycle and the user experience.
  *
- * ```ss
+ * ```js
  * // Check if authorized or created from existing session string
  * didsession.hasSession
  *

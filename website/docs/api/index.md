@@ -13,6 +13,7 @@ custom_edit_url: null
 - [codecs](modules/codecs.md)
 - [did-session](modules/did_session.md)
 - [dids](modules/dids.md)
+- [key-did](modules/key_did.md)
 - [key-did-provider-ed25519](modules/key_did_provider_ed25519.md)
 - [key-did-resolver](modules/key_did_resolver.md)
 - [pkh-did-resolver](modules/pkh_did_resolver.md)
