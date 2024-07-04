@@ -1,5 +1,4 @@
 /**
- * # Solana AuthMethod and Verifier
  * Implements support to authenticate, authorize and verify with Solana accounts as a did:pkh with SIWS(X) and CACAO.
  * Primarly used with `did-session` and `@didtools/cacao`.
  *

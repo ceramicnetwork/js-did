@@ -1,6 +1,4 @@
 /**
- * # Key DID
- *
  * Utility functions for `did:key` DIDs.
  *
  * ## Installation

@@ -1,5 +1,4 @@
 /**
- * # secp256k1 Key Did Provider
  * This is a DID Provider which implements [EIP2844](https://eips.ethereum.org/EIPS/eip-2844) for `did:key:` using secp256k1.
  *
  * ## Installation
@@ -30,7 +29,7 @@
  * await did.verifyJWS(jws)
  * ```
  *
- * @module @didtools/key-secp256k1
+ * @module key-secp256k1
  */
 
 import { createJWS, ES256KSigner } from 'did-jwt'

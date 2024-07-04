@@ -1,5 +1,4 @@
 /**
- * # Webcrypto Key Did Provider
  * This is a DID Provider which implements [EIP2844](https://eips.ethereum.org/EIPS/eip-2844) for `did:key:` using webcrypto with non-extractable keys.
  *
  * ## Installation
@@ -30,7 +29,7 @@
  * await did.verifyJWS(jws)
  * ```
  *
- * @module @didtools/key-webcrypto
+ * @module key-webcrypto
  */
 
 import type {

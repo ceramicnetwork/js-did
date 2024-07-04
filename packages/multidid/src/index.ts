@@ -1,5 +1,4 @@
 /**
- * # Multidid
  * Multidid is a representation strategy for DIDs and DID URLs that is very compact and extensible. It allows any DID method to be represented as a
  * string of bytes. Reference [specification](https://github.com/ChainAgnostic/multidid).
  *
@@ -40,7 +39,7 @@
  *
  * ```
  *
- * @module @didtools/multidid
+ * @module multidid
  */
 
 import * as u8a from 'uint8arrays'

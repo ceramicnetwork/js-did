@@ -25,7 +25,8 @@
   "typedocOptions": {
     "name": "DIDs API",
     "readme": "none",
-    "entryDocument": "index.md",
+    "membersWithOwnFile": ["Class"],
+    "entryFileName": "index.md",
     "entryPoints": [
       "./packages/codecs/src/index.ts", 
       "./packages/did-session/src/index.ts", 
@@ -48,7 +49,6 @@
     "excludeInternal": true,
     "excludePrivate": true,
     "githubPages": false,
-    "hideBreadcrumbs": true,
-    "hideInPageTOC": true
+    "hideBreadcrumbs": true
   }
 }

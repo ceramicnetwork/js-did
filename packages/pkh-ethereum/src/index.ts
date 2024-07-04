@@ -1,5 +1,4 @@
 /**
- * # Ethereum AuthMethod and Verifier
  * Implements support to authenticate, authorize and verify with Ethereum accounts as a did:pkh with SIWE(X) and CACAO.
  * Primarly used with `did-session` and `@didtools/cacao`.
  *

@@ -1,6 +1,4 @@
 /**
- * # PKH DID method resolver
- *
  * This package contains did:pkh method resolver implementation. Please refer to the [specification](https://github.com/w3c-ccg/did-pkh/blob/main/did-pkh-method-draft.md) for details about how this DID method works.
  *
  * ## Usage
