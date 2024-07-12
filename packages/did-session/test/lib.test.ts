@@ -1,7 +1,7 @@
 /**
  * @jest-environment ceramic
  */
-import type { CeramicApi } from '@ceramicnetwork/common'
+import type { StreamWriter } from '@ceramicnetwork/common'
 import { TileDocument } from '@ceramicnetwork/stream-tile'
 import { EventEmitter } from 'events'
 import { Wallet as EthereumWallet, Wallet } from '@ethersproject/wallet'
@@ -97,6 +97,10 @@ const testResources = [
   '`ceramic://*?model=k2t6wyfsu4pgz0ftx664veuaf2qib95zj8je2x7pf89v6g5p7xa7n9eo45g64a',
 ]
 
+interface CeramicApi extends StreamWriter {
+  did: DID
+}
+
 declare global {
   const ceramic: CeramicApi
 }
@@ -113,6 +117,7 @@ describe('did-session', () => {
       resolver: getResolver(),
       provider: new Ed25519Provider(seed),
     })
+    await did.authenticate()
     ceramic.did = did
     const authResult = await createEthereumAuthMethod()
     authMethod = authResult.authMethod
@@ -466,6 +471,7 @@ describe('did-session Solana Authmethod', () => {
       resolver: getResolver(),
       provider: new Ed25519Provider(seed),
     })
+    await did.authenticate()
     ceramic.did = did
     authMethod = await createSolanaAuthMethod()
     model = await Model.create(ceramic, MODEL_DEFINITION)
