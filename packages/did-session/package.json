@@ -49,11 +49,11 @@
     "uint8arrays": "^5.0.1"
   },
   "devDependencies": {
-    "@ceramicnetwork/common": "^3.2.0",
-    "@ceramicnetwork/stream-model": "^2.2.0",
-    "@ceramicnetwork/stream-model-instance": "^2.2.0",
-    "@ceramicnetwork/stream-tile": "^3.2.0",
-    "@ceramicnetwork/streamid": "^3.2.0",
+    "@ceramicnetwork/common": "^5.15.0",
+    "@ceramicnetwork/stream-model": "^4.15.0",
+    "@ceramicnetwork/stream-model-instance": "^4.16.0",
+    "@ceramicnetwork/stream-tile": "^5.15.0",
+    "@ceramicnetwork/streamid": "^5.4.0",
     "@didtools/cacao": "workspace:^",
     "@didtools/pkh-ethereum": "workspace:^",
     "@didtools/pkh-solana": "workspace:^",

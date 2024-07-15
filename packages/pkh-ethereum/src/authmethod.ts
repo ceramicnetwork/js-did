@@ -78,7 +78,7 @@ async function createCACAO(
     resources: opts.resources,
   })
   const signature = await safeSend(ethProvider, 'personal_sign', [
-    encodeHexStr(siweMessage.signMessage()),
+    encodeHexStr(siweMessage.signMessage({ eip55: true })),
     normAccount.address,
   ])
   siweMessage.signature = signature
