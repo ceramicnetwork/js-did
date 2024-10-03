@@ -115,7 +115,7 @@ function isResolver(resolver: Resolver | ResolverRegistry): resolver is Resolver
 
 function issuerEquals(dida: string, didb: string): boolean {
   if (dida === didb) return true
-  if (dida.startsWith('did:pkh:eip155:1:')) {
+  if (dida.startsWith('did:pkh:eip155:')) {
     return dida.toLowerCase() === didb.toLowerCase()
   }
   return false
