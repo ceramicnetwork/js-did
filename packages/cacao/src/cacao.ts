@@ -217,8 +217,19 @@ export namespace Cacao {
     }
 
     if (siwTezosMessage.signature) {
+      let signatureType = 'tezos:ed25519'; // Default to ed25519
+
+      // Determine the signature type based on the prefix
+      if (siwTezosMessage.signature.startsWith('edsig')) {
+        signatureType = 'tezos:ed25519';
+      } else if (siwTezosMessage.signature.startsWith('spsig')) {
+        signatureType = 'tezos:secp256k1';
+      } else if (siwTezosMessage.signature.startsWith('p2sig')) {
+        signatureType = 'tezos:p256';
+      }
+
       cacao.s = {
-        t: 'tezos:ed25519',
+        t: signatureType,
         s: siwTezosMessage.signature,
       }
     }
