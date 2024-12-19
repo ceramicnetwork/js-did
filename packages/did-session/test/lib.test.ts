@@ -545,3 +545,46 @@ describe('did-session Solana Authmethod', () => {
     expect(doc.content).toEqual(CONTENT1)
   })
 })
+
+test.only('test gitcoin broken CACAO', async () => {
+  const cacao = {
+    "h": {
+      "t": "eip4361"
+    },
+    "p": {
+      "aud": "did:key:zDnaeU3z6wJKYcxdeQdNB1b6bgnUZBtNy6u8W7AT3rVPdwj2f",
+      "domain": "app.passport.xyz",
+      "exp": "2024-12-24T20:27:13.330Z",
+      "iat": "2024-12-17T20:27:13.330Z",
+      "iss": "did:pkh:eip155:1:0xeeec6dcedfe42e5ff150d0165c816106c4633ac2",
+      "nonce": "c9M7ErwgxK",
+      "resources": [
+        "ceramic://*"
+      ],
+      "statement": "Give this application access to some of your data on Ceramic",
+      "version": "1"
+    },
+    "s": {
+      "s": "0xc12517c95db32c01b72ef84797172a7c4bff94f42d52e8deddb6f3626d2f74055677cb3b19c3fe70d866a52a22e69ae4874bfe598a1fa0f5c6145a19049628e61b",
+      "t": "eip191"
+    }
+  } as Cacao
+  const jws = {
+    // "link": {
+    //   "/": "bafyreiezmymvqjtss5emo4uuj7emmoxnhpm3kjukzodahp5rqij5xsreo4"
+    // },
+    "payload": "AXESIJlmGVgmcpdIx3KUT8jGOu072bUmisuGA7-xghPbyiR3",
+    "signatures": [
+      {
+        "protected": "eyJhbGciOiJFUzI1NiIsImNhcCI6ImlwZnM6Ly9iYWZ5cmVpYWdvNWQ2NzRsaWxsc2piZHp2bXNidDNva3dhcmdqZ2VrY2V2c3U3d3h1endmY3h6NDd4YSIsImtpZCI6ImRpZDprZXk6ekRuYWVVM3o2d0pLWWN4ZGVRZE5CMWI2YmduVVpCdE55NnU4VzdBVDNyVlBkd2oyZiN6RG5hZVUzejZ3SktZY3hkZVFkTkIxYjZiZ25VWkJ0Tnk2dThXN0FUM3JWUGR3ajJmIn0",
+        "signature": "F4V-EpyUujZGIrgx0bify8AWMgAVviNFMB5vHW7oxEk0OyFsl4UKmmzLKb2bN0GnUJi0rrkUy8FmRFqgPgEWQQ"
+      }
+    ]
+  }
+  const did = new DID({
+    resolver: getResolver(),
+  })
+  const verified = await did.verifyJWS(jws, { capability: cacao })
+  console.log(verified)
+  expect(verified).toBeDefined()
+})
